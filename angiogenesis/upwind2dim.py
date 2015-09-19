@@ -7,11 +7,11 @@ T = 10
 
 h_half = 0.2/2
 h = 0.2
-dt = 1
+dt = 0.1
 
-Nx = int(X/h_half)
+Nx = int(X/h_half)#10
 Ny = int(Y/h_half)
-Nt = int(T/dt)
+Nt = int(T/dt)#100
 
 '''Initial Condition'''
 import numpy
@@ -25,7 +25,9 @@ f2 = numpy.zeros((Nx+5, Ny+5, Nt+1))
 #     for j in range(1,Ny+5,2):
 #         p[i,j,0] = 0
         #p[i,0] = (math.sin((math.pi)*i*h))**2
-p[int(Nx/2+2),int(Ny/2+2),0] = 100
+p[3,3,0] = 100
+p[5,7,0] = 100
+p[3,7,0] = 100
 
 '''constant'''
 a = -1
@@ -60,10 +62,15 @@ for t in range(Nt):
                 else:
                     w[x,y,t+1] = w[x,y,t] + 1/4*dt*(p[x-1,y-1,t]+p[x+1,y-1,t]+p[x+1,y+1,t]+p[x-1,y+1,t])
     #fill P
-    f1[0,y,t] = 0
-    f1[Nx+4,y,t] = 0
-    f2[x,0,t] = 0
-    f2[x,Ny+4,t] = 0
+    f1[0,:,:] = 0
+    f1[Nx+4,:,:] = 0
+    f2[:,0,:] = 0
+    f2[:,Ny+4,:] = 0
+    
+#     f1[2,:,:] = 0
+#     f1[Nx+2,:,:] = 0
+#     f2[:,2,:] = 0
+#     f2[:,Ny+2,:] = 0
     for y in range(2,Ny+3,2):#y = 2,4,6,8,10,12
         for x in range(2,Nx+3,2):#x = 1,3,5,7
             #cek dir
@@ -81,16 +88,14 @@ for t in range(Nt):
             f2[x,y,t] = (p[x-1,y+1,t]-p[x-1,y-1,t]+p[x+1,y+1,t]-p[x+1,y-1,t])/(2*h) - by_d*(p[x-1,y-1,t]+p[x+1,y-1,t])/2 + by_u*(p[x-1,y+1,t]+p[x+1,y+1,t])
             
             p[x-1,y-1,t+1] = p[x-1,y-1,t] + dt/(2*h)*(f1[x,y,t]-f1[x-2,y,t]+f1[x,y-2,t]-f1[x-2,y-2,t])+dt/(2*h)*(f2[x,y,t]-f2[x,y-2,t]+f2[x-2,y,t]-f2[x-2,y-2,t])
-        if x==Nx+3:#right side of black nodes
-            x=Nx+2
-            p[x+1,y-1,t+1] = p[x+1,y-1,t] + dt/(2*h)*(f1[x+2,y,t]-f1[x,y,t]+f1[x+2,y-2,t]-f1[x,y-2,t])+dt/(2*h)*(f2[x+2,y,t]-f2[x,y,t]+f2[x+2,y-2,t]-f2[x,y-2,t])
-    if y==Ny+3:
-        for x in range(1,Nx+4,2):
-            p[x,y,t+1] = p[x,y,t] + dt/(2*h)*(f1[x+1,y+1,t]-f1[x-1,y+1,t]+f1[x+1,y-1,t]-f1[x-1,y-1,t])+dt/(2*h)*(f2[x+1,y+1,t]-f2[x+1,y-1,t]+f2[x-1,y+1,t]-f2[x-1,y-1,t])
+        #right side of black nodes x=Nx+2
+        p[x+1,y-1,t+1] = p[x+1,y-1,t] + dt/(2*h)*(f1[x+2,y,t]-f1[x,y,t]+f1[x+2,y-2,t]-f1[x,y-2,t])+dt/(2*h)*(f2[x+2,y,t]-f2[x+2,y-2,t]+f2[x,y,t]-f2[x,y-2,t])
+    for x in range(1,Nx+4,2):#upper side of black nodes y=Ny+2 1,3,5,7,9,11,13
+        p[x,y+1,t+1] = p[x,y+1,t] + dt/(2*h)*(f1[x+1,y+2,t]-f1[x-1,y+2,t]+f1[x+1,y,t]-f1[x-1,y,t])+dt/(2*h)*(f2[x+1,y+2,t]-f2[x+1,y,t]+f2[x-1,y+2,t]-f2[x-1,y,t])
 
 for t in range(Nt):
     for y in range(Nx+5):
         for x in range(Nx+5):
-            if p[x,y,t]<0:
+            if w[x,y,t]<0:
                 print 'neg'
         
