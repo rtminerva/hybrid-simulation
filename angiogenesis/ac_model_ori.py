@@ -18,7 +18,7 @@ X = 1
 Y = 1
 T = 1
 
-h = 0.1
+h = 0.05
 hh = h/2
 
 Nx = int(X/hh)
@@ -63,7 +63,7 @@ t = 0
 time = []
 time.append(0)
 k = 0
-while t <= T:
+while t <= T and k < Nt:
     '''to determine step size of time'''
     v1=[]
     w1=[]
@@ -164,10 +164,58 @@ while t <= T:
         for x in range(1,Nx,2): #at main lattice
             n[x,y,k+1] = n[x,y,k] - tp/h*(Fx[x+1,y+1,k]-Fx[x-1,y+1,k]+Fy[x+1,y+1,k]-Fy[x+1,y-1,k])
     k += 1
-print k 
+print 'time end : ',t
+print 'number of iteration : ',k 
 for t in range(k+1):
    for y in range(Ny+1):
         for x in range(Nx+1):
            if c[x,y,t] < 0:
                 print x,y,t,'neg'
-print "finished"        
+
+'''Plot Result'''
+l = 100
+time_plot = time[l]
+x_main_axis = numpy.arange(hh, X, h)
+y_main_axis = numpy.arange(hh, Y, h)
+x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
+
+x_sub_axis = numpy.arange(0, X+hh, h)
+y_sub_axis = numpy.arange(hh, Y+hh, h)
+x_sub_axis, y_sub_axis = numpy.meshgrid(x_sub_axis, y_sub_axis)
+
+c_sol = numpy.zeros((Nx/2+1, Ny/2+1))
+f_sol = numpy.zeros((Nx/2+1, Ny/2+1))
+n_sol = numpy.zeros((Nx/2, Ny/2))
+
+for j, y in enumerate(range(0,Ny+1,2)):
+    for i, x in enumerate(range(0,Nx+1,2)):
+        c_sol[i,j] = c[x,y,l]
+        f_sol[i,j] = f[x,y,l]       
+        
+for j, y in enumerate(range(1,Ny,2)):
+    for i, x in enumerate(range(1,Nx,2)):
+        n_sol[i,j] = n[x,y,l]
+        
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+import matplotlib.pyplot as plt
+
+fig = plt.figure()
+ax = fig.gca(projection='3d')
+
+surf = ax.plot_surface(x_main_axis, y_main_axis, n_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
+        linewidth=0, antialiased=False)
+ax.set_zlim(-0.1, 1.01)
+
+ax.zaxis.set_major_locator(LinearLocator(10))
+ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+
+fig.colorbar(surf, shrink=0.5, aspect=5)
+
+plt.show()
+
+
+        
+
+     
