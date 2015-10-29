@@ -2,7 +2,7 @@ import random
 from random import randint
 
 '''Definition of Functions'''
-def nonbranch_movement_dir(x_pos,y_pos):
+def movement_dir(x_pos,y_pos):
     la = tp/(h**2)
     
     '''for x part'''
@@ -54,19 +54,29 @@ def nonbranch_movement_dir(x_pos,y_pos):
         elif x_pos == Nx-1: #batas kanan selain pojok
             P_2 = 0
         #selain batas2, tetap pada nilai P_1 ~ P_4 awal saja
-    P_0 = 1 -(P_1+P_2+P_3+P_4)                
-    falls = random.uniform(0,1)
-    if falls <= P_0:
-        dirr = ('stay')
-    elif falls <= (P_0+P_1):
-        dirr = ('left')
-    elif falls <= (P_0+P_1+P_2):
-        dirr = ('right')
-    elif falls <= (P_0+P_1+P_2+P_3):
-        dirr = ('down')
-    elif falls <= 1:
-        diff = ('up')    
-    return dirr;
+    P_0 = 1 -(P_1+P_2+P_3+P_4)
+    dirr = [P_0,P_1,P_2,P_3,P_4]
+    dirr.sort()
+    return dirr;  
+
+def check_space(dirr):
+    
+
+
+     
+#    falls = random.uniform(0,1)
+#    if falls <= P_0:
+#        dirr = ['stay']
+#    elif falls <= (P_0+P_1):
+#        dirr = ['left']
+#    elif falls <= (P_0+P_1+P_2):
+#        dirr = ['right']
+#    elif falls <= (P_0+P_1+P_2+P_3):
+#        dirr = ['down']
+#    elif falls <= 1:
+#        diff = ['up']    
+#    return dirr;
+
 
 
 '''Parameter'''
@@ -288,13 +298,24 @@ while t <= T and k < Nt:
         else:
             xb = globals()['sp%s' % nom][-1][0] #get x position of last tip position
             yb = globals()['sp%s' % nom][-1][1] #get y position of last tip position
+            ##checking space to move
+            PP = [P_0, P_1, P_2, P_3, P_4]
+            pos_left = (xb-2,yb)
+            pos_right = (xb+2,yb)
+            pos_down = (xb,yb-2)
+            pos_up = (xb,yb+2)
+            for nnom in range(1,n_sp+1):
+                if pos_left in globals()['sp%s' % nnom]:
+                    '''HERE'''
+            
+            ##branching and movement
             if globals()['tsp%s' % nom] >= t_branch: #being able to branch by life time
                 #probabilty of branching
                 rec_tip = [] #to record pasangan tip yg melakukan brancing
                 if c[xb+1,yb+1,k+1] >= 0.3 and c[xb+1,yb+1,k+1] < 0.5:
                     prob_weight = 2 # set the number to select here.
                     list_prob = random.sample(line, prob_weight)
-                    tes = randint(1,10)
+                    tes = randint(1,10) #select integer number randomly between 1 and 10
                     if tes in list_prob:#do branching
                         num_sp += 1
                         globals()['sp%s' % num_sp] = globals()['sp%s' % nom][-1]
@@ -302,8 +323,29 @@ while t <= T and k < Nt:
                         globals()['tsp%s' % nom] = 0
                         rec_tip.append((nom,num_sp))
                         #movement
+                        dirr = branch_movement_dir(xb,yb)
+                        ##HARUS CEK SEMUA LOKASI (KALAU LOKASI PINDAH SUDAH ADA SPROUTS, BRARTI CARI POSISI LAIN)
                         
                         
+                        
+                        if dirr[0] == 'stay':
+                            globals()['sp%s' % nom].append(globals()['sp%s' % nom][-1])
+                        elif dirr[0] == 'left':
+                            xpos_new = globals()['sp%s' % nom][-1][0] - 2
+                            ypos_new = globals()['sp%s' % nom][-1][1]
+                            globals()['sp%s' % nom].append((xpos_new,ypos_new))
+                        elif dirr[0] == 'right':
+                            xpos_new = globals()['sp%s' % nom][-1][0] + 2
+                            ypos_new = globals()['sp%s' % nom][-1][1]
+                            globals()['sp%s' % nom].append((xpos_new,ypos_new))
+                        elif dirr[0] == 'down':
+                            xpos_new = globals()['sp%s' % nom][-1][0]
+                            ypos_new = globals()['sp%s' % nom][-1][1] - 2
+                            globals()['sp%s' % nom].append((xpos_new,ypos_new))
+                        else:
+                            xpos_new = globals()['sp%s' % nom][-1][0]
+                            ypos_new = globals()['sp%s' % nom][-1][1] + 2
+                            globals()['sp%s' % nom].append((xpos_new,ypos_new))
                         
                 elif c[xb+1,yb+1,k+1] >= 0.5 and c[xb+1,yb+1,k+1] < 0.7:
                     prob_weight = 3 # set the number to select here.
@@ -334,10 +376,7 @@ while t <= T and k < Nt:
                     globals()['tsp%s' % nom] = 0
                     rec_tip.append((nom,num_sp)) 
             #else: no branching or in the condition: c[xb+1,yb+1,k+1] < 0.3 orsp nya < t_branch
-            
-            dirr = nonbranch_movement_dir(xb,yb)
-                
-                
+            dirr = nonbranch_movement_dir(xb,yb)   
     
     
     
@@ -353,7 +392,7 @@ for t in range(k+1):
                 print x,y,t,'neg'
 
 '''Plot Result'''
-l =2000
+l =10
 print 'at time', time[l]
 time_plot = time[l]
 x_main_axis = numpy.arange(hh, X, h)
