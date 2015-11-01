@@ -5,8 +5,7 @@ import math
 '''Definition of Functions'''
 def movement_dir(x_pos,y_pos):
     la = tp/(h**2)
-    
-    '''for x part'''
+    '''for x part in (i,j)'''
     vx[x_pos,y_pos,k] = 0.5/h*(c[x_pos+1,y_pos+1,k]-c[x_pos-1,y_pos+1,k]+c[x_pos+1,y_pos-1,k]-c[x_pos-1,y_pos-1,k])
     wx[x_pos,y_pos,k] = 0.5/h*(f[x_pos+1,y_pos+1,k]-f[x_pos-1,y_pos+1,k]+f[x_pos+1,y_pos-1,k]-f[x_pos-1,y_pos-1,k])
     #right dir
@@ -26,22 +25,49 @@ def movement_dir(x_pos,y_pos):
     vyr = max(0,-vy[x_pos,y_pos,k])
     wyr = max(0,-wy[x_pos,y_pos,k])
     
-    ##start executing P_0 ~ P_4
-    P_1 = la*d+la*h*ki/(1+al*c[x_pos-1,y_pos+1,k])*vxr + la*h*ro*wxr
-    P_2 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*vxl + la*h*ro*wxl
-    P_3 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos-1,k])*vyr + la*h*ro*wyr
-    P_4 = la*d+la*h*ki/(1+al*c[x_pos-1,y_pos-1,k])*vyl + la*h*ro*wyl
-    dirr = []
-    P_0 = 1 -(P_1+P_2+P_3+P_4)
-    Tot = P_1+P_2+P_3+P_4
-    P_1 = math.floor(P_1/Tot*1000)
-    P_2 = math.floor(P_2/Tot*1000)
-    P_3 = math.floor(P_3/Tot*1000)
-    P_4 = math.floor(P_4/Tot*1000)
-    line2 = range(1,1001)
-    fall = random.uniform(1,1000)
-    '''HERE'''
     
+    #P_0 = 1-4*la*d-la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*(vxl+vyl)-la*h*ki/(1+al*c[x_pos-1,y_pos+1,k])*vxr-la*h*ki/(1+al*c[x_pos+1,y_pos-1,k])*vyr - la*h*ro*(wxl+wyl+wxr+wyr)
+    
+    P_1 = 0.2# P_1#*100
+    P_2 = 0.2#P_2#*100
+    P_3 = 0.2#P_3#*100
+    P_4 = 0.2# P_4#*100
+    '''tes'''
+    if y_pos == 1: #batas bawah
+        if x_pos == 1: #pojok kiri bawah
+            P_1 = 0
+            P_3 = 0
+        elif x_pos == Nx-1: #pojok kanan bawah
+            P_2 = 0
+            P_3 = 0
+        else: #batas bawah selain pojok
+            P_3 = 0
+    elif y_pos == Ny-1: #batas atas
+        if x_pos == 1: #pojok kiri atas
+            P_1 = 0
+            P_4 = 0
+        elif x_pos == Nx-1: #pojok kanan atas
+            P_2 = 0
+            P_4 = 0
+        else: #batas atas selain pojok
+            P_4 = 0
+    else: #selain batas bawah dan atas
+        if x_pos == 1: #batas kiri selain pojok
+            P_1 = 0
+        elif x_pos == Nx-1: #batas kanan selain pojok
+            P_2 = 0
+        #selain batas2, tetap pada nilai P_1 ~ P_4 awal saja
+        else:
+            lop = 1
+    '''tes'''
+    P_0 = 1-(P_1+P_2+P_3+P_4)
+    R_0 = P_0
+    R_1 = P_0+P_1
+    R_2 = P_0+P_1+P_2
+    R_3 = P_0+P_1+P_2+P_3
+    R_4 = 1
+    dirr = [R_0,R_1,R_2,R_3,R_4]
+    #print P_0, ',',P_1,',',P_2,',',P_3,',',P_4
     return dirr;
 
 '''Parameter'''
@@ -60,16 +86,16 @@ ec = 0.45
 tau = 0.001
 
 '''Partition'''
-X = 1
-Y = 1
-T = 7
+X = 5
+Y = 5
+T = 4
 
 h = 0.05
 hh = h/2
 
 Nx = int(X/hh)
 Ny = int(Y/hh)
-Nt = 500
+Nt = 1000
 
 print 'Nx =',Nx
 print 'Node =', range(0,Nx+1)
@@ -104,7 +130,8 @@ for y in range(0,Ny+1,2):
         c[x,y,0] = math.exp(-(1-x*hh)**2/ec)
 for y in range(1,Ny,2):
     for x in range(1,Nx,2):
-        n[x,y,0] = math.exp(-(x*hh)**2/0.001)*(math.sin(2*math.pi*y*hh))**2
+        tipss = 6
+        n[x,y,0] = math.exp(-(x*hh)**2/0.001)*(math.sin(tipss*math.pi*y*hh))**2
 #         n[x,y,0] = math.exp(-(x*hh)**2/0.1)*(math.sin((math.pi)*y*hh))**2
 #for x in range(1,Nx,2):
 #    n[x,1,0] = (math.sin((math.pi)*x*h))**2
@@ -112,13 +139,13 @@ for y in range(1,Ny,2):
 ##find max tip
 m = n[:,:,0].max()
 index_tip = []
-print m
 for y in range(1,Ny,2):
-    for x in range(1,Nx,2):
-        if n[x,y,0] == m:
-            print "index max y position at", y
-            index_tip.append(y)
+    if n[1,y,0] == m:
+        print "index max y position at", y
+        index_tip.append(y)
 ##initial tip
+#index_tip = [33,73,101,133,175]
+index_tip = [101]
 print index_tip
 num_sp = 0
 for y in index_tip:
@@ -255,39 +282,49 @@ while t <= T and k < Nt:
     #sp_stop harus dicek di setiap movement and branching. karena sudah tidak bergerak lagi yang ada di list ini.
     
     ##branching decision and action. Also movement   
-    line = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} #for Pb
+    line = range(1,11) #for Pb
     n_sp = num_sp #to save original number of tips before branching
     for nom in range(1,n_sp+1): #dicek setiap tip
         if nom in sp_stop: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
             lop = 1
         else:
             xb = globals()['sp%s' % nom][-1][0] #get x position of last tip position
-            yb = globals()['sp%s' % nom][-1][1] #get y position of last tip position      
+            yb = globals()['sp%s' % nom][-1][1] #get y position of last tip position
+            #print 'xb,yb', xb,',',yb
             ##branching and movement
-            #movement for 1st tip (gak peduli apakah akan branching or not)
+            '''movement for 1st tip''' # (gak peduli apakah akan branching or not)
             dirr = movement_dir(xb, yb) # get list of descending P
+            trial = random.uniform(0,1)
             #for 1st tip movement = nom
-            if dirr[1][0] == 'stay':
+            #tip_1 fill
+            if trial <= dirr[0]:
+                tip_1 = 'stay'
                 globals()['sp%s' % nom].append(globals()['sp%s' % nom][-1])
-            elif dirr[1][0] == 'left':
+            elif trial <= dirr[1]:
+                tip_1 = 'left'
                 xpos_new = globals()['sp%s' % nom][-1][0] - 2
                 ypos_new = globals()['sp%s' % nom][-1][1]
                 globals()['sp%s' % nom].append((xpos_new,ypos_new))
-            elif dirr[1][0] == 'right':
+            elif trial <= dirr[2]:
+                tip_1 = 'right'
                 xpos_new = globals()['sp%s' % nom][-1][0] + 2
                 ypos_new = globals()['sp%s' % nom][-1][1]
                 globals()['sp%s' % nom].append((xpos_new,ypos_new))
-            elif dirr[1][0] == 'down':
+            elif trial <= dirr[3]:
+                tip_1 = 'down'
                 xpos_new = globals()['sp%s' % nom][-1][0]
                 ypos_new = globals()['sp%s' % nom][-1][1] - 2
                 globals()['sp%s' % nom].append((xpos_new,ypos_new))
-            else:
+            else: #>dirr[3]
+                tip_1 = 'up'
                 xpos_new = globals()['sp%s' % nom][-1][0]
                 ypos_new = globals()['sp%s' % nom][-1][1] + 2
                 globals()['sp%s' % nom].append((xpos_new,ypos_new))
+            Ttb = globals()['tsp%s' % nom]
             globals()['tsp%s' % nom] += tp
+            #print tip_1
             #branching?
-            if globals()['tsp%s' % nom] >= t_branch: #being able to branch by life time               
+            if Ttb >= t_branch: #being able to branch by life time               
                 #probabilty of branching
                 if c[xb+1,yb+1,k+1] >= 0.3 and c[xb+1,yb+1,k+1] < 0.5:
                     prob_weight = 2 # set the number to select here.
@@ -307,36 +344,53 @@ while t <= T and k < Nt:
             #apakah branching? meaning masuk dalam probability of branching?
             tes = randint(1,10) #select integer number randomly between 1 and 10
             if tes in list_prob:#do branching
+                #print 'branching'
                 num_sp += 1
-                globals()['sp%s' % num_sp] = globals()['sp%s' % nom][-1]
+                globals()['sp%s' % num_sp] = [(xb,yb)]
                 globals()['tsp%s' % num_sp] = 0
                 globals()['tsp%s' % nom] = 0
-                ##movement                    
+                ##2nd tip movement                 
                 #for 2nd tip = num_sp
-                if dirr[2][0] == 'stay':
+                dom = tip_1
+                while dom == tip_1:
+                    trial = random.uniform(0,1)
+                    if trial <= dirr[0]:
+                        dom = 'stay'
+                    elif trial <= dirr[1]:
+                        dom = 'left'
+                    elif trial <= dirr[2]:
+                        dom = 'right'
+                    elif trial <= dirr[3]:
+                        dom = 'down'
+                    else: #>dirr[3]
+                        dom = 'up'
+                if dom == 'stay':
                     globals()['sp%s' % num_sp].append(globals()['sp%s' % num_sp][-1])
-                elif dirr[2][0] == 'left':
+                elif dom == 'left':
                     xpos_new = globals()['sp%s' % num_sp][-1][0] - 2
                     ypos_new = globals()['sp%s' % num_sp][-1][1]
                     globals()['sp%s' % num_sp].append((xpos_new,ypos_new))
-                elif dirr[2][0] == 'right':
+                elif dom == 'right':
                     xpos_new = globals()['sp%s' % num_sp][-1][0] + 2
                     ypos_new = globals()['sp%s' % num_sp][-1][1]
                     globals()['sp%s' % num_sp].append((xpos_new,ypos_new))
-                elif dirr[2][0] == 'down':
+                elif dom == 'down':
                     xpos_new = globals()['sp%s' % num_sp][-1][0]
                     ypos_new = globals()['sp%s' % num_sp][-1][1] - 2
                     globals()['sp%s' % num_sp].append((xpos_new,ypos_new))
-                else:
+                else: #dom == 'up'
                     xpos_new = globals()['sp%s' % num_sp][-1][0]
                     ypos_new = globals()['sp%s' % num_sp][-1][1] + 2
                     globals()['sp%s' % num_sp].append((xpos_new,ypos_new))
                 globals()['tsp%s' % num_sp] += tp
             else: #gak masuk dalam prob branching, jadi gak branching. hanya 1st tip saja yg move. pass
                 lop = 1
+    print 'num_sp:',num_sp
     k += 1
 print 'time end : ',t
 print 'number of iteration : ',k 
+for i in range(1,num_sp+1):
+    print globals()['sp%s' % i]
 for t in range(k+1):
    for y in range(Ny+1):
         for x in range(Nx+1):
@@ -373,24 +427,54 @@ from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 import matplotlib.pyplot as plt
 
+
+'''Figure Sprouting'''
 fig = plt.figure()
-ax = fig.gca(projection='3d')
+plt.xlim(hh,X-hh)
+plt.ylim(hh,Y-hh)
+ax = fig.add_subplot(111) 
+for i in range(1,num_sp+1):
+    globals()['xp%s' % i] =[]
+    globals()['yp%s' % i] =[]
+    for j in range(0,len(globals()['sp%s' % i])):
+        globals()['xp%s' % i].append(globals()['sp%s' % i][j][0]*hh)
+        globals()['yp%s' % i].append(globals()['sp%s' % i][j][1]*hh)
+    globals()['p%s' % i] = ax.plot(globals()['xp%s' % i], globals()['yp%s' % i], 'b')
+#aa = (x_points[-1],y_points[-1])
+#for j in range(1,len(globals()['sp%s' % i])):
+#    bb = (globals()['sp%s' % i][j][0]*hh,globals()['sp%s' % i][j][1]*hh)
+#    if bb == aa:
+#        lop=1
+#    else:
+#        x_points.append(globals()['sp%s' % i][j][0]*hh)
+#        y_points.append(globals()['sp%s' % i][j][1]*hh)
+#        aa = (x_points[-1],y_points[-1])
+plt.show()   
 
-surf = ax.plot_surface(x_main_axis, y_main_axis, n_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
-        linewidth=0, antialiased=False)
 
-# surf = ax.plot_surface(x_sub_axis, y_sub_axis, c_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
-#         linewidth=0, antialiased=False)
 
-ax.set_zlim(-0.1, 1.01)
 
-ax.zaxis.set_major_locator(LinearLocator(10))
-ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 
-fig.colorbar(surf, shrink=0.5, aspect=5)
+
+
+
+
+#ax = fig.gca(projection='3d')
+
+#surf = ax.plot_surface(x_main_axis, y_main_axis, n_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
+#        linewidth=0, antialiased=False)
+
+## surf = ax.plot_surface(x_sub_axis, y_sub_axis, c_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
+##         linewidth=0, antialiased=False)
+
+#ax.set_zlim(-0.1, 1.01)
+
+#ax.zaxis.set_major_locator(LinearLocator(10))
+#ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+
+#fig.colorbar(surf, shrink=0.5, aspect=5)
 
 #plt.show()
-
-
+    
         
 
