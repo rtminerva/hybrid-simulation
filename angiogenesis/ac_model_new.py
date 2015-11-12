@@ -8,7 +8,7 @@ t_branch = 0.25
 sp_stop = [] #to record unbranchable tips
 
 '''Initial Sprout'''
-index_tip = [13,19]
+index_tip = [73,133]
 len_init_tip = len(index_tip)
 print index_tip
 num_sp = 0
@@ -139,38 +139,38 @@ def movement_dir():
             w4y = max(0,w4y)
             P_4 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v4y + la*h*ro*w4y    
     
-    '''tes saja'''
-    P_1 = 0.15# P_1#*100
-    P_2 = 0.15#P_2#*100
-    P_3 = 0.15#P_3#*100
-    P_4 = 0.15#P_4#*100
-    if y_pos == 1: #batas bawah
-        if x_pos == 1: #pojok kiri bawah
-            P_1 = 0
-            P_3 = 0
-        elif x_pos == Nx-1: #pojok kanan bawah
-            P_2 = 0
-            P_3 = 0
-        else: #batas bawah selain pojok
-            P_3 = 0
-    elif y_pos == Ny-1: #batas atas
-        if x_pos == 1: #pojok kiri atas
-            P_1 = 0
-            P_4 = 0
-        elif x_pos == Nx-1: #pojok kanan atas
-            P_2 = 0
-            P_4 = 0
-        else: #batas atas selain pojok
-            P_4 = 0
-    else: #selain batas bawah dan atas
-        if x_pos == 1: #batas kiri selain pojok
-            P_1 = 0
-        elif x_pos == Nx-1: #batas kanan selain pojok
-            P_2 = 0
-        #selain batas2, tetap pada nilai P_1 ~ P_4 awal saja
-        else:
-            lop = 1
-    '''tes saja'''
+#     '''tes saja'''
+#     P_1 = 0.15# P_1#*100
+#     P_2 = 0.15#P_2#*100
+#     P_3 = 0.15#P_3#*100
+#     P_4 = 0.15#P_4#*100
+#     if y_pos == 1: #batas bawah
+#         if x_pos == 1: #pojok kiri bawah
+#             P_1 = 0
+#             P_3 = 0
+#         elif x_pos == Nx-1: #pojok kanan bawah
+#             P_2 = 0
+#             P_3 = 0
+#         else: #batas bawah selain pojok
+#             P_3 = 0
+#     elif y_pos == Ny-1: #batas atas
+#         if x_pos == 1: #pojok kiri atas
+#             P_1 = 0
+#             P_4 = 0
+#         elif x_pos == Nx-1: #pojok kanan atas
+#             P_2 = 0
+#             P_4 = 0
+#         else: #batas atas selain pojok
+#             P_4 = 0
+#     else: #selain batas bawah dan atas
+#         if x_pos == 1: #batas kiri selain pojok
+#             P_1 = 0
+#         elif x_pos == Nx-1: #batas kanan selain pojok
+#             P_2 = 0
+#         #selain batas2, tetap pada nilai P_1 ~ P_4 awal saja
+#         else:
+#             lop = 1
+#     '''tes saja'''
     
     P_0 = 1-(P_1+P_2+P_3+P_4)
     R_0 = P_0
@@ -180,7 +180,7 @@ def movement_dir():
     R_4 = 1
     
     prob_range = [R_0,R_1,R_2,R_3,R_4]
-    #print P_0, ',',P_1,',',P_2,',',P_3,',',P_4
+    print P_0, ',',P_1,',',P_2,',',P_3,',',P_4
     return prob_range;
 
 '''Parameter'''
@@ -201,9 +201,9 @@ tau = 0.001
 '''Partition'''
 X = 1
 Y = 1
-T = 2
+T = 5
 
-h = 0.05
+h = 0.01
 hh = h/2
 
 Nx = int(X/hh)
@@ -363,8 +363,9 @@ while t <= T and k < Nt:
         if not noms in sp_stop:
             '''1.1 Checking if looping itself'''
             if not globals()['tip%s' % noms] == 'stay':
-                gg = globals()['sp%s' % noms][:-1]
-                gg = list(set(gg))     
+                gg = globals()['sp%s' % noms][:]
+                gg.pop()
+                gg = list(set(gg))    
                 if len(gg) > 0: #mencegah start masuk ke bagian ini
                     if globals()['sp%s' % noms][-1] in gg:
                         sp_new_stop.append(noms)
@@ -388,9 +389,9 @@ while t <= T and k < Nt:
     
     '''1.3 Checking if two tips meet at one point'''
     if len(sp_new_stop) >= 2 or num_sp > 1:
-        pair = []
+        pair = [(0,0)]
         for j in sp_new_stop:
-            other_tips = range(1,num_sp+1)
+            other_tips = sp_new_stop[:]
             other_tips.remove(j)
             for i in other_tips:
                 if globals()['sp%s' % j][-1] == globals()['sp%s' % i][-1]:
@@ -399,10 +400,11 @@ while t <= T and k < Nt:
                         lop = 1
                     else:
                         pair.append((j,i))
-        if len(pair) > 0:
-            for j in range(0,len(pair)):
-                sp_new_stop.remove(pair[i][0])         
+        if len(pair) > 1:
+            for j in range(1,len(pair)):             
+                sp_new_stop.remove(pair[j][0])         
     sp_stop.extend(sp_new_stop)
+    sp_stop = list(set(sp_stop))
 
     '''2. Branching and Movement'''        
     if len(sp_stop) == num_sp:
@@ -582,7 +584,7 @@ while t <= T and k < Nt:
                         globals()['move%s' % nom] = tipp
                     globals()['tip%s' % nom] = tipp  
     print        
-    print '*****START HERE FOR TIME STEP', k, '*****'
+    print '*****START HERE FOR TIME STEP', t, '*****'
     print 'Total Tip:',num_sp
     print 'sp_stop list:', sp_stop
     for i in range(1,num_sp+1):

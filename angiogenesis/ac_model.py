@@ -2,37 +2,223 @@ import random
 from random import randint
 import math
 
+'''Parameter'''
+d = 0.00035
+ki = 0.38
+al = 0.6
+ro = 0#0.3
+nu = 0.1
+be = 0.05
+ga = 0.1
+
+ef = 0.45
+ec = 0.45
+#k = (5**0.5-0.1)/(5**0.5-1)
+tau = 0.001
+
+
+'''Partition'''
+X = 1
+Y = 1
+T = 2
+
+h = 0.05
+hh = h/2
+
+Nx = int(X/hh)
+Ny = int(Y/hh)
+Nt = 10000
+
+print 'Nx =',Nx
+print 'Node =', range(0,Nx+1)
+print 'point n,v,w=', range(1,Nx,2)
+print 'point F,c,f=', range(0,Nx+1,2)
+
+
+'''Define Variable'''
+import numpy
+import math
+
+n = numpy.zeros((Nx+1, Ny+1, Nt+1))
+c = numpy.zeros((Nx+1, Ny+1, Nt+1))
+f = numpy.zeros((Nx+1, Ny+1, Nt+1))
+
+Fx = numpy.zeros((Nx+1, Ny+1, Nt+1))
+vx = numpy.zeros((Nx+1, Ny+1, Nt+1))
+wx = numpy.zeros((Nx+1, Ny+1, Nt+1))
+
+Fy = numpy.zeros((Nx+1, Ny+1, Nt+1))
+vy = numpy.zeros((Nx+1, Ny+1, Nt+1))
+wy = numpy.zeros((Nx+1, Ny+1, Nt+1))
+
+
+'''Initial Condition'''
+#p[i,0] = (math.sin((math.pi)*i*h))**2
+for y in range(0,Ny+1,2):
+    for x in range(0,Nx+1,2):
+        f[x,y,0] = 0.75* math.exp(-(x*hh)**2/ef)
+        c[x,y,0] = math.exp(-(1-x*hh)**2/ec)
+for y in range(1,Ny,2):
+    for x in range(1,Nx,2):
+        tipss = 2
+        n[x,y,0] = math.exp(-(x*hh)**2/0.001)*(math.sin(tipss*math.pi*y*hh))**2
+#         n[x,y,0] = math.exp(-(x*hh)**2/0.1)*(math.sin((math.pi)*y*hh))**2
+#for x in range(1,Nx,2):
+#    n[x,1,0] = (math.sin((math.pi)*x*h))**2
+
+
+'''Branching'''
+t_branch = 0.25
+
+
+'''Initial Sprout'''
+##find max tip
+m = n[:,:,0].max()
+index_tip = []
+for y in range(1,Ny,2):
+    if n[1,y,0] == m:
+        print "index max y position at", y
+        index_tip.append(y)
+##initial tip
+#index_tip = [33,73,101,133,175]
+index_tip = [19]
+print index_tip
+num_sp = 0
+for y in index_tip:
+    num_sp += 1
+    globals()['sp%s' % num_sp] = [(1,y)]
+    globals()['ps%s' % num_sp] = [(1,y)]
+    globals()['tip%s' % num_sp] = 'stay' 
+    globals()['tsp%s' % num_sp] = 0
+#for nom in range(1,num_sp+1):
+#    print globals()['sp%s' % nom]
+#    print globals()['tsp%s' % nom]
+#print globals()['sp%s' % nom][-1][1]
+
 '''Definition of Functions'''
 def movement_dir(x_pos,y_pos):
     la = tp/(h**2)
-    '''for x part in (i,j)'''
-    vx[x_pos,y_pos,k] = 0.5/h*(c[x_pos+1,y_pos+1,k]-c[x_pos-1,y_pos+1,k]+c[x_pos+1,y_pos-1,k]-c[x_pos-1,y_pos-1,k])
-    wx[x_pos,y_pos,k] = 0.5/h*(f[x_pos+1,y_pos+1,k]-f[x_pos-1,y_pos+1,k]+f[x_pos+1,y_pos-1,k]-f[x_pos-1,y_pos-1,k])
-    #right dir
-    vxl = max(0,vx[x_pos,y_pos,k])
-    wxl = max(0,wx[x_pos,y_pos,k])
-    #left dir
-    vxr = max(0,-vx[x_pos,y_pos,k])
-    wxr = max(0,-wx[x_pos,y_pos,k])
+    if y_pos == 1: #batas bawah
+        v4y = 0.5/h*(c[x_pos+1,y_pos+3,k]+c[x_pos-1,y_pos+3,k]-c[x_pos+1,y_pos+1,k]-c[x_pos-1,y_pos+1,k])
+        w4y = 0.5/h*(f[x_pos+1,y_pos+3,k]+f[x_pos-1,y_pos+3,k]-f[x_pos+1,y_pos+1,k]-f[x_pos-1,y_pos+1,k])
+        v4y = max(0,v4y)
+        w4y = max(0,w4y)
+        P_4 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v4y + la*h*ro*w4y
+        if x_pos == 1: #pojok kiri bawah
+            P_1 = 0
+            P_3 = 0
+            v2x = 0.5/h*(c[x_pos+3,y_pos+1,k]-c[x_pos+1,y_pos+1,k]+c[x_pos+3,y_pos-1,k]-c[x_pos+1,y_pos-1,k])
+            w2x = 0.5/h*(f[x_pos+3,y_pos+1,k]-f[x_pos+1,y_pos+1,k]+f[x_pos+3,y_pos-1,k]-f[x_pos+1,y_pos-1,k])
+            v2x = max(0,v2x)
+            w2x = max(0,w2x)
+            P_2 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v2x + la*h*ro*w2x
+        elif x_pos == Nx-1: #pojok kanan bawah
+            P_2 = 0
+            P_3 = 0
+            v1x = 0.5/h*(c[x_pos-3,y_pos+1,k]-c[x_pos-1,y_pos+1,k]+c[x_pos-3,y_pos-1,k]-c[x_pos-1,y_pos-1,k])
+            w1x = 0.5/h*(f[x_pos-3,y_pos+1,k]-f[x_pos-1,y_pos+1,k]+f[x_pos-3,y_pos-1,k]-f[x_pos-1,y_pos-1,k])
+            v1x = max(0,v1x)
+            w1x = max(0,w1x)
+            P_1 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v1x + la*h*ro*w1x
+        else: #batas bawah selain pojok
+            P_3 = 0
+            v2x = 0.5/h*(c[x_pos+3,y_pos+1,k]-c[x_pos+1,y_pos+1,k]+c[x_pos+3,y_pos-1,k]-c[x_pos+1,y_pos-1,k])
+            w2x = 0.5/h*(f[x_pos+3,y_pos+1,k]-f[x_pos+1,y_pos+1,k]+f[x_pos+3,y_pos-1,k]-f[x_pos+1,y_pos-1,k])
+            v2x = max(0,v2x)
+            w2x = max(0,w2x)
+            P_2 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v2x + la*h*ro*w2x
+            v1x = 0.5/h*(c[x_pos-3,y_pos+1,k]-c[x_pos-1,y_pos+1,k]+c[x_pos-3,y_pos-1,k]-c[x_pos-1,y_pos-1,k])
+            w1x = 0.5/h*(f[x_pos-3,y_pos+1,k]-f[x_pos-1,y_pos+1,k]+f[x_pos-3,y_pos-1,k]-f[x_pos-1,y_pos-1,k])
+            v1x = max(0,v1x)
+            w1x = max(0,w1x)
+            P_1 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v1x + la*h*ro*w1x
+    elif y_pos == Ny-1: #batas atas
+        v3y = 0.5/h*(c[x_pos+1,y_pos-3,k]+c[x_pos-1,y_pos-3,k]-c[x_pos+1,y_pos-1,k]-c[x_pos-1,y_pos-1,k])
+        w3y = 0.5/h*(f[x_pos+1,y_pos-3,k]+f[x_pos-1,y_pos-3,k]-f[x_pos+1,y_pos-1,k]-f[x_pos-1,y_pos-1,k])
+        v3y = max(0,v3y)
+        w3y = max(0,w3y)
+        P_3 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v3y + la*h*ro*w3y
+        if x_pos == 1: #pojok kiri atas
+            P_1 = 0
+            P_4 = 0
+            v2x = 0.5/h*(c[x_pos+3,y_pos+1,k]-c[x_pos+1,y_pos+1,k]+c[x_pos+3,y_pos-1,k]-c[x_pos+1,y_pos-1,k])
+            w2x = 0.5/h*(f[x_pos+3,y_pos+1,k]-f[x_pos+1,y_pos+1,k]+f[x_pos+3,y_pos-1,k]-f[x_pos+1,y_pos-1,k])
+            v2x = max(0,v2x)
+            w2x = max(0,w2x)
+            P_2 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v2x + la*h*ro*w2x
+        elif x_pos == Nx-1: #pojok kanan atas
+            P_2 = 0
+            P_4 = 0
+            v1x = 0.5/h*(c[x_pos-3,y_pos+1,k]-c[x_pos-1,y_pos+1,k]+c[x_pos-3,y_pos-1,k]-c[x_pos-1,y_pos-1,k])
+            w1x = 0.5/h*(f[x_pos-3,y_pos+1,k]-f[x_pos-1,y_pos+1,k]+f[x_pos-3,y_pos-1,k]-f[x_pos-1,y_pos-1,k])
+            v1x = max(0,v1x)
+            w1x = max(0,w1x)
+            P_1 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v1x + la*h*ro*w1x
+        else: #batas atas selain pojok
+            P_4 = 0
+            v1x = 0.5/h*(c[x_pos-3,y_pos+1,k]-c[x_pos-1,y_pos+1,k]+c[x_pos-3,y_pos-1,k]-c[x_pos-1,y_pos-1,k])
+            w1x = 0.5/h*(f[x_pos-3,y_pos+1,k]-f[x_pos-1,y_pos+1,k]+f[x_pos-3,y_pos-1,k]-f[x_pos-1,y_pos-1,k])
+            v1x = max(0,v1x)
+            w1x = max(0,w1x)
+            P_1 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v1x + la*h*ro*w1x
+            v2x = 0.5/h*(c[x_pos+3,y_pos+1,k]-c[x_pos+1,y_pos+1,k]+c[x_pos+3,y_pos-1,k]-c[x_pos+1,y_pos-1,k])
+            w2x = 0.5/h*(f[x_pos+3,y_pos+1,k]-f[x_pos+1,y_pos+1,k]+f[x_pos+3,y_pos-1,k]-f[x_pos+1,y_pos-1,k])
+            v2x = max(0,v2x)
+            w2x = max(0,w2x)
+            P_2 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v2x + la*h*ro*w2x
+    else: #selain batas bawah dan atas
+        v3y = 0.5/h*(c[x_pos+1,y_pos-3,k]+c[x_pos-1,y_pos-3,k]-c[x_pos+1,y_pos-1,k]-c[x_pos-1,y_pos-1,k])
+        w3y = 0.5/h*(f[x_pos+1,y_pos-3,k]+f[x_pos-1,y_pos-3,k]-f[x_pos+1,y_pos-1,k]-f[x_pos-1,y_pos-1,k])
+        v3y = max(0,v3y)
+        w3y = max(0,w3y)
+        P_3 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v3y + la*h*ro*w3y
+        v4y = 0.5/h*(c[x_pos+1,y_pos+3,k]+c[x_pos-1,y_pos+3,k]-c[x_pos+1,y_pos+1,k]-c[x_pos-1,y_pos+1,k])
+        w4y = 0.5/h*(f[x_pos+1,y_pos+3,k]+f[x_pos-1,y_pos+3,k]-f[x_pos+1,y_pos+1,k]-f[x_pos-1,y_pos+1,k])
+        v4y = max(0,v4y)
+        w4y = max(0,w4y)
+        P_4 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v4y + la*h*ro*w4y
+        if x_pos == 1: #batas kiri selain pojok
+            P_1 = 0
+            v2x = 0.5/h*(c[x_pos+3,y_pos+1,k]-c[x_pos+1,y_pos+1,k]+c[x_pos+3,y_pos-1,k]-c[x_pos+1,y_pos-1,k])
+            w2x = 0.5/h*(f[x_pos+3,y_pos+1,k]-f[x_pos+1,y_pos+1,k]+f[x_pos+3,y_pos-1,k]-f[x_pos+1,y_pos-1,k])
+            v2x = max(0,v2x)
+            w2x = max(0,w2x)
+            P_2 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v2x + la*h*ro*w2x
+        elif x_pos == Nx-1: #batas kanan selain pojok
+            P_2 = 0
+            v1x = 0.5/h*(c[x_pos-3,y_pos+1,k]-c[x_pos-1,y_pos+1,k]+c[x_pos-3,y_pos-1,k]-c[x_pos-1,y_pos-1,k])
+            w1x = 0.5/h*(f[x_pos-3,y_pos+1,k]-f[x_pos-1,y_pos+1,k]+f[x_pos-3,y_pos-1,k]-f[x_pos-1,y_pos-1,k])
+            v1x = max(0,v1x)
+            w1x = max(0,w1x)
+            P_1 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v1x + la*h*ro*w1x
+        #selain batas2, tetap pada nilai P_1 ~ P_4 awal saja
+        else:
+            v1x = 0.5/h*(c[x_pos-3,y_pos+1,k]-c[x_pos-1,y_pos+1,k]+c[x_pos-3,y_pos-1,k]-c[x_pos-1,y_pos-1,k])
+            w1x = 0.5/h*(f[x_pos-3,y_pos+1,k]-f[x_pos-1,y_pos+1,k]+f[x_pos-3,y_pos-1,k]-f[x_pos-1,y_pos-1,k])
+            v1x = max(0,v1x)
+            w1x = max(0,w1x)
+            P_1 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v1x + la*h*ro*w1x
+            v2x = 0.5/h*(c[x_pos+3,y_pos+1,k]-c[x_pos+1,y_pos+1,k]+c[x_pos+3,y_pos-1,k]-c[x_pos+1,y_pos-1,k])
+            w2x = 0.5/h*(f[x_pos+3,y_pos+1,k]-f[x_pos+1,y_pos+1,k]+f[x_pos+3,y_pos-1,k]-f[x_pos+1,y_pos-1,k])
+            v2x = max(0,v2x)
+            w2x = max(0,w2x)
+            P_2 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v2x + la*h*ro*w2x
+            v3y = 0.5/h*(c[x_pos+1,y_pos-3,k]+c[x_pos-1,y_pos-3,k]-c[x_pos+1,y_pos-1,k]-c[x_pos-1,y_pos-1,k])
+            w3y = 0.5/h*(f[x_pos+1,y_pos-3,k]+f[x_pos-1,y_pos-3,k]-f[x_pos+1,y_pos-1,k]-f[x_pos-1,y_pos-1,k])
+            v3y = max(0,v3y)
+            w3y = max(0,w3y)
+            P_3 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v3y + la*h*ro*w3y
+            v4y = 0.5/h*(c[x_pos+1,y_pos+3,k]+c[x_pos-1,y_pos+3,k]-c[x_pos+1,y_pos+1,k]-c[x_pos-1,y_pos+1,k])
+            w4y = 0.5/h*(f[x_pos+1,y_pos+3,k]+f[x_pos-1,y_pos+3,k]-f[x_pos+1,y_pos+1,k]-f[x_pos-1,y_pos+1,k])
+            v4y = max(0,v4y)
+            w4y = max(0,w4y)
+            P_4 = la*d+la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*v4y + la*h*ro*w4y    
     
-    '''for y part'''
-    vy[x_pos,y_pos,k] = 0.5/h*(c[x_pos+1,y_pos+1,k]+c[x_pos-1,y_pos+1,k]-c[x_pos+1,y_pos-1,k]-c[x_pos-1,y_pos-1,k])
-    wy[x_pos,y_pos,k] = 0.5/h*(f[x_pos+1,y_pos+1,k]+f[x_pos-1,y_pos+1,k]-f[x_pos+1,y_pos-1,k]-f[x_pos-1,y_pos-1,k])
-    #up dir
-    vyl = max(0,vy[x_pos,y_pos,k])
-    wyl = max(0,wy[x_pos,y_pos,k]) 
-    #down dir
-    vyr = max(0,-vy[x_pos,y_pos,k])
-    wyr = max(0,-wy[x_pos,y_pos,k])
-    
-    
-    #P_0 = 1-4*la*d-la*h*ki/(1+al*c[x_pos+1,y_pos+1,k])*(vxl+vyl)-la*h*ki/(1+al*c[x_pos-1,y_pos+1,k])*vxr-la*h*ki/(1+al*c[x_pos+1,y_pos-1,k])*vyr - la*h*ro*(wxl+wyl+wxr+wyr)
-    
-    P_1 = 0.2# P_1#*100
-    P_2 = 0.2#P_2#*100
-    P_3 = 0.2#P_3#*100
-    P_4 = 0.2# P_4#*100
-    '''tes'''
+    '''tes saja'''
+    P_1 = 0.15# P_1#*100
+    P_2 = 0.15#P_2#*100
+    P_3 = 0.15#P_3#*100
+    P_4 = 0.15#P_4#*100
     if y_pos == 1: #batas bawah
         if x_pos == 1: #pojok kiri bawah
             P_1 = 0
@@ -59,104 +245,18 @@ def movement_dir(x_pos,y_pos):
         #selain batas2, tetap pada nilai P_1 ~ P_4 awal saja
         else:
             lop = 1
-    '''tes'''
+    '''tes saja'''
+    
     P_0 = 1-(P_1+P_2+P_3+P_4)
     R_0 = P_0
     R_1 = P_0+P_1
     R_2 = P_0+P_1+P_2
     R_3 = P_0+P_1+P_2+P_3
     R_4 = 1
+    
     dirr = [R_0,R_1,R_2,R_3,R_4]
     #print P_0, ',',P_1,',',P_2,',',P_3,',',P_4
     return dirr;
-
-'''Parameter'''
-d = 0.00035
-ki = 0.38
-al = 0.6
-ro = 0#0.3
-nu = 0.1
-be = 0#0.05
-ga = 0#0.1
-
-ef = 0.45
-ec = 0.45
-#k = (5**0.5-0.1)/(5**0.5-1)
-
-tau = 0.001
-
-'''Partition'''
-X = 5
-Y = 5
-T = 4
-
-h = 0.05
-hh = h/2
-
-Nx = int(X/hh)
-Ny = int(Y/hh)
-Nt = 1000
-
-print 'Nx =',Nx
-print 'Node =', range(0,Nx+1)
-print 'point n,v,w=', range(1,Nx,2)
-print 'point F,c,f=', range(0,Nx+1,2)
-
-
-'''Define Variable'''
-import numpy
-import math
-
-n = numpy.zeros((Nx+1, Ny+1, Nt+1))
-c = numpy.zeros((Nx+1, Ny+1, Nt+1))
-f = numpy.zeros((Nx+1, Ny+1, Nt+1))
-
-Fx = numpy.zeros((Nx+1, Ny+1, Nt+1))
-vx = numpy.zeros((Nx+1, Ny+1, Nt+1))
-wx = numpy.zeros((Nx+1, Ny+1, Nt+1))
-
-Fy = numpy.zeros((Nx+1, Ny+1, Nt+1))
-vy = numpy.zeros((Nx+1, Ny+1, Nt+1))
-wy = numpy.zeros((Nx+1, Ny+1, Nt+1))
-
-'''Branching'''
-t_branch = 0.25
-
-'''Initial Condition'''
-#p[i,0] = (math.sin((math.pi)*i*h))**2
-for y in range(0,Ny+1,2):
-    for x in range(0,Nx+1,2):
-        f[x,y,0] = 0.75* math.exp(-(x*hh)**2/ef)
-        c[x,y,0] = math.exp(-(1-x*hh)**2/ec)
-for y in range(1,Ny,2):
-    for x in range(1,Nx,2):
-        tipss = 6
-        n[x,y,0] = math.exp(-(x*hh)**2/0.001)*(math.sin(tipss*math.pi*y*hh))**2
-#         n[x,y,0] = math.exp(-(x*hh)**2/0.1)*(math.sin((math.pi)*y*hh))**2
-#for x in range(1,Nx,2):
-#    n[x,1,0] = (math.sin((math.pi)*x*h))**2
-'''Initial Sprout'''
-##find max tip
-m = n[:,:,0].max()
-index_tip = []
-for y in range(1,Ny,2):
-    if n[1,y,0] == m:
-        print "index max y position at", y
-        index_tip.append(y)
-##initial tip
-#index_tip = [33,73,101,133,175]
-index_tip = [101]
-print index_tip
-num_sp = 0
-for y in index_tip:
-    num_sp += 1
-    globals()['sp%s' % num_sp] = [(1,y)]
-    globals()['tsp%s' % num_sp] = 0
-#for nom in range(1,num_sp+1):
-#    print globals()['sp%s' % nom]
-#    print globals()['tsp%s' % nom]
-#print globals()['sp%s' % nom][-1][1]
-
 
 '''Filling Node'''
 #choice of time increment
@@ -276,11 +376,17 @@ while t <= T and k < Nt:
     ##anastomosis
     sp_stop = [] #to record unbranchable tips
     for noms in range(1,num_sp+1): #to compare same tips
-        for nums in range(noms+1, num_sp+1):
-            if globals()['sp%s' % noms][-1] == globals()['sp%s' % nums][-1]: #comparison
+        gg = globals()['ps%s' % noms]
+        if len(gg) > 1:
+            gg.pop()
+            if globals()['sp%s' % noms][-1] in gg:
                 sp_stop.append(noms)
+                print 'looping itself'
+        for nums in range(noms+1, num_sp+1):
+            if globals()['sp%s' % noms][-1] in globals()['ps%s' % nums]: #comparison
+                sp_stop.append(noms)
+                print 'anastomosis'            
     #sp_stop harus dicek di setiap movement and branching. karena sudah tidak bergerak lagi yang ada di list ini.
-    
     ##branching decision and action. Also movement   
     line = range(1,11) #for Pb
     n_sp = num_sp #to save original number of tips before branching
@@ -294,34 +400,55 @@ while t <= T and k < Nt:
             ##branching and movement
             '''movement for 1st tip''' # (gak peduli apakah akan branching or not)
             dirr = movement_dir(xb, yb) # get list of descending P
-            trial = random.uniform(0,1)
             #for 1st tip movement = nom
             #tip_1 fill
-            if trial <= dirr[0]:
+            '''Checking no back movement'''
+            before_back = globals()['tip%s' % nom]
+            no_back = globals()['tip%s' % nom]
+            while globals()['tip%s' % nom] == no_back:
+                trial = random.uniform(0,1)
+                if trial <= dirr[0]:
+                    no_back = 'pro'
+                elif trial <= dirr[1]:
+                    no_back = 'right'
+                elif trial <= dirr[2]:
+                    no_back = 'left'
+                elif trial <= dirr[3]:
+                    no_back = 'up'
+                else: #>dirr[3]
+                    no_back = 'down'
+            if no_back == 'pro':
                 tip_1 = 'stay'
                 globals()['sp%s' % nom].append(globals()['sp%s' % nom][-1])
-            elif trial <= dirr[1]:
+                
+            elif no_back == 'right':
                 tip_1 = 'left'
                 xpos_new = globals()['sp%s' % nom][-1][0] - 2
                 ypos_new = globals()['sp%s' % nom][-1][1]
                 globals()['sp%s' % nom].append((xpos_new,ypos_new))
-            elif trial <= dirr[2]:
+            elif no_back == 'left':
                 tip_1 = 'right'
                 xpos_new = globals()['sp%s' % nom][-1][0] + 2
                 ypos_new = globals()['sp%s' % nom][-1][1]
                 globals()['sp%s' % nom].append((xpos_new,ypos_new))
-            elif trial <= dirr[3]:
+            elif no_back == 'up':
                 tip_1 = 'down'
                 xpos_new = globals()['sp%s' % nom][-1][0]
                 ypos_new = globals()['sp%s' % nom][-1][1] - 2
                 globals()['sp%s' % nom].append((xpos_new,ypos_new))
-            else: #>dirr[3]
+            else:
                 tip_1 = 'up'
                 xpos_new = globals()['sp%s' % nom][-1][0]
                 ypos_new = globals()['sp%s' % nom][-1][1] + 2
                 globals()['sp%s' % nom].append((xpos_new,ypos_new))
+            globals()['tip%s' % nom] = tip_1
             Ttb = globals()['tsp%s' % nom]
             globals()['tsp%s' % nom] += tp
+            if globals()['sp%s' % nom][-1] == globals()['ps%s' % nom][-1]:
+                lop =1
+            else:
+                globals()['ps%s' % nom].append(globals()['sp%s' % nom][-1]) 
+
             #print tip_1
             #branching?
             if Ttb >= t_branch: #being able to branch by life time               
@@ -351,19 +478,25 @@ while t <= T and k < Nt:
                 globals()['tsp%s' % nom] = 0
                 ##2nd tip movement                 
                 #for 2nd tip = num_sp
+                test_back = before_back
                 dom = tip_1
-                while dom == tip_1:
+                while dom == tip_1 or test_back == before_back:
                     trial = random.uniform(0,1)
                     if trial <= dirr[0]:
                         dom = 'stay'
+                        test_back = 'pro'
                     elif trial <= dirr[1]:
                         dom = 'left'
+                        test_back = 'right'
                     elif trial <= dirr[2]:
                         dom = 'right'
+                        test_back = 'left'
                     elif trial <= dirr[3]:
                         dom = 'down'
+                        test_back = 'up'
                     else: #>dirr[3]
                         dom = 'up'
+                        test_back = 'down'
                 if dom == 'stay':
                     globals()['sp%s' % num_sp].append(globals()['sp%s' % num_sp][-1])
                 elif dom == 'left':
@@ -383,6 +516,7 @@ while t <= T and k < Nt:
                     ypos_new = globals()['sp%s' % num_sp][-1][1] + 2
                     globals()['sp%s' % num_sp].append((xpos_new,ypos_new))
                 globals()['tsp%s' % num_sp] += tp
+                globals()['tip%s' % num_sp] = dom
             else: #gak masuk dalam prob branching, jadi gak branching. hanya 1st tip saja yg move. pass
                 lop = 1
     print 'num_sp:',num_sp
@@ -432,14 +566,17 @@ import matplotlib.pyplot as plt
 fig = plt.figure()
 plt.xlim(hh,X-hh)
 plt.ylim(hh,Y-hh)
-ax = fig.add_subplot(111) 
-for i in range(1,num_sp+1):
-    globals()['xp%s' % i] =[]
-    globals()['yp%s' % i] =[]
-    for j in range(0,len(globals()['sp%s' % i])):
-        globals()['xp%s' % i].append(globals()['sp%s' % i][j][0]*hh)
-        globals()['yp%s' % i].append(globals()['sp%s' % i][j][1]*hh)
-    globals()['p%s' % i] = ax.plot(globals()['xp%s' % i], globals()['yp%s' % i], 'b')
+ax = fig.add_subplot(111)
+
+'''tes'''
+i= 1
+globals()['xp%s' % i] =[]
+globals()['yp%s' % i] =[]
+for j in range(0,len(globals()['sp%s' % i])):
+    globals()['xp%s' % i].append(globals()['sp%s' % i][j][0]*hh)
+    globals()['yp%s' % i].append(globals()['sp%s' % i][j][1]*hh)
+globals()['p%s' % i] = ax.plot(globals()['xp%s' % i], globals()['yp%s' % i], 'b') 
+'''tes'''
 #aa = (x_points[-1],y_points[-1])
 #for j in range(1,len(globals()['sp%s' % i])):
 #    bb = (globals()['sp%s' % i][j][0]*hh,globals()['sp%s' % i][j][1]*hh)
