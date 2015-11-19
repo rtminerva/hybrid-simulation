@@ -8,7 +8,7 @@ t_branch = 0.25
 sp_stop = [] #to record unbranchable tips
 
 '''Initial Sprout'''
-index_tip = [73,133]
+index_tip = [63,113,163,223,273,333]
 len_init_tip = len(index_tip)
 print index_tip
 num_sp = 0
@@ -122,7 +122,7 @@ def movement_dir():
     R_4 = 1
     
     prob_range = [R_0,R_1,R_2,R_3,R_4]
-    print P_0, ',',P_1,',',P_2,',',P_3,',',P_4
+#     print P_0, ',',P_1,',',P_2,',',P_3,',',P_4
     return prob_range;
 
 '''Parameter'''
@@ -143,9 +143,9 @@ tau = 0.001
 '''Partition'''
 X = 1
 Y = 1
-T = 5
+T = 3
 
-h = 0.01
+h = 0.005
 hh = h/2
 
 Nx = int(X/hh)
@@ -532,10 +532,10 @@ while t <= T and k < Nt:
     print '*****START HERE FOR TIME STEP', t, '*****'
     print 'Total Tip:',num_sp
     print 'sp_stop list:', sp_stop
-    for i in range(1,num_sp+1):
-        print 'TIP', i, ':',globals()['sp%s' % i]
-        print 'last movement tip', globals()['tip%s' % i]
-    print '*****END*****'
+#     for i in range(1,num_sp+1):
+#         print 'TIP', i, ':',globals()['sp%s' % i]
+#         print 'last movement tip', globals()['tip%s' % i]
+#     print '*****END*****'
     print
     
     '''***BRANCHING/PY END***'''
