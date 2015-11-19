@@ -23,6 +23,7 @@ def movement_dir():
     la = tp/(h**2)
     x_pos = xb
     y_pos = yb
+    
     vvx = 0.5/h*(c[x_pos+1,y_pos+1,k]-c[x_pos-1,y_pos+1,k]+c[x_pos+1,y_pos-1,k]-c[x_pos-1,y_pos-1,k])
     vvy = 0.5/h*(c[x_pos+1,y_pos+1,k]+c[x_pos-1,y_pos+1,k]-c[x_pos+1,y_pos-1,k]-c[x_pos-1,y_pos-1,k])
     
@@ -39,7 +40,6 @@ def movement_dir():
     wwy_p = max(0,wwy)
     wwy_n = max(0,-wwy)
     
-    
     P_1 = la*d+la*h*ki/(1+al*0.5*(c[x_pos-1,y_pos+1,k]+c[x_pos-1,y_pos-1,k]))*vvx_n + la*h*ro*wwx_n
     P_2 = la*d+la*h*ki/(1+al*0.5*(c[x_pos+1,y_pos+1,k]+c[x_pos+1,y_pos-1,k]))*vvx_p + la*h*ro*wwx_p
     
@@ -47,6 +47,7 @@ def movement_dir():
     P_4 = la*d+la*h*ki/(1+al*0.5*(c[x_pos+1,y_pos-1,k]+c[x_pos-1,y_pos-1,k]))*vvy_p + la*h*ro*wwy_p
 
     '''Boundary'''
+    '''Using reflection on the boundary'''
     if y_pos == 1: #batas bawah
         P_4 +=P_3
         if x_pos == 1: #pojok kiri bawah
@@ -361,7 +362,8 @@ while t <= T and k < Nt:
         
         for nom in range(1,n_sp+1): #dicek setiap tip
             if nom in sp_stop: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
-                print 'no_moving for tip', nom
+#                 print 'no_moving for tip', nom
+                lop = 1
             else:
                 xb = globals()['sp%s' % nom][-1][0] #get x position of last tip position
                 yb = globals()['sp%s' % nom][-1][1] #get y position of last tip position

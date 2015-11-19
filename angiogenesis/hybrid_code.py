@@ -34,7 +34,7 @@ def discrete_code():
                     #kalau gak hit, do nothing
     
     '''1.3 Checking if two tips meet at one point'''
-    if len(sp_new_stop) >= 2 or num_sp > 1:
+    if len(sp_new_stop) >= 2:
         pair = [(0,0)]
         for j in sp_new_stop:
             other_tips = sp_new_stop[:]
@@ -51,6 +51,8 @@ def discrete_code():
                 sp_new_stop.remove(pair[j][0])         
     sp_stop.extend(sp_new_stop)
     sp_stop = list(set(sp_stop))
+    for i in sp_stop:
+        globals()['tip%s' % i] = 'stop'
 
     '''2. Branching and Movement'''        
     if len(sp_stop) == num_sp:
@@ -63,7 +65,8 @@ def discrete_code():
         
         for nom in range(1,n_sp+1): #dicek setiap tip
             if nom in sp_stop: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
-                print 'no_moving for tip', nom
+#                 print 'no_moving for tip', nom
+                lop = 1
             else:
                 xb = globals()['sp%s' % nom][-1][0] #get x position of last tip position
                 yb = globals()['sp%s' % nom][-1][1] #get y position of last tip position
@@ -183,6 +186,7 @@ def discrete_code():
                         globals()['move%s' % nom] = tip_1
                     globals()['tip%s' % num_sp] = dom
                     globals()['tip%s' % nom] = tip_1   
+                    globals()['tsp%s' % num_sp] = tp
                 else: #no branching
                     '''2.2 No Branching'''
                     '''Movement only'''
@@ -233,10 +237,9 @@ def discrete_code():
     print '*****START HERE FOR TIME STEP', t, '*****'
     print 'Total Tip:',num_sp
     print 'sp_stop list:', sp_stop
-    for i in range(1,num_sp+1):
-        print 'TIP', i, ':',globals()['sp%s' % i]
-        print 'last movement tip', globals()['tip%s' % i]
-    print '*****END*****'
+#     for i in range(1,num_sp+1):
+#         print 'TIP', i, ':',globals()['sp%s' % i]
+#         print 'last movement tip', globals()['tip%s' % i]
+#     print '*****END*****'
     print
-    return k;
     
