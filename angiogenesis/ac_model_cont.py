@@ -1,12 +1,13 @@
 import random
 from random import randint
 import math
+from samba.dcerpc.security import dom_sid
 
 '''Parameter'''
 d = 0.00035
 ki = 0.38
 al = 0.6
-ro = 0#0.3
+ro = 0.3 #0
 nu = 0.1
 be = 0.05
 ga = 0.1
@@ -20,9 +21,9 @@ tau = 0.001
 '''Partition'''
 X = 1
 Y = 1
-T = 2
+T = 1
 
-h = 0.05
+h = 0.01
 hh = h/2
 
 Nx = int(X/hh)
@@ -60,11 +61,8 @@ for y in range(0,Ny+1,2):
         c[x,y,0] = math.exp(-(1-x*hh)**2/ec)
 for y in range(1,Ny,2):
     for x in range(1,Nx,2):
-        tipss = 2
+        tipss = 6
         n[x,y,0] = math.exp(-(x*hh)**2/0.001)*(math.sin(tipss*math.pi*y*hh))**2
-#         n[x,y,0] = math.exp(-(x*hh)**2/0.1)*(math.sin((math.pi)*y*hh))**2
-#for x in range(1,Nx,2):
-#    n[x,1,0] = (math.sin((math.pi)*x*h))**2
 
 '''Filling Node'''
 #choice of time increment
@@ -171,15 +169,12 @@ while t <= T and k < Nt:
             
             Fx[x,y,k] = -d*(n[x+1,y-1,k]-n[x-1,y-1,k]) + ki/(1+al*c[x,y,k])*(n[x-1,y-1,k]*vxl-n[x+1,y-1,k]*vxr) + ro*(n[x-1,y-1,k]*wxl-n[x+1,y-1,k]*wxr)
             Fy[x,y,k] = -d*(n[x-1,y+1,k]-n[x-1,y-1,k]) + ki/(1+al*c[x,y,k])*(n[x-1,y-1,k]*vyl-n[x+1,y-1,k]*vyr) + ro*(n[x-1,y-1,k]*wyl-n[x+1,y-1,k]*wyr)
-            
-#             Fx[x,y,k] = -d*0.5*(n[x+1,y+1,k]-n[x-1,y+1,k]+n[x+1,y-1,k]-n[x-1,y-1,k]) + ki/(1+al*c[x,y,k])*(n[x-1,y-1,k]*vxl-n[x+1,y-1,k]*vxr) + ro*(n[x-1,y-1,k]*wxl-n[x+1,y-1,k]*wxr)
-#             Fy[x,y,k] = -d*0.5*(n[x+1,y+1,k]+n[x-1,y+1,k]-n[x+1,y-1,k]-n[x-1,y-1,k]) + ki/(1+al*c[x,y,k])*(n[x-1,y-1,k]*vyl-n[x+1,y-1,k]*vyr) + ro*(n[x-1,y-1,k]*wyl-n[x+1,y-1,k]*wyr)
-            
+                        
     for y in range(1,Ny,2): #at main lattice
         for x in range(1,Nx,2): #at main lattice
             n[x,y,k+1] = n[x,y,k] - tp/h*(Fx[x+1,y+1,k]-Fx[x-1,y+1,k]+Fy[x+1,y+1,k]-Fy[x+1,y-1,k])
-            #tp*0.5/h*(Fx[x+1,y+1,k]-Fx[x-1,y+1,k]+Fx[x+1,y-1,k]-Fx[x-1,y-1,k] + Fy[x+1,y+1,k]+Fx[x-1,y+1,k]-Fx[x+1,y-1,k]-Fx[x-1,y-1,k])
-    k += 1
+                      
+    k += 1 #renewal of iteration
 print 'time end : ',t
 print 'number of iteration : ',k 
 for i in range(1,num_sp+1):
@@ -191,7 +186,7 @@ for t in range(k+1):
                 print x,y,t,'neg'
 
 '''Plot Result'''
-l =10
+l =0
 print 'at time', time[l]
 time_plot = time[l]
 x_main_axis = numpy.arange(hh, X, h)

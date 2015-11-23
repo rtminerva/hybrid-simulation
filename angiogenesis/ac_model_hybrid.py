@@ -8,8 +8,8 @@ t_branch = 0.25
 sp_stop = [] #to record unbranchable tips
 
 '''Initial Sprout'''
-index_tip = [63,113,163,223,273,333]
-len_init_tip = len(index_tip)
+#index_tip = [63,113,163,223,273,333]
+index_tip = [33, 73, 103, 133, 163]
 print index_tip
 num_sp = 0
 for y in index_tip:
@@ -80,6 +80,7 @@ def movement_dir():
             P_1 += P_2
             P_2 = 0
         #selain batas2, tetap pada nilai P_1 ~ P_4 awal saja
+    '''Using reflection on the boundary'''
                 
     
 #     '''tes saja'''
@@ -130,7 +131,7 @@ def movement_dir():
 d = 0.00035
 ki = 0.38
 al = 0.6
-ro = 0#0.3
+ro = 0.3 #0
 nu = 0.1
 be = 0.05
 ga = 0.1
@@ -144,9 +145,9 @@ tau = 0.001
 '''Partition'''
 X = 1
 Y = 1
-T = 3
+T = 1
 
-h = 0.005
+h = 0.01
 hh = h/2
 
 Nx = int(X/hh)
