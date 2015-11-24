@@ -7,17 +7,17 @@ from samba.dcerpc.security import dom_sid
 t_branch = 0.25
 sp_stop = [] #to record unbranchable tips
 
-'''Initial Sprout'''
+#'''Initial Sprout'''
 #index_tip = [63,113,163,223,273,333]
-index_tip = [33, 73, 103, 133, 163]
-print index_tip
-num_sp = 0
-for y in index_tip:
-    num_sp += 1 
-    globals()['sp%s' % num_sp] = [(1,y)] #real time position
-    globals()['tip%s' % num_sp] = 'start' #last tip movement
-    globals()['move%s' % num_sp] = 'start'
-    globals()['tsp%s' % num_sp] = 0 #lifetime
+#index_tip = [33, 73, 103, 133, 163]
+#print index_tip
+#num_sp = 0
+#for y in index_tip:
+#    num_sp += 1 
+#    globals()['sp%s' % num_sp] = [(1,y)] #real time position
+#    globals()['tip%s' % num_sp] = 'start' #last tip movement
+#    globals()['move%s' % num_sp] = 'start'
+#    globals()['tsp%s' % num_sp] = 0 #lifetime
 
 def movement_dir():
     la = tp/(h**2)
@@ -147,7 +147,7 @@ X = 1
 Y = 1
 T = 1
 
-h = 0.01
+h = 0.005
 hh = h/2
 
 Nx = int(X/hh)
@@ -185,9 +185,39 @@ for y in range(0,Ny+1,2):
         c[x,y,0] = math.exp(-(1-x*hh)**2/ec)
 for y in range(1,Ny,2):
     for x in range(1,Nx,2):
-        tipss = 2
+        tipss = 6
         n[x,y,0] = math.exp(-(x*hh)**2/0.001)*(math.sin(tipss*math.pi*y*hh))**2
 
+'''Initial Tips'''
+split = int(Nx/tipss)
+aw = 0
+index_tip = []
+for i in range(1,tipss+1):
+    jj = i*split
+    print jj
+    ar = []
+    for u in range(aw,jj+1):
+        ar.append(n[1,u,0])
+    m = max(ar)
+    for i in range(0,len(ar)):
+        if len(index_tip)>0:
+            tess = i+aw-index_tip[-1]
+            if ar[i] == m and tess>2:
+                index_tip.append(i+aw)
+        else:
+            if ar[i] == m:
+                index_tip.append(i+aw)
+    aw = jj+1
+print index_tip
+num_sp = 0
+for y in index_tip:
+    num_sp += 1 
+    globals()['sp%s' % num_sp] = [(1,y)] #real time position
+    globals()['tip%s' % num_sp] = 'start' #last tip movement
+    globals()['move%s' % num_sp] = 'start'
+    globals()['tsp%s' % num_sp] = 0 #lifetime
+
+quit()
 '''Filling Node'''
 #choice of time increment
 t = 0
