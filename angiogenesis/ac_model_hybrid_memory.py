@@ -2,22 +2,12 @@ import random
 from random import randint
 import math
 from samba.dcerpc.security import dom_sid
+import numpy
+import math
 
 '''Branching'''
-t_branch = 0.25
+t_branch = 0.05#0.25
 sp_stop = [] #to record unbranchable tips
-
-#'''Initial Sprout'''
-#index_tip = [63,113,163,223,273,333]
-#index_tip = [33, 73, 103, 133, 163]
-#print index_tip
-#num_sp = 0
-#for y in index_tip:
-#    num_sp += 1 
-#    globals()['sp%s' % num_sp] = [(1,y)] #real time position
-#    globals()['tip%s' % num_sp] = 'start' #last tip movement
-#    globals()['move%s' % num_sp] = 'start'
-#    globals()['tsp%s' % num_sp] = 0 #lifetime
 
 def movement_dir():
     la = tp/(h**2)
@@ -45,7 +35,8 @@ def movement_dir():
     
     P_3 = la*d+la*h*ki/(1+al*0.5*(c[x_pos+1,y_pos+1,k]+c[x_pos-1,y_pos+1,k]))*vvy_n + la*h*ro*wwy_n
     P_4 = la*d+la*h*ki/(1+al*0.5*(c[x_pos+1,y_pos-1,k]+c[x_pos-1,y_pos-1,k]))*vvy_p + la*h*ro*wwy_p
-
+    
+    
     '''Boundary'''
     '''Using reflection on the boundary'''
     if y_pos == 1: #batas bawah
@@ -131,7 +122,7 @@ def movement_dir():
 d = 0.00035
 ki = 0.38
 al = 0.6
-ro = 0 #0.3
+ro = 0 #0.3 
 nu = 0.1
 be = 0.05
 ga = 0.1
@@ -145,9 +136,9 @@ tau = 0.001
 '''Partition'''
 X = 1
 Y = 1
-T = 1
+T = 0.2
 
-h = 0.005
+h = 0.01#0.005
 hh = h/2
 
 Nx = int(X/hh)
@@ -161,8 +152,6 @@ print 'point F,c,f=', range(0,Nx+1,2)
 
 
 '''Define Variable'''
-import numpy
-import math
 
 n = numpy.zeros((Nx+1, Ny+1, Nt+1))
 c = numpy.zeros((Nx+1, Ny+1, Nt+1))
@@ -179,13 +168,13 @@ wy = numpy.zeros((Nx+1, Ny+1, Nt+1))
 
 '''Initial Condition'''
 #p[i,0] = (math.sin((math.pi)*i*h))**2
+tipss = 2
 for y in range(0,Ny+1,2):
     for x in range(0,Nx+1,2):
         f[x,y,0] = 0.75* math.exp(-(x*hh)**2/ef)
         c[x,y,0] = math.exp(-(1-x*hh)**2/ec)
 for y in range(1,Ny,2):
     for x in range(1,Nx,2):
-        tipss = 6
         n[x,y,0] = math.exp(-(x*hh)**2/0.001)*(math.sin(tipss*math.pi*y*hh))**2
 
 '''Initial Tips'''
@@ -216,8 +205,26 @@ for y in index_tip:
     globals()['tip%s' % num_sp] = 'start' #last tip movement
     globals()['move%s' % num_sp] = 'start'
     globals()['tsp%s' % num_sp] = 0 #lifetime
+    globals()['width_tip%s' % num_sp] =[8]
 
-quit()
+'''Plot Parameter'''
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+import matplotlib.pyplot as plt
+
+# x_main_axis = numpy.arange(hh, X, h)
+# y_main_axis = numpy.arange(hh, Y, h)
+# x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
+# 
+# x_sub_axis = numpy.arange(0, X+hh, h)
+# y_sub_axis = numpy.arange(0, Y+hh, h)
+# x_sub_axis, y_sub_axis = numpy.meshgrid(x_sub_axis, y_sub_axis)
+# 
+# c_sol = numpy.zeros((Nx/2+1, Ny/2+1))
+# f_sol = numpy.zeros((Nx/2+1, Ny/2+1))
+# n_sol = numpy.zeros((Nx/2, Ny/2))
+
 '''Filling Node'''
 #choice of time increment
 t = 0
@@ -245,7 +252,7 @@ while t <= T and k < Nt:
     tau2 = 1/(nu*n1)
     tau1 = min(tau1,tau2)
     if tau1 < tau:
-        tp = tau1
+        tp = tau #tau1
     else:
         tp = tau
     t += tp
@@ -335,22 +342,22 @@ while t <= T and k < Nt:
     sp_new_stop =[]
     for noms in range(1,num_sp+1):         
         if not noms in sp_stop:
-            '''1.1 Checking if looping itself'''
-            if not globals()['tip%s' % noms] == 'stay':
-                gg = globals()['sp%s' % noms][:]
-                gg.pop()
-                gg = list(set(gg))    
-                if len(gg) > 0: #mencegah start masuk ke bagian ini
-                    if globals()['sp%s' % noms][-1] in gg:
-                        sp_new_stop.append(noms)
-                        print 'looping itself for tip number', noms
-                        print 'looping to position', globals()['sp%s' % noms][-1]
-                #kalau < = 0, artinya baru start iterasi
-            #kalau 'stay', artinya aman. do nothing. done looping itself
+#            '''1.1 Checking if looping itself'''
+#            if not globals()['tip%s' % noms] == 'stay':
+#                gg = globals()['sp%s' % noms][:]
+#                gg.pop()
+##                gg = list(set(gg))    
+#                if len(gg) > 0: #mencegah start masuk ke bagian ini
+#                    if globals()['sp%s' % noms][-1] in gg:
+#                        sp_new_stop.append(noms)
+#                        print 'looping itself for tip number', noms
+#                        print 'looping to position', globals()['sp%s' % noms][-1]
+#                #kalau < = 0, artinya baru start iterasi
+#            #kalau 'stay', artinya aman. do nothing. done looping itself
             '''1.2 Checking if hit another sprout'''
             if noms in sp_new_stop or num_sp == 1: #kalau sudah looping itself, gak usah cek hit others lg.
                 lop = 1
-            else:
+            elif not globals()['tip%s' % noms] == 'stay':
                 #making list of others
                 other_tips = range(1,num_sp+1)
                 other_tips.remove(noms)
@@ -365,7 +372,9 @@ while t <= T and k < Nt:
     if len(sp_new_stop) >= 2:
         pair = [(0,0)]
         for j in sp_new_stop:
-            other_tips = sp_new_stop[:]
+            other_tips = []
+            for uu in sp_new_stop:
+                other_tips.append(uu)
             other_tips.remove(j)
             for i in other_tips:
                 if globals()['sp%s' % j][-1] == globals()['sp%s' % i][-1]:
@@ -374,7 +383,8 @@ while t <= T and k < Nt:
                         lop = 1
                     else:
                         pair.append((j,i))
-        if len(pair) > 1:
+        pair.remove((0,0))
+        if len(pair) >= 1:
             for j in range(1,len(pair)):             
                 sp_new_stop.remove(pair[j][0])         
     sp_stop.extend(sp_new_stop)
@@ -416,7 +426,9 @@ while t <= T and k < Nt:
                     elif c[xb+1,yb+1,k+1] >= 0.8: #do branching
                         list_prob = line
                     else: #no branching or in the condition: c[xb+1,yb+1,k+1] < 0.3
-                        list_prob = [20]
+                        #list_prob = [20]
+                        prob_weight = 4 # set the number to select here.
+                        list_prob = random.sample(line, prob_weight)
                 else: #not branchable
                     list_prob = [20]
                 #apakah branching? meaning masuk dalam probability of branching?
@@ -464,9 +476,21 @@ while t <= T and k < Nt:
                     num_sp += 1
                     globals()['sp%s' % num_sp] = [(xb,yb)]
                     globals()['ps%s' % num_sp] = []
+                    globals()['width_tip%s' % num_sp] =[]
+                    globals()['width_tip%s' % num_sp].append(globals()['width_tip%s' % nom][-1])
                     #waktunya diriset
                     globals()['tsp%s' % num_sp] = 0
                     globals()['tsp%s' % nom] = 0
+                    
+                    '''WIDTH TRIAL'''
+                    if not globals()['width_tip%s' % nom][-1] == 1:
+                        dd = globals()['width_tip%s' % nom][-1]/2
+                        globals()['width_tip%s' % nom].append(dd)
+                        globals()['width_tip%s' % num_sp].append(dd)
+                    else:
+                        globals()['width_tip%s' % nom].append(globals()['width_tip%s' % nom][-1])
+                        globals()['width_tip%s' % num_sp].append(globals()['width_tip%s' % nom][-1])
+                    '''WIDTH TRIAL'''
                     
                     '''2.1.2 Branching tip's movement: 2nd tip movement : num_sp tip'''
                     '''2.1.2.1 Checking no back, tip 1, stay movement'''
@@ -535,12 +559,12 @@ while t <= T and k < Nt:
                             no_back = 'down'
                     if no_back == 'pro':
                         tipp = 'stay'
-                        globals()['sp%s' % nom].append(globals()['sp%s' % nom][-1])
+#                        globals()['sp%s' % nom].append(globals()['sp%s' % nom][-1])
                     elif no_back == 'right':
                         tipp = 'left'
                         xpos_new = globals()['sp%s' % nom][-1][0] - 2
                         ypos_new = globals()['sp%s' % nom][-1][1]
-                        globals()['sp%s' % nom].append((xpos_new,ypos_new)) 
+                        globals()['sp%s' % nom].append((xpos_new,ypos_new))
                     elif no_back == 'left':
                         tipp = 'right'
                         xpos_new = globals()['sp%s' % nom][-1][0] + 2
@@ -560,11 +584,13 @@ while t <= T and k < Nt:
                     '''2.2.2 Renewal Some Vars'''
                     if not tipp == 'stay':
                         globals()['move%s' % nom] = tipp
+                        globals()['width_tip%s' % nom].append(globals()['width_tip%s' % nom][-1]) #width trial
                     globals()['tip%s' % nom] = tipp  
     print        
     print '*****START HERE FOR TIME STEP', t, '*****'
     print 'Total Tip:',num_sp
-    print 'sp_stop list:', sp_stop
+    print 'List Stop Tips:', sp_stop
+    print 'Total Stop Tips:', len(sp_stop)
 #     for i in range(1,num_sp+1):
 #         print 'TIP', i, ':',globals()['sp%s' % i]
 #         print 'last movement tip', globals()['tip%s' % i]
@@ -576,6 +602,8 @@ while t <= T and k < Nt:
     k += 1 #renewal of iteration
 print 'time end : ',t
 print 'number of iteration : ',k 
+print 'panjang width', len(globals()['width_tip%s' % 1])
+print 'panjang list', len(globals()['sp%s' % 1])
 
 # '''Checking Negative Value'''
 # for t in range(k+1):
@@ -584,40 +612,74 @@ print 'number of iteration : ',k
 #            if n[x,y,t] < 0 or c[x,y,t] <0 or f[x,y,t] < 0:
 #                 print x,y,t,'neg'
 '''Mesh Division'''
-l =10
+l =k
 print 'at time', time[l]
 time_plot = time[l]
-x_main_axis = numpy.arange(hh, X, h)
-y_main_axis = numpy.arange(hh, Y, h)
-x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
-
-x_sub_axis = numpy.arange(0, X+hh, h)
-y_sub_axis = numpy.arange(0, Y+hh, h)
-x_sub_axis, y_sub_axis = numpy.meshgrid(x_sub_axis, y_sub_axis)
-
-c_sol = numpy.zeros((Nx/2+1, Ny/2+1))
-f_sol = numpy.zeros((Nx/2+1, Ny/2+1))
-n_sol = numpy.zeros((Nx/2, Ny/2))
-
-for j, y in enumerate(range(0,Ny+1,2)):
-    for i, x in enumerate(range(0,Nx+1,2)):
-        c_sol[i,j] = c[x,y,l]
-        f_sol[i,j] = f[x,y,l]       
-        
-for j, y in enumerate(range(1,Ny,2)):
-    for i, x in enumerate(range(1,Nx,2)):
-        n_sol[i,j] = n[x,y,l]
-        
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib import cm
-from matplotlib.ticker import LinearLocator, FormatStrFormatter
-import matplotlib.pyplot as plt
-
-'''Figure Sprouting'''
-fig = plt.figure()
+fig, ax = plt.subplots(1)
 plt.xlim(hh,X-hh)
 plt.ylim(hh,Y-hh)
-ax = fig.add_subplot(111)
+
+def plot_widths(xs, ys, widths, ax=None, color='b', xlim=None, ylim=None,
+                **kwargs):
+    if not (len(xs) == len(ys) == len(widths)):
+        raise ValueError('xs, ys, and widths must have identical lengths')
+    fig = None
+    if ax is None:
+        fig, ax = plt.subplots(1)
+
+    segmentx, segmenty = [xs[0]], [ys[0]]
+    current_width = widths[0]
+    for ii, (x, y, width) in enumerate(zip(xs, ys, widths)):
+        segmentx.append(x)
+        segmenty.append(y)
+        if (width != current_width) or (ii == (len(xs) - 1)):
+            ax.plot(segmentx, segmenty, linewidth=current_width, color=color,
+                    **kwargs)
+            segmentx, segmenty = [x], [y]
+            current_width = width
+    if xlim is None:
+        xlim = [min(xs), max(xs)]
+    if ylim is None:
+        ylim = [min(ys), max(ys)]
+    ax.set_xlim(xlim)
+    ax.set_ylim(ylim)
+
+    return ax if fig is None else fig
+
+
+for i in range(1,num_sp+1):
+    globals()['xp%s' % i] =[]
+    globals()['yp%s' % i] =[]
+    for j in range(0,len(globals()['sp%s' % i])):
+        globals()['xp%s' % i].append(globals()['sp%s' % i][j][0]*hh)
+        globals()['yp%s' % i].append(globals()['sp%s' % i][j][1]*hh)
+    globals()['xp%s' % i] = numpy.asarray(globals()['xp%s' % i])
+    globals()['yp%s' % i] = numpy.asarray(globals()['yp%s' % i])
+    globals()['width_tip%s' % i] = numpy.asarray(globals()['width_tip%s' % i])
+    plot_widths(globals()['xp%s' % i], globals()['yp%s' % i], globals()['width_tip%s' % i])
+plt.show()
+
+
+
+'''Density Figure'''
+#for j, y in enumerate(range(0,Ny+1,2)):
+#    for i, x in enumerate(range(0,Nx+1,2)):
+#        c_sol[i,j] = c[x,y,l]
+#        f_sol[i,j] = f[x,y,l]       
+#        
+#for j, y in enumerate(range(1,Ny,2)):
+#    for i, x in enumerate(range(1,Nx,2)):
+#        n_sol[i,j] = n[x,y,l]
+#ax = fig.gca(projection='3d')
+#surf = ax.plot_surface(x_main_axis, y_main_axis, n_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
+#       linewidth=0, antialiased=False, label = 'Endothelial Density')
+#ax.set_zlim(-0.1, 1.01)
+#ax.zaxis.set_major_locator(LinearLocator(10))
+#ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+#fig.colorbar(surf, shrink=0.5, aspect=5)
+
+'''Figure Sprouting'''
+#ax = fig.add_subplot(111)
 # '''tes'''
 # i= 1
 # globals()['xp%s' % i] =[]
@@ -636,16 +698,15 @@ ax = fig.add_subplot(111)
 #     globals()['yp%s' % i].append(globals()['sp%s' % i][j][1]*h)
 # globals()['p%s' % i] = ax.plot(globals()['xp%s' % i], globals()['yp%s' % i], 'y') 
 # '''tes'''
+#linewidth = globals()['width_tip%s' % i][j]
 
 
-
-for i in range(1,num_sp+1):
-    globals()['xp%s' % i] =[]
-    globals()['yp%s' % i] =[]
-    for j in range(0,len(globals()['sp%s' % i])):
-        globals()['xp%s' % i].append(globals()['sp%s' % i][j][0]*hh)
-        globals()['yp%s' % i].append(globals()['sp%s' % i][j][1]*hh)
-    globals()['plo%s' % i] = ax.plot(globals()['xp%s' % i], globals()['yp%s' % i], 'b')
-plt.show()   
-
+# for i in range(1,num_sp+1):
+#     globals()['xp%s' % i] =[]
+#     globals()['yp%s' % i] =[]
+#     for j in range(0,len(globals()['sp%s' % i])):
+#         globals()['xp%s' % i].append(globals()['sp%s' % i][j][0]*hh)
+#         globals()['yp%s' % i].append(globals()['sp%s' % i][j][1]*hh)
+#     globals()['plo%s' % i] = ax.plot(globals()['xp%s' % i], globals()['yp%s' % i], 'b')
+# plt.show()
 

@@ -132,11 +132,11 @@ while t <= T and k < Nt:
     '''solve for n at main lattice'''
     Fx[0,:,k] = 0
     Fx[Nx,:,k] = 0
-    Fx[:,0,k] = 0
-    Fx[:,Ny,k] = 0
+#     Fx[:,0,k] = 0
+#     Fx[:,Ny,k] = 0
     
-    Fy[0,:,k] = 0
-    Fy[Nx,:,k] = 0
+#     Fy[0,:,k] = 0
+#     Fy[Nx,:,k] = 0
     Fy[:,0,k] = 0
     Fy[:,Ny,k] = 0
     for y in range(2,Ny,2): #at sub lattice
@@ -215,6 +215,7 @@ from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 import matplotlib.pyplot as plt
 
+fig = plt.figure()
 ax = fig.gca(projection='3d')
 surf = ax.plot_surface(x_main_axis, y_main_axis, n_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
         linewidth=0, antialiased=False)
