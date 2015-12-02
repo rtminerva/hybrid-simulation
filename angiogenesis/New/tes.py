@@ -1,7 +1,7 @@
 import tes_run as tt
 import numpy 
-y = [[8,4]]
-tt.gg(b = [2,4])
-
-t = numpy.zeros((2,2))
-print t.max()
+w = 1
+r = [0,0]
+while w <=3:
+ r = tt.ff(iter = w, q = r[0], qr = r[1])
+ w +=1
