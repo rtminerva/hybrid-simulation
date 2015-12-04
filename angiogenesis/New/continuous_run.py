@@ -37,53 +37,15 @@ def F4y_code(d = 0.00035, ki = 0.38, al = 0.6, ro = 0, one = 0, two = 0, three =
 
 def contiuous_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                      nu = 0.1,be = 0.05,ga = 0.1,e = 0.45,X = 1,Y = 1,
-                     h = 0.01,tp = 0.001,iter = 0,number_of_tip = 2,
-                     n_o = 0, c_o = 0, f_o = 0, n = 0, c = 0, f = 0):
-    
-#     def vx_code(h = 0.01, cc = 0, x_p = 0, y_p = 0): #at main lattice
-#         r = 0.5/h*(c[x_p+1,y_p+1]-c[x_p-1,y_p+1]+c[x_p+1,y_p-1]-c[x_p-1,y_p-1])
-#         return r
-#         
-#     def vy_code(h = 0.01, cc = 0, x_p = 0, y_p = 0): #at main lattice
-#         r = 0.5/h*(c[x_p+1,y_p+1]+c[x_p-1,y_p+1]-c[x_p+1,y_p-1]-c[x_p-1,y_p-1])
-#         return r
-#         
-#     def wx_code(h = 0.01, ff = 0, x_p = 0, y_p = 0): #at main lattice
-#         r = 0.5/h*(f[x_p+1,y_p+1]-f[x_p-1,y_p+1]+f[x_p+1,y_p-1]-f[x_p-1,y_p-1])
-#         return r
-#     
-#     def wy_code(h = 0.01, ff = 0, x_p = 0, y_p = 0): #at main lattice
-#         r = 0.5/h*(f[x_p+1,y_p+1]+f[x_p-1,y_p+1]-f[x_p+1,y_p-1]-f[x_p-1,y_p-1])
-#         return r
-#     
-#     def F1x_code(d = 0.00035, ki = 0.38, al = 0.6, ro = 0, one = 0, two = 0, three = 0, four = 0, nn = 0, cc = 0, x_p = 0, y_p = 0): #at main lattice n
-#         r = -d*(nn[x_p+2,y_p]-nn[x_p,y_p])+ki/(1+al*cc[x_p+1,y_p+1])*(nn[x_p,y_p]*one-nn[x_p+2,y_p]*two) + ro*(nn[x_p,y_p]*three-nn[x_p+2,y_p]*four)
-#         return r
-#         
-#     def F2x_code(d = 0.00035, ki = 0.38, al = 0.6, ro = 0, one = 0, two = 0, three = 0, four = 0, nn = 0, cc = 0, x_p = 0, y_p = 0): #at main lattice n
-#         r = -d*(nn[x_p,y_p]-nn[x_p-2,y_p])+ki/(1+al*cc[x_p-1,y_p+1])*(nn[x_p-2,y_p]*one-nn[x_p,y_p]*two) + ro*(nn[x_p-2,y_p]*three-nn[x_p,y_p]*four)
-#         return r
-#      
-#     def F3y_code(d = 0.00035, ki = 0.38, al = 0.6, ro = 0, one = 0, two = 0, three = 0, four = 0, nn = 0, cc = 0, x_p = 0, y_p = 0): #at main lattice n
-#         r = -d*(nn[x_p,y_p+2]-nn[x_p,y_p])+ki/(1+al*cc[x_p+1,y_p+1])*(nn[x_p,y_p+2]*one-nn[x_p,y_p]*two) + ro*(nn[x_p,y_p+2]*three-nn[x_p,y_p]*four)
-#         return r 
-#     
-#     def F4y_code(d = 0.00035, ki = 0.38, al = 0.6, ro = 0, one = 0, two = 0, three = 0, four = 0, nn = 0, cc = 0, x_p = 0, y_p = 0): #at main lattice n
-#         r = -d*(nn[x_p,y_p]-nn[x_p,y_p-2])+ki/(1+al*cc[x_p+1,y_p-1])*(nn[x_p,y_p]*one-nn[x_p,y_p-2]*two) + ro*(nn[x_p,y_p]*three-nn[x_p,y_p-2]*four)
-#         return r
-    
-    
-    
-    
-    
-    
+                     h = 0.01,tp = 0.001,iter = 0,number_of_tip = 3,
+                     n_o = 0, c_o = 0, f_o = 0, n = 0, c = 0, f = 0, time = 0):
+
     hh = h/2
     Nx = int(X/hh)
     Ny = int(Y/hh)
     
     '''For the beginning'''
     if iter == 1:
-        print 'iter 1'
         n = numpy.zeros((Nx+1,Ny+1))
         c = numpy.zeros((Nx+1,Ny+1))
         f = numpy.zeros((Nx+1,Ny+1))
@@ -94,7 +56,8 @@ def contiuous_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                 c[x,y] = m.exp(-(1-x*hh)**2/e)
         for y in range(1,Ny,2):
             for x in range(1,Nx,2):
-                n[x,y] = m.exp(-(x*hh)**2/0.001)*(m.sin(number_of_tip*m.pi*y*hh))**2
+#                 n[x,y] = m.exp(-(x*hh)**2/0.001)*(m.sin(number_of_tip*m.pi*y*hh))**2
+                n[x,y] = m.exp(-(y*hh)**2/0.01)*(m.sin(number_of_tip*m.pi*x*hh))**2
         n_o = n
         c_o = c
         f_o = f
@@ -120,7 +83,6 @@ def contiuous_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
     '''
         
     '''Solve n at main lattice'''
-    print n[1,1]
     for y in range(1,Ny,2):
         for x in range(1,Nx,2):
             if y == 1: #batas bawah
@@ -330,10 +292,49 @@ def contiuous_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                 else:
                     c[x,y] = c_o[x,y]*(1 - tp*nu*0.25*(n_o[x+1,y+1]+n_o[x-1,y+1]+n_o[x+1,y-1]+n_o[x-1,y-1]))
                     f[x,y] = f_o[x,y]+ tp*(be-ga*f_o[x,y])*0.25*(n_o[x+1,y+1]+n_o[x-1,y+1]+n_o[x+1,y-1]+n_o[x-1,y-1])
-    rr = [n_o, c_o, f_o,n,c,f]
+    rr = [n_o,c_o,f_o,n,c,f]
     n_o = n
     c_o = c
-    f_o = f 
-    print 'here'
+    f_o = f
+    
+#     '''Plot Continuous '''
+#     print time
+#     if iter % 2 == 0:#time >= 2.8: #iter % 200 == 0 or 
+#         print 'plot at time:', time
+#         
+#         x_main_axis = numpy.arange(hh, X, h)
+#         y_main_axis = numpy.arange(hh, Y, h)
+#         x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
+#         
+#         x_sub_axis = numpy.arange(0, X+hh, h)
+#         y_sub_axis = numpy.arange(0, Y+hh, h)
+#         x_sub_axis, y_sub_axis = numpy.meshgrid(x_sub_axis, y_sub_axis)
+#         
+# #         c_sol = numpy.zeros((Nx/2+1, Ny/2+1))
+# #         f_sol = numpy.zeros((Nx/2+1, Ny/2+1))
+#         n_sol = numpy.zeros((Nx/2, Ny/2))
+#         
+#         for j, y in enumerate(range(1,Ny,2)):
+#             for i, x in enumerate(range(1,Nx,2)):
+#                 n_sol[i,j] = n[x,y]
+#         
+#         from matplotlib import cm
+#         from matplotlib.ticker import LinearLocator, FormatStrFormatter
+#         from mpl_toolkits.mplot3d import Axes3D
+#         import matplotlib.pyplot as plt
+#         plt.ion()
+#         
+#         fig = plt.figure()
+#         ax = fig.gca(projection='3d')
+#         surf = ax.plot_surface(x_main_axis, y_main_axis, n_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
+#                 linewidth=0, antialiased=False)
+#         # surf = ax.plot_surface(x_sub_axis, y_sub_axis, c_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
+#         #         linewidth=0, antialiased=False)
+#         ax.set_zlim(-0.1, 1.01)
+#         ax.zaxis.set_major_locator(LinearLocator(10))
+#         ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+#         fig.colorbar(surf, shrink=0.5, aspect=5)
+#         plt.draw()
+#     '''Plot'''
     return rr
         
