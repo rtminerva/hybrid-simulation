@@ -1,12 +1,15 @@
 import continuous_run as cont
+import discrete_run as disc
 import numpy
+from timeit import default_timer as timer 
+import time
+import matplotlib.pyplot as plt 
 # import discrete_run as disc
 
+'''Untuk Plot
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.pyplot as plt
-from timeit import default_timer as timer  
 
 
 plt.ion() #interactively
@@ -15,13 +18,7 @@ fig = plt.figure()
 ax = fig.gca(projection='3d')
 ax.set_zlim(-0.1, 1.2)
 
-t = 0
-k = 0
-T = 3
-Nt = 10000
-tau = 0.001
-h = 0.01
- 
+h = 0.005
 X = 1
 Y = 1
 hh = h/2
@@ -35,23 +32,46 @@ x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
 # x_sub_axis = numpy.arange(0, X+hh, h)
 # y_sub_axis = numpy.arange(0, Y+hh, h)
 # x_sub_axis, y_sub_axis = numpy.meshgrid(x_sub_axis, y_sub_axis)
+Untuk Plot'''
 
-
+Nt = 10000
+tau = 0.001
+t = 0
+k = 0
+T = 5
 r = [0, 0, 0, 0, 0, 0]
+g = [0, 0, 0, 0, 0, 0]
 surf = 0
 while t <= T and k < Nt:
     start1 = timer()
     k += 1
     t += tau
     print 'time at',t
+    print 'time of processing now', time.clock()
+    
+    '''Continuous Code'''
     r = cont.contiuous_1_iter(iter = k, 
                               n_o = r[0], c_o = r[1], f_o = r[2], 
                               n = r[3], c = r[4], f = r[5], 
                               time = t)
     start2 = timer()
-    num_time = start2-start1
-    print 'process time for numerical cont:', num_time
-    '''Plot Continuous real time'''
+    print 'process time for numerical cont:', start2-start1
+    
+    '''Discrete Code'''
+    g = disc.discrete_1_iter(iter = k,
+                             n = r[3], c = r[4], f = r[5],
+                             matrix_tip = g[0], list_last_movement = g[1], 
+                             list_tip_movement = g[2], life_time_tip = g[3],
+                             stop_iter = g[4], sp_stop = g[5])
+     
+    start3 = timer()
+    print 'process time for numerical disc:', start3-start2
+     
+     
+    if g[4] == 100000:
+        k == Nt
+    
+    '''Plot Continuous real time
     if k % 100 == 0 or k == 1: #k==11:
         print 'masuk draw'
         
@@ -74,10 +94,33 @@ while t <= T and k < Nt:
         draw_time = start5-start4
         print 'process time for drawing:', draw_time
 #         time.sleep(0.01)
-    '''Plot Continuous real time'''
+    Plot Continuous real time'''
+    
     print '***************************************************'
     print
 #     q = disc.???(???) #sudah ada plot
 print '*************DONE*****************'
+h = 0.005
+X = 1
+Y = 1
+hh = h/2 
+fig = plt.figure()
+plt.xlim(hh,X-hh)#X-hh
+plt.ylim(hh,Y-hh)#
+ax = fig.add_subplot(111)
+plot_all = []
+for i in range(0,len(g[0])):
+    x_p = []
+    y_p = []
+    for j in range(0,len(g[0][i])):
+        x_p.append(g[0][i][j][0]*hh)
+        y_p.append(g[0][i][j][1]*hh)
+    print x_p
+    print y_p
+    globals()['plo%s' % i] = ax.plot(x_p, y_p, 'b')
+plt.show()   
+
+
+
 plt.show(block=True)
 

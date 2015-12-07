@@ -1,19 +1,18 @@
-import numpy
-import math as m
 
-def vx_code(h = 0.01, cc = 0, x_p = 0, y_p = 0): #at main lattice
+
+def vx_code(h = 0.005, cc = 0, x_p = 0, y_p = 0): #at main lattice
     r = 0.5/h*(cc[x_p+1,y_p+1]-cc[x_p-1,y_p+1]+cc[x_p+1,y_p-1]-cc[x_p-1,y_p-1])
     return r
     
-def vy_code(h = 0.01, cc = 0, x_p = 0, y_p = 0): #at main lattice
+def vy_code(h = 0.005, cc = 0, x_p = 0, y_p = 0): #at main lattice
     r = 0.5/h*(cc[x_p+1,y_p+1]+cc[x_p-1,y_p+1]-cc[x_p+1,y_p-1]-cc[x_p-1,y_p-1])
     return r
     
-def wx_code(h = 0.01, ff = 0, x_p = 0, y_p = 0): #at main lattice
+def wx_code(h = 0.005, ff = 0, x_p = 0, y_p = 0): #at main lattice
     r = 0.5/h*(ff[x_p+1,y_p+1]-ff[x_p-1,y_p+1]+ff[x_p+1,y_p-1]-ff[x_p-1,y_p-1])
     return r
 
-def wy_code(h = 0.01, ff = 0, x_p = 0, y_p = 0): #at main lattice
+def wy_code(h = 0.005, ff = 0, x_p = 0, y_p = 0): #at main lattice
     r = 0.5/h*(ff[x_p+1,y_p+1]+ff[x_p-1,y_p+1]-ff[x_p+1,y_p-1]-ff[x_p-1,y_p-1])
     return r
 
@@ -37,14 +36,19 @@ def F4y_code(d = 0.00035, ki = 0.38, al = 0.6, ro = 0, one = 0, two = 0, three =
 
 def contiuous_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                      nu = 0.1,be = 0.05,ga = 0.1,e = 0.45,X = 1,Y = 1,
-                     h = 0.01,tp = 0.001,iter = 0,number_of_tip = 3,
+                     h = 0.005,tp = 0.001,iter = 0, number_of_tip = 3,
                      n_o = 0, c_o = 0, f_o = 0, n = 0, c = 0, f = 0, time = 0):
-
+    import math as m
+    import numpy
     hh = h/2
     Nx = int(X/hh)
     Ny = int(Y/hh)
     
     '''For the beginning'''
+    matrix_tip = []
+    list_last_tip_movement = []
+    list_tip_movement = []
+    life_time_tip = []
     if iter == 1:
         n = numpy.zeros((Nx+1,Ny+1))
         c = numpy.zeros((Nx+1,Ny+1))
@@ -57,11 +61,11 @@ def contiuous_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
         for y in range(1,Ny,2):
             for x in range(1,Nx,2):
 #                 n[x,y] = m.exp(-(x*hh)**2/0.001)*(m.sin(number_of_tip*m.pi*y*hh))**2
-                n[x,y] = m.exp(-(y*hh)**2/0.01)*(m.sin(number_of_tip*m.pi*x*hh))**2
+                n[x,y] = m.exp(-(x*hh)**2/0.01)*(m.sin(number_of_tip*m.pi*y*hh))**2       
         n_o = n
         c_o = c
         f_o = f
-        
+  
     '''Time step
     for y in range(2,Ny+1,2):
         for x in range(0,Nx,2):
@@ -292,7 +296,7 @@ def contiuous_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                 else:
                     c[x,y] = c_o[x,y]*(1 - tp*nu*0.25*(n_o[x+1,y+1]+n_o[x-1,y+1]+n_o[x+1,y-1]+n_o[x-1,y-1]))
                     f[x,y] = f_o[x,y]+ tp*(be-ga*f_o[x,y])*0.25*(n_o[x+1,y+1]+n_o[x-1,y+1]+n_o[x+1,y-1]+n_o[x-1,y-1])
-    rr = [n_o,c_o,f_o,n,c,f]
+    rr = [n_o,c_o,f_o,n,c,f, matrix_tip, list_last_tip_movement, list_tip_movement, life_time_tip]
     n_o = n
     c_o = c
     f_o = f
