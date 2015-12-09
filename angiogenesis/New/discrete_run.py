@@ -134,7 +134,7 @@ def discrete_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                     if ar[i] == m:
                         index_tip.append(i+aw)
             aw = jj+1
-        print index_tip
+        print 'Initial Tip:', index_tip
         for i,y in enumerate(index_tip):
             matrix_tip.append([(1,y)]) #real time position
             list_last_movement.append('start') #last tip movement
@@ -192,6 +192,11 @@ def discrete_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                 sp_new_stop.remove(pair[j][0])         
     sp_stop.extend(sp_new_stop)
     sp_stop = list(set(sp_stop))
+    for noms in range(0,len(matrix_tip)):
+        if not noms in sp_stop:
+            for i in range(0,len(matrix_tip[noms])):
+                if matrix_tip[noms][i][1] == Nx-1:
+                    sp_stop.append(noms)
     for i in sp_stop:
         list_last_movement[i] = 'stop'
     
@@ -374,19 +379,13 @@ def discrete_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                     if not tipp == 'stay':
                         list_tip_movement[nom] = tipp
                     list_last_movement[nom] = tipp  
-    print
     for i in range(0, len(matrix_tip)):
         print 'tip',i+1,':',matrix_tip[i]
-        print 'life time tip',i+1,':', life_time_tip[i]   
-        print 'last tip movement of tip',i+1,':', list_last_movement[i]      
+#         print 'life time tip',i+1,':', life_time_tip[i]   
+#         print 'last tip movement of tip',i+1,':', list_last_movement[i]      
     print 'List Stop Tips:', sp_stop
-    print 'Total Stop Tips:', len(sp_stop)
-#     for i in range(1,num_sp+1):
-#         print 'TIP', i, ':',globals()['sp%s' % i]
-#         print 'last movement tip', globals()['tip%s' % i]
-#     print '*****END*****'
-    print
-    
+    print 'Total Tips:', len(matrix_tip)
+    print 'Total Stop Tips:', len(sp_stop)    
     '''***BRANCHING/PY END***'''
     
     gg = [matrix_tip, list_last_movement, list_tip_movement, life_time_tip, stop_iter, sp_stop]

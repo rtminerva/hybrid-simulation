@@ -45,10 +45,6 @@ def contiuous_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
     Ny = int(Y/hh)
     
     '''For the beginning'''
-    matrix_tip = []
-    list_last_tip_movement = []
-    list_tip_movement = []
-    life_time_tip = []
     if iter == 1:
         n = numpy.zeros((Nx+1,Ny+1))
         c = numpy.zeros((Nx+1,Ny+1))
@@ -66,26 +62,28 @@ def contiuous_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
         c_o = c
         f_o = f
   
-    '''Time step
+    '''Time Step'''
+    v1=[]
+    w1=[]
     for y in range(2,Ny+1,2):
         for x in range(0,Nx,2):
-            v1x = 1/(2*h)*(c[x+2,y,k]-c[x,y,k]+c[x+2,y-2,k]-c[x,y-2,k])
-            v1y = 1/(2*h)*(c[x+2,y,k]-c[x+2,y-2,k]+c[x,y,k]-c[x,y-2,k])
-            v1.append(max(v1x,v1y))
-            w1x = 1/(2*h)*(f[x+2,y,k]-f[x,y,k]+f[x+2,y-2,k]-f[x,y-2,k])
-            w1y = 1/(2*h)*(f[x+2,y,k]-f[x+2,y-2,k]+f[x,y,k]-f[x,y-2,k])
-            w1.append(max(w1x,w1y))
-    vv1 = max(v1)
-    ww1 = max(w1)
-    tau1 = h**2/(4*(d+h*ki*vv1/(1+al*c.max())+h*ro*ww1))
-    tau2 = 1/(nu*n.max())
-    tau1 = min(tau1,tau2)
-    if tau1 < tau:
+#             v1x = 1/(2*h)*(c[x+2,y]-c[x,y]+c[x+2,y-2]-c[x,y-2])
+#             v1y = 1/(2*h)*(c[x+2,y]-c[x+2,y-2]+c[x,y]-c[x,y-2])
+#             v1.append(max(v1x,v1y))
+            v1.append(max(1/(2*h)*(c[x+2,y]-c[x,y]+c[x+2,y-2]-c[x,y-2]),1/(2*h)*(c[x+2,y]-c[x+2,y-2]+c[x,y]-c[x,y-2])))
+            
+#             w1x = 1/(2*h)*(f[x+2,y]-f[x,y]+f[x+2,y-2]-f[x,y-2])
+#             w1y = 1/(2*h)*(f[x+2,y]-f[x+2,y-2]+f[x,y]-f[x,y-2])
+#             w1.append(max(w1x,w1y))
+            w1.append(max(1/(2*h)*(f[x+2,y]-f[x,y]+f[x+2,y-2]-f[x,y-2]),1/(2*h)*(f[x+2,y]-f[x+2,y-2]+f[x,y]-f[x,y-2])))
+#     vv1 = max(v1)
+#     ww1 = max(w1)
+#     tau1 = h**2/(4*(d+h*ki*vv1/(1+al*c.max())+h*ro*ww1))
+#     tau2 = 1/(nu*n.max())
+#     tau1 = min(tau1,tau2)
+    tau1 = min(h**2/(4*(d+h*ki*max(v1)/(1+al*c.max())+h*ro*max(w1))),1/(nu*n.max()))
+    if tau1 < tp:
         tp = tau1
-    else:
-        tp = tau
-    '''
-        
     '''Solve n at main lattice'''
     for y in range(1,Ny,2):
         for x in range(1,Nx,2):
@@ -296,11 +294,22 @@ def contiuous_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                 else:
                     c[x,y] = c_o[x,y]*(1 - tp*nu*0.25*(n_o[x+1,y+1]+n_o[x-1,y+1]+n_o[x+1,y-1]+n_o[x-1,y-1]))
                     f[x,y] = f_o[x,y]+ tp*(be-ga*f_o[x,y])*0.25*(n_o[x+1,y+1]+n_o[x-1,y+1]+n_o[x+1,y-1]+n_o[x-1,y-1])
-    rr = [n_o,c_o,f_o,n,c,f, matrix_tip, list_last_tip_movement, list_tip_movement, life_time_tip]
+    rr = [n_o,c_o,f_o,n,c,f,tp]
     n_o = n
     c_o = c
     f_o = f
-    
+    for value in c:
+        if value < 0:
+            print 'Ada C yang negative'
+            quit()
+    for value in f:
+        if value < 0:
+            print 'Ada F yang negative'
+            quit()
+    for value in n:
+        if value < 0:
+            print 'Ada N yang negative'
+            quit()
 #     '''Plot Continuous '''
 #     print time
 #     if iter % 2 == 0:#time >= 2.8: #iter % 200 == 0 or 

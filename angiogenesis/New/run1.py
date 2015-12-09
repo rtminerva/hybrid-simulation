@@ -35,27 +35,23 @@ x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
 Untuk Plot'''
 
 Nt = 10000
-tau = 0.001
 t = 0
 k = 0
 T = 5
-r = [0, 0, 0, 0, 0, 0]
+r = [0, 0, 0, 0, 0, 0, 0.001]
 g = [0, 0, 0, 0, 0, 0]
 surf = 0
 while t <= T and k < Nt:
     start1 = timer()
-    k += 1
-    t += tau
-    print 'time at',t
-    print 'time of processing now', time.clock()
-    
+    k += 1    
     '''Continuous Code'''
     r = cont.contiuous_1_iter(iter = k, 
                               n_o = r[0], c_o = r[1], f_o = r[2], 
                               n = r[3], c = r[4], f = r[5], 
-                              time = t)
+                              tp = r[6])
+    t += r[6]
+    print 'TIME AT',t
     start2 = timer()
-    print 'process time for numerical cont:', start2-start1
     
     '''Discrete Code'''
     g = disc.discrete_1_iter(iter = k,
@@ -63,10 +59,8 @@ while t <= T and k < Nt:
                              matrix_tip = g[0], list_last_movement = g[1], 
                              list_tip_movement = g[2], life_time_tip = g[3],
                              stop_iter = g[4], sp_stop = g[5])
-     
+      
     start3 = timer()
-    print 'process time for numerical disc:', start3-start2
-     
      
     if g[4] == 100000:
         k == Nt
@@ -95,11 +89,15 @@ while t <= T and k < Nt:
         print 'process time for drawing:', draw_time
 #         time.sleep(0.01)
     Plot Continuous real time'''
-    
+    print 'process time of Cont:', start2-start1
+    print 'process time of Disc:', start3-start2
+    print 'total ime of processing:', time.clock()
     print '***************************************************'
     print
-#     q = disc.???(???) #sudah ada plot
+
 print '*************DONE*****************'
+
+
 h = 0.005
 X = 1
 Y = 1
@@ -115,12 +113,8 @@ for i in range(0,len(g[0])):
     for j in range(0,len(g[0][i])):
         x_p.append(g[0][i][j][0]*hh)
         y_p.append(g[0][i][j][1]*hh)
-    print x_p
-    print y_p
     globals()['plo%s' % i] = ax.plot(x_p, y_p, 'b')
 plt.show()   
-
-
-
+ 
 plt.show(block=True)
 
