@@ -37,7 +37,7 @@ Untuk Plot'''
 Nt = 10000
 t = 0
 k = 0
-T = 5
+T = 4
 r = [0, 0, 0, 0, 0, 0, 0.001]
 g = [0, 0, 0, 0, 0, 0]
 surf = 0
@@ -89,6 +89,7 @@ while t <= T and k < Nt:
         print 'process time for drawing:', draw_time
 #         time.sleep(0.01)
     Plot Continuous real time'''
+    print 'Time Step Size:', r[6]
     print 'process time of Cont:', start2-start1
     print 'process time of Disc:', start3-start2
     print 'total ime of processing:', time.clock()

@@ -299,15 +299,15 @@ def contiuous_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
     c_o = c
     f_o = f
     for value in c:
-        if value < 0:
+        if value.all < 0:
             print 'Ada C yang negative'
             quit()
     for value in f:
-        if value < 0:
+        if value.all < 0:
             print 'Ada F yang negative'
             quit()
     for value in n:
-        if value < 0:
+        if value.all < 0:
             print 'Ada N yang negative'
             quit()
 #     '''Plot Continuous '''
