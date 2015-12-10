@@ -3,3 +3,7 @@ if len(A) == 3:
     pass
 else:
     print len(A)
+
+import numpy
+B = numpy.zeros(5)
+print B

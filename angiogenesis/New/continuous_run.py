@@ -16,25 +16,25 @@ def wy_code(h = 0.005, ff = 0, x_p = 0, y_p = 0): #at main lattice
     r = 0.5/h*(ff[x_p+1,y_p+1]+ff[x_p-1,y_p+1]-ff[x_p+1,y_p-1]-ff[x_p-1,y_p-1])
     return r
 
-def F1x_code(d = 0.00035, ki = 0.38, al = 0.6, ro = 0, one = 0, two = 0, three = 0, four = 0, nn = 0, cc = 0, x_p = 0, y_p = 0): #at main lattice n
+def F1x_code(d = 0.00035, ki = 0.38, al = 0.6, ro = 0.3, one = 0, two = 0, three = 0, four = 0, nn = 0, cc = 0, x_p = 0, y_p = 0): #at main lattice n
     r = -d*(nn[x_p+2,y_p]-nn[x_p,y_p])+ki/(1+al*cc[x_p+1,y_p+1])*(nn[x_p,y_p]*one-nn[x_p+2,y_p]*two) + ro*(nn[x_p,y_p]*three-nn[x_p+2,y_p]*four)
     return r
     
-def F2x_code(d = 0.00035, ki = 0.38, al = 0.6, ro = 0, one = 0, two = 0, three = 0, four = 0, nn = 0, cc = 0, x_p = 0, y_p = 0): #at main lattice n
+def F2x_code(d = 0.00035, ki = 0.38, al = 0.6, ro = 0.3, one = 0, two = 0, three = 0, four = 0, nn = 0, cc = 0, x_p = 0, y_p = 0): #at main lattice n
     r = -d*(nn[x_p,y_p]-nn[x_p-2,y_p])+ki/(1+al*cc[x_p-1,y_p+1])*(nn[x_p-2,y_p]*one-nn[x_p,y_p]*two) + ro*(nn[x_p-2,y_p]*three-nn[x_p,y_p]*four)
     return r
  
-def F3y_code(d = 0.00035, ki = 0.38, al = 0.6, ro = 0, one = 0, two = 0, three = 0, four = 0, nn = 0, cc = 0, x_p = 0, y_p = 0): #at main lattice n
+def F3y_code(d = 0.00035, ki = 0.38, al = 0.6, ro = 0.3, one = 0, two = 0, three = 0, four = 0, nn = 0, cc = 0, x_p = 0, y_p = 0): #at main lattice n
     r = -d*(nn[x_p,y_p+2]-nn[x_p,y_p])+ki/(1+al*cc[x_p+1,y_p+1])*(nn[x_p,y_p+2]*one-nn[x_p,y_p]*two) + ro*(nn[x_p,y_p+2]*three-nn[x_p,y_p]*four)
     return r 
 
-def F4y_code(d = 0.00035, ki = 0.38, al = 0.6, ro = 0, one = 0, two = 0, three = 0, four = 0, nn = 0, cc = 0, x_p = 0, y_p = 0): #at main lattice n
+def F4y_code(d = 0.00035, ki = 0.38, al = 0.6, ro = 0.3, one = 0, two = 0, three = 0, four = 0, nn = 0, cc = 0, x_p = 0, y_p = 0): #at main lattice n
     r = -d*(nn[x_p,y_p]-nn[x_p,y_p-2])+ki/(1+al*cc[x_p+1,y_p-1])*(nn[x_p,y_p]*one-nn[x_p,y_p-2]*two) + ro*(nn[x_p,y_p]*three-nn[x_p,y_p-2]*four)
     return r
 
 '''Main Function'''
 
-def contiuous_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
+def contiuous_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0.3,
                      nu = 0.1,be = 0.05,ga = 0.1,e = 0.45,X = 1,Y = 1,
                      h = 0.005,tp = 0.001,iter = 0, number_of_tip = 3,
                      n_o = 0, c_o = 0, f_o = 0, n = 0, c = 0, f = 0, time = 0):
