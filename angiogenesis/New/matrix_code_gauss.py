@@ -30,6 +30,7 @@ def P4_code(h = 0.005,d = 0.00035, ki = 0.38, al = 0.6, ro = 0, c1 = 0, x = 0, y
     r = d + h*ki/(1+al*c1[x+1,y+1])*max(vy_code(x_p = x, y_p = y, cc = c1), 0) + h*ro*max(wy_code(x_p = x, y_p = y, ff = f1), 0)
     return r
 
+
 def vector_A(theta = 0.5, time_step = 0.001, h = 0.2, X = 1, Y = 1, ccc = 0, fff = 0, left = False):
     lam = time_step/h**2
     hh = h/2
@@ -203,6 +204,7 @@ def continuous_matrix_1_iter(theta = 0.5,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
         n_o = n
         c_o = c
         f_o = f
+        n_o_vector =n_o.flatten() 
     
     '''Build SPL Matrix'''
     teta = 0.75
@@ -218,7 +220,73 @@ def continuous_matrix_1_iter(theta = 0.5,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
     C_right = vector_C(ccc = c_o, fff = f_o, theta = 1-teta)
     D_right = vector_D(ccc = c_o, fff = f_o, theta = 1-teta)
     E_right = vector_E(ccc = c_o, fff = f_o, theta = 1-teta)
+    
+    '''Computing Vector of Right Side ( as Q)'''
+    Q = numpy.zeros((Nx/2)**2)
+    for i in range(0,Nx/2): #untuk paling awal
+        if i == 0 == 0: 
+            Q[i] = B_right[i]*n_o_vector[i] + C_right[i]*n_o_vector[i+1] + E_right[i]*n_o_vector[i+Nx/2] #B & C , E
+        elif i == Nx/2-1: 
+            Q[i] = A_right[i-1]*n_o_vector[i-1] + B_right[i]*n_o_vector[i] + E_right[i]*n_o_vector[i+Nx/2]#A & B, E
+        else:
+            Q[i] = A_right[i-1]*n_o_vector[i-1] + B_right[i]*n_o_vector[i] + C_right[i]*n_o_vector[i+1] + E_right[i]*n_o_vector[i+Nx/2]#A & B & C, E
+     
+    for i in range(Nx/2,(Nx/2)**2-Nx/2): #untuk tengah
+        if i % Nx/2 == 0:
+            Q[i] = D_right[i-(Nx/2)]*n_o_vector[i-Nx/2] + B_right[i]*n_o_vector[i] + C_right[i]*n_o_vector[i+1] + E_right[i]*n_o_vector[i+Nx/2] #D, B & C, E
+        elif (i+1) % Nx/2 == 0:
+            Q[i] = D_right[i-(Nx/2)]*n_o_vector[i-Nx/2] + A_right[i-1]*n_o_vector[i-1] + B_right[i]*n_o_vector[i] + E_right[i]*n_o_vector[i+Nx/2] #D, A & B, E
+        else:
+            Q[i] = D_right[i-(Nx/2)]*n_o_vector[i-Nx/2] + A_right[i-1]*n_o_vector[i-1] + B_right[i]*n_o_vector[i] + C_right[i]*n_o_vector[i+1] + E_right[i]*n_o_vector[i+Nx/2] #D, A & B & C, E
+     
+    for i in range((Nx/2)**2-Nx/2,(Nx/2)**2): #untuk terakhir
+        if i % (Nx/2)**2-Nx/2 == 0:
+            Q[i] = D_right[i-(Nx/2)]*n_o_vector[i-Nx/2] + B_right[i]*n_o_vector[i] + C_right[i]*n_o_vector[i+1] #D, B & C
+        elif i == (Nx/2)**2-1:
+            Q[i] = D_right[i-(Nx/2)]*n_o_vector[i-Nx/2] + A_right[i-1]*n_o_vector[i-1] + B_right[i]*n_o_vector[i] #D, A & B
+        else:
+            Q[i] = D_right[i-(Nx/2)]*n_o_vector[i-Nx/2] + A_right[i-1]*n_o_vector[i-1] + B_right[i]*n_o_vector[i] + C_right[i]*n_o_vector[i+1] #D, A & B & C
+    
+#     '''Matrix Kiri dibuat vector per baris saja'''
+#     vector_left = []
+#     for i in range(0,(Nx/2)**2):
+#         if i == 0:
+#             vector_left.append(numpy.zeros(Nx/2+1))
+#             vector_left[0][0] = B_left[0]
+#             vector_left[0][1] = C_left[0]
+#             vector_left[0][Nx/2] = E_left[0]
+#         if i > 0 and i <= Nx/2-1:
+#             vector_left.append(numpy.zeros(Nx/2+2))
+#             vector_left[0][0] = A_left[i-1]
+#             vector_left[0][1] = B_left[i]
+#             vector_left[0][2] = C_left[i]
+#             vector_left[0][Nx/2+1] = E_left[i]
+#         
+
+    
+    
+    
+ 
+    
+#     '''Algoritma Eliminasi Gauss'''
+#     
+#             
+#             
+#     for i in range(0,Nx/2):
+#         
+#     for i in range(0,(Nx/2)**2-Nx/2):
+        
+    
+    
+    
+    
     rr = [A_left,B_left,C_left,D_left,E_left,A_right,B_right,C_right,D_right,E_right,tp]#A,B,C,
+    n_o = n
+    c_o = c
+    f_o = f
+    n_o_vector =n_o.flatten() 
+    
+    
     return rr
 r = continuous_matrix_1_iter()
 print 'Vector A_left', r[0]
@@ -227,11 +295,11 @@ print 'Vector C_left', r[2]
 print 'Vector D_left', r[3]
 print 'Vector E_left', r[4]    
 print
-print 'Vector A_right', r[5]
-print 'Vector B_right', r[6]
-print 'Vector C_right', r[7]
-print 'Vector D_right', r[8]
-print 'Vector E_right', r[9] 
+# print 'Vector A_right', len(r[5])
+# print 'Vector B_right', len(r[6])
+# print 'Vector C_right', len(r[7])
+# print 'Vector D_right', len(r[8])
+# print 'Vector E_right', len(r[9]) 
     
     
     

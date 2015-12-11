@@ -1,9 +1,9 @@
-A = [[(1,2),(2,3)],[(1,2),(2,3)],[(1,2),(2,3)]]
-if len(A) == 3:
-    pass
-else:
-    print len(A)
+import numpy as np
+a = np.array([[1,2,3], [4,5,6]])
 
-import numpy
-B = numpy.zeros(5)
-print B
+b = a.flatten()
+
+print a
+print b
+             
+    
