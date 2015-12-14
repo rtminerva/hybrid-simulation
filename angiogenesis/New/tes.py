@@ -10,6 +10,7 @@ a.append(np.array([1,2,3,4,5,6]))
 a.append(np.array([1,2,3,4,5]))
 a.append(np.array([1,2,3,4]))
 
+Q = np.array([1,2,3,4,5,6,7,8])
 s = (len(a)-1)/2 #s=2 #index vector diagonal 
                  #number of pivot for each process
                  #number of elimination
@@ -28,6 +29,8 @@ for i in range(0,s1): #range sampai (Nx/2)**2-Nx/2
             print 'pivot ke', j, 'diambil dari element', s+j+1, i, 'dibagi', s,i
             p = a[s+j+1][i]/a[s][i]
             a[s+j+1][i] = 0
+            print 'Q eliminasi untuk element', i+j+1, 'dikurang p*elemen',i
+            Q[i+j+1] = Q[i+j+1]-p*Q[i]
             for u in range(1,s+1-ii):
                 if j+1-u < 0: #untuk lebih dari diagonal 
                     print 'elmininasI ke', u, 'untuk element', s+j+1-u, jj, 'dikurang p*elemen', s-u, i
@@ -44,6 +47,8 @@ for i in range(0,s1): #range sampai (Nx/2)**2-Nx/2
             print 'pivot ke', j, 'diambil dari element', s+j+1, i, 'dibagi', s,i
             p = a[s+j+1][i]/a[s][i]
             a[s+j+1][i] = 0
+            print 'Q eliminasi untuk element', i+j+1, 'dikurang p*elemen',i
+            Q[i+j+1] = Q[i+j+1]-p*Q[i]
             for u in range(1,s+1):
                 if j+1-u < 0: #untuk lebih dari diagonal 
                     print 'elmininasI ke', u, 'untuk element', s+j+1-u, jj, 'dikurang p*elemen', s-u, i
@@ -55,7 +60,7 @@ for i in range(0,s1): #range sampai (Nx/2)**2-Nx/2
         print   
         if s+j+1 == len(a)-1 and i == len(a[-1])-1:
             jk = True
-print a
+
 
 #     for i in range(Nx/2,(Nx/2)**2-Nx/2): # 5 - 19
 #         if i%5 == 0: # 5,10,15

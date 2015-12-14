@@ -1,4 +1,5 @@
 import continuous_run as cont
+import matrix_code_gauss as gauss
 import discrete_run as disc
 import numpy
 from timeit import default_timer as timer 

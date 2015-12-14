@@ -175,7 +175,8 @@ def vector_E(theta = 0.5, time_step = 0.001, h = 0.2, X = 1, Y = 1, ccc = 0, fff
 
 
 
-'''Main Function'''
+
+'''MAIN FUNCTION'''
 
 def continuous_matrix_1_iter(theta = 0.5,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                              nu = 0.1,be = 0.05,ga = 0.1,e = 0.45, number_of_tip = 3,
@@ -204,8 +205,8 @@ def continuous_matrix_1_iter(theta = 0.5,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
         n_o = n
         c_o = c
         f_o = f
-        n_o_vector =n_o.flatten() 
-    
+#         n_o_vector =n_o.flatten()
+
     '''Build SPL Matrix of RHS'''
     teta = 0.75
 
@@ -234,33 +235,38 @@ def continuous_matrix_1_iter(theta = 0.5,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
 
     '''Computing Vector of Right Side ( as Q)'''
     Q = numpy.zeros((Nx/2)**2)
-    for i in range(0,Nx/2): #untuk paling awal
-        if i == 0 == 0: 
-            Q[i] = B_right[i]*n_o_vector[i] + C_right[i]*n_o_vector[i+1] + E_right[i]*n_o_vector[i+Nx/2] #B & C , E
-        elif i == Nx/2-1: 
-            Q[i] = A_right[i-1]*n_o_vector[i-1] + B_right[i]*n_o_vector[i] + E_right[i]*n_o_vector[i+Nx/2]#A & B, E
+    for i,j in enumerate(range(1,Nx,2)): #untuk paling awal
+        if j == 1: 
+            Q[i] = B_right[i]*n_o[1,1] + C_right[i]*n_o[3,1] + E_right[i]*n_o[1,3] #B & C , E
+        elif j == Nx-1: 
+            Q[i] = A_right[i-1]*n_o[j-2,1] + B_right[i]*n_o[j,1] + E_right[i]*n_o[j,3]#A & B, E
         else:
-            Q[i] = A_right[i-1]*n_o_vector[i-1] + B_right[i]*n_o_vector[i] + C_right[i]*n_o_vector[i+1] + E_right[i]*n_o_vector[i+Nx/2]#A & B & C, E
+            Q[i] = A_right[i-1]*n_o[j-2,1] + B_right[i]*n_o[j,1] + C_right[i]*n_o[j+2,1] + E_right[i]*n_o[j,3]#A & B & C, E
+            
+    i = Nx/2       
+    for k,l in enumerate(range(3,Nx-2,2)): 
+        for j in range(1,Nx,2): #untuk tengah #Nx/2 , (Nx/2)**2-Nx/2
+            if j == 1:
+                Q[i] = D_right[i-(Nx/2)]*n_o[j,l-2] + B_right[i]*n_o[j,l] + C_right[i]*n_o[j+2,l] + E_right[i]*n_o[j,l+2] #D, B & C, E
+            elif j == Nx-1:
+                Q[i] = D_right[i-(Nx/2)]*n_o[j,l-2] + A_right[i-1]*n_o[j-2,l] + B_right[i]*n_o[j,l] + E_right[i]*n_o[j,l+2] #D, A & B, E
+            else:
+                Q[i] = D_right[i-(Nx/2)]*n_o[j,l-2] + A_right[i-1]*n_o[j-2,l] + B_right[i]*n_o[j,l] + C_right[i]*n_o[j+2,l] + E_right[i]*n_o[j,l+2] #D, A & B & C, E
+            i +=1
      
-    for i in range(Nx/2,(Nx/2)**2-Nx/2): #untuk tengah
-        if i % Nx/2 == 0:
-            Q[i] = D_right[i-(Nx/2)]*n_o_vector[i-Nx/2] + B_right[i]*n_o_vector[i] + C_right[i]*n_o_vector[i+1] + E_right[i]*n_o_vector[i+Nx/2] #D, B & C, E
-        elif (i+1) % Nx/2 == 0:
-            Q[i] = D_right[i-(Nx/2)]*n_o_vector[i-Nx/2] + A_right[i-1]*n_o_vector[i-1] + B_right[i]*n_o_vector[i] + E_right[i]*n_o_vector[i+Nx/2] #D, A & B, E
+    for i,j in enumerate(range(1,Nx,2)): #untuk terakhir #(Nx/2)**2-Nx/2 , (Nx/2)**2
+        i += (Nx/2)**2-Nx/2
+        if j == 1:
+            Q[i] = D_right[i-(Nx/2)]*n_o[1,Nx-3] + B_right[i]*n_o[1,Nx-1] + C_right[i]*n_o[3,Nx-1] #D, B & C
+        elif j == 9:
+            Q[i] = D_right[i-(Nx/2)]*n_o[j,Nx-3] + A_right[i-1]*n_o[j-2,Nx-1] + B_right[i]*n_o[j,Nx-1] #D, A & B
         else:
-            Q[i] = D_right[i-(Nx/2)]*n_o_vector[i-Nx/2] + A_right[i-1]*n_o_vector[i-1] + B_right[i]*n_o_vector[i] + C_right[i]*n_o_vector[i+1] + E_right[i]*n_o_vector[i+Nx/2] #D, A & B & C, E
-     
-    for i in range((Nx/2)**2-Nx/2,(Nx/2)**2): #untuk terakhir
-        if i % (Nx/2)**2-Nx/2 == 0:
-            Q[i] = D_right[i-(Nx/2)]*n_o_vector[i-Nx/2] + B_right[i]*n_o_vector[i] + C_right[i]*n_o_vector[i+1] #D, B & C
-        elif i == (Nx/2)**2-1:
-            Q[i] = D_right[i-(Nx/2)]*n_o_vector[i-Nx/2] + A_right[i-1]*n_o_vector[i-1] + B_right[i]*n_o_vector[i] #D, A & B
-        else:
-            Q[i] = D_right[i-(Nx/2)]*n_o_vector[i-Nx/2] + A_right[i-1]*n_o_vector[i-1] + B_right[i]*n_o_vector[i] + C_right[i]*n_o_vector[i+1] #D, A & B & C
-    
+            Q[i] = D_right[i-(Nx/2)]*n_o[j,Nx-3] + A_right[i-1]*n_o[j-2,Nx-1] + B_right[i]*n_o[j,Nx-1] + C_right[i]*n_o[j+2,Nx-1] #D, A & B & C
+
     '''Algoritma Eliminasi Gauss'''
     '''vz n = Q'''
-    s = (len(a)-1)/2 #s=2 #index vector diagonal 
+    '''First, to Make the left Matrix to be upper triangle'''
+    s = (len(a)-1)/2 #s=5 #index vector diagonal 
                      #number of pivot for each process
                      #number of elimination
     s1 = len(a[s])-1 #s1=3 number of process
@@ -270,47 +276,84 @@ def continuous_matrix_1_iter(theta = 0.5,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
     
     for i in range(0,s1): #range sampai (Nx/2)**2-Nx/2
         if jk == True: #kalau pivot sudah masuk vector akhir
-            print 'proses ke', i
+#             print 'proses ke', i
             ii += 1
             for j in range(0,s-ii):
-                print
-                print 'pivot ke', j, 'diambil dari element', s+j+1, i, 'dibagi', s,i
+#                 print
+#                 print 'pivot ke', j, 'diambil dari element', s+j+1, i, 'dibagi', s,i
                 p = a[s+j+1][i]/a[s][i]
                 a[s+j+1][i] = 0
+#                 print 'Q eliminasi untuk element', i+j+1, 'dikurang p*elemen',i
+                Q[i+j+1] = Q[i+j+1]-p*Q[i]
                 for u in range(1,s+1-ii):
                     if j+1-u < 0: #untuk lebih dari diagonal 
-                        print 'elmininasI ke', u, 'untuk element', s+j+1-u, jj, 'dikurang p*elemen', s-u, i
+#                         print 'elmininasI ke', u, 'untuk element', s+j+1-u, jj, 'dikurang p*elemen', s-u, i
                         a[s+j+1-u][jj] = a[s+j+1-u][jj]-p*a[s-u][i]
                     else:
                         jj = i+u
-                        print 'elmininasi ke', u, 'untuk element', s+j+1-u, i+u, 'dikurang p*elemen', s-u, i
+#                         print 'elmininasi ke', u, 'untuk element', s+j+1-u, i+u, 'dikurang p*elemen', s-u, i
                         a[s+j+1-u][i+u] = a[s+j+1-u][i+u]-p*a[s-u][i]
-            print
+#             print
         else: #normal process
-            print 'proses ke', i
+#             print 'proses ke', i
             for j in range(0,s):
-                print
-                print 'pivot ke', j, 'diambil dari element', s+j+1, i, 'dibagi', s,i
+#                 print
+#                 print 'pivot ke', j, 'diambil dari element', s+j+1, i, 'dibagi', s,i
                 p = a[s+j+1][i]/a[s][i]
                 a[s+j+1][i] = 0
+#                 print 'Q eliminasi untuk element', i+j+1, 'dikurang p*elemen',i
+                Q[i+j+1] = Q[i+j+1]-p*Q[i]
                 for u in range(1,s+1):
                     if j+1-u < 0: #untuk lebih dari diagonal 
-                        print 'elmininasI ke', u, 'untuk element', s+j+1-u, jj, 'dikurang p*elemen', s-u, i
+#                         print 'elmininasI ke', u, 'untuk element', s+j+1-u, jj, 'dikurang p*elemen', s-u, i
                         a[s+j+1-u][jj] = a[s+j+1-u][jj]-p*a[s-u][i]
                     else:
                         jj = i+u
-                        print 'elmininasi ke', u, 'untuk element', s+j+1-u, i+u, 'dikurang p*elemen', s-u, i
+#                         print 'elmininasi ke', u, 'untuk element', s+j+1-u, i+u, 'dikurang p*elemen', s-u, i
                         a[s+j+1-u][i+u] = a[s+j+1-u][i+u]-p*a[s-u][i]
-            print   
+#             print   
             if s+j+1 == len(a)-1 and i == len(a[-1])-1:
                 jk = True
-    
+    '''Second is to Solve n by Penyulihan Mundur'''
+    ii = len(Q)-1
+    jj = 0
+    kk = 0
+    n[Nx-1,Ny-1] = Q[ii]/(a[s][ii])
+    for j in reversed(range(1,Ny,2)):
+        kkk = 0
+        for i in reversed(range(1,Nx,2)):
+            sum_j = 0
+            if j == Ny-1 and i == Nx-1:
+                pass
+            else:
+                ii -= 1
+                print 'n pos:',i,j,'diagonal:',s,ii
+                if kk < Nx/2-1:
+                    kk +=1
+                    for i1 in range(0,kk):
+                        print 'element vector sum', s-kk+i1, ii
+                        print 'element n multiple', Nx-1-(i1*2), j
+                        sum_j += a[s-kk+i1][ii]*n[Nx-1-(i1*2), j] 
+                    print
+                else:
+                    for i1 in range(0,kkk): #on the same j
+                        print 'element vector sum', s-i1-1, ii
+                        print 'element n multiple', i+2+(i1*2), j
+                        sum_j += a[s-i1-1][ii]*n[i+2+(i1*2),j]
+                    for i1 in range(kkk,s): #on the upper j
+                        print 'element vector sum', s-i1-1, ii
+                        print 'element n multiple', 1+(i1-kkk)*2, j+2
+                        sum_j += a[s-i1-1][ii]*n[1+(i1-kkk)*2,j+2]
+                    print 
+                    kkk +=1  
+                n[i,j] = (Q[ii]-sum_j)/a[s][ii]
+                    
     rr = [n_o,c_o,f_o,n,c,f,tp]#A,B,C,
     n_o = n
     c_o = c
     f_o = f
-    n_o_vector =n_o.flatten() 
+#     n_o_vector =n_o.flatten() 
     return rr
-    
+continuous_matrix_1_iter()
     
     
