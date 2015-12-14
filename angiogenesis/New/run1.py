@@ -44,12 +44,18 @@ g = [0, 0, 0, 0, 0, 0]
 surf = 0
 while t <= T and k < Nt:
     start1 = timer()
-    k += 1    
-    '''Continuous Code'''
-    r = cont.contiuous_1_iter(iter = k, 
-                              n_o = r[0], c_o = r[1], f_o = r[2], 
-                              n = r[3], c = r[4], f = r[5], 
-                              tp = r[6])
+    k += 1
+    '''Continuous Code by Matrix Using Gauss Method to Solve SPL'''
+    r = gauss.continuous_matrix_1_iter(iter = k, 
+                                       n_o = r[0], c_o = r[1], f_o = r[2], 
+                                       n = r[3], c = r[4], f = r[5], 
+                                       tp = r[6])
+        
+#     '''Continuous Code'''
+#     r = cont.contiuous_1_iter(iter = k, 
+#                               n_o = r[0], c_o = r[1], f_o = r[2], 
+#                               n = r[3], c = r[4], f = r[5], 
+#                               tp = r[6])
     t += r[6]
     print 'TIME AT',t
     start2 = timer()
