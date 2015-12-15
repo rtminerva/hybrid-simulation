@@ -180,15 +180,16 @@ def vector_E(theta = 0.5, time_step = 0.001, h = 0.01, X = 1, Y = 1, ccc = 0, ff
 
 def continuous_matrix_1_iter(theta = 0.5,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                              nu = 0.1,be = 0.05,ga = 0.1,e = 0.45, number_of_tip = 3,
-                             iter = 1, h = 0.01, X = 1,Y = 1, tp = 0.001,
+                             iter = 0, h = 0.01, X = 1,Y = 1, tp = 0.001,
                              n_o = 0, c_o = 0, f_o = 0, n = 0, c = 0, f = 0):
     from timeit import default_timer as timer 
     import numpy
     hh = h/2
     Nx = int(X/hh)
+    Ny = int(Y/hh)
     if iter == 1:
         import math as m
-        Ny = int(Y/hh)
+        
         n = numpy.zeros((Nx+1,Ny+1))
         c = numpy.zeros((Nx+1,Ny+1))
         f = numpy.zeros((Nx+1,Ny+1))
@@ -205,7 +206,30 @@ def continuous_matrix_1_iter(theta = 0.5,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
         c_o = c
         f_o = f
 #         n_o_vector =n_o.flatten()
-
+    
+    '''Time Step'''
+    v1=[]
+    w1=[]
+    for y in range(2,Ny+1,2):
+        for x in range(0,Nx,2):
+#             v1x = 1/(2*h)*(c[x+2,y]-c[x,y]+c[x+2,y-2]-c[x,y-2])
+#             v1y = 1/(2*h)*(c[x+2,y]-c[x+2,y-2]+c[x,y]-c[x,y-2])
+#             v1.append(max(v1x,v1y))
+            v1.append(max(1/(2*h)*(c[x+2,y]-c[x,y]+c[x+2,y-2]-c[x,y-2]),1/(2*h)*(c[x+2,y]-c[x+2,y-2]+c[x,y]-c[x,y-2])))
+            
+#             w1x = 1/(2*h)*(f[x+2,y]-f[x,y]+f[x+2,y-2]-f[x,y-2])
+#             w1y = 1/(2*h)*(f[x+2,y]-f[x+2,y-2]+f[x,y]-f[x,y-2])
+#             w1.append(max(w1x,w1y))
+            w1.append(max(1/(2*h)*(f[x+2,y]-f[x,y]+f[x+2,y-2]-f[x,y-2]),1/(2*h)*(f[x+2,y]-f[x+2,y-2]+f[x,y]-f[x,y-2])))
+#     vv1 = max(v1)
+#     ww1 = max(w1)
+#     tau1 = h**2/(4*(d+h*ki*vv1/(1+al*c.max())+h*ro*ww1))
+#     tau2 = 1/(nu*n.max())
+#     tau1 = min(tau1,tau2)
+    tau1 = min(h**2/(4*(d+h*ki*max(v1)/(1+al*c.max())+h*ro*max(w1))),1/(nu*n.max()))
+    if tau1 < tp:
+        tp = tau1
+    
     '''Build SPL Matrix of RHS'''
     start_c_1 = timer()
     teta = 0.75
@@ -286,7 +310,7 @@ def continuous_matrix_1_iter(theta = 0.5,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
     
     for i in range(0,s1): #range sampai (Nx/2)**2-Nx/2
         if jk == True: #kalau pivot sudah masuk vector akhir
-            print 'proses ke', i
+#             print 'proses ke', i
             ii += 1
             for j in range(0,s-ii):
 #                 print
@@ -305,7 +329,7 @@ def continuous_matrix_1_iter(theta = 0.5,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                         a[s+j+1-u][i+u] = a[s+j+1-u][i+u]-p*a[s-u][i]
 #             print
         else: #normal process
-            print 'proses ke', i
+#             print 'proses ke', i
             for j in range(0,s):
 #                 print
 #                 print 'pivot ke', j, 'diambil dari element', s+j+1, i, 'dibagi', s,i
@@ -361,15 +385,14 @@ def continuous_matrix_1_iter(theta = 0.5,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                     kkk +=1  
                 n[i,j] = (Q[ii]-sum_j)/a[s][ii]
     start_c_6 = timer()
-    print 'time Penyulihan Mundur', start_c_6-start_c_5
+    print 'Time Penyulihan Mundur', start_c_6-start_c_5
     '''Algoritma Eliminasi Gauss'''
-            
+    print 'Time increment', tp        
     rr = [n_o,c_o,f_o,n,c,f,tp]#A,B,C,
     n_o = n
     c_o = c
     f_o = f
 #     n_o_vector =n_o.flatten() 
     return rr
-continuous_matrix_1_iter()
     
     

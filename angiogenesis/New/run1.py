@@ -1,5 +1,6 @@
 import continuous_run as cont
 import matrix_code_gauss as gauss
+import matrix_sparse_continuous as spr
 import discrete_run as disc
 import numpy
 from timeit import default_timer as timer 
@@ -38,24 +39,38 @@ Untuk Plot'''
 Nt = 10000
 t = 0
 k = 0
-T = 1.27
-r = [0, 0, 0, 0, 0, 0, 0.001]
+T = 5
+r = [0, 0, 0, 0, 0, 0, 0.1]
 g = [0, 0, 0, 0, 0, 0]
 surf = 0
 while t <= T and k < Nt:
     start1 = timer()
     k += 1
-    '''Continuous Code by Matrix Using Gauss Method to Solve SPL'''
-    r = gauss.continuous_matrix_1_iter(iter = k, 
-                                       n_o = r[0], c_o = r[1], f_o = r[2], 
-                                       n = r[3], c = r[4], f = r[5], 
-                                       tp = r[6])
+    '''Continuous Code by Sparse Matrix'''
+    r = spr.continuous_sparse_matrix_1_iter(iter = k, 
+                                            n_v = r[0], c_o = r[1], f_o = r[2], 
+                                            n = r[3], c = r[4], f = r[5], 
+                                            tp = r[6])
+    
+    
+#    '''Continuous Code by Matrix Using Gauss Method to Solve SPL'''
+#     r = gauss.continuous_matrix_1_iter(iter = k, 
+#                                        n_o = r[0], c_o = r[1], f_o = r[2], 
+#                                        n = r[3], c = r[4], f = r[5], 
+#                                        tp = r[6])
         
 #     '''Continuous Code'''
-#     r = cont.contiuous_1_iter(iter = k, 
-#                               n_o = r[0], c_o = r[1], f_o = r[2], 
-#                               n = r[3], c = r[4], f = r[5], 
-#                               tp = r[6])
+#     if t <=1.5:
+#         r = cont.contiuous_1_iter(iter = k, 
+#                                   n_o = r[0], c_o = r[1], f_o = r[2], 
+#                                   n = r[3], c = r[4], f = r[5], 
+#                                   tp = r[6])
+#     else:
+#         r = gauss.continuous_matrix_1_iter(iter = k, 
+#                                            n_o = r[0], c_o = r[1], f_o = r[2], 
+#                                            n = r[3], c = r[4], f = r[5], 
+#                                            tp = r[6])
+        
     t += r[6]
     print 'TIME AT',t
     start2 = timer()
@@ -69,8 +84,8 @@ while t <= T and k < Nt:
       
     start3 = timer()
      
-    if g[4] == 100000:
-        k == Nt
+    if g[4] >=10000:
+        k == g[4]
     
     '''Plot Continuous real time
     if k % 100 == 0 or k == 1: #k==11:

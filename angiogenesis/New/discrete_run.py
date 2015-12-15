@@ -1,6 +1,6 @@
 import continuous_run as cont
 
-def movement_dir(h = 0.005,d = 0.00035,ki = 0.38,al = 0.6,ro = 0.3,
+def movement_dir(h = 0.01,d = 0.00035,ki = 0.38,al = 0.6,ro = 0.3,
                  tp = 0.001, X = 1,Y = 1,
                  x_pos = 0, y_pos = 0, cc = 0, ff = 0):
     la = tp/(h**2)
@@ -82,7 +82,7 @@ def movement_dir(h = 0.005,d = 0.00035,ki = 0.38,al = 0.6,ro = 0.3,
 
 def discrete_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0.3,
                      nu = 0.1,be = 0.05,ga = 0.1,e = 0.45,X = 1,Y = 1,
-                     h = 0.005,tp = 0.001,iter = 0, number_of_tip = 3,
+                     h = 0.01,tp = 0.001,iter = 0, number_of_tip = 6,
                      n = 0, c = 0, f = 0,
                      matrix_tip = 0, list_last_movement = 0, 
                      list_tip_movement = 0, life_time_tip = 0,

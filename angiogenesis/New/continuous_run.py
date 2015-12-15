@@ -1,18 +1,18 @@
 
 
-def vx_code(h = 0.005, cc = 0, x_p = 0, y_p = 0): #at main lattice
+def vx_code(h = 0.01, cc = 0, x_p = 0, y_p = 0): #at main lattice
     r = 0.5/h*(cc[x_p+1,y_p+1]-cc[x_p-1,y_p+1]+cc[x_p+1,y_p-1]-cc[x_p-1,y_p-1])
     return r
     
-def vy_code(h = 0.005, cc = 0, x_p = 0, y_p = 0): #at main lattice
+def vy_code(h = 0.01, cc = 0, x_p = 0, y_p = 0): #at main lattice
     r = 0.5/h*(cc[x_p+1,y_p+1]+cc[x_p-1,y_p+1]-cc[x_p+1,y_p-1]-cc[x_p-1,y_p-1])
     return r
     
-def wx_code(h = 0.005, ff = 0, x_p = 0, y_p = 0): #at main lattice
+def wx_code(h = 0.01, ff = 0, x_p = 0, y_p = 0): #at main lattice
     r = 0.5/h*(ff[x_p+1,y_p+1]-ff[x_p-1,y_p+1]+ff[x_p+1,y_p-1]-ff[x_p-1,y_p-1])
     return r
 
-def wy_code(h = 0.005, ff = 0, x_p = 0, y_p = 0): #at main lattice
+def wy_code(h = 0.01, ff = 0, x_p = 0, y_p = 0): #at main lattice
     r = 0.5/h*(ff[x_p+1,y_p+1]+ff[x_p-1,y_p+1]-ff[x_p+1,y_p-1]-ff[x_p-1,y_p-1])
     return r
 
@@ -36,7 +36,7 @@ def F4y_code(d = 0.00035, ki = 0.38, al = 0.6, ro = 0.3, one = 0, two = 0, three
 
 def contiuous_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0.3,
                      nu = 0.1,be = 0.05,ga = 0.1,e = 0.45,X = 1,Y = 1,
-                     h = 0.005,tp = 0.001,iter = 0, number_of_tip = 3,
+                     h = 0.01,tp = 0.001,iter = 0, number_of_tip = 3,
                      n_o = 0, c_o = 0, f_o = 0, n = 0, c = 0, f = 0, time = 0):
     import math as m
     import numpy
