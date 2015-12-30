@@ -1,18 +1,18 @@
 import continuous_run as cont
 
-def movement_dir(h = 0.01,d = 0.00035,ki = 0.38,al = 0.6,ro = 0.3,
-                 tp = 0.001, X = 1,Y = 1,
+def movement_dir(h1 = 0.005,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
+                 tep = 0.001, X = 1,Y = 1,
                  x_pos = 0, y_pos = 0, cc = 0, ff = 0):
-    la = tp/(h**2)
-    hh = h/2
+    la = tep/(h1**2)
+    hh = h1/2
     Nx = int(X/hh)
     Ny = int(Y/hh)
     
-    vvx = 0.5/h*(cc[x_pos+1,y_pos+1]-cc[x_pos-1,y_pos+1]+cc[x_pos+1,y_pos-1]-cc[x_pos-1,y_pos-1])
-    vvy = 0.5/h*(cc[x_pos+1,y_pos+1]+cc[x_pos-1,y_pos+1]-cc[x_pos+1,y_pos-1]-cc[x_pos-1,y_pos-1])
+    vvx = 0.5/h1*(cc[x_pos+1,y_pos+1]-cc[x_pos-1,y_pos+1]+cc[x_pos+1,y_pos-1]-cc[x_pos-1,y_pos-1])
+    vvy = 0.5/h1*(cc[x_pos+1,y_pos+1]+cc[x_pos-1,y_pos+1]-cc[x_pos+1,y_pos-1]-cc[x_pos-1,y_pos-1])
     
-    wwx = 0.5/h*(ff[x_pos+1,y_pos+1]-ff[x_pos-1,y_pos+1]+ff[x_pos+1,y_pos-1]-ff[x_pos-1,y_pos-1])
-    wwy = 0.5/h*(ff[x_pos+1,y_pos+1]+ff[x_pos-1,y_pos+1]-ff[x_pos+1,y_pos-1]-ff[x_pos-1,y_pos-1])
+    wwx = 0.5/h1*(ff[x_pos+1,y_pos+1]-ff[x_pos-1,y_pos+1]+ff[x_pos+1,y_pos-1]-ff[x_pos-1,y_pos-1])
+    wwy = 0.5/h1*(ff[x_pos+1,y_pos+1]+ff[x_pos-1,y_pos+1]-ff[x_pos+1,y_pos-1]-ff[x_pos-1,y_pos-1])
     
     vvx_p = max(0,vvx)
     vvx_n = max(0,-vvx)
@@ -24,48 +24,69 @@ def movement_dir(h = 0.01,d = 0.00035,ki = 0.38,al = 0.6,ro = 0.3,
     wwy_p = max(0,wwy)
     wwy_n = max(0,-wwy)
     
-    P_1 = la*d+la*h*ki/(1+al*0.5*(cc[x_pos-1,y_pos+1]+cc[x_pos-1,y_pos-1]))*vvx_n + la*h*ro*wwx_n
-    P_2 = la*d+la*h*ki/(1+al*0.5*(cc[x_pos+1,y_pos+1]+cc[x_pos+1,y_pos-1]))*vvx_p + la*h*ro*wwx_p
+    P_1 = la*d+la*h1*ki/(1+al*0.5*(cc[x_pos-1,y_pos+1]+cc[x_pos-1,y_pos-1]))*vvx_n + la*h1*ro*wwx_n
+    P_2 = la*d+la*h1*ki/(1+al*0.5*(cc[x_pos+1,y_pos+1]+cc[x_pos+1,y_pos-1]))*vvx_p + la*h1*ro*wwx_p
     
-    P_3 = la*d+la*h*ki/(1+al*0.5*(cc[x_pos+1,y_pos+1]+cc[x_pos-1,y_pos+1]))*vvy_n + la*h*ro*wwy_n
-    P_4 = la*d+la*h*ki/(1+al*0.5*(cc[x_pos+1,y_pos-1]+cc[x_pos-1,y_pos-1]))*vvy_p + la*h*ro*wwy_p
+    P_3 = la*d+la*h1*ki/(1+al*0.5*(cc[x_pos+1,y_pos+1]+cc[x_pos-1,y_pos+1]))*vvy_n + la*h1*ro*wwy_n
+    P_4 = la*d+la*h1*ki/(1+al*0.5*(cc[x_pos+1,y_pos-1]+cc[x_pos-1,y_pos-1]))*vvy_p + la*h1*ro*wwy_p
     
     
     '''Boundary'''
-    '''Using reflection on the boundary'''
+#     '''Using reflection on the boundary'''
+#     if y_pos == 1: #batas bawah
+#         P_4 +=P_3
+#         if x_pos == 1: #pojok kiri bawah
+#             P_2 += P_1
+#             P_1 = 0
+#             P_3 = 0
+#         elif x_pos == Nx-1: #pojok kanan bawah
+#             P_1 += P_2
+#             P_2 = 0
+#             P_3 = 0
+#         else: #batas bawah selain pojok
+#             P_3 = 0
+#     elif y_pos == Ny-1: #batas atas
+#         P_3 += P_4
+#         if x_pos == 1: #pojok kiri atas
+#             P_2 += P_1
+#             P_1 = 0
+#             P_4 = 0
+#         elif x_pos == Nx-1: #pojok kanan atas
+#             P_1 += P_2
+#             P_2 = 0
+#             P_4 = 0
+#         else: #batas atas selain pojok
+#             P_4 = 0
+#     else: #selain batas bawah dan atas
+#         if x_pos == 1: #batas kiri selain pojok
+#             P_2 += P_1
+#             P_1 = 0
+#         elif x_pos == Nx-1: #batas kanan selain pojok
+#             P_1 += P_2
+#             P_2 = 0
+#         #selain batas2, tetap pada nilai P_1 ~ P_4 awal saja
+#     '''Using reflection on the boundary'''
+            
+    '''Using Non-reflection Boundary'''
     if y_pos == 1: #batas bawah
-        P_4 +=P_3
+        P_3 = 0
         if x_pos == 1: #pojok kiri bawah
-            P_2 += P_1
             P_1 = 0
-            P_3 = 0
         elif x_pos == Nx-1: #pojok kanan bawah
-            P_1 += P_2
             P_2 = 0
-            P_3 = 0
-        else: #batas bawah selain pojok
-            P_3 = 0
     elif y_pos == Ny-1: #batas atas
-        P_3 += P_4
+        P_4 = 0
         if x_pos == 1: #pojok kiri atas
-            P_2 += P_1
             P_1 = 0
-            P_4 = 0
         elif x_pos == Nx-1: #pojok kanan atas
-            P_1 += P_2
             P_2 = 0
-            P_4 = 0
-        else: #batas atas selain pojok
-            P_4 = 0
     else: #selain batas bawah dan atas
         if x_pos == 1: #batas kiri selain pojok
-            P_2 += P_1
             P_1 = 0
         elif x_pos == Nx-1: #batas kanan selain pojok
-            P_1 += P_2
             P_2 = 0
         #selain batas2, tetap pada nilai P_1 ~ P_4 awal saja
-    '''Using reflection on the boundary'''
+    '''Using Non-reflection Boundary'''
             
     P_0 = 1-(P_1+P_2+P_3+P_4)
     R_0 = P_0
@@ -75,14 +96,14 @@ def movement_dir(h = 0.01,d = 0.00035,ki = 0.38,al = 0.6,ro = 0.3,
     R_4 = 1
     
     prob_range = [R_0,R_1,R_2,R_3,R_4]
-#     print P_0, ',',P_1,',',P_2,',',P_3,',',P_4
+#     print 'probability P', P_0, ',',P_1,',',P_2,',',P_3,',',P_4
     return prob_range;
 
 
 
-def discrete_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0.3,
+def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                      nu = 0.1,be = 0.05,ga = 0.1,e = 0.45,X = 1,Y = 1,
-                     h = 0.01,tp = 0.001,iter = 0, number_of_tip = 6,
+                     h2 = 0.005,tp = 0.1,iter = 0, number_of_tip = 6,
                      n = 0, c = 0, f = 0,
                      matrix_tip = 0, list_last_movement = 0, 
                      list_tip_movement = 0, life_time_tip = 0,
@@ -91,7 +112,7 @@ def discrete_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0.3,
     import math as m
     import random
     from random import randint
-    hh = h/2
+    hh = h2/2
     Nx = int(X/hh)
     Ny = int(Y/hh)
     
@@ -103,13 +124,6 @@ def discrete_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0.3,
         life_time_tip = []
         sp_stop = []
         n = numpy.zeros((Nx+1,Ny+1))
-        c = numpy.zeros((Nx+1,Ny+1))
-        f = numpy.zeros((Nx+1,Ny+1))
-        
-        for y in range(0,Ny+1,2):
-            for x in range(0,Nx+1,2):
-                f[x,y] = 0.75*m.exp(-(x*hh)**2/e)
-                c[x,y] = m.exp(-(1-x*hh)**2/e)
         for y in range(1,Ny,2):
             for x in range(1,Nx,2):
 #                 n[x,y] = m.exp(-(x*hh)**2/0.001)*(m.sin(number_of_tip*m.pi*y*hh))**2
@@ -217,7 +231,7 @@ def discrete_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0.3,
                 xb = matrix_tip[nom][-1][0] #get x position of last tip position
                 yb = matrix_tip[nom][-1][1] #get y position of last tip position
                 #print 'xb,yb', xb,',',yb
-                dirr = movement_dir(x_pos = xb, y_pos = yb, cc = c, ff = f) # get list of prob_range
+                dirr = movement_dir(x_pos = xb, y_pos = yb, cc = c, ff = f, tep = tp, h1 = h2) # get list of prob_range
                 
                 '''2.1 Branching Decision''' 
                 if life_time_tip[nom] >= t_branch: #being able to branch by life time               
@@ -331,7 +345,7 @@ def discrete_1_iter(theta = 0,d = 0.00035,ki = 0.38,al = 0.6,ro = 0.3,
                         list_tip_movement[nom] = tip_1
                     list_last_movement.append(dom)
                     list_last_movement[nom] = tip_1   
-                    life_time_tip[-1] = tp
+#                    life_time_tip[-1] = tp
                     
                 else: #no branching
                     '''2.2 No Branching'''
