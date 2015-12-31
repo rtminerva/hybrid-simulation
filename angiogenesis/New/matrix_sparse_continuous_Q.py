@@ -38,32 +38,50 @@ def vector_A(theta = 0.5, time_step = 0.1, h2 = 0.005, ro1 = 0, X = 1, Y = 1, cc
     Ny = int(Y/hh)
     import numpy
     A = numpy.zeros((Nx/2)**2-1)
-    if left: # I + matrix
-        '''Bottom side'''
-        y1 = 1
-        for i, x1 in enumerate(range(1,Nx-1,2)):
-            A[i] = (-P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
-        '''Inside'''
-        for j, y1 in enumerate(range(3,Ny-1,2)):
-            for i, x1 in enumerate(range(1,Nx-1,2)):
-                A[(i+Nx/2)+j*Nx/2] = (-P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
-        '''Up side'''
-        y1 = Ny-1
-        for i, x1 in enumerate(range(1,Nx-1,2)):
-            A[i+(Nx/2)**2-Nx/2] = (-P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
+    if left == True: # I + matrix
+        ij = 0
+        for y1 in range(1,Ny,2):
+            for x1 in range(1,Nx,2):
+                if ij > 0 and (ij+1) % (Nx/2) == 0:
+                    pass
+                else:
+                    A[ij] = (-P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
+                ij += 1
+            
+#        '''Bottom side'''
+#        y1 = 1
+#        for i, x1 in enumerate(range(1,Nx-1,2)):
+#            A[i] = (-P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
+#        '''Inside'''
+#        for j, y1 in enumerate(range(3,Ny-1,2)):
+#            for i, x1 in enumerate(range(1,Nx-1,2)):
+#                A[(i+Nx/2)+j*Nx/2] = (-P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
+#        '''Up side'''
+#        y1 = Ny-1
+#        for i, x1 in enumerate(range(1,Nx-1,2)):
+#            A[i+(Nx/2)**2-Nx/2] = (-P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
     else: # I - matrix
-        '''Bottom side'''
-        y1 = 1
-        for i, x1 in enumerate(range(1,Nx-1,2)):
-            A[i] = (-P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam*(-1)
-        '''Inside'''
-        for j, y1 in enumerate(range(3,Ny-1,2)):
-            for i, x1 in enumerate(range(1,Nx-1,2)):
-                A[(i+Nx/2)+j*Nx/2] = (-P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam*(-1)
-        '''Up side'''
-        y1 = Ny-1
-        for i, x1 in enumerate(range(1,Nx-1,2)):
-            A[i+(Nx/2)**2-Nx/2] = (-P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam*(-1)
+        ij = 0
+        for y1 in range(1,Ny,2):
+            for x1 in range(1,Nx,2):
+                if ij > 0 and (ij+1) % (Nx/2) == 0:
+                    pass
+                else:
+                    A[ij] = (-P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(1-theta)*lam*(-1)
+                ij += 1
+        
+#        '''Bottom side'''
+#        y1 = 1
+#        for i, x1 in enumerate(range(1,Nx-1,2)):
+#            A[i] = (-P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(theta-1)*lam*(-1)
+#        '''Inside'''
+#        for j, y1 in enumerate(range(3,Ny-1,2)):
+#            for i, x1 in enumerate(range(1,Nx-1,2)):
+#                A[(i+Nx/2)+j*Nx/2] = (-P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(theta-1)*lam*(-1)
+#        '''Up side'''
+#        y1 = Ny-1
+#        for i, x1 in enumerate(range(1,Nx-1,2)):
+#            A[i+(Nx/2)**2-Nx/2] = (-P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(theta-1)*lam*(-1)
     A = numpy.append(A, 0)
     return A
 
@@ -75,18 +93,18 @@ def vector_B(theta = 0.5, time_step = 0.1, h2 = 0.005, ro1 = 0, X = 1, Y = 1, cc
     Ny = int(Y/hh)
     import numpy
     B = numpy.zeros((Nx/2)**2)
-    if left: # I + matrix
+    if left == True: # I + matrix
         '''Bottom side'''
         y1 = 1
         x1 = 1
         i = 0
-        B[i] = 1 + (P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P4_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
+        B[i] = 1 + (P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P4_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
         for x1 in range(3,Nx-1,2):
             i += 1
-            B[i] = 1 + (P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P2_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P4_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
+            B[i] = 1 + (P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P4_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
         
         x1 = Nx-1
-        B[i+1] = 1 + (P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P4_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
+        B[i+1] = 1 + (P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P4_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
         
         '''Inside'''
         for j, y1 in enumerate(range(3,Ny-1,2)):
@@ -102,25 +120,25 @@ def vector_B(theta = 0.5, time_step = 0.1, h2 = 0.005, ro1 = 0, X = 1, Y = 1, cc
         y1 = Ny-1
         x1 = 1
         i = 0
-        B[i+(Nx/2)**2-Nx/2] = 1 + (P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P3_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
+        B[i+(Nx/2)**2-Nx/2] = 1 + (P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P3_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
         for x1 in range(3,Nx-1,2):
             i += 1
-            B[i+(Nx/2)**2-Nx/2] = 1 + (P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P2_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P3_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
+            B[i+(Nx/2)**2-Nx/2] = 1 + (P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P3_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
         x1 = Nx-1
-        B[i+1+(Nx/2)**2-Nx/2] = 1 + (P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P3_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
+        B[i+1+(Nx/2)**2-Nx/2] = 1 + (P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P3_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
         
     else: # I - matrix
         '''Bottom side'''
         y1 = 1
         x1 = 1
         i = 0
-        B[i] = 1 - (P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P4_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(1-theta)*lam
+        B[i] = 1 - (P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P4_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(1-theta)*lam
         for x1 in range(3,Nx-1,2):
             i += 1
-            B[i] = 1 - (P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P2_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P4_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(1-theta)*lam
+            B[i] = 1 - (P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P4_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(1-theta)*lam
         
         x1 = Nx-1
-        B[i+1] = 1 - (P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P4_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(1-theta)*lam
+        B[i+1] = 1 - (P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P4_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(1-theta)*lam
         
         '''Inside'''
         for j, y1 in enumerate(range(3,Ny-1,2)):
@@ -136,17 +154,17 @@ def vector_B(theta = 0.5, time_step = 0.1, h2 = 0.005, ro1 = 0, X = 1, Y = 1, cc
         y1 = Ny-1
         x1 = 1
         i = 0
-        B[i+(Nx/2)**2-Nx/2] = 1 - (P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P3_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(1-theta)*lam
+        B[i+(Nx/2)**2-Nx/2] = 1 - (P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P3_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(1-theta)*lam
         for x1 in range(3,Nx-1,2):
             i += 1
-            B[i+(Nx/2)**2-Nx/2] = 1 - (P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P2_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P3_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(1-theta)*lam
+            B[i+(Nx/2)**2-Nx/2] = 1 - (P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P2_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P3_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(1-theta)*lam
         x1 = Nx-1
-        B[i+1+(Nx/2)**2-Nx/2] = 1 - (P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P3_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(1-theta)*lam
+        B[i+1+(Nx/2)**2-Nx/2] = 1 - (P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1)+P3_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(1-theta)*lam
         
     return B
 
     
-def vector_C(theta = 0.5, time_step = 0.1, h2 = 0.005, X = 1, Y = 1, ccc = 0, fff = 0, left = False):
+def vector_C(theta = 0.5, time_step = 0.1, h2 = 0.005, ro1 = 0, X = 1, Y = 1, ccc = 0, fff = 0, left = False):
     lam = time_step/h2**2
     hh = h2/2
     Nx = int(X/hh)
@@ -154,36 +172,56 @@ def vector_C(theta = 0.5, time_step = 0.1, h2 = 0.005, X = 1, Y = 1, ccc = 0, ff
     import numpy
     C = numpy.zeros((Nx/2)**2-1)
     if left == True: # I + matrix
-        '''Bottom side'''
-        j = 1
-        for i, x1 in enumerate(range(3,Nx,2)):
-            C[i] = (-P1_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2))*theta*lam
-        '''Inside'''
-        for j, y1 in enumerate(range(3,Ny-1,2)):
-            for i, x1 in enumerate(range(3,Nx,2)):
-                C[(i+Nx/2)+j*Nx/2] = (-P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2))*theta*lam
-        '''Up side'''
-        j = Ny-1
-        for i, x1 in enumerate(range(3,Nx,2)):
-            C[i+(Nx/2)**2-Nx/2] = (-P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2))*theta*lam
+        ij = 0
+        for y1 in range(1,Ny,2):
+            for x1 in range(3,Nx+2,2):
+                if ij > 0 and (ij+1) % (Nx/2) == 0:
+                    pass
+                else:
+                    C[ij] = (-P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
+                ij += 1
+          
+                
+#        '''Bottom side'''
+#        y1 = 1
+#        for i, x1 in enumerate(range(3,Nx,2)):
+#            C[i] = (-P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2))*theta*lam
+#        '''Inside'''
+#        for j, y1 in enumerate(range(3,Ny-1,2)):
+#            for i, x1 in enumerate(range(3,Nx,2)):
+#                C[(i+Nx/2)+j*Nx/2] = (-P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2))*theta*lam
+#        '''Up side'''
+#        y1 = Ny-1
+#        for i, x1 in enumerate(range(3,Nx,2)):
+#            C[i+(Nx/2)**2-Nx/2] = (-P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2))*theta*lam
     else: # I - matrix
-        '''Bottom side'''
-        j = 1
-        for i, x1 in enumerate(range(3,Nx,2)):
-            C[i] = (-P1_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2))*theta*lam*(-1)
-        '''Inside'''
-        for j, y1 in enumerate(range(3,Ny-1,2)):
-            for i, x1 in enumerate(range(3,Nx,2)):
-                C[(i+Nx/2)+j*Nx/2] = (-P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2))*theta*lam*(-1)
-        '''Up side'''
-        j = Ny-1
-        for i, x1 in enumerate(range(3,Nx,2)):
-            C[i+(Nx/2)**2-Nx/2] = (-P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2))*theta*lam*(-1)
+        ij = 0
+        for y1 in range(1,Ny,2):
+            for x1 in range(3,Nx+2,2):
+                if ij > 0 and (ij+1) % (Nx/2) == 0:
+                    pass
+                else:
+                    C[ij] = (-P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(1-theta)*lam*(-1)
+                ij += 1
+               
+        
+#        '''Bottom side'''
+#        y1 = 1
+#        for i, x1 in enumerate(range(3,Nx,2)):
+#            C[i] = (-P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2))*theta*lam*(-1)
+#        '''Inside'''
+#        for j, y1 in enumerate(range(3,Ny-1,2)):
+#            for i, x1 in enumerate(range(3,Nx,2)):
+#                C[(i+Nx/2)+j*Nx/2] = (-P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2))*theta*lam*(-1)
+#        '''Up side'''
+#        y1 = Ny-1
+#        for i, x1 in enumerate(range(3,Nx,2)):
+#            C[i+(Nx/2)**2-Nx/2] = (-P1_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2))*theta*lam*(-1)
     C = numpy.insert(C,0,0)
     return C
 
 
-def vector_D(theta = 0.5, time_step = 0.1, h2 = 0.005, X = 1, Y = 1, ccc = 0, fff = 0, left = False):
+def vector_D(theta = 0.5, time_step = 0.1, h2 = 0.005, ro1 = 0, X = 1, Y = 1, ccc = 0, fff = 0, left = False):
     lam = time_step/h2**2
     hh = h2/2
     Nx = int(X/hh)
@@ -191,18 +229,22 @@ def vector_D(theta = 0.5, time_step = 0.1, h2 = 0.005, X = 1, Y = 1, ccc = 0, ff
     import numpy
     D = numpy.zeros(Nx/2*(Nx/2-1)) #Nx/2*(Nx/2-1)
     if left == True: # I + matrix
-        for j in range(1,Ny-1,2):
-            for i, x1 in enumerate(range(1,Nx,2)):
-                D[i] = (-P4_code(x = x1, y = i, c1 = ccc, f1 = fff, h1 = h2))*theta*lam
+        i = 0
+        for y1 in range(1,Ny-1,2):
+            for x1 in range(1,Nx,2):
+                D[i] = (-P4_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
+                i += 1
     else: # I - matrix
-        for j in range(1,Ny-1,2):
-            for i, x1 in enumerate(range(1,Nx,2)):
-                D[i] = (-P4_code(x = x1, y = i, c1 = ccc, f1 = fff, h1 = h2))*theta*lam*(-1)  
+        i = 0
+        for y1 in range(1,Ny-1,2):
+            for x1 in range(1,Nx,2):
+                D[i] = (-P4_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(1-theta)*lam*(-1)
+                i += 1
     kk = Nx/2
     D = numpy.append(D, [0]*kk)
     return D
 
-def vector_E(theta = 0.5, time_step = 0.1, h2 = 0.005, X = 1, Y = 1, ccc = 0, fff = 0, left = False):
+def vector_E(theta = 0.5, time_step = 0.1, h2 = 0.005, ro1 = 0, X = 1, Y = 1, ccc = 0, fff = 0, left = False):
     lam = time_step/h2**2
     hh = h2/2
     Nx = int(X/hh)
@@ -210,19 +252,20 @@ def vector_E(theta = 0.5, time_step = 0.1, h2 = 0.005, X = 1, Y = 1, ccc = 0, ff
     import numpy
     E = numpy.zeros(Nx/2*(Nx/2-1)) #Nx/2*(Nx/2-1)
     if left == True: # I + matrix
-        for j in range(3,Ny,2):
-            for i, x1 in enumerate(range(1,Nx,2)):
-                E[i] = (-P3_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2))*theta*lam
+        i = 0
+        for y1 in range(3,Ny,2):
+            for x1 in range(1,Nx,2):
+                E[i] = (-P3_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*theta*lam
+                i += 1
     else: # I - matrix
-        for j in range(3,Ny,2):
-            for i, x1 in enumerate(range(1,Nx,2)):
-                E[i] = (-P3_code(x = x1, y = j, c1 = ccc, f1 = fff, h1 = h2))*theta*lam*(-1)
+        i = 0
+        for y1 in range(3,Ny,2):
+            for x1 in range(1,Nx,2):
+                E[i] = (-P3_code(x = x1, y = y1, c1 = ccc, f1 = fff, h1 = h2, ro2 = ro1))*(1-theta)*lam*(-1)
+                i += 1
     kk = Nx/2
     E = numpy.insert(E, [0]*kk,0)
     return E
-
-
-
 
 def continuous_sparse_matrix_1_iter(teta = 0.75,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                                     nu = 0.1,be = 0.05,ga = 0.1,e = 0.45, number_of_tip = 6,
@@ -253,7 +296,7 @@ def continuous_sparse_matrix_1_iter(teta = 0.75,d = 0.00035,ki = 0.38,al = 0.6,r
         for y in range(1,Ny,2):
             for x in range(1,Nx,2):
 #                 n[x,y] = m.exp(-(x*hh)**2/0.001)*(m.sin(number_of_tip*m.pi*y*hh))**2
-                n[x,y] = m.exp(-(x*hh)**2/0.01)*(m.sin(number_of_tip*m.pi*y*hh))**2      
+                n[x,y] = m.exp(-(x*hh)**2/0.01)*(m.sin(number_of_tip*m.pi*y*hh))**2       
         
 #         '''Plot C & N profile'''
 #         import matplotlib.pyplot as plt 
@@ -281,69 +324,66 @@ def continuous_sparse_matrix_1_iter(teta = 0.75,d = 0.00035,ki = 0.38,al = 0.6,r
 # #         surf = ax.plot_surface(x_main_axis, y_main_axis, n_sol, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=0, antialiased=False)
 #         fig0.show()
 #         '''Plot C & N profile'''
-        
+    
     c_o = c
     f_o = f   
     from scipy.sparse import dia_matrix
     from scipy.sparse.linalg import spsolve
     '''Creating RHS Sparse Matrix'''
-    data = numpy.array([vector_D(ccc = c_o, fff = f_o, theta = 1-teta, time_step = tp, h2 = h3), vector_A(ccc = c_o, fff = f_o, theta = 1-teta, time_step = tp, h2 = h3), vector_B(ccc = c_o, fff = f_o, theta = 1-teta, time_step = tp, h2 = h3), vector_C(ccc = c_o, fff = f_o, theta = 1-teta, time_step = tp, h2 = h3), vector_E(ccc = c_o, fff = f_o, theta = 1-teta, time_step = tp, h2 = h3)])
-#     print len(data[0]), len(data[1]), len(data[2]), len(data[3]), len(data[4])
+    A_right = vector_A(ccc = c_o, fff = f_o, theta = teta, time_step = tp, h2 = h3, ro1 = ro)
+    B_right = vector_B(ccc = c_o, fff = f_o, theta = teta, time_step = tp, h2 = h3, ro1 = ro)
+    C_right = vector_C(ccc = c_o, fff = f_o, theta = teta, time_step = tp, h2 = h3, ro1 = ro)
+    D_right = vector_D(ccc = c_o, fff = f_o, theta = teta, time_step = tp, h2 = h3, ro1 = ro)
+    E_right = vector_E(ccc = c_o, fff = f_o, theta = teta, time_step = tp, h2 = h3, ro1 = ro)
+    data = numpy.array([D_right, A_right, B_right, C_right, E_right])
+#    print data[4] #data[0], data[1], data[2], data[3], 
     i = Nx/2
     ii = (Nx/2)**2
     diags = numpy.array([-i,-1, 0, 1, i])
-    RHS = dia_matrix((data, diags), shape=(ii, ii))
+#    RHS = dia_matrix((data, diags), shape=(ii, ii))
       
     '''RHS Multiply n and store as Q'''
-    A_right = vector_A(ccc = c_o, fff = f_o, theta = 1-teta, time_step = tp, h2 = h3)
-    B_right = vector_B(ccc = c_o, fff = f_o, theta = 1-teta, time_step = tp, h2 = h3)
-    C_right = vector_C(ccc = c_o, fff = f_o, theta = 1-teta, time_step = tp, h2 = h3)
-    D_right = vector_D(ccc = c_o, fff = f_o, theta = 1-teta, time_step = tp, h2 = h3)
-    E_right = vector_E(ccc = c_o, fff = f_o, theta = 1-teta, time_step = tp, h2 = h3)
-    
     Q = numpy.zeros((Nx/2)**2)
     for i,j in enumerate(range(1,Nx,2)): #untuk paling awal
         if j == 1: 
-            Q[i] = B_right[i]*n[1,1] + C_right[i]*n[3,1] + E_right[i]*n[1,3] #B & C , E
+            Q[i] = B_right[i]*n[1,1] + C_right[i+1]*n[3,1] + E_right[i+Nx/2]*n[1,3] #B & C , E
         elif j == Nx-1: 
-            Q[i] = A_right[i-1]*n[j-2,1] + B_right[i]*n[j,1] + E_right[i]*n[j,3]#A & B, E
+            Q[i] = A_right[i-1]*n[j-2,1] + B_right[i]*n[j,1] + E_right[i+Nx/2]*n[j,3]#A & B, E
         else:
-            Q[i] = A_right[i-1]*n[j-2,1] + B_right[i]*n[j,1] + C_right[i]*n[j+2,1] + E_right[i]*n[j,3]#A & B & C, E
+            Q[i] = A_right[i-1]*n[j-2,1] + B_right[i]*n[j,1] + C_right[i+1]*n[j+2,1] + E_right[i+Nx/2]*n[j,3]#A & B & C, E
             
     i = Nx/2       
     for k,l in enumerate(range(3,Nx-2,2)): 
         for j in range(1,Nx,2): #untuk tengah #Nx/2 , (Nx/2)**2-Nx/2
             if j == 1:
-                Q[i] = D_right[i-(Nx/2)]*n[j,l-2] + B_right[i]*n[j,l] + C_right[i]*n[j+2,l] + E_right[i]*n[j,l+2] #D, B & C, E
+                Q[i] = D_right[i-(Nx/2)]*n[j,l-2] + B_right[i]*n[j,l] + C_right[i+1]*n[j+2,l] + E_right[i+Nx/2]*n[j,l+2] #D, B & C, E
             elif j == Nx-1:
-                Q[i] = D_right[i-(Nx/2)]*n[j,l-2] + A_right[i-1]*n[j-2,l] + B_right[i]*n[j,l] + E_right[i]*n[j,l+2] #D, A & B, E
+                Q[i] = D_right[i-(Nx/2)]*n[j,l-2] + A_right[i-1]*n[j-2,l] + B_right[i]*n[j,l] + E_right[i+Nx/2]*n[j,l+2] #D, A & B, E
             else:
-                Q[i] = D_right[i-(Nx/2)]*n[j,l-2] + A_right[i-1]*n[j-2,l] + B_right[i]*n[j,l] + C_right[i]*n[j+2,l] + E_right[i]*n[j,l+2] #D, A & B & C, E
+                Q[i] = D_right[i-(Nx/2)]*n[j,l-2] + A_right[i-1]*n[j-2,l] + B_right[i]*n[j,l] + C_right[i+1]*n[j+2,l] + E_right[i+Nx/2]*n[j,l+2] #D, A & B & C, E
             i +=1
      
     for i,j in enumerate(range(1,Nx,2)): #untuk terakhir #(Nx/2)**2-Nx/2 , (Nx/2)**2
         i += (Nx/2)**2-Nx/2
         if j == 1:
-            Q[i] = D_right[i-(Nx/2)]*n[1,Nx-3] + B_right[i]*n[1,Nx-1] + C_right[i]*n[3,Nx-1] #D, B & C
+            Q[i] = D_right[i-(Nx/2)]*n[1,Nx-3] + B_right[i]*n[1,Nx-1] + C_right[i+1]*n[3,Nx-1] #D, B & C
         elif j == Nx-1:
             Q[i] = D_right[i-(Nx/2)]*n[j,Nx-3] + A_right[i-1]*n[j-2,Nx-1] + B_right[i]*n[j,Nx-1] #D, A & B
         else:
-            Q[i] = D_right[i-(Nx/2)]*n[j,Nx-3] + A_right[i-1]*n[j-2,Nx-1] + B_right[i]*n[j,Nx-1] + C_right[i]*n[j+2,Nx-1] #D, A & B & C
+            Q[i] = D_right[i-(Nx/2)]*n[j,Nx-3] + A_right[i-1]*n[j-2,Nx-1] + B_right[i]*n[j,Nx-1] + C_right[i+1]*n[j+2,Nx-1] #D, A & B & C
     del A_right
     del B_right
     del C_right
     del D_right
     del E_right
-    
-    
-    
+   
     '''Creating LHS Sparse Matrix'''
-    data = numpy.array([vector_D(ccc = c_o, fff = f_o, theta = teta, left = True, time_step = tp, h2 = h3), vector_A(ccc = c_o, fff = f_o, theta = teta, left = True, time_step = tp, h2 = h3), vector_B(ccc = c_o, fff = f_o, theta = teta, left = True, time_step = tp, h2 = h3), vector_C(ccc = c_o, fff = f_o, theta = teta, left = True, time_step = tp, h2 = h3), vector_E(ccc = c_o, fff = f_o, theta = teta, left = True, time_step = tp, h2 = h3)])
+    data = numpy.array([vector_D(ccc = c_o, fff = f_o, theta = teta, left = True, time_step = tp, h2 = h3, ro1 = ro), vector_A(ccc = c_o, fff = f_o, theta = teta, left = True, time_step = tp, h2 = h3, ro1 = ro), vector_B(ccc = c_o, fff = f_o, theta = teta, left = True, time_step = tp, h2 = h3, ro1 = ro), vector_C(ccc = c_o, fff = f_o, theta = teta, left = True, time_step = tp, h2 = h3, ro1 = ro), vector_E(ccc = c_o, fff = f_o, theta = teta, left = True, time_step = tp, h2 = h3, ro1 = ro)])
     LHS = dia_matrix((data, diags), shape=(ii, ii))
-    
+ 
     '''Solve LHS n = V'''
+#    from numpy.linalg import solve
     n_sol = spsolve(LHS.tocsr(), Q)
-    del RHS
     del LHS
     del Q
     del data
@@ -383,8 +423,7 @@ def continuous_sparse_matrix_1_iter(teta = 0.75,d = 0.00035,ki = 0.38,al = 0.6,r
                     c[x,y] = c_o[x,y]*(1 - tp*nu*0.25*(n[x+1,y+1]+n[x-1,y+1]+n[x+1,y-1]+n[x-1,y-1]))
                     f[x,y] = f_o[x,y]+ tp*(be-ga*f_o[x,y])*0.25*(n[x+1,y+1]+n[x-1,y+1]+n[x+1,y-1]+n[x-1,y-1])
     
-    '''Storing new n solution into n[x,y]'''
-    
+    '''Storing new n solution into n[x,y]'''  
     i = 0
     for y in range(1,Ny,2):
         for x in range(1,Nx,2):

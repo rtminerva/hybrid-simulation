@@ -1,6 +1,6 @@
 import continuous_run as cont
 
-def movement_dir(h1 = 0.005,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
+def movement_dir(h1 = 0.005,d = 0.00035,ki = 0.38,al = 0.6,ro1 = 0,
                  tep = 0.001, X = 1,Y = 1,
                  x_pos = 0, y_pos = 0, cc = 0, ff = 0):
     la = tep/(h1**2)
@@ -24,11 +24,11 @@ def movement_dir(h1 = 0.005,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
     wwy_p = max(0,wwy)
     wwy_n = max(0,-wwy)
     
-    P_1 = la*d+la*h1*ki/(1+al*0.5*(cc[x_pos-1,y_pos+1]+cc[x_pos-1,y_pos-1]))*vvx_n + la*h1*ro*wwx_n
-    P_2 = la*d+la*h1*ki/(1+al*0.5*(cc[x_pos+1,y_pos+1]+cc[x_pos+1,y_pos-1]))*vvx_p + la*h1*ro*wwx_p
+    P_1 = la*d+la*h1*ki/(1+al*0.5*(cc[x_pos-1,y_pos+1]+cc[x_pos-1,y_pos-1]))*vvx_n + la*h1*ro1*wwx_n
+    P_2 = la*d+la*h1*ki/(1+al*0.5*(cc[x_pos+1,y_pos+1]+cc[x_pos+1,y_pos-1]))*vvx_p + la*h1*ro1*wwx_p
     
-    P_3 = la*d+la*h1*ki/(1+al*0.5*(cc[x_pos+1,y_pos+1]+cc[x_pos-1,y_pos+1]))*vvy_n + la*h1*ro*wwy_n
-    P_4 = la*d+la*h1*ki/(1+al*0.5*(cc[x_pos+1,y_pos-1]+cc[x_pos-1,y_pos-1]))*vvy_p + la*h1*ro*wwy_p
+    P_3 = la*d+la*h1*ki/(1+al*0.5*(cc[x_pos+1,y_pos+1]+cc[x_pos-1,y_pos+1]))*vvy_n + la*h1*ro1*wwy_n
+    P_4 = la*d+la*h1*ki/(1+al*0.5*(cc[x_pos+1,y_pos-1]+cc[x_pos-1,y_pos-1]))*vvy_p + la*h1*ro1*wwy_p
     
     
     '''Boundary'''
@@ -96,7 +96,7 @@ def movement_dir(h1 = 0.005,d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
     R_4 = 1
     
     prob_range = [R_0,R_1,R_2,R_3,R_4]
-#     print 'probability P', P_0, ',',P_1,',',P_2,',',P_3,',',P_4
+#    print 'probability P', P_0, ',',P_1,',',P_2,',',P_3,',',P_4
     return prob_range;
 
 
@@ -127,7 +127,7 @@ def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
         for y in range(1,Ny,2):
             for x in range(1,Nx,2):
 #                 n[x,y] = m.exp(-(x*hh)**2/0.001)*(m.sin(number_of_tip*m.pi*y*hh))**2
-                n[x,y] = m.exp(-(x*hh)**2/0.01)*(m.sin(number_of_tip*m.pi*y*hh))**2
+                n[x,y] = m.exp(-(x*hh)**2/0.001)*(m.sin(number_of_tip*m.pi*y*hh))**2
                 
         '''Initial Tips'''
         split = int(Nx/number_of_tip)
@@ -231,11 +231,12 @@ def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                 xb = matrix_tip[nom][-1][0] #get x position of last tip position
                 yb = matrix_tip[nom][-1][1] #get y position of last tip position
                 #print 'xb,yb', xb,',',yb
-                dirr = movement_dir(x_pos = xb, y_pos = yb, cc = c, ff = f, tep = tp, h1 = h2) # get list of prob_range
+                dirr = movement_dir(x_pos = xb, y_pos = yb, cc = c, ff = f, tep = tp, h1 = h2, ro1 = ro) # get list of prob_range
                 
                 '''2.1 Branching Decision''' 
                 if life_time_tip[nom] >= t_branch: #being able to branch by life time               
                     #probabilty of branching
+                    print 'NILAI C', c[xb+1,yb+1]
                     if c[xb+1,yb+1] >= 0.3 and c[xb+1,yb+1] < 0.5:
                         prob_weight = 2 # set the number to select here.
                         list_prob = random.sample(line, prob_weight) #list of selected numbers from line

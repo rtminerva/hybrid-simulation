@@ -2,6 +2,7 @@ import continuous_run as cont
 import matrix_code_gauss as gauss
 # import matrix_sparse_continuous as spr
 import matrix_sparse_continuous_Q as sprQ
+import matris_sparse_continuous_lil as sprlil
 import discrete_run as disc
 import numpy
 from timeit import default_timer as timer 
@@ -33,29 +34,34 @@ Nx = int(X/hh)
 Ny = int(Y/hh)
 
 Untuk Plot'''
+h = 0.005
+the = 0.5
+roo = 0
 
-Nt = 10000
+Nt = 100000
 t = 0
 k = 0
-T = 0.002
-h = 0.005
+T = 3
 X = 1
 Y = 1
 hh = h/2
 Nx = int(X/hh)
 Ny = int(Y/hh)
-the = 0.75
+
 r = [0, 0, 0, 0.001]
+#r = [0,0,0,0,0,0.001]
 g = [0, 0, 0, 0, 0, 0]
 surf = 0
 while t <= T and k < Nt:
     start1 = timer()
     k += 1
     '''Continuous Code by Sparse Matrix'''
-    r = sprQ.continuous_sparse_matrix_1_iter(iter = k, h3 = h, teta = the,
+    r = sprQ.continuous_sparse_matrix_1_iter(iter = k, h3 = h, teta = the, ro = roo,
                                             n = r[0], c = r[1], f = r[2], 
                                             tp = r[3])
-    
+#    r = sprlil.continuous_sparse_matrix_1_iter(iter = k, h3 = h, teta = the, ro = roo,
+#                                            n = r[0], c = r[1], f = r[2], 
+#                                            tp = r[3])
     
 #    '''Continuous Code by Matrix Using Gauss Method to Solve SPL'''
 #     r = gauss.continuous_matrix_1_iter(iter = k, 
@@ -75,7 +81,7 @@ while t <= T and k < Nt:
     start2 = timer()
     
     '''Discrete Code'''
-    g = disc.discrete_1_iter(iter = k, h2 = h,
+    g = disc.discrete_1_iter(iter = k, h2 = h, ro = roo,
                              n = r[0], c = r[1], f = r[2], tp = r[3],
                              matrix_tip = g[0], list_last_movement = g[1], 
                              list_tip_movement = g[2], life_time_tip = g[3],
@@ -85,6 +91,7 @@ while t <= T and k < Nt:
      
     if g[4] >=10000:
         k = g[4]
+    print 'NILAI N, C, F MAX', r[0].max(), ',', r[1].max(), ',', r[2].max() 
     print 'Time Step Size:', r[3]
     print 'process time of Cont:', start2-start1
     print 'process time of Disc:', start3-start2
