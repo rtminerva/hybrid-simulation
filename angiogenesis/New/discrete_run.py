@@ -236,7 +236,7 @@ def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
                 '''2.1 Branching Decision''' 
                 if life_time_tip[nom] >= t_branch: #being able to branch by life time               
                     #probabilty of branching
-                    print 'NILAI C', c[xb+1,yb+1]
+#                    print 'NILAI C', c[xb+1,yb+1]
                     if c[xb+1,yb+1] >= 0.3 and c[xb+1,yb+1] < 0.5:
                         prob_weight = 2 # set the number to select here.
                         list_prob = random.sample(line, prob_weight) #list of selected numbers from line
