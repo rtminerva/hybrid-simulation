@@ -26,22 +26,15 @@ fig = plt.figure()
 ax = fig.gca(projection='3d')
 ax.set_zlim(-0.1, 1.2)
 
-h = 0.005
-X = 1
-Y = 1
-hh = h/2
-Nx = int(X/hh)
-Ny = int(Y/hh)
-
 Untuk Plot'''
 h = 0.005
 the = 0.5
-roo = 0
+roo = 0.3 #c2 profile
 
 Nt = 100000
 t = 0
 k = 0
-T = 5
+T = 1
 X = 1
 Y = 1
 hh = h/2
@@ -124,6 +117,8 @@ ax = fig1.gca(projection='3d')
 ax.set_zlim(-0.1, 1)
 ax.zaxis.set_major_locator(LinearLocator(10))
 ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+plt.xlabel('X axis')
+plt.ylabel('Y axis')
 
 x_main_axis = numpy.arange(hh, X, h)
 y_main_axis = numpy.arange(hh, Y, h)
@@ -134,7 +129,7 @@ for j, y in enumerate(range(1,Ny,2)):
     for i, x in enumerate(range(1,Nx,2)):
         n_sol[i,j] = r[0][x,y]
 surf = ax.plot_surface(x_main_axis, y_main_axis, n_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
-        linewidth=0, antialiased=False)
+        linewidth=0, antialiased=False, label = 'n(x,y) profile')
 fig1.colorbar(surf, shrink=0.5, aspect=5)
 fig1.show()
 '''Plot Continuous'''

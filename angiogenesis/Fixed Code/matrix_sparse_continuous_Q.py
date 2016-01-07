@@ -283,22 +283,27 @@ def continuous_sparse_matrix_1_iter(teta = 0.75,d = 0.00035,ki = 0.38,al = 0.6,r
         n = numpy.zeros((Nx+1,Ny+1))
         c = numpy.zeros((Nx+1,Ny+1))
         f = numpy.zeros((Nx+1,Ny+1))
-#         viu = (m.sqrt(5)-0.1)/(m.sqrt(5)-1)
-        for y in range(0,Ny+1,2):
-            for x in range(0,Nx+1,2):
-                c[x,y] = m.exp(-(1-x*hh)**2/e)
-#                 r_c = m.sqrt((x*hh-1)**2+(y*hh-0.5)**2)
-#                 if r_c > 0.1:
-#                     c[x,y] = (viu-r_c)**2/(viu-0.1)
-#                 else:
-#                     c[x,y] = 1
-                f[x,y] = 0.75*m.exp(-(x*hh)**2/e)
+        c_prof_2 = True
+        if c_prof_2 == True:
+            viu = (m.sqrt(5)-0.1)/(m.sqrt(5)-1)
+            for y in range(0,Ny+1,2):
+                for x in range(0,Nx+1,2):
+                    r_c = m.sqrt((x*hh-1)**2+(y*hh-0.5)**2)
+                    if r_c >= 0.1:
+                        c[x,y] = (viu-r_c)**2/(viu-0.1)**2
+                    elif r_c>=0 and r_c<0.1:
+                        c[x,y] = 1
+                    f[x,y] = 0.75*m.exp(-(x*hh)**2/e)
+        else:
+            for y in range(0,Ny+1,2):
+                for x in range(0,Nx+1,2):
+                    c[x,y] = m.exp(-(1-x*hh)**2/e)
+                    f[x,y] = 0.75*m.exp(-(x*hh)**2/e)
         for y in range(1,Ny,2):
             for x in range(1,Nx,2):
-#                 n[x,y] = m.exp(-(x*hh)**2/0.001)*(m.sin(number_of_tip*m.pi*y*hh))**2
                 n[x,y] = m.exp(-(x*hh)**2/0.01)*(m.sin(number_of_tip*m.pi*y*hh))**2       
         
-#         '''Plot C & N profile'''
+#         '''Plot C & F profile'''
 #         import matplotlib.pyplot as plt 
 #         from matplotlib import cm
 #         from matplotlib.ticker import LinearLocator, FormatStrFormatter
@@ -315,12 +320,15 @@ def continuous_sparse_matrix_1_iter(teta = 0.75,d = 0.00035,ki = 0.38,al = 0.6,r
 #         y_sub_axis = numpy.arange(0, Y+hh, h3)
 #         x_sub_axis, y_sub_axis = numpy.meshgrid(x_sub_axis, y_sub_axis)
 #         c_sol = numpy.zeros((Nx/2+1, Ny/2+1))
+#         f_sol = numpy.zeros((Nx/2+1, Ny/2+1))
 # #         n_sol = numpy.zeros((Nx/2, Ny/2))
 #         for j, y in enumerate(range(0,Ny+1,2)):
 #             for i, x in enumerate(range(0,Nx+1,2)):
 #                 c_sol[i,j] = c[x,y]
+#                 f_sol[i,j] = f[x,y]
 # #                 n_sol[i,j] = n[x,y]
-#         surf = ax.plot_surface(x_sub_axis, y_sub_axis, c_sol, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=0, antialiased=False)
+#         surf = ax.plot_surface(x_sub_axis, y_sub_axis, c_sol, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=0, antialiased=False, label = 'c(x,y) profile')
+# #         surf = ax.plot_surface(x_sub_axis, y_sub_axis, f_sol, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=0, antialiased=False, label = 'f(x,y) profile')
 # #         surf = ax.plot_surface(x_main_axis, y_main_axis, n_sol, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=0, antialiased=False)
 #         fig0.show()
 #         '''Plot C & N profile'''
@@ -336,11 +344,9 @@ def continuous_sparse_matrix_1_iter(teta = 0.75,d = 0.00035,ki = 0.38,al = 0.6,r
     D_right = vector_D(ccc = c_o, fff = f_o, theta = teta, time_step = tp, h2 = h3, ro1 = ro)
     E_right = vector_E(ccc = c_o, fff = f_o, theta = teta, time_step = tp, h2 = h3, ro1 = ro)
     data = numpy.array([D_right, A_right, B_right, C_right, E_right])
-#    print data[4] #data[0], data[1], data[2], data[3], 
     i = Nx/2
     ii = (Nx/2)**2
     diags = numpy.array([-i,-1, 0, 1, i])
-#    RHS = dia_matrix((data, diags), shape=(ii, ii))
       
     '''RHS Multiply n and store as Q'''
     Q = numpy.zeros((Nx/2)**2)

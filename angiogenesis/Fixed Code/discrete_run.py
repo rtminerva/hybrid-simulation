@@ -156,7 +156,6 @@ def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
             life_time_tip.append(0) #lifetime
         '''Initial Tips'''
     '''1. Anastomosis''' #not yet
-    
     sp_new_stop =[]
     for noms in range(0,len(matrix_tip)):         
         if not noms in sp_stop:
