@@ -1,4 +1,4 @@
-import continuous_run as cont
+#import continuous_run as cont
 
 def movement_dir(h1 = 0.005,d = 0.00035,ki = 0.38,al = 0.6,ro1 = 0,
                  tep = 0.001, X = 1,Y = 1,

@@ -1,5 +1,4 @@
-import matrix_sparse_continuous_Q as sprQ
-import discrete_run as disc
+import matrix_sparse_continuous_B as sprB
 import numpy
 from timeit import default_timer as timer 
 import time
@@ -30,7 +29,7 @@ roo = 0.3 #c2 profile
 Nt = 100000
 t = 0
 k = 0
-T = 1
+T = 0.2
 X = 1
 Y = 1
 hh = h/2
@@ -45,7 +44,7 @@ while t <= T and k < Nt:
     start1 = timer()
     k += 1
     '''Continuous Code by Sparse Matrix'''
-    r = sprQ.continuous_sparse_matrix_1_iter(iter = k, h3 = h, teta = the, ro = roo,
+    r = sprB.continuous_sparse_matrix_1_iter(iter = k, h3 = h, teta = the, ro = roo,
                                             n = r[0], c = r[1], f = r[2], 
                                             tp = r[3])
 #    r = sprlil.continuous_sparse_matrix_1_iter(iter = k, h3 = h, teta = the, ro = roo,
@@ -65,25 +64,25 @@ while t <= T and k < Nt:
 #                                   tp = r[5])
 
         
-    t += r[3]
-    print 'TIME AT',t
-    start2 = timer()
-    
-    '''Discrete Code'''
-    g = disc.discrete_1_iter(iter = k, h2 = h, ro = roo,
-                             n = r[0], c = r[1], f = r[2], tp = r[3],
-                             matrix_tip = g[0], list_last_movement = g[1], 
-                             list_tip_movement = g[2], life_time_tip = g[3],
-                             stop_iter = g[4], sp_stop = g[5])
-      
-    start3 = timer()
-     
-    if g[4] >=10000:
-        k = g[4]
+#     t += r[3]
+#     print 'TIME AT',t
+#     start2 = timer()
+#     
+#     '''Discrete Code'''
+#     g = disc.discrete_1_iter(iter = k, h2 = h, ro = roo,
+#                              n = r[0], c = r[1], f = r[2], tp = r[3],
+#                              matrix_tip = g[0], list_last_movement = g[1], 
+#                              list_tip_movement = g[2], life_time_tip = g[3],
+#                              stop_iter = g[4], sp_stop = g[5])
+#       
+#     start3 = timer()
+#      
+#     if g[4] >=10000:
+#         k = g[4]
     print 'NILAI N, C, F MAX', r[0].max(), ',', r[1].max(), ',', r[2].max() 
     print 'Time Step Size:', r[3]
-    print 'process time of Cont:', start2-start1
-    print 'process time of Disc:', start3-start2
+#     print 'process time of Cont:', start2-start1
+#     print 'process time of Disc:', start3-start2
     print 'total time of processing:', time.clock()
     print '***************************************************'
     print
