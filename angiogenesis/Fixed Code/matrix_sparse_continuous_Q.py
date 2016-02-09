@@ -283,7 +283,7 @@ def continuous_sparse_matrix_1_iter(teta = 0.75,d = 0.00035,ki = 0.38,al = 0.6,r
         n = numpy.zeros((Nx+1,Ny+1))
         c = numpy.zeros((Nx+1,Ny+1))
         f = numpy.zeros((Nx+1,Ny+1))
-        c_prof_2 = True
+        c_prof_2 = False
         if c_prof_2 == True:
             viu = (m.sqrt(5)-0.1)/(m.sqrt(5)-1)
             for y in range(0,Ny+1,2):

@@ -25,12 +25,12 @@ ax.set_zlim(-0.1, 1.2)
 Untuk Plot'''
 h = 0.005
 the = 0.5
-roo = 0.3 #c2 profile
+roo = 0 #c2 profile
 
 Nt = 100000
 t = 0
 k = 0
-T = 1
+T = 4
 X = 1
 Y = 1
 hh = h/2

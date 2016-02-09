@@ -102,10 +102,10 @@ def movement_dir(h1 = 0.005,d = 0.00035,ki = 0.38,al = 0.6,ro1 = 0,
 
 
 
-def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
+def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0, al_1 = 10**(-6), ep = 0.01, nyu = 3, 
                      nu = 0.1,be = 0.05,ga = 0.1,e = 0.45,X = 1,Y = 1,
                      h2 = 0.005,tp = 0.001,iter = 0, number_of_tip = 6,
-                     n = 0, c = 0, f = 0,
+                     n = 0, c = 0, f = 0, mm = 0,
                      matrix_tip = 0, list_last_movement = 0, 
                      list_tip_movement = 0, life_time_tip = 0,
                      stop_iter = 0, sp_stop = 0, t_branch = 0.25):
@@ -120,6 +120,7 @@ def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
     if iter == 1:     
         c = numpy.zeros((Nx+1,Ny+1))
         f = numpy.zeros((Nx+1,Ny+1))
+        mm = numpy.zeros((Nx+1,Ny+1))
         c_prof_2 = False
         if c_prof_2 == True:
             viu = (m.sqrt(5)-0.1)/(m.sqrt(5)-1)
@@ -135,8 +136,7 @@ def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
             for y in range(0,Ny+1,2):
                 for x in range(0,Nx+1,2):
                     c[x,y] = m.exp(-(1-x*hh)**2/e)
-                    f[x,y] = 0.75*m.exp(-(x*hh)**2/e)
-               
+                    f[x,y] = 0.75*m.exp(-(x*hh)**2/e)    
         matrix_tip = []
         list_last_movement = []
         list_tip_movement = []
@@ -171,7 +171,7 @@ def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
         n = numpy.zeros((Nx+1,Ny+1))
         for i,y in enumerate(index_tip):
             matrix_tip.append([(1,y)]) #real time position
-            n[i,y] = 1
+            n[1,y] = 1
             list_last_movement.append('start') #last tip movement
             list_tip_movement.append('start') #movement tip
             life_time_tip.append(0) #lifetime
@@ -432,63 +432,73 @@ def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0,
     '''***BRANCHING/PY END***'''
     c_o = c
     f_o = f
+    mm_o = mm
     
     '''Solve c, f at sub lattice'''
     for y in range(0,Ny+1,2):
         for x in range(0,Nx+1,2):
             if y == 0:
                 if x == 0:
-                    c[x,y] = _o[x+2,y] - c_o[x,y] + c_o[x,y+2] - c_o[x,y] + c_o[x,y]*(1 - tp*nu*n[1,1])
-                    f[x,y] = f_o[x,y]+ tp*(be-ga*f_o[x,y])*n[1,1]
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n[1,1])
+                    mm[x,y] = tp*al_1*n[1,1] + mm_o[x,y]*(1-ep*4*tp/hh**2-nyu*tp) + ep*tp/hh**2*(mm_o[x+2,y]+mm_o[x,y+2]+2*mm_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n[1,1] - tp*ga*f_o[x,y]*mm_o[x,y]
                 elif x == Nx:
-                    c[x,y] = c_o[x-2,y] - c_o[x,y] + c_o[x,y+2] - c_o[x,y] + c_o[x,y]*(1 - tp*nu*n[Nx-1,1])
-                    f[x,y] = f_o[x,y]+ tp*(be-ga*f_o[x,y])*n[Nx-1,1]
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n[Nx-1,1])
+                    mm[x,y] = tp*al_1*n[Nx-1,1] + mm_o[x,y]*(1-ep*4*tp/hh**2-nyu*tp) + ep*tp/hh**2*(mm_o[x-2,y]+mm_o[x,y-2]+2*mm_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n[Nx-1,1] - tp*ga*f_o[x,y]*mm_o[x,y]
                 else:
                     if n[x+1,1] == 1 or n[x-1,1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    c[x,y] = c_o[x+2,y] - 2*c_o[x,y] + 2*c_o[x,y+2] - c_o[x,y] + c_o[x-2,y] + c_o[x,y]*(1 - tp*nu*n_bool)
-                    f[x,y] = f_o[x,y]+ tp*(be-ga*f_o[x,y])*n_bool
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)
+                    mm[x,y] = tp*al_1*n_bool + mm_o[x,y]*(1-ep*4*tp/hh**2-nyu*tp) + ep*tp/hh**2*(mm_o[x+2,y]+mm_o[x,y+2]+mm_o[x-2,y]+mm_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*mm_o[x,y]
             elif y == Ny:
                 if x == 0:
-                    c[x,y] = c_o[x+2,y]-c_o[x,y] + c_o[x,y-2] - c_o[x,y] + c_o[x,y]*(1 - tp*nu*n[1,Ny-1])
-                    f[x,y] = f_o[x,y]+ tp*(be-ga*f_o[x,y])*n[1,Ny-1]
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n[1,Ny-1])
+                    mm[x,y] = tp*al_1*n[1,Ny-1] + mm_o[x,y]*(1-ep*4*tp/hh**2-nyu*tp) + ep*tp/hh**2*(mm_o[x+2,y]+mm_o[x,y-2]+2*mm_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n[1,Ny-1] - tp*ga*f_o[x,y]*mm_o[x,y]
                 elif x == Nx:
-                    c[x,y] = c_o[x-2,y]-c_o[x,y] + c_o[x,y-2] - c_o[x,y]  + c_o[x,y]*(1 - tp*nu*n[Nx-1,Ny-1])
-                    f[x,y] = f_o[x,y]+ tp*(be-ga*f_o[x,y])*n[Nx-1,Ny-1]
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n[Nx-1,Ny-1])
+                    mm[x,y] = tp*al_1*n[Nx-1,Ny-1] + mm_o[x,y]*(1-ep*4*tp/hh**2-nyu*tp) + ep*tp/hh**2*(mm_o[x-2,y]+mm_o[x,y-2]+2*mm_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n[Nx-1,Ny-1] - tp*ga*f_o[x,y]*mm_o[x,y] 
                 else:
                     if n[x+1,Ny-1] == 1 or n[x-1,Ny-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    c[x,y] = c_o[x+2,y] - 2*c_o[x,y] + 2*c_o[x,y-2] - c_o[x,y]  + c_o[x-2,y] + c_o[x,y]*(1 - tp*nu*n_bool)
-                    f[x,y] = f_o[x,y]+ tp*(be-ga*f_o[x,y])*n_bool
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)
+                    mm[x,y] = tp*al_1*n_bool + mm_o[x,y]*(1-ep*4*tp/hh**2-nyu*tp) + ep*tp/hh**2*(mm_o[x+2,y]+mm_o[x,y-2]+mm_o[x-2,y]+mm_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*mm_o[x,y]
             else:
                 if x == 0:
                     if n[x+1,y+1] == 1 or n[x+1,y-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    c[x,y] = 2*c_o[x+2,y]-2*c_o[x,y] + c[x,y+2] - c[x,y] + c[x,y-2] + c_o[x,y]*(1 - tp*nu*n_bool)
-                    f[x,y] = f_o[x,y]+ tp*(be-ga*f_o[x,y])*n_bool
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)
+                    mm[x,y] = tp*al_1*n_bool + mm_o[x,y]*(1-ep*4*tp/hh**2-nyu*tp) + ep*tp/hh**2*(mm_o[x+2,y]+mm_o[x,y-2]+mm_o[x,y+2]+mm_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*mm_o[x,y]
                 elif x == Nx:
                     if n[x-1,y+1] == 1 or n[x-1,y-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    c[x,y] = 2*c_o[x-2,y]-2*c_o[x,y] + c[x,y+2] - c[x,y] + c[x,y-2] + c_o[x,y]*(1 - tp*nu*n_bool)
-                    f[x,y] = f_o[x,y]+ tp*(be-ga*f_o[x,y])*n_bool
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)
+                    mm[x,y] = tp*al_1*n_bool + mm_o[x,y]*(1-ep*4*tp/hh**2-nyu*tp) + ep*tp/hh**2*(mm_o[x-2,y]+mm_o[x,y-2]+mm_o[x,y+2]+mm_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*mm_o[x,y]
                 else:
                     if n[x+1,y+1] == 1 or n[x-1,y+1] == 1 or n[x+1,y-1] == 1 or n[x-1,y-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    c[x,y] = c_o[x+2,y] - 2*c_o[x,y] + c[x,y+2] - c[x,y] + c[x,y-2] + c_o[x-2,y] + c_o[x,y]*(1 - tp*nu*n_bool)
-                    f[x,y] = f_o[x,y]+ tp*(be-ga*f_o[x,y])*n_bool
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)
+                    mm[x,y] = tp*al_1*n_bool + mm_o[x,y]*(1-ep*4*tp/hh**2-nyu*tp) + ep*tp/hh**2*(mm_o[x+2,y]+mm_o[x,y-2]+mm_o[x,y+2]+mm_o[x-2,y])
+                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*mm_o[x,y]
     
     
-    gg = [matrix_tip, list_last_movement, list_tip_movement, life_time_tip, stop_iter, sp_stop, n, c, f, 0.001]
+    gg = [matrix_tip, list_last_movement, list_tip_movement, life_time_tip, stop_iter, sp_stop, n, c, f, 0.001, mm]
     
     return gg
     
