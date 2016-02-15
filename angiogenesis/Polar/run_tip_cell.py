@@ -1,4 +1,4 @@
-import file as disc
+import tip_cell as disc
 import numpy
 from timeit import default_timer as timer 
 import time
@@ -22,33 +22,44 @@ ax = fig.gca(projection='3d')
 ax.set_zlim(-0.1, 1.2)
 
 Untuk Plot'''
-h = 0.005
-ty = 0.0003
-the = 0.5
-roo = 0 #c2 profile
 
+
+'''Coefficients'''
+Ro = 0.0125
+D_n = 0.00018
+D_c = 0.005
+Ki_n = 0.4
+Al_n = 0.6
+Nu = 0.1
+Beta = 1.5
+Gama = 0.1
+
+'''Spatial and Temporal Meshes Number'''
+R_min = 0.05
+R_max = 1
+N_r = 101
+N_p = 101 #odd number
 Nt = 100000
+
+'''Setting up '''
 t = 0
 k = 0
-T = 3
-X = 1
-Y = 1
-hh = h/2
-Nx = int(X/hh)
-Ny = int(Y/hh)
+T = 1
+dt = 0.001
 
-g = [0, 0, 0, 0, 0, 0, 0, 0, 0, ty, 0]
+g = [0, 0, 0, 0, 0, 0, 0, 0, 0, dt]
 surf = 0
 while t <= T and k < Nt:
     start1 = timer()
     k += 1
-    t += ty
+    t += 0.001
     '''Discrete Code'''
-    g = disc.discrete_1_iter(iter = k, h2 = h, ro = roo,
-                             n = g[6], c = g[7], f = g[8], tp = g[9],
+    g = disc.discrete_1_iter(iter = k, n_r = N_r, n_p = N_p, r_min = R_min, r_max = R_max,
+                             ro = Ro, d_n = D_n, d_c = D_c, ki_n = Ki_n, al_n = Al_n, nu = Nu, be = Beta, ga = Gama,
                              matrix_tip = g[0], list_last_movement = g[1], 
                              list_tip_movement = g[2], life_time_tip = g[3],
-                             stop_iter = g[4], sp_stop = g[5], mm = g[10])
+                             stop_iter = g[4], sp_stop = g[5],
+                             n = g[6], c = g[7], f = g[8], tp = g[9])
       
     start2 = timer()
      
@@ -80,25 +91,5 @@ while t <= T and k < Nt:
     
 print '*************DONE*****************'
 
-'''Plot Hybrid'''
-X = 1
-Y = 1
-hh = h/2 
-fig2 = plt.figure(2)
-plt.xlim(hh,X-hh)#X-hh
-plt.ylim(hh,Y-hh)#
-ax = fig2.add_subplot(111)
-plot_all = []
-for i in range(0,len(g[0])):
-    x_p = []
-    y_p = []
-    for j in range(0,len(g[0][i])):
-        x_p.append(g[0][i][j][0]*hh)
-        y_p.append(g[0][i][j][1]*hh)
-    globals()['plo%s' % i] = ax.plot(x_p, y_p, 'b')
-fig2.show()   
-del g
-'''Plot Hybrid'''
-raw_input()
-# plt.show(block=True)
+
 

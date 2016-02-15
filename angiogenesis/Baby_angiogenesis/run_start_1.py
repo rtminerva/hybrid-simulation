@@ -1,4 +1,4 @@
-import file as disc
+import start_1 as disc
 import numpy
 from timeit import default_timer as timer 
 import time
@@ -22,22 +22,22 @@ ax = fig.gca(projection='3d')
 ax.set_zlim(-0.1, 1.2)
 
 Untuk Plot'''
-h = 0.005
-ty = 0.0003
+h = 0.01
+ty = 0.001
 the = 0.5
 roo = 0 #c2 profile
 
 Nt = 100000
 t = 0
 k = 0
-T = 3
+T = 2
 X = 1
 Y = 1
 hh = h/2
 Nx = int(X/hh)
 Ny = int(Y/hh)
 
-g = [0, 0, 0, 0, 0, 0, 0, 0, 0, ty, 0]
+g = [0, 0, 0, 0, 0, 0, 0, 0, 0, ty]
 surf = 0
 while t <= T and k < Nt:
     start1 = timer()
@@ -48,7 +48,7 @@ while t <= T and k < Nt:
                              n = g[6], c = g[7], f = g[8], tp = g[9],
                              matrix_tip = g[0], list_last_movement = g[1], 
                              list_tip_movement = g[2], life_time_tip = g[3],
-                             stop_iter = g[4], sp_stop = g[5], mm = g[10])
+                             stop_iter = g[4], sp_stop = g[5])
       
     start2 = timer()
      

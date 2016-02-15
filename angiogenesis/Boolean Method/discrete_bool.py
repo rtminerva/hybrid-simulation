@@ -104,7 +104,7 @@ def movement_dir(h1 = 0.005,d = 0.00035,ki = 0.38,al = 0.6,ro1 = 0,
 
 def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0, al_1 = 10**(-6), ep = 0.01, nyu = 3, 
                      nu = 0.1,be = 0.05,ga = 0.1,e = 0.45,X = 1,Y = 1,
-                     h2 = 0.01,tp = 0.001,iter = 0, number_of_tip = 6,
+                     h2 = 0.005,tp = 0.001,iter = 0, number_of_tip = 6,
                      n = 0, c = 0, f = 0, mm = 0,
                      matrix_tip = 0, list_last_movement = 0, 
                      list_tip_movement = 0, life_time_tip = 0,
@@ -113,8 +113,9 @@ def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0, al_1 = 10**(-6), ep =
     import math as m
     import random
     from random import randint
-    Nx = int(X/h)
-    Ny = int(Y/h)
+    hh = h2/2
+    Nx = int(X/hh)
+    Ny = int(Y/hh)
     
     if iter == 1:     
         c = numpy.zeros((Nx+1,Ny+1))
@@ -123,29 +124,29 @@ def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0, al_1 = 10**(-6), ep =
         c_prof_2 = False
         if c_prof_2 == True:
             viu = (m.sqrt(5)-0.1)/(m.sqrt(5)-1)
-            for y in range(0,Ny+1):
-                for x in range(0,Nx+1):
-                    r_c = m.sqrt((x*h-1)**2+(y*h-0.5)**2)
+            for y in range(0,Ny+1,2):
+                for x in range(0,Nx+1,2):
+                    r_c = m.sqrt((x*hh-1)**2+(y*hh-0.5)**2)
                     if r_c >= 0.1:
                         c[x,y] = (viu-r_c)**2/(viu-0.1)**2
                     elif r_c>=0 and r_c<0.1:
                         c[x,y] = 1
-                    f[x,y] = 0.75*m.exp(-(x*h)**2/e)
+                    f[x,y] = 0.75*m.exp(-(x*hh)**2/e)
         else:
-            for y in range(0,Ny+1):
-                for x in range(0,Nx+1):
-                    c[x,y] = m.exp(-(1-x*h)**2/e)
-                    f[x,y] = 0.75*m.exp(-(x*h)**2/e)    
+            for y in range(0,Ny+1,2):
+                for x in range(0,Nx+1,2):
+                    c[x,y] = m.exp(-(1-x*hh)**2/e)
+                    f[x,y] = 0.75*m.exp(-(x*hh)**2/e)    
         matrix_tip = []
         list_last_movement = []
         list_tip_movement = []
         life_time_tip = []
         sp_stop = []
         n = numpy.zeros((Nx+1,Ny+1))
-        for y in range(0,Ny):
-            for x in range(0,Nx):
+        for y in range(1,Ny,2):
+            for x in range(1,Nx,2):
 #                 n[x,y] = m.exp(-(x*hh)**2/0.001)*(m.sin(number_of_tip*m.pi*y*hh))**2
-                n[x,y] = m.exp(-(x*h)**2/0.001)*(m.sin(number_of_tip*m.pi*y*h))**2
+                n[x,y] = m.exp(-(x*hh)**2/0.001)*(m.sin(number_of_tip*m.pi*y*hh))**2
                 
         '''Initial Tips'''
         split = int(Nx/number_of_tip)
@@ -170,7 +171,7 @@ def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0, al_1 = 10**(-6), ep =
         n = numpy.zeros((Nx+1,Ny+1))
         for i,y in enumerate(index_tip):
             matrix_tip.append([(1,y)]) #real time position
-            n[i,y] = 1
+            n[1,y] = 1
             list_last_movement.append('start') #last tip movement
             list_tip_movement.append('start') #movement tip
             life_time_tip.append(0) #lifetime
@@ -257,16 +258,16 @@ def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0, al_1 = 10**(-6), ep =
                 if life_time_tip[nom] >= t_branch: #being able to branch by life time               
                     #probabilty of branching
 #                    print 'NILAI C', c[xb+1,yb+1]
-                    if c[xb,yb] >= 0.3 and c[xb,yb] < 0.5:
+                    if c[xb+1,yb+1] >= 0.3 and c[xb+1,yb+1] < 0.5:
                         prob_weight = 2 # set the number to select here.
                         list_prob = random.sample(line, prob_weight) #list of selected numbers from line
-                    elif c[xb,yb] >= 0.5 and c[xb,yb] < 0.7:
+                    elif c[xb+1,yb+1] >= 0.5 and c[xb+1,yb+1] < 0.7:
                         prob_weight = 3 # set the number to select here.
                         list_prob = random.sample(line, prob_weight)   
-                    elif c[xb,yb] >= 0.7 and c[xb,yb] < 0.8:
+                    elif c[xb+1,yb+1] >= 0.7 and c[xb+1,yb+1] < 0.8:
                         prob_weight = 4 # set the number to select here.
                         list_prob = random.sample(line, prob_weight)  
-                    elif c[xb,yb] >= 0.8: #do branching
+                    elif c[xb+1,yb+1] >= 0.8: #do branching
                         list_prob = line
                     else: #no branching or in the condition: c[xb+1,yb+1,k+1] < 0.3
                         list_prob = [20]
@@ -294,23 +295,23 @@ def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0, al_1 = 10**(-6), ep =
                     #movement 1st tip
                     if no_back == 'right':
                         tip_1 = 'left'
-                        xpos_new = matrix_tip[nom][-1][0] - 1
+                        xpos_new = matrix_tip[nom][-1][0] - 2
                         ypos_new = matrix_tip[nom][-1][1]
                         matrix_tip[nom].append((xpos_new,ypos_new))
                     elif no_back == 'left':
                         tip_1 = 'right'
-                        xpos_new = matrix_tip[nom][-1][0] + 1
+                        xpos_new = matrix_tip[nom][-1][0] + 2
                         ypos_new = matrix_tip[nom][-1][1]
                         matrix_tip[nom].append((xpos_new,ypos_new))
                     elif no_back == 'up':
                         tip_1 = 'down'
                         xpos_new = matrix_tip[nom][-1][0]
-                        ypos_new = matrix_tip[nom][-1][1] - 1
+                        ypos_new = matrix_tip[nom][-1][1] - 2
                         matrix_tip[nom].append((xpos_new,ypos_new))
                     else:
                         tip_1 = 'up'
                         xpos_new = matrix_tip[nom][-1][0]
-                        ypos_new = matrix_tip[nom][-1][1] + 1
+                        ypos_new = matrix_tip[nom][-1][1] + 2
                         matrix_tip[nom].append((xpos_new,ypos_new))
                     n[xpos_new,ypos_new] = 1
                     
@@ -344,20 +345,20 @@ def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0, al_1 = 10**(-6), ep =
                             no1_back = 'down'
                     #movement 2nd tip
                     if dom == 'left':
-                        xpos_new = matrix_tip[-1][-1][0] - 1
+                        xpos_new = matrix_tip[-1][-1][0] - 2
                         ypos_new = matrix_tip[-1][-1][1]
                         matrix_tip[-1].append((xpos_new,ypos_new))
                     elif dom == 'right':
-                        xpos_new = matrix_tip[-1][-1][0] + 1
+                        xpos_new = matrix_tip[-1][-1][0] + 2
                         ypos_new = matrix_tip[-1][-1][1]
                         matrix_tip[-1].append((xpos_new,ypos_new))
                     elif dom == 'down':
                         xpos_new = matrix_tip[-1][-1][0]
-                        ypos_new = matrix_tip[-1][-1][1] - 1
+                        ypos_new = matrix_tip[-1][-1][1] - 2
                         matrix_tip[-1].append((xpos_new,ypos_new))
                     else: #dom == 'up'
                         xpos_new = matrix_tip[-1][-1][0]
-                        ypos_new = matrix_tip[-1][-1][1] + 1
+                        ypos_new = matrix_tip[-1][-1][1] + 2
                         matrix_tip[-1].append((xpos_new,ypos_new))
                     
                     n[xpos_new,ypos_new] = 1
@@ -394,26 +395,26 @@ def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0, al_1 = 10**(-6), ep =
 #                        globals()['sp%s' % nom].append(globals()['sp%s' % nom][-1])
                     elif no_back == 'right':
                         tipp = 'left'
-                        xpos_new = matrix_tip[nom][-1][0] - 1
+                        xpos_new = matrix_tip[nom][-1][0] - 2
                         ypos_new = matrix_tip[nom][-1][1]
                         matrix_tip[nom].append((xpos_new,ypos_new))
                         n[xpos_new,ypos_new] = 1
                     elif no_back == 'left':
                         tipp = 'right'
-                        xpos_new = matrix_tip[nom][-1][0] + 1
+                        xpos_new = matrix_tip[nom][-1][0] + 2
                         ypos_new = matrix_tip[nom][-1][1]
                         matrix_tip[nom].append((xpos_new,ypos_new)) 
                         n[xpos_new,ypos_new] = 1
                     elif no_back == 'up':
                         tipp = 'down'
                         xpos_new = matrix_tip[nom][-1][0]
-                        ypos_new = matrix_tip[nom][-1][1] - 1
+                        ypos_new = matrix_tip[nom][-1][1] - 2
                         matrix_tip[nom].append((xpos_new,ypos_new)) 
                         n[xpos_new,ypos_new] = 1
                     else:
                         tipp = 'up'
                         xpos_new = matrix_tip[nom][-1][0]
-                        ypos_new = matrix_tip[nom][-1][1] + 1
+                        ypos_new = matrix_tip[nom][-1][1] + 2
                         matrix_tip[nom].append((xpos_new,ypos_new))
                         n[xpos_new,ypos_new] = 1
                         
@@ -434,8 +435,8 @@ def discrete_1_iter(d = 0.00035,ki = 0.38,al = 0.6,ro = 0, al_1 = 10**(-6), ep =
     mm_o = mm
     
     '''Solve c, f at sub lattice'''
-    for y in range(0,Ny+1):
-        for x in range(0,Nx+1):
+    for y in range(0,Ny+1,2):
+        for x in range(0,Nx+1,2):
             if y == 0:
                 if x == 0:
                     c[x,y] = c_o[x,y]*(1 - tp*nu*n[1,1])
