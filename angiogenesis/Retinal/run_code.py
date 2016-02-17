@@ -34,22 +34,22 @@ Beta = 0.05
 Gama = 0.1
 
 '''Spatial and Temporal Meshes Number'''
-h = 0.005
-X = 1
-Y = 1
+h = 0.01
+X = 4
+Y = 4
 Hh = h/2
 nx = int(X/Hh)
 ny = int(Y/Hh)
 
 R_min = 0.1
-R_max = 1
+R_max = X
 Nt = 100000
 
 '''Setting up '''
 t = 0
 k = 0
 T = 2
-dt = 0.0001
+dt = 0.001
 
 g = [0, 0, 0, 0, 0, 0, 0, 0, 0, dt, 0]
 surf = 0
