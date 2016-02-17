@@ -11,7 +11,7 @@ def pol2cart(rho, phi):
     return(x, y)
 
 
-r = numpy.linspace(0.05, 1, 11)
+r = numpy.linspace(0.5, 1, 11)
 
 theta = numpy.linspace(0, 2*numpy.pi, 11)
 
@@ -31,7 +31,7 @@ plt.show()
 
 
 
-'''Plot Hybrid'''
+'''Plot Hybrid
 X = 1
 Y = 1
 hh = h/2 
@@ -49,6 +49,6 @@ for i in range(0,len(g[0])):
     globals()['plo%s' % i] = ax.plot(x_p, y_p, 'b')
 fig2.show()   
 del g
-'''Plot Hybrid'''
 raw_input()
 # plt.show(block=True)
+Plot Hybrid'''

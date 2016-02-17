@@ -35,10 +35,10 @@ Beta = 1.5
 Gama = 0.1
 
 '''Spatial and Temporal Meshes Number'''
-R_min = 0.05
+R_min = 0.5
 R_max = 1
-N_r = 101
-N_p = 101 #odd number
+N_r = 201
+N_p = 201 #odd number
 Nt = 100000
 
 '''Setting up '''
@@ -91,5 +91,23 @@ while t <= T and k < Nt:
     
 print '*************DONE*****************'
 
+'''Plot Hybrid'''
 
+#ax.plot(theta_matrix, radius_matrix, color='g', ls='none', marker='.')
+
+#plt.xlim(hh,X-hh)#X-hh
+#plt.ylim(hh,Y-hh)#
+d_r = (R_max - R_min)/N_r
+d_p = 2*numpy.pi/N_p
+
+ax = plt.subplot(111, polar=True)
+for i in range(0,len(g[0])):
+    R_p = []
+    P_p = []
+    for j in range(0,len(g[0][i])):
+        R_p.append(g[0][i][j][0]*d_r)
+        P_p.append(g[0][i][j][1]*d_p)
+    globals()['plo%s' % i] = ax.plot(P_p, R_p, 'b')
+plt.show()   
+'''Plot Hybrid'''
 
