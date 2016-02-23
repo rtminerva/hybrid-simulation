@@ -1,4 +1,4 @@
-import code as disc
+import code_tumor as disc
 import numpy
 from timeit import default_timer as timer 
 import time
@@ -25,33 +25,48 @@ Untuk Plot'''
 '''Coefficients'''
 Ro = 0.16
 D_n = 0.00018
-D_c = 0.005
 Ki_n = 0.4
 Al_n = 0.6
-Al_m = 10**(-6)
+
+D_c = 0.005 #
 Nu = 0.1
+
 Beta = 0.05
 Gama = 0.1
 
+D_m = 0.00018 #
+Ki_m = 0.4 #
+Al_m = 0.6 #
+
+A_p = 0.1 #
+B_p = 0.1 #
+Dl = 0.05 #
+
+T_branch = 0.078 #
+
+the = 0.75
+
+
 '''Spatial and Temporal Meshes Number'''
 h = 0.01
-X = 4
-Y = 4
+X = 4.4
+Y = 4.4
 Hh = h/2
 nx = int(X/Hh)
 ny = int(Y/Hh)
 
-R_min = 0.1
+R_min = 0.52/2
 R_max = X
 Nt = 100000
 
 '''Setting up '''
 t = 0
 k = 0
-T = 2
+T = 4
 dt = 0.001
 
-g = [0, 0, 0, 0, 0, 0, 0, 0, 0, dt, 0]
+g = [0, 0, 0, 0, 0, 0, 0, dt]
+r = [0, 0, 0, 0, 0, dt]
 surf = 0
 while t <= T and k < Nt:
     start1 = timer()
@@ -60,12 +75,27 @@ while t <= T and k < Nt:
     '''Discrete Code'''
     g = disc.discrete_1_iter(iter = k, hh = Hh, Nx = nx, Ny = ny,
                              r_min = R_min, r_max = R_max,
-                             ro = Ro, d_n = D_n, d_c = D_c, ki_n = Ki_n, al_n = Al_n, al_m = Al_m, nu = Nu, be = Beta, ga = Gama, 
+                             ro = Ro, d_n = D_n, ki_n = Ki_n, al_n = Al_n,
+                             d_c = D_c, nu = Nu,
+                             be = Beta, ga = Gama, 
+                             d_m = D_m, ki_m = Ki_m, al_m = Al_m,
+                             a_p = A_p, b_p = B_p, dl = Dl,
+                             t_branch = T_branch,
                              matrix_tip = g[0], list_last_movement = g[1], 
                              list_tip_movement = g[2], life_time_tip = g[3],
                              stop_iter = g[4], sp_stop = g[5],
-                             n = g[6], c = g[7], f = g[8], tp = g[9], mm = g[10])
-      
+                             n = g[6], tp = g[7])
+    
+    r = cont.continuous_sparse_matrix_1_iter(teta = the,
+                                             c = r[0], f = r[1], m = r[2], p = r[3], tp = r[4], n = g[6],
+                                             iter = k, hh = Hh, Nx = nx, Ny = ny,
+                                             r_min = R_min, r_max = R_max,
+                                             d_c = D_c, nu = Nu,
+                                             be = Beta, ga = Gama, 
+                                             d_m = D_m, ki_m = Ki_m, al_m = Al_m,
+                                             a_p = A_p, b_p = B_p, dl = Dl)
+    
+
     start2 = timer()
      
     if g[4] >=10000:

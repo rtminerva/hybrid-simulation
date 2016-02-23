@@ -30,7 +30,7 @@ roo = 0 #c2 profile
 Nt = 100000
 t = 0
 k = 0
-T = 4
+T = 1
 X = 1
 Y = 1
 hh = h/2
@@ -45,7 +45,7 @@ while t <= T and k < Nt:
     start1 = timer()
     k += 1
     '''Continuous Code by Sparse Matrix'''
-    r = sprQ.continuous_sparse_matrix_1_iter(iter = k, h3 = h, teta = the, ro = roo,
+    r = sprQ.continuous_sparse_matrix_1_iter(iter = k, hh = Hh, teta = the, ro = roo,
                                             n = r[0], c = r[1], f = r[2], 
                                             tp = r[3])
 #    r = sprlil.continuous_sparse_matrix_1_iter(iter = k, h3 = h, teta = the, ro = roo,

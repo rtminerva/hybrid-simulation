@@ -448,6 +448,13 @@ def continuous_sparse_matrix_1_iter(teta = 0.75,d = 0.00035,ki = 0.38,al = 0.6,r
             w2.append(max(1/(2*h3)*(f_o[x+2,y]-f_o[x,y]+f_o[x+2,y-2]-f_o[x,y-2]),1/(2*h3)*(f_o[x+2,y]-f_o[x+2,y-2]+f_o[x,y]-f_o[x,y-2])))
             w1.append(max(1/(2*h3)*(f[x+2,y]-f[x,y]+f[x+2,y-2]-f[x,y-2]),1/(2*h3)*(f[x+2,y]-f[x+2,y-2]+f[x,y]-f[x,y-2])))
     tau1 = min(h3/(4*teta*(ki*max(v1)/(1+al*c.max())+ro*max(w1))),h3**2/(4*(1-teta)*(d+h3*ki*max(v2)/(1+al*c_o.max())+h3*ro*max(w2))),1/(nu*n.max()),1/(ga*n.max()))
+    print 'TP1', 1/(nu*n.max())
+    print 'TP2', 1/(ga*n.max())
+    print
+    print 'CHANGE TP1', 1//(d*2/h3**2+nu*n.max())
+    print
+    print 'TP3', h3/(4*teta*(ki*max(v1)/(1+al*c.max())+ro*max(w1)))
+    print 'TP4', h3**2/(4*(1-teta)*(d+h3*ki*max(v2)/(1+al*c_o.max())+h3*ro*max(w2)))
     tp = tau1
     del v1
     del v2
