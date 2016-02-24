@@ -1,4 +1,5 @@
-import code_tumor as disc
+import code_mural as disc
+import code_mural_continuous as cont
 import numpy
 from timeit import default_timer as timer 
 import time
@@ -42,13 +43,17 @@ A_p = 0.1 #
 B_p = 0.1 #
 Dl = 0.05 #
 
+
+Kappa = 0.1 #
+Mic = 0.1 #
+
 T_branch = 0.078 #
 
 the = 0.75
 
 
 '''Spatial and Temporal Meshes Number'''
-h = 0.01
+h = 0.02
 X = 4.4
 Y = 4.4
 Hh = h/2
@@ -62,8 +67,9 @@ Nt = 100000
 '''Setting up '''
 t = 0
 k = 0
-T = 4
+T = 1
 dt = 0.001
+error = 0.01
 
 g = [0, 0, 0, 0, 0, 0, 0, dt]
 r = [0, 0, 0, 0, 0, dt]
@@ -76,16 +82,16 @@ while t <= T and k < Nt:
     g = disc.discrete_1_iter(iter = k, hh = Hh, Nx = nx, Ny = ny,
                              r_min = R_min, r_max = R_max,
                              ro = Ro, d_n = D_n, ki_n = Ki_n, al_n = Al_n,
-                             d_c = D_c, nu = Nu,
-                             be = Beta, ga = Gama, 
-                             d_m = D_m, ki_m = Ki_m, al_m = Al_m,
-                             a_p = A_p, b_p = B_p, dl = Dl,
                              t_branch = T_branch,
                              matrix_tip = g[0], list_last_movement = g[1], 
                              list_tip_movement = g[2], life_time_tip = g[3],
                              stop_iter = g[4], sp_stop = g[5],
-                             n = g[6], tp = g[7])
-    
+                             n = g[6], tp = g[7], c= r[0], f =r[1], m = r[2],
+                             kappa = Kappa, mic = Mic)
+    if k ==1:
+        tip_init = []
+        for i in g[0]:
+            tip_init.append(i[0])
     r = cont.continuous_sparse_matrix_1_iter(teta = the,
                                              c = r[0], f = r[1], m = r[2], p = r[3], tp = r[4], n = g[6],
                                              iter = k, hh = Hh, Nx = nx, Ny = ny,
@@ -93,7 +99,8 @@ while t <= T and k < Nt:
                                              d_c = D_c, nu = Nu,
                                              be = Beta, ga = Gama, 
                                              d_m = D_m, ki_m = Ki_m, al_m = Al_m,
-                                             a_p = A_p, b_p = B_p, dl = Dl)
+                                             a_p = A_p, b_p = B_p, dl = Dl,
+                                             Error = error, init_tip = tip_init)
     
 
     start2 = timer()
@@ -101,7 +108,7 @@ while t <= T and k < Nt:
     if g[4] >=10000:
         k = g[4]
     print 'at Time', t
-    print 'NILAI C, F, M MAX', g[7].max(), ',', g[8].max() , ',', g[10].max()
+    print 'NILAI C, F, M, P MAX', r[0].max(), ',', r[1].max() , ',', r[2].max(), ',', r[3].max()
     print 'process time of Hybrid:', start2-start1
     print 'total time of processing:', time.clock()
     print '***************************************************'
