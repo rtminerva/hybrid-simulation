@@ -287,7 +287,7 @@ def continuous_sparse_matrix_1_iter(teta = 0,
             for x in range(0,Nx+1,2):
                 r_f = numpy.sqrt((x*hh-O_x)**2 + (y*hh-O_y)**2)
                 if r_f >= r_min:
-                    #c[x,y] = 0.5-0.45*numpy.exp(-(r_f**2)/0.45)
+                    c[x,y] = 0.5-0.45*numpy.exp(-(r_f**2)/0.45)
                     f[x,y] = 0.5
                     #f[x,y] = 0.5-0.45*numpy.exp(-(r_max-r_f)**2/0.45)    
         
@@ -297,201 +297,220 @@ def continuous_sparse_matrix_1_iter(teta = 0,
                 if r_f >= r_min:
                     m[x,y] = 0.1
 
-    c_o = c
-    f_o = f
-    p_o = p
-    m_o = m
-    
-    fake = numpy.zeros((Nx+1,Ny+1))
-       
-    from scipy.sparse import dia_matrix
-    from scipy.sparse.linalg import spsolve
-    '''Creating RHS Sparse Matrix'''
-    A_right = vector_A(ccc = p_o, fff = fake, theta = teta, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny)
-    B_right = vector_B(ccc = p_o, fff = fake, theta = teta, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny)
-    C_right = vector_C(ccc = p_o, fff = fake, theta = teta, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny)
-    D_right = vector_D(ccc = p_o, fff = fake, theta = teta, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny)
-    E_right = vector_E(ccc = p_o, fff = fake, theta = teta, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny)
-    data = numpy.array([D_right, A_right, B_right, C_right, E_right])
-    i = Nx/2
-    ii = (Nx/2)**2
-    diags = numpy.array([-i,-1, 0, 1, i])
-      
-    '''RHS Multiply n and store as Q'''
-    Q = numpy.zeros((Nx/2)**2)
-    for i,j in enumerate(range(1,Nx,2)): #untuk paling awal
-        if j == 1: 
-            Q[i] = B_right[i]*m[1,1] + C_right[i+1]*m[3,1] + E_right[i+Nx/2]*m[1,3] #B & C , E
-        elif j == Nx-1: 
-            Q[i] = A_right[i-1]*m[j-2,1] + B_right[i]*m[j,1] + E_right[i+Nx/2]*m[j,3]#A & B, E
-        else:
-            Q[i] = A_right[i-1]*m[j-2,1] + B_right[i]*m[j,1] + C_right[i+1]*m[j+2,1] + E_right[i+Nx/2]*m[j,3]#A & B & C, E
-            
-    i = Nx/2       
-    for k,l in enumerate(range(3,Nx-2,2)): 
-        for j in range(1,Nx,2): #untuk tengah #Nx/2 , (Nx/2)**2-Nx/2
-            if j == 1:
-                Q[i] = D_right[i-(Nx/2)]*m[j,l-2] + B_right[i]*m[j,l] + C_right[i+1]*m[j+2,l] + E_right[i+Nx/2]*m[j,l+2] #D, B & C, E
-            elif j == Nx-1:
-                Q[i] = D_right[i-(Nx/2)]*m[j,l-2] + A_right[i-1]*m[j-2,l] + B_right[i]*m[j,l] + E_right[i+Nx/2]*m[j,l+2] #D, A & B, E
+    else:
+        c_o = c
+        f_o = f
+        p_o = p
+        m_o = m
+        
+        fake = numpy.zeros((Nx+1,Ny+1))
+           
+        from scipy.sparse import dia_matrix
+        from scipy.sparse.linalg import spsolve
+        '''Creating RHS Sparse Matrix'''
+        A_right = vector_A(ccc = p_o, fff = fake, theta = teta, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny)
+        B_right = vector_B(ccc = p_o, fff = fake, theta = teta, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny)
+        C_right = vector_C(ccc = p_o, fff = fake, theta = teta, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny)
+        D_right = vector_D(ccc = p_o, fff = fake, theta = teta, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny)
+        E_right = vector_E(ccc = p_o, fff = fake, theta = teta, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny)
+        data = numpy.array([D_right, A_right, B_right, C_right, E_right])
+        i = Nx/2
+        ii = (Nx/2)**2
+        diags = numpy.array([-i,-1, 0, 1, i])
+          
+        '''RHS Multiply n and store as Q'''
+        Q = numpy.zeros((Nx/2)**2)
+        for i,j in enumerate(range(1,Nx,2)): #untuk paling awal
+            if j == 1: 
+                Q[i] = B_right[i]*m[1,1] + C_right[i+1]*m[3,1] + E_right[i+Nx/2]*m[1,3] #B & C , E
+            elif j == Nx-1: 
+                Q[i] = A_right[i-1]*m[j-2,1] + B_right[i]*m[j,1] + E_right[i+Nx/2]*m[j,3]#A & B, E
             else:
-                Q[i] = D_right[i-(Nx/2)]*m[j,l-2] + A_right[i-1]*m[j-2,l] + B_right[i]*m[j,l] + C_right[i+1]*m[j+2,l] + E_right[i+Nx/2]*m[j,l+2] #D, A & B & C, E
-            i +=1
-     
-    for i,j in enumerate(range(1,Nx,2)): #untuk terakhir #(Nx/2)**2-Nx/2 , (Nx/2)**2
-        i += (Nx/2)**2-Nx/2
-        if j == 1:
-            Q[i] = D_right[i-(Nx/2)]*m[1,Nx-3] + B_right[i]*m[1,Nx-1] + C_right[i+1]*m[3,Nx-1] #D, B & C
-        elif j == Nx-1:
-            Q[i] = D_right[i-(Nx/2)]*m[j,Nx-3] + A_right[i-1]*m[j-2,Nx-1] + B_right[i]*m[j,Nx-1] #D, A & B
-        else:
-            Q[i] = D_right[i-(Nx/2)]*m[j,Nx-3] + A_right[i-1]*m[j-2,Nx-1] + B_right[i]*m[j,Nx-1] + C_right[i+1]*m[j+2,Nx-1] #D, A & B & C
-    del A_right
-    del B_right
-    del C_right
-    del D_right
-    del E_right
-   
-    '''Creating LHS Sparse Matrix'''
-    data = numpy.array([vector_D(ccc = p_o, fff = fake, theta = teta, left = True, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny), vector_A(ccc = p_o, fff = fake, theta = teta, left = True, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny), vector_B(ccc = p_o, fff = fake, theta = teta, left = True, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny), vector_C(ccc = p_o, fff = fake, theta = teta, left = True, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny), vector_E(ccc = p_o, fff = fake, theta = teta, left = True, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny)])
-    LHS = dia_matrix((data, diags), shape=(ii, ii))
- 
-    '''Solve LHS n = V'''
-#    from numpy.linalg import solve
-    m_sol = spsolve(LHS.tocsr(), Q)
-    del LHS
-    del Q
-    del data
-    del diags
-    
-    '''Solve c, f, p at sub lattice'''
-    
-    for y in range(0,Ny+1,2):
-        for x in range(0,Nx+1,2):
-            r_f = (x*hh-O_x)**2 + (y*hh-O_y)**2
-            if r_f <= (r_min**2 + Error + hh):
-                if x >= init_tip[2][0] and y >= init_tip[0][1]: #area 1
-                    if n[x+1,y+1] == 1 or n[x-1,y+1] == 1 or n[x+1,y-1] == 1:
-                        n_bool = 1
-                    else:
-                        n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool) + d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y+2]-2*c_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
-                    #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
-
-                elif x < init_tip[2][0] and y > init_tip[0][1]: #area 2
-                    if n[x-1,y+1] == 1 or n[x+1,y+1] == 1 or n[x-1,y-1] == 1:
-                        n_bool = 1
-                    else:
-                        n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y+2]-2*c_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
-                    #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
-                    
-                elif x <= init_tip[2][0] and y <= init_tip[0][1]: #area 3
-                    if n[x+1,y-1] == 1 or n[x-1,y+1] == 1 or n[x-1,y-1] == 1:
-                        n_bool = 1
-                    else:
-                        n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y-2]-2*c_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
-                    #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
-                        
-                elif x > init_tip[2][0] and y < init_tip[0][1]: #area 4
-                    if n[x+1,y+1] == 1 or n[x-1,y-1] == 1 or n[x+1,y-1] == 1:
-                        n_bool = 1
-                    else:
-                        n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y-2]-2*c_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
-                    #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
-            
-            elif y == 0:
-                if x == 0:
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n[1,1])+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y+2]-2*c_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n[1,1] - tp*ga*f_o[x,y]*n[1,1]
-                    p[x,y] = (a_p*m_o[1,1]+b_p)*n[1,1] - p_o[x,y]*(1-dl) #Ang1
-                    #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
-                    
-                elif x == Nx:
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n[Nx-1,1])+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y+2]-2*c_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n[Nx-1,1] - tp*ga*f_o[x,y]*n[Nx-1,1]
-                    p[x,y] = (a_p*m_o[Nx-1,1]+b_p)*n[Nx-1,1] - p_o[x,y]*(1-dl) #Ang1
-                    #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
+                Q[i] = A_right[i-1]*m[j-2,1] + B_right[i]*m[j,1] + C_right[i+1]*m[j+2,1] + E_right[i+Nx/2]*m[j,3]#A & B & C, E
+                
+        i = Nx/2       
+        for k,l in enumerate(range(3,Nx-2,2)): 
+            for j in range(1,Nx,2): #untuk tengah #Nx/2 , (Nx/2)**2-Nx/2
+                if j == 1:
+                    Q[i] = D_right[i-(Nx/2)]*m[j,l-2] + B_right[i]*m[j,l] + C_right[i+1]*m[j+2,l] + E_right[i+Nx/2]*m[j,l+2] #D, B & C, E
+                elif j == Nx-1:
+                    Q[i] = D_right[i-(Nx/2)]*m[j,l-2] + A_right[i-1]*m[j-2,l] + B_right[i]*m[j,l] + E_right[i+Nx/2]*m[j,l+2] #D, A & B, E
                 else:
-                    if n[x+1,1] == 1 or n[x-1,1] == 1:
-                        n_bool = 1
-                    else:
-                        n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y+2]-3*c_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*1/2*(m_o[x+1,1]+m_o[x-1,1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
-                    #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
-            elif y == Ny:
-                if x == 0:
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n[1,Ny-1])+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y-2]-2*c_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n[1,Ny-1]
-                    p[x,y] = (a_p*m_o[1,Ny-1]+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
-                    #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
-                elif x == Nx:
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n[Nx-1,Ny-1])+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y-2]-2*c_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n[Nx-1,Ny-1]
-                    p[x,y] = (a_p*m_o[Nx-1,Ny-1]+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
-                    #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
-                else:
-                    if n[x+1,Ny-1] == 1 or n[x-1,Ny-1] == 1:
-                        n_bool = 1
-                    else:
-                        n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y-2]-3*c_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*1/2*(m_o[x+1,Ny-1]+m_o[x-1,Ny-1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
-                    #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
-            else:
-                if x == 0:
-                    if n[x+1,y+1] == 1 or n[x+1,y-1] == 1:
-                        n_bool = 1
-                    else:
-                        n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y+2]+c_o[x,y-2]-3*c_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*1/2*(m_o[x+1,y+1]+m_o[x+1,y-1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
-                    #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
-                elif x == Nx:
-                    if n[x-1,y+1] == 1 or n[x-1,y-1] == 1:
-                        n_bool = 1
-                    else:
-                        n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y+2]+c_o[x,y-2]-3*c_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*1/2*(m_o[x-1,y+1]+m_o[x-1,y-1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
-                    #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
-                else:
-                    if n[x+1,y+1] == 1 or n[x-1,y+1] == 1 or n[x+1,y-1] == 1 or n[x-1,y-1] == 1:
-                        n_bool = 1
-                    else:
-                        n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y+2]+c_o[x,y-2]-4*c_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*1/4*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1]+m_o[x-1,y-1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
-                    #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
-            
-    
-    '''Storing new n solution into n[x,y]'''  
-    i = 0
-    for y in range(1,Ny,2):
-        for x in range(1,Nx,2):
-            r_f = numpy.sqrt((x*hh-O_x)**2 + (y*hh-O_y)**2)
-            if r_f >= r_min:
-                m[x,y] = m_sol[i]
-            else:
-                m[x,y] = 0
-            i +=1 
+                    Q[i] = D_right[i-(Nx/2)]*m[j,l-2] + A_right[i-1]*m[j-2,l] + B_right[i]*m[j,l] + C_right[i+1]*m[j+2,l] + E_right[i+Nx/2]*m[j,l+2] #D, A & B & C, E
+                i +=1
          
+        for i,j in enumerate(range(1,Nx,2)): #untuk terakhir #(Nx/2)**2-Nx/2 , (Nx/2)**2
+            i += (Nx/2)**2-Nx/2
+            if j == 1:
+                Q[i] = D_right[i-(Nx/2)]*m[1,Nx-3] + B_right[i]*m[1,Nx-1] + C_right[i+1]*m[3,Nx-1] #D, B & C
+            elif j == Nx-1:
+                Q[i] = D_right[i-(Nx/2)]*m[j,Nx-3] + A_right[i-1]*m[j-2,Nx-1] + B_right[i]*m[j,Nx-1] #D, A & B
+            else:
+                Q[i] = D_right[i-(Nx/2)]*m[j,Nx-3] + A_right[i-1]*m[j-2,Nx-1] + B_right[i]*m[j,Nx-1] + C_right[i+1]*m[j+2,Nx-1] #D, A & B & C
+        del A_right
+        del B_right
+        del C_right
+        del D_right
+        del E_right
+       
+        '''Creating LHS Sparse Matrix'''
+        data = numpy.array([vector_D(ccc = p_o, fff = fake, theta = teta, left = True, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny), vector_A(ccc = p_o, fff = fake, theta = teta, left = True, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny), vector_B(ccc = p_o, fff = fake, theta = teta, left = True, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny), vector_C(ccc = p_o, fff = fake, theta = teta, left = True, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny), vector_E(ccc = p_o, fff = fake, theta = teta, left = True, time_step = tp, h2 = h3, ro1 = ro, d1 = d_m, ki1 = ki_m, al1 = al_m, Nx1 = Nx, Ny1 = Ny)])
+        LHS = dia_matrix((data, diags), shape=(ii, ii))
+     
+        '''Solve LHS n = V'''
+    #    from numpy.linalg import solve
+        m_sol = spsolve(LHS.tocsr(), Q)
+        del LHS
+        del Q
+        del data
+        del diags
+        
+        '''Solve c, f, p at sub lattice'''
+        
+        for y in range(0,Ny+1,2):
+            for x in range(0,Nx+1,2):
+                r_f = (x*hh-O_x)**2 + (y*hh-O_y)**2
+                n_bool = 0
+                if r_f <= (r_min**2 + Error + hh):
+                    if x >= init_tip[2][0] and y >= init_tip[0][1]: #area 1
+                        if n[x+1,y+1] == 1 or n[x-1,y+1] == 1 or n[x+1,y-1] == 1:
+                            n_bool = 1
+                        else:
+                            n_bool = 0
+                        c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool) + d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y+2]-2*c_o[x,y])
+                        f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
+                        p[x,y] = (a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                        #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
+    
+                    elif x < init_tip[2][0] and y > init_tip[0][1]: #area 2
+                        if n[x-1,y+1] == 1 or n[x+1,y+1] == 1 or n[x-1,y-1] == 1:
+                            n_bool = 1
+                        else:
+                            n_bool = 0
+                        c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y+2]-2*c_o[x,y])
+                        f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
+                        p[x,y] = (a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                        #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
+                        
+                    elif x <= init_tip[2][0] and y <= init_tip[0][1]: #area 3
+                        if n[x+1,y-1] == 1 or n[x-1,y+1] == 1 or n[x-1,y-1] == 1:
+                            n_bool = 1
+                        else:
+                            n_bool = 0
+                        c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y-2]-2*c_o[x,y])
+                        f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
+                        p[x,y] = (a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                        #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
+                            
+                    elif x > init_tip[2][0] and y < init_tip[0][1]: #area 4
+                        if n[x+1,y+1] == 1 or n[x-1,y-1] == 1 or n[x+1,y-1] == 1:
+                            n_bool = 1
+                        else:
+                            n_bool = 0
+                        c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y-2]-2*c_o[x,y])
+                        f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
+                        p[x,y] = (a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                        #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
+                
+                elif y == 0:
+                    if x == 0:
+                        c[x,y] = c_o[x,y]*(1 - tp*nu*n[1,1])+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y+2]-2*c_o[x,y])
+                        f[x,y] = f_o[x,y] + tp*be*n[1,1] - tp*ga*f_o[x,y]*n[1,1]
+                        p[x,y] = (a_p*m_o[1,1]+b_p)*n[1,1] - p_o[x,y]*(1-dl) #Ang1
+                        #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
+                        
+                    elif x == Nx:
+                        c[x,y] = c_o[x,y]*(1 - tp*nu*n[Nx-1,1])+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y+2]-2*c_o[x,y])
+                        f[x,y] = f_o[x,y] + tp*be*n[Nx-1,1] - tp*ga*f_o[x,y]*n[Nx-1,1]
+                        p[x,y] = (a_p*m_o[Nx-1,1]+b_p)*n[Nx-1,1] - p_o[x,y]*(1-dl) #Ang1
+                        #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
+                    else:
+                        if n[x+1,1] == 1 or n[x-1,1] == 1:
+                            n_bool = 1
+                        else:
+                            n_bool = 0
+                        c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y+2]-3*c_o[x,y])
+                        f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
+                        p[x,y] = (a_p*1/2*(m_o[x+1,1]+m_o[x-1,1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                        #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
+                elif y == Ny:
+                    if x == 0:
+                        c[x,y] = c_o[x,y]*(1 - tp*nu*n[1,Ny-1])+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y-2]-2*c_o[x,y])
+                        f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n[1,Ny-1]
+                        p[x,y] = (a_p*m_o[1,Ny-1]+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                        #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
+                    elif x == Nx:
+                        c[x,y] = c_o[x,y]*(1 - tp*nu*n[Nx-1,Ny-1])+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y-2]-2*c_o[x,y])
+                        f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n[Nx-1,Ny-1]
+                        p[x,y] = (a_p*m_o[Nx-1,Ny-1]+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                        #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
+                    else:
+                        if n[x+1,Ny-1] == 1 or n[x-1,Ny-1] == 1:
+                            n_bool = 1
+                        else:
+                            n_bool = 0
+                        c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y-2]-3*c_o[x,y])
+                        f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
+                        p[x,y] = (a_p*1/2*(m_o[x+1,Ny-1]+m_o[x-1,Ny-1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                        #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
+                else:
+                    if x == 0:
+                        if n[x+1,y+1] == 1 or n[x+1,y-1] == 1:
+                            n_bool = 1
+                        else:
+                            n_bool = 0
+                        c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y+2]+c_o[x,y-2]-3*c_o[x,y])
+                        f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
+                        p[x,y] = (a_p*1/2*(m_o[x+1,y+1]+m_o[x+1,y-1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                        #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
+                    elif x == Nx:
+                        if n[x-1,y+1] == 1 or n[x-1,y-1] == 1:
+                            n_bool = 1
+                        else:
+                            n_bool = 0
+                        c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y+2]+c_o[x,y-2]-3*c_o[x,y])
+                        f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
+                        p[x,y] = (a_p*1/2*(m_o[x-1,y+1]+m_o[x-1,y-1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                        #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
+                    else:
+                        if n[x+1,y+1] == 1 or n[x-1,y+1] == 1 or n[x+1,y-1] == 1 or n[x-1,y-1] == 1:
+                            n_bool = 1
+                        else:
+                            n_bool = 0
+                        c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y+2]+c_o[x,y-2]-4*c_o[x,y])
+                        f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
+                        p[x,y] = (a_p*1/4*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1]+m_o[x-1,y-1])+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                        #p[x,y] = 1/(a_p*1/3*(m_o[x-1,y+1]+m_o[x+1,y+1]+m_o[x+1,y-1])+b_p) #Ang2
+        
+        '''Storing new n solution into n[x,y]'''  
+        i = 0
+        for y in range(1,Ny,2):
+            for x in range(1,Nx,2):
+                r_f = numpy.sqrt((x*hh-O_x)**2 + (y*hh-O_y)**2)
+                if r_f >= r_min:
+                    m[x,y] = m_sol[i]
+                else:
+                    m[x,y] = 0
+                i +=1 
+        
+        '''Time Step'''
+        v1=[]
+        v2=[]
+        for y in range(2,Ny+1,2):
+            for x in range(0,Nx,2):
+                v1.append(max(1/(2*h3)*(p[x+2,y]-p[x,y]+p[x+2,y-2]-p[x,y-2]),1/(2*h3)*(p[x+2,y]-p[x+2,y-2]+p[x,y]-p[x,y-2])))
+                v2.append(max(1/(2*h3)*(p_o[x+2,y]-p_o[x,y]+p_o[x+2,y-2]-p_o[x,y-2]),1/(2*h3)*(p_o[x+2,y]-p_o[x+2,y-2]+p_o[x,y]-p_o[x,y-2])))
+        tau1 = min(h3/(4*teta*(ki_m*max(v1)/(1+al_m*p.max()))),h3**2/(4*(1-teta)*(d_m+h3*ki_m*max(v2)/(1+al_m*p_o.max()))),1/(d_c*2/h3**2+nu*n.max()),1/(ga*n.max()))
+        #print 'TPC', 1/(d_c*2/h3**2+nu*n.max())
+        #print 'TPF', 1/(ga*n.max())
+        #print 'TP1', h3/(4*teta*(ki_m*max(v1)/(1+al_m*p.max())))
+        #print 'TP2', h3**2/(4*(1-teta)*(d_m+h3*ki_m*max(v2)/(1+al_m*p_o.max())))
+        tp = tau1
+        del v1
+        del v2
+        del tau1
+    
+    '''Checking positiveness of solution'''      
     rr = [c, f, m, p, tp]
     for value in c:
         if value.all < 0:
@@ -501,7 +520,7 @@ def continuous_sparse_matrix_1_iter(teta = 0,
         if value.all < 0:
             print 'Ada Fibronectin yang negative'
             quit()
-    for value in m_sol:
+    for value in m:
         if value.all < 0:
             print 'Ada Mural yang negative'
             quit()

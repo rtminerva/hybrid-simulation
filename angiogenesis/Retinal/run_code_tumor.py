@@ -34,7 +34,7 @@ Beta = 0.05
 Gama = 0.1
 
 '''Spatial and Temporal Meshes Number'''
-h = 0.01
+h = 0.02
 X = 4.4
 Y = 4.4
 Hh = h/2
@@ -48,7 +48,7 @@ Nt = 100000
 '''Setting up '''
 t = 0
 k = 0
-T = 0.005
+T = 2
 dt = 0.001
 
 g = [0, 0, 0, 0, 0, 0, 0, 0, 0, dt, 0]

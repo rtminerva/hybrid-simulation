@@ -26,10 +26,10 @@ def movement_dir(x_pos = 0, y_pos = 0, cc = 0, ff = 0, mm = 0,
     wwy_n = max(0,-wwy)
     
     '''With chemotaxis inhibition'''
-    ki_n1 = ki_n1/(1+mic1*mm[x_pos,y_pos])
+    #ki_n1 = ki_n1/(1+mic1*mm[x_pos,y_pos])
     
     '''With haptotaxis activation'''
-    ro1 = ro1 + kappa1*mm[x_pos,y_pos]
+    #ro1 = ro1 + kappa1*mm[x_pos,y_pos]
     
     
     P_1 = la*d_n1+la*h1*ki_n1/(1+al_n1*cc[x_pos-1,y_pos+1])*vvx_n + la*h1*ro1*wwx_n
@@ -37,6 +37,9 @@ def movement_dir(x_pos = 0, y_pos = 0, cc = 0, ff = 0, mm = 0,
     
     P_3 = la*d_n1+la*h1*ki_n1/(1+al_n1*cc[x_pos+1,y_pos-1])*vvy_n + la*h1*ro1*wwy_n
     P_4 = la*d_n1+la*h1*ki_n1/(1+al_n1*cc[x_pos+1,y_pos+1])*vvy_p + la*h1*ro1*wwy_p
+    
+    if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
+        print 'ADA P yang Negative'
     
     '''Boundary on the inner circle'''
     O_x = n_x/2*h2
@@ -105,7 +108,7 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                     list_tip_movement = 0, life_time_tip = 0,
                     stop_iter = 0, sp_stop = 0,
                     n = 0, tp = 0, c = 0, f = 0, m = 0,
-                    Error = 0.01,
+                    Error = 0,
                     kappa = 0, mic = 0):
  
  
@@ -287,12 +290,16 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                     xb = matrix_tip[nom][-1][0] #get x position of last tip position
                     yb = matrix_tip[nom][-1][1] #get y position of last tip position
                     #print 'xb,yb', xb,',',yb
+                    
                     dirr = movement_dir(x_pos = xb, y_pos = yb, cc = c, ff = f, mm = m,
                                         tep = tp, h1 = h2, R_min = r_min, error = Error,
                                         d_n1 = d_n, ki_n1 = ki_n, al_n1 = al_n, ro1 = ro,
                                         n_x = Nx, n_y = Ny, Matrix_tip = matrix_tip,
                                         kappa1 = kappa, mic1 = kappa)
+                    print dirr
+                    
                     if dirr[5] == True:
+                        print 'masuk ke bagian po = 0'
                         life_time_tip[nom] += tp
                         no_back = list_tip_movement[nom]
                         while no_back == list_tip_movement[nom]:
@@ -518,8 +525,8 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
     print 'Total Stop Tips:', len(sp_stop)    
     '''***BRANCHING/PY END***'''
     
-    ty = tp
-    gg = [matrix_tip, list_last_movement, list_tip_movement, life_time_tip, stop_iter, sp_stop, n, ty]
+ 
+    gg = [matrix_tip, list_last_movement, list_tip_movement, life_time_tip, stop_iter, sp_stop, n]
     
     return gg
     

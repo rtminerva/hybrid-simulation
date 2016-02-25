@@ -30,6 +30,9 @@ def movement_dir(x_pos = 0, y_pos = 0, cc = 0, ff = 0,
     P_3 = la*d_n1+la*h1*ki_n1/(1+al_n1*cc[x_pos+1,y_pos-1])*vvy_n + la*h1*ro1*wwy_n
     P_4 = la*d_n1+la*h1*ki_n1/(1+al_n1*cc[x_pos+1,y_pos+1])*vvy_p + la*h1*ro1*wwy_p
     
+    if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
+        print 'ADA P yang Negative'
+    
     '''Boundary on the inner circle'''
     O_x = n_x/2*h2
     O_y = n_y/2*h2
@@ -90,12 +93,13 @@ def movement_dir(x_pos = 0, y_pos = 0, cc = 0, ff = 0,
 
 def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                     r_min = 0, r_max = 0,
-                    ro = 0, d_n = 0, d_c = 0, ki_n = 0, al_n = 0, al_m = 0, nu = 0, be = 0, ga = 0, ep = 0.01, nyu = 3,
+                    ro = 0, d_n = 0, d_c = 0, ki_n = 0, al_n = 0, nu = 0, be = 0, ga = 0,
                     matrix_tip = 0, list_last_movement = 0, 
                     list_tip_movement = 0, life_time_tip = 0,
                     stop_iter = 0, sp_stop = 0,
-                    n = 0, c = 0, f = 0, mm = 0, tp = 0,
-                    t_branch = 0.078):
+                    n = 0, c = 0, f = 0, tp = 0,
+                    t_branch = 0,
+                    Error = 0):
 
     import numpy
     import random
@@ -103,19 +107,18 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
     h2 = 2*hh
     O_x = Nx/2*hh
     O_y = Ny/2*hh
-    Error = 0.009
     
     '''Define Initial Profile'''
     if iter == 1:
         c = numpy.zeros((Nx+1,Ny+1))
         f = numpy.zeros((Nx+1,Ny+1))
-        mm = numpy.zeros((Nx+1,Ny+1))
         for y in range(0,Ny+1,2):
             for x in range(0,Nx+1,2):
                 r_f = numpy.sqrt((x*hh-O_x)**2 + (y*hh-O_y)**2)
-                if r_f >= r_min:
+                if r_f >= r_min + numpy.sqrt(Error):
                     c[x,y] = 0.5-0.45*numpy.exp(-(r_f**2)/0.45)
-                    f[x,y] = 0.5-0.45*numpy.exp(-(r_max-r_f)**2/0.45) 
+                    f[x,y] = 0.5
+                    #f[x,y] = 0.5-0.45*numpy.exp(-(r_max-r_f)**2/0.45) 
             
         matrix_tip = []
         list_last_movement = []
@@ -128,7 +131,6 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
         
         y1 = Ny/2 + 1
         x = 1
-        Error = 0.009
         while x < Nx+1:
             if (x*hh-O_x)**2 + (y1*hh-O_y)**2 < r_min**2 + Error and (x*hh-O_x)**2 + (y1*hh-O_y)**2 > r_min**2:
                     matrix_tip.append([(x,y1)])
@@ -191,7 +193,6 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
         '''Initial Tips'''
 
     '''1. Anastomosis''' #not yet
-    print 'point 1'
     sp_new_stop =[]
     for noms in range(0,len(matrix_tip)):         
         if not noms in sp_stop:
@@ -221,7 +222,6 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                         print 'anastomosis at position', matrix_tip[noms][-1]
                     #kalau gak hit, do nothing
     '''1.3 Checking if two tips meet at one point'''
-    print 'point 2'
     if len(sp_new_stop) >= 2:
         pair = [(0,0)]
         for j in sp_new_stop:
@@ -239,7 +239,7 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
         pair.remove((0,0))
         if len(pair) >= 1:
             for j in range(1,len(pair)):
-                if not pair[j][0] in sp_new_stop:            
+                if not pair[j][0] in sp_new_stop:
                     sp_new_stop.remove(pair[j][0])         
     sp_stop.extend(sp_new_stop)
     sp_stop = list(set(sp_stop))
@@ -250,9 +250,9 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                     sp_stop.append(noms)
     for i in sp_stop:
         list_last_movement[i] = 'stop'
+    print 'check 1'
     
-    '''2. Branching and Movement''' 
-    print 'point 3'       
+    '''2. Branching and Movement'''        
     if len(sp_stop) == len(matrix_tip):
         stop_iter = 100000 #sp_stop harus dicek di setiap movement and branching. karena sudah tidak bergerak lagi yang ada di list ini.
         print 'all looping itself or anastomosis'
@@ -273,7 +273,7 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                                     tep = tp, h1 = h2, R_min = r_min, error = Error,
                                     d_n1 = d_n, ki_n1 = ki_n, al_n1 = al_n, ro1 = ro,
                                     n_x = Nx, n_y = Ny, Matrix_tip = matrix_tip)
-                print 'point 4'  
+                print 'check 2'
 
                 '''2.1 Branching Decision''' 
                 if life_time_tip[nom] >= t_branch: #being able to branch by life time               
@@ -296,6 +296,7 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                     list_prob = [20]
                 #apakah branching? meaning masuk dalam probability of branching?
                 tes = randint(1,10) #select integer number randomly between 1 and 10
+                print 'check 3'
                 if tes in list_prob:#do branching
                     '''2.1.1 Branching tip's movement: 1st tip movement: nom tip'''
                     '''2.1.1.1 Checking no back and stay movement'''
@@ -335,9 +336,9 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                         ypos_new = matrix_tip[nom][-1][1] + 2
                         matrix_tip[nom].append((xpos_new,ypos_new))
                     n[xpos_new,ypos_new] = 1
-                    print 'point 5'  
-                    '''2.1 Branhcing'''
                     
+                    '''2.1 Branhcing'''
+                    print 'check 4'
                     matrix_tip.append([(xb,yb)])
                     #waktunya diriset
                     life_time_tip.append(0)
@@ -364,6 +365,7 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                         else: #>dirr[3]
                             dom = 'up'
                             no1_back = 'down'
+                    print 'check 5'
                     #movement 2nd tip
                     if dom == 'left':
                         xpos_new = matrix_tip[-1][-1][0] - 2
@@ -392,9 +394,9 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                     list_last_movement.append(dom)
                     list_last_movement[nom] = tip_1   
 #                    life_time_tip[-1] = tp
-                    print 'point 6' 
+                    
                 else: #no branching
-                    print 'point 7'  
+                    print 'check 6,no branch'
                     '''2.2 No Branching'''
                     '''Movement only'''
                     '''2.2.1 Checking no back movement'''
@@ -412,7 +414,7 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                             no_back = 'up'
                         else: #>dirr[3] #up
                             no_back = 'down'
-                    print 'point 8' 
+                    print 'check 7,no branch'
                     if no_back == 'pro':
                         tipp = 'stay'
 #                        globals()['sp%s' % nom].append(globals()['sp%s' % nom][-1])
@@ -440,7 +442,7 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                         ypos_new = matrix_tip[nom][-1][1] + 2
                         matrix_tip[nom].append((xpos_new,ypos_new))
                         n[xpos_new,ypos_new] = 1
-                        
+                    print 'check 8,no branch'    
                     '''2.2.2 Renewal Some Vars'''
                     if not tipp == 'stay':
                         list_tip_movement[nom] = tipp
@@ -455,111 +457,95 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
     '''***BRANCHING/PY END***'''
     c_o = c
     f_o = f
-    mm_o = mm
     
-    '''Solve c, f at sub lattice'''
+    '''Solve c, f, p at sub lattice'''
+    h3 = h2 
     for y in range(0,Ny+1,2):
         for x in range(0,Nx+1,2):
             r_f = (x*hh-O_x)**2 + (y*hh-O_y)**2
+            n_bool = 0
             if r_f <= (r_min**2 + Error + hh):
                 if x >= matrix_tip[2][0][0] and y >= matrix_tip[0][0][1]: #area 1
                     if n[x+1,y+1] == 1 or n[x-1,y+1] == 1 or n[x+1,y-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)
-                    mm[x,y] = tp*al_m*n_bool + mm_o[x,y]*(1-ep*4*tp/h2**2-nyu*tp) + ep*tp/h2**2*(mm_o[x+2,y]+mm_o[x,y+2]+2*mm_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*mm_o[x,y]
-
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool) + d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y+2]-2*c_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
                 elif x < matrix_tip[2][0][0] and y > matrix_tip[0][0][1]: #area 2
                     if n[x-1,y+1] == 1 or n[x+1,y+1] == 1 or n[x-1,y-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)
-                    mm[x,y] = tp*al_m*n_bool + mm_o[x,y]*(1-ep*4*tp/h2**2-nyu*tp) + ep*tp/h2**2*(mm_o[x-2,y]+mm_o[x,y+2]+2*mm_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*mm_o[x,y]
-                    
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y+2]-2*c_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
                 elif x <= matrix_tip[2][0][0] and y <= matrix_tip[0][0][1]: #area 3
                     if n[x+1,y-1] == 1 or n[x-1,y+1] == 1 or n[x-1,y-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)
-                    mm[x,y] = tp*al_m*n_bool + mm_o[x,y]*(1-ep*4*tp/h2**2-nyu*tp) + ep*tp/h2**2*(mm_o[x-2,y]+mm_o[x,y-2]+2*mm_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*mm_o[x,y]
-                        
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y-2]-2*c_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
                 elif x > matrix_tip[2][0][0] and y < matrix_tip[0][0][1]: #area 4
                     if n[x+1,y+1] == 1 or n[x-1,y-1] == 1 or n[x+1,y-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)
-                    mm[x,y] = tp*al_m*n_bool + mm_o[x,y]*(1-ep*4*tp/h2**2-nyu*tp) + ep*tp/h2**2*(mm_o[x+2,y]+mm_o[x,y-2]+2*mm_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*mm_o[x,y]
- 
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y-2]-2*c_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
             elif y == 0:
                 if x == 0:
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n[1,1])
-                    mm[x,y] = tp*al_m*n[1,1] + mm_o[x,y]*(1-ep*4*tp/h2**2-nyu*tp) + ep*tp/h2**2*(mm_o[x+2,y]+mm_o[x,y+2]+2*mm_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n[1,1] - tp*ga*f_o[x,y]*mm_o[x,y]
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n[1,1])+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y+2]-2*c_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n[1,1] - tp*ga*f_o[x,y]*n[1,1]
                 elif x == Nx:
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n[Nx-1,1])
-                    mm[x,y] = tp*al_m*n[Nx-1,1] + mm_o[x,y]*(1-ep*4*tp/h2**2-nyu*tp) + ep*tp/h2**2*(mm_o[x-2,y]+mm_o[x,y-2]+2*mm_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n[Nx-1,1] - tp*ga*f_o[x,y]*mm_o[x,y]
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n[Nx-1,1])+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y+2]-2*c_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n[Nx-1,1] - tp*ga*f_o[x,y]*n[Nx-1,1]
                 else:
                     if n[x+1,1] == 1 or n[x-1,1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)
-                    mm[x,y] = tp*al_m*n_bool + mm_o[x,y]*(1-ep*4*tp/h2**2-nyu*tp) + ep*tp/h2**2*(mm_o[x+2,y]+mm_o[x,y+2]+mm_o[x-2,y]+mm_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*mm_o[x,y]
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y+2]-3*c_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
             elif y == Ny:
                 if x == 0:
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n[1,Ny-1])
-                    mm[x,y] = tp*al_m*n[1,Ny-1] + mm_o[x,y]*(1-ep*4*tp/h2**2-nyu*tp) + ep*tp/h2**2*(mm_o[x+2,y]+mm_o[x,y-2]+2*mm_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n[1,Ny-1] - tp*ga*f_o[x,y]*mm_o[x,y]
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n[1,Ny-1])+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y-2]-2*c_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n[1,Ny-1]
                 elif x == Nx:
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n[Nx-1,Ny-1])
-                    mm[x,y] = tp*al_m*n[Nx-1,Ny-1] + mm_o[x,y]*(1-ep*4*tp/h2**2-nyu*tp) + ep*tp/h2**2*(mm_o[x-2,y]+mm_o[x,y-2]+2*mm_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n[Nx-1,Ny-1] - tp*ga*f_o[x,y]*mm_o[x,y] 
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n[Nx-1,Ny-1])+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y-2]-2*c_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n[Nx-1,Ny-1]
                 else:
                     if n[x+1,Ny-1] == 1 or n[x-1,Ny-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)
-                    mm[x,y] = tp*al_m*n_bool + mm_o[x,y]*(1-ep*4*tp/h2**2-nyu*tp) + ep*tp/h2**2*(mm_o[x+2,y]+mm_o[x,y-2]+mm_o[x-2,y]+mm_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*mm_o[x,y]
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y-2]-3*c_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
             else:
                 if x == 0:
                     if n[x+1,y+1] == 1 or n[x+1,y-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)
-                    mm[x,y] = tp*al_m*n_bool + mm_o[x,y]*(1-ep*4*tp/h2**2-nyu*tp) + ep*tp/h2**2*(mm_o[x+2,y]+mm_o[x,y-2]+mm_o[x,y+2]+mm_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*mm_o[x,y]
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y+2]+c_o[x,y-2]-3*c_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
                 elif x == Nx:
                     if n[x-1,y+1] == 1 or n[x-1,y-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)
-                    mm[x,y] = tp*al_m*n_bool + mm_o[x,y]*(1-ep*4*tp/h2**2-nyu*tp) + ep*tp/h2**2*(mm_o[x-2,y]+mm_o[x,y-2]+mm_o[x,y+2]+mm_o[x,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*mm_o[x,y]
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y+2]+c_o[x,y-2]-3*c_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
                 else:
                     if n[x+1,y+1] == 1 or n[x-1,y+1] == 1 or n[x+1,y-1] == 1 or n[x-1,y-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)
-                    mm[x,y] = tp*al_m*n_bool + mm_o[x,y]*(1-ep*4*tp/h2**2-nyu*tp) + ep*tp/h2**2*(mm_o[x+2,y]+mm_o[x,y-2]+mm_o[x,y+2]+mm_o[x-2,y])
-                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*mm_o[x,y]
+                    c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y+2]+c_o[x,y-2]-4*c_o[x,y])
+                    f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
 
     ty = tp
-    gg = [matrix_tip, list_last_movement, list_tip_movement, life_time_tip, stop_iter, sp_stop, n, c, f, ty, mm]
+    gg = [matrix_tip, list_last_movement, list_tip_movement, life_time_tip, stop_iter, sp_stop, n, c, f, ty]
     
     return gg
     
