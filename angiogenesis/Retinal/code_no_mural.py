@@ -1,4 +1,16 @@
 #import continuous_run as cont
+def second_largest(numbers):
+    count = 0
+    m1 = m2 = float('-inf')
+    for x in numbers:
+        count += 1
+        if x > m2:
+            if x >= m1:
+                m1, m2 = x, m1            
+            else:
+                m2 = x
+    return m2 if count >= 2 else None
+
 
 def movement_dir(x_pos = 0, y_pos = 0, cc = 0, ff = 0,
                  tep = 0, h1 = 0, R_min = 0, error = 0,
@@ -81,13 +93,9 @@ def movement_dir(x_pos = 0, y_pos = 0, cc = 0, ff = 0,
     '''Using Non-reflection Boundary'''
             
     P_0 = 1-(P_1+P_2+P_3+P_4)
-    R_0 = P_0
-    R_1 = P_0+P_1
-    R_2 = P_0+P_1+P_2
-    R_3 = P_0+P_1+P_2+P_3
-    R_4 = 1
     
-    prob_range = [R_0,R_1,R_2,R_3,R_4]
+    
+    prob_range = [P_0,P_1,P_2,P_3,P_4]
     print 'probability P', P_0, ',',P_1,',',P_2,',',P_3,',',P_4
     return prob_range;
 
@@ -302,18 +310,24 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                     '''2.1.1.1 Checking no back and stay movement'''
                     no1_back = list_tip_movement[nom]
                     no_back = list_tip_movement[nom]
+                    dirr = dirr[1:]
+                    dirr2 = []
+                    for a in dirr:
+                        dirr2.append(a)
+                    maxx = max(dirr2)
+                    print dirr
                     while no_back == list_tip_movement[nom]:
-                        trial = random.uniform(0,1)
-                        if trial <= dirr[0]: #stay
-                            no_back = list_tip_movement[nom] #karna branching, dia harus move
-                        elif trial <= dirr[1]: #left
+                        if maxx == dirr[0]: #left
                             no_back = 'right'
-                        elif trial <= dirr[2]: #right
+                        elif maxx == dirr[1]: #right
                             no_back = 'left'
-                        elif trial <= dirr[3]: #down
+                        elif maxx == dirr[2]: #down
                             no_back = 'up'
                         else: #>dirr[3] #up
                             no_back = 'down'
+                        if list_tip_movement[nom] == no_back:
+                            dirr2.remove(maxx)
+                            maxx = max(dirr2)
                     #movement 1st tip
                     if no_back == 'right':
                         tip_1 = 'left'
@@ -349,22 +363,23 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                     #ada no1_back
                     #ada tip_1
                     dom = tip_1
+                    max2 = second_largest(dirr2)
                     while no1_back == list_tip_movement[nom] or dom == tip_1:
-                        trial = random.uniform(0,1)
-                        if trial <= dirr[0]:
-                            dom = tip_1
-                        elif trial <= dirr[1]:
+                        if max2 == dirr[0]: #left
                             dom = 'left'
                             no1_back = 'right'
-                        elif trial <= dirr[2]:
+                        elif max2 == dirr[1]: #right
                             dom = 'right'
                             no1_back = 'left'
-                        elif trial <= dirr[3]:
+                        elif max2 == dirr[2]: #down
                             dom = 'down'
                             no1_back = 'up'
-                        else: #>dirr[3]
+                        else: #>dirr[3] #up
                             dom = 'up'
                             no1_back = 'down'
+                        if no1_back == list_tip_movement[nom] or dom == tip_1:
+                            dirr2.remove(max2)
+                            max2 = max(dirr2)
                     print 'check 5'
                     #movement 2nd tip
                     if dom == 'left':
@@ -396,6 +411,7 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
 #                    life_time_tip[-1] = tp
                     
                 else: #no branching
+                    dirr = [dirr[0],dirr[0]+dirr[1],dirr[0]+dirr[1]+dirr[2],dirr[0]+dirr[1]+dirr[2]+dirr[3],1]
                     print 'check 6,no branch'
                     '''2.2 No Branching'''
                     '''Movement only'''
