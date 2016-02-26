@@ -1,4 +1,4 @@
-import code_no_mural as disc
+import code_with_mural as disc
 import numpy
 from timeit import default_timer as timer 
 import time
@@ -28,12 +28,24 @@ D_n = 0.00018
 Ki_n = 0.4
 Al_n = 0.6
 
-D_c = 0.005
+D_c = 0.005 #
 Nu = 0.1
 
 Beta = 0.05
 Gama = 0.1
 
+D_m = 0.00018 #
+Ki_m = 0.4 #
+Al_m = 0.6 #
+
+A_p = 0.2 #
+B_p = 0.2 #
+Dl = 0.05 #
+
+Kappa = 0 #0.3 #
+Mic = 0.6 #0.1 #
+
+##INI YANG BETUL CODENYA
 '''Spatial and Temporal Meshes Number'''
 h = 0.02
 X = 4.4
@@ -49,13 +61,13 @@ Nt = 100000
 '''Setting up '''
 t = 0
 k = 0
-T = 0.5
+T = 1.5
 dt = 0.001
 error = 0.01
 
 T_branch = 0.078 #
 
-g = [0, 0, 0, 0, 0, 0, 0, 0, dt]
+g = [0, 0, 0, 0, 0, 0, 0, 0, dt, 0, 0, 0]
 surf = 0
 while t <= T and k < Nt:
     start1 = timer()
@@ -64,20 +76,28 @@ while t <= T and k < Nt:
     '''Discrete Code'''
     g = disc.discrete_1_iter(iter = k, hh = Hh, Nx = nx, Ny = ny,
                              r_min = R_min, r_max = R_max,
-                             ro = Ro, d_n = D_n, d_c = D_c, ki_n = Ki_n, al_n = Al_n, nu = Nu, be = Beta, ga = Gama, 
+                             ro = Ro, d_n = D_n, ki_n = Ki_n, al_n = Al_n,
+                             kappa = Kappa, mic = Mic,
+                             d_c = D_c, nu = Nu, 
+                             be = Beta, ga = Gama, 
+                             d_m = D_m, ki_m = Ki_m, al_m = Al_m,
+                             a_p = A_p, b_p = B_p, dl = Dl,
                              matrix_tip = g[0],  
                              list_tip_movement = g[1], life_time_tip = g[2],
                              stop_iter = g[3], sp_stop = g[4],
-                             n = g[5], c = g[6], f = g[7], tp = g[8],
+                             n = g[5], c = g[6], f = g[7], tp = g[8], p = g[9], m = g[10],
                              Error = error,
-                             t_branch = T_branch)
+                             t_branch = T_branch,
+                             index_m = g[11])                   
+
+
       
     start2 = timer()
      
     if g[3] >=10000:
         k = g[3]
     print 'at Time', t
-    print 'NILAI C, F MAX', g[6].max(), ',', g[7].max()
+    print 'NILAI C, F, P MAX', g[6].max(), ',', g[7].max(), ',', g[9].max()
     print 'process time of Hybrid:', start2-start1
     print 'total time of processing:', time.clock()
     print '***************************************************'
