@@ -15,7 +15,7 @@ def second_largest(numbers):
 def movement_dir(x_pos = 0, y_pos = 0, cc = 0, ff = 0, mm = 0,
                  tep = 0, h1 = 0, R_min = 0, error = 0,
                  d_n1 = 0, ki_n1 = 0, al_n1 = 0, ro1 = 0, Mic = 0, Kappa = 0,
-                 n_x = 0, n_y = 0, Matrix_tip = 0, n_dir = True):
+                 n_x = 0, n_y = 0, Matrix_tip = 0, n_dir = True, Nom = 0, ml = 'f', mr = 'f', md = 'f', mu = 'f'):
 
     la = tep/(h1**2)
     h2 = h1/2
@@ -38,11 +38,18 @@ def movement_dir(x_pos = 0, y_pos = 0, cc = 0, ff = 0, mm = 0,
     
     if n_dir == True:
         #print 'NILAI M', mm[x_pos,y_pos]
-        P_1 = la*d_n1+la*h1*(ki_n1/1+Mic*mm[x_pos,y_pos])/(1+al_n1*cc[x_pos-1,y_pos+1])*vvx_n + la*h1*(ro1+Kappa*mm[x_pos,y_pos])*wwx_n
-        P_2 = la*d_n1+la*h1*(ki_n1/1+Mic*mm[x_pos,y_pos])/(1+al_n1*cc[x_pos+1,y_pos+1])*vvx_p + la*h1*(ro1+Kappa*mm[x_pos,y_pos])*wwx_p
-        
-        P_3 = la*d_n1+la*h1*(ki_n1/1+Mic*mm[x_pos,y_pos])/(1+al_n1*cc[x_pos+1,y_pos-1])*vvy_n + la*h1*(ro1+Kappa*mm[x_pos,y_pos])*wwy_n
-        P_4 = la*d_n1+la*h1*(ki_n1/1+Mic*mm[x_pos,y_pos])/(1+al_n1*cc[x_pos+1,y_pos+1])*vvy_p + la*h1*(ro1+Kappa*mm[x_pos,y_pos])*wwy_p
+        if not Mic == 0 or not Kappa == 0:
+            P_1 = la*d_n1+la*h1*(ki_n1/1+Mic*mm[x_pos,y_pos])/(1+al_n1*cc[x_pos-1,y_pos+1])*vvx_n + la*h1*(ro1+Kappa*mm[x_pos,y_pos])*wwx_n
+            P_2 = la*d_n1+la*h1*(ki_n1/1+Mic*mm[x_pos,y_pos])/(1+al_n1*cc[x_pos+1,y_pos+1])*vvx_p + la*h1*(ro1+Kappa*mm[x_pos,y_pos])*wwx_p
+            
+            P_3 = la*d_n1+la*h1*(ki_n1/1+Mic*mm[x_pos,y_pos])/(1+al_n1*cc[x_pos+1,y_pos-1])*vvy_n + la*h1*(ro1+Kappa*mm[x_pos,y_pos])*wwy_n
+            P_4 = la*d_n1+la*h1*(ki_n1/1+Mic*mm[x_pos,y_pos])/(1+al_n1*cc[x_pos+1,y_pos+1])*vvy_p + la*h1*(ro1+Kappa*mm[x_pos,y_pos])*wwy_p
+        else:
+            P_1 = la*d_n1+la*h1*ki_n1/(1+al_n1*cc[x_pos-1,y_pos+1])*vvx_n + la*h1*ro1*wwx_n
+            P_2 = la*d_n1+la*h1*ki_n1/(1+al_n1*cc[x_pos+1,y_pos+1])*vvx_p + la*h1*ro1*wwx_p
+            
+            P_3 = la*d_n1+la*h1*ki_n1/(1+al_n1*cc[x_pos+1,y_pos-1])*vvy_n + la*h1*ro1*wwy_n
+            P_4 = la*d_n1+la*h1*ki_n1/(1+al_n1*cc[x_pos+1,y_pos+1])*vvy_p + la*h1*ro1*wwy_p
     else:
         P_1 = la*d_n1+la*h1*ki_n1/(1+al_n1*cc[x_pos-1,y_pos+1])*vvx_n + la*h1*ro1*wwx_n
         P_2 = la*d_n1+la*h1*ki_n1/(1+al_n1*cc[x_pos+1,y_pos+1])*vvx_p + la*h1*ro1*wwx_p
@@ -59,6 +66,26 @@ def movement_dir(x_pos = 0, y_pos = 0, cc = 0, ff = 0, mm = 0,
     r_f = (x_pos*h2-O_x)**2 + (y_pos*h2-O_y)**2
     Pos = (x_pos,y_pos)
     
+    '''Checking space'''
+    
+    if n_dir == True:
+        lx = x_pos - 2
+        rx = x_pos + 2
+        
+        dy = y_pos - 2
+        uy = y_pos + 2
+        for tep in range(0,len(Matrix_tip)):
+            if not tep == Nom:
+               # if (lx,y_pos) in Matrix_tip[tep] and (rx,y_pos) in Matrix_tip[tep] and (x_pos,dy) in Matrix_tip[tep] and (x_pos,uy) in Matrix_tip[tep]:
+               #     move = 'stop'
+                if (lx,y_pos) in Matrix_tip[tep]:
+                    ml = 'stop'
+                if (rx,y_pos) in Matrix_tip[tep]:
+                    mr = 'stop'
+                if (x_pos,dy) in Matrix_tip[tep]:
+                    md = 'stop'
+                if (x_pos,uy) in Matrix_tip[tep]:
+                    mu = 'stop'
     if Pos == Matrix_tip[0][0]:
         P_2 = 0        
     elif Pos == Matrix_tip[1][0]:
@@ -103,7 +130,7 @@ def movement_dir(x_pos = 0, y_pos = 0, cc = 0, ff = 0, mm = 0,
     P_0 = 1-(P_1+P_2+P_3+P_4)
     
     
-    prob_range = [P_0,P_1,P_2,P_3,P_4]
+    prob_range = [P_0,P_1,P_2,P_3,P_4,ml,mr,md,mu]
 #    print 'probability P', P_0, ',',P_1,',',P_2,',',P_3,',',P_4
     return prob_range;
 
@@ -120,8 +147,7 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                     stop_iter = 0, sp_stop = 0,
                     n = 0, c = 0, f = 0, tp = 0, m = 0, p = 0,
                     t_branch = 0,
-                    Error = 0,
-                    index_m = 0):
+                    Error = 0):
                     
     import numpy
     import random
@@ -137,19 +163,16 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
         c = numpy.zeros((Nx+1,Ny+1))
         f = numpy.zeros((Nx+1,Ny+1))
         p = numpy.zeros((Nx+1,Ny+1))
-        
         m = numpy.zeros((Nx+1,Ny+1))
         
-        index_m = []
-        for tt in range(0,150):
-            idx_m_1 = random.sample(range(1,440,2),100)
-            idx_m_2 = random.sample(range(1,440,2),100)
-            for i1 in idx_m_1:
-                for i2 in idx_m_2:
-                    m[i1,i2] = 1
-                    index_m.append((i1,i2))        
-        del idx_m_1
-        del idx_m_2                
+        if not mic == 0 or not kappa == 0:
+            for tt in range(0,250):
+                idx_m_1 = random.sample(range(1,440,2),100)
+                idx_m_2 = random.sample(range(1,440,2),100)
+                for id in range(0,len(idx_m_1)):
+                    m[idx_m_1[id], idx_m_2[id]] = 1        
+            del idx_m_1
+            del idx_m_2                
         
         for y in range(0,Ny+1,2):
             for x in range(0,Nx+1,2):
@@ -227,65 +250,17 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
         '''Initial Tips'''
 
     '''1. Anastomosis''' #not yet
-    sp_new_stop =[]
+    #creating list of tips to be checked if the tip meets
+    sp_in = []
     for noms in range(0,len(matrix_tip)):         
         if not noms in sp_stop:
-#            '''1.1 Checking if looping itself'''
-#            if not globals()['tip%s' % noms] == 'stay':
-#                gg = globals()['sp%s' % noms][:]
-#                gg.pop()
-##                gg = list(set(gg))    
-#                if len(gg) > 0: #mencegah start masuk ke bagian ini
-#                    if globals()['sp%s' % noms][-1] in gg:
-#                        sp_new_stop.append(noms)
-#                        print 'looping itself for tip number', noms
-#                        print 'looping to position', globals()['sp%s' % noms][-1]
-#                #kalau < = 0, artinya baru start iterasi
-#            #kalau 'stay', artinya aman. do nothing. done looping itself
-            '''1.2 Checking if hit another sprout'''
-            if noms in sp_new_stop or len(matrix_tip) == 1: #kalau sudah looping itself, gak usah cek hit others lg.
-                pass
-            elif not list_tip_movement[noms] == 'stay':
-                #making list of others
-                other_tips = range(0,len(matrix_tip))
-                other_tips.remove(noms)
-                for i in other_tips:
-                    if matrix_tip[noms][-1] in matrix_tip[i]:
-                        sp_new_stop.append(noms)
-                        print 'anastomosis for tip number ', noms, ' to tip number ', i 
-                        print 'anastomosis at position', matrix_tip[noms][-1]
-                    #kalau gak hit, do nothing
-    '''1.3 Checking if two tips meet at one point'''
-    if len(sp_new_stop) >= 2:
-        pair = [(0,0)]
-        for j in sp_new_stop:
-            other_tips = []
-            for uu in sp_new_stop:
-                other_tips.append(uu)
-            other_tips.remove(j)
-            for i in other_tips:
-                if matrix_tip[j][-1] == matrix_tip[i][-1]:
-                    jjj = (j,i)
-                    if reversed(jjj) in pair:
-                        lop = 1
-                    else:
-                        pair.append((j,i))
-        pair.remove((0,0))
-        if len(pair) >= 1:
-            for j in range(1,len(pair)):
-                if not pair[j][0] in sp_new_stop:
-                    sp_new_stop.remove(pair[j][0])         
-    sp_stop.extend(sp_new_stop)
-    sp_stop = list(set(sp_stop))
-    for noms in range(0,len(matrix_tip)):
-        if not noms in sp_stop:
-            for i in range(0,len(matrix_tip[noms])):
-                if matrix_tip[noms][i][1] == Nx-1:
-                    sp_stop.append(noms)
-    for i in sp_stop:
-        list_tip_movement[i] = 'stop'
-    print 'check 1'
-    
+            sp_in.append(noms)
+    for tip_o in sp_in:
+        for tips in sp_in:
+            if tips > tip_o:
+                if matrix_tip[tip_o][-1] == matrix_tip[tips][-1]:
+                    sp_stop.append(tip_o)
+                    list_tip_movement[tip_o] = 'stop'
     '''2. Branching and Movement'''        
     if len(sp_stop) == len(matrix_tip):
         stop_iter = 100000 #sp_stop harus dicek di setiap movement and branching. karena sudah tidak bergerak lagi yang ada di list ini.
@@ -306,183 +281,155 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                 dirr = movement_dir(x_pos = xb, y_pos = yb, cc = c, ff = f, mm = m,
                                     tep = tp, h1 = h2, R_min = r_min, error = Error,
                                     d_n1 = d_n, ki_n1 = ki_n, al_n1 = al_n, ro1 = ro, Mic = mic, Kappa = kappa,
-                                    n_x = Nx, n_y = Ny, Matrix_tip = matrix_tip)
-                print 'check 2'
+                                    n_x = Nx, n_y = Ny, Matrix_tip = matrix_tip, Nom = nom)
+                dirr1 = [dirr[0],dirr[0]+dirr[1],dirr[0]+dirr[1]+dirr[2],dirr[0]+dirr[1]+dirr[2]+dirr[3],1]
+                #print dirr                
+                no_back = list_tip_movement[nom]
+                while no_back == list_tip_movement[nom]:
+                    trial = random.uniform(0,1)
+                    if trial <= dirr1[0]: #stay
+                        no_back = 'pro' #stay
+                    elif trial <= dirr1[1]: #left
+                        no_back = 'right'
+                    elif trial <= dirr1[2]: #right
+                        no_back = 'left'
+                    elif trial <= dirr1[3]: #down
+                        no_back = 'up'
+                    else: #>dirr1[3] #up
+                        no_back = 'down'
+                #print 'check 1'
+                if no_back == 'pro':
+                    tipp = 'stay'
+                elif no_back == 'right':
+                    tipp = 'left'
+                    xpos_new = matrix_tip[nom][-1][0] - 2
+                    ypos_new = matrix_tip[nom][-1][1]
+                    matrix_tip[nom].append((xpos_new,ypos_new))
+                    n[xpos_new,ypos_new] = 1
+                    list_tip_movement[nom] = tipp
+                elif no_back == 'left':
+                    tipp = 'right'
+                    xpos_new = matrix_tip[nom][-1][0] + 2
+                    ypos_new = matrix_tip[nom][-1][1]
+                    matrix_tip[nom].append((xpos_new,ypos_new)) 
+                    n[xpos_new,ypos_new] = 1
+                    list_tip_movement[nom] = tipp
+                elif no_back == 'up':
+                    tipp = 'down'
+                    xpos_new = matrix_tip[nom][-1][0]
+                    ypos_new = matrix_tip[nom][-1][1] - 2
+                    matrix_tip[nom].append((xpos_new,ypos_new)) 
+                    n[xpos_new,ypos_new] = 1
+                    list_tip_movement[nom] = tipp
+                else:
+                    tipp = 'up'
+                    xpos_new = matrix_tip[nom][-1][0]
+                    ypos_new = matrix_tip[nom][-1][1] + 2
+                    matrix_tip[nom].append((xpos_new,ypos_new))
+                    n[xpos_new,ypos_new] = 1
+                    list_tip_movement[nom] = tipp
+                '''2.1 Branching Decision'''
+                if not tipp == 'stay':
+                    if dirr[5] == 'stop' and tipp == 'left':
+                        sp_stop.append(nom)
+                    if dirr[6] == 'stop' and tipp == 'right':
+                        sp_stop.append(nom)
+                    if dirr[7] == 'stop' and tipp == 'down':
+                        sp_stop.append(nom)
+                    if dirr[8] == 'stop' and tipp == 'up':
+                        sp_stop.append(nom)
+                    if life_time_tip[nom] >= t_branch: #being able to branch by life time               
+                        #probabilty of branching
+    #                    print 'NILAI C', c[xb+1,yb+1]
+                        if c[xb+1,yb+1] >= 0 and c[xb+1,yb+1] < 0.1:
+                            prob_weight = 7 # set the number to select here.
+                            list_prob = random.sample(line, prob_weight) #list of selected numbers from line
+                        elif c[xb+1,yb+1] >= 0.05 and c[xb+1,yb+1] < 0.2:
+                            prob_weight = 8 # set the number to select here.
+                            list_prob = random.sample(line, prob_weight)   
+                        elif c[xb+1,yb+1] >= 0.2 and c[xb+1,yb+1] < 0.3:
+                            prob_weight = 9 # set the number to select here.
+                            list_prob = random.sample(line, prob_weight)  
+                        elif c[xb+1,yb+1] >= 0.3: #do branching
+                            list_prob = line
+                        #apakah branching? meaning masuk dalam probability of branching?
+                        tes = randint(1,10) #select integer number randomly between 1 and 10
+                        #print 'check 3'
+                        if tes in list_prob:#do branching
+                            '''2.1 Branhcing'''
+                            life_time_tip[nom] = 0
+                            
+                            matrix_tip.append([(xb,yb)])
+                            life_time_tip.append(0)
+                            list_tip_movement.append('start')
 
-                '''2.1 Branching Decision''' 
-                if life_time_tip[nom] >= t_branch: #being able to branch by life time               
-                    #probabilty of branching
-#                    print 'NILAI C', c[xb+1,yb+1]
-                    if c[xb+1,yb+1] >= 0 and c[xb+1,yb+1] < 0.1:
-                        prob_weight = 2 # set the number to select here.
-                        list_prob = random.sample(line, prob_weight) #list of selected numbers from line
-                    elif c[xb+1,yb+1] >= 0.1 and c[xb+1,yb+1] < 0.2:
-                        prob_weight = 3 # set the number to select here.
-                        list_prob = random.sample(line, prob_weight)   
-                    elif c[xb+1,yb+1] >= 0.2 and c[xb+1,yb+1] < 0.3:
-                        prob_weight = 4 # set the number to select here.
-                        list_prob = random.sample(line, prob_weight)  
-                    elif c[xb+1,yb+1] >= 0.3: #do branching
-                        list_prob = line
-                    else: #no branching or in the condition: c[xb+1,yb+1,k+1] < 0.3
-                        list_prob = [20]
-                else: #not branchable
-                    list_prob = [20]
-                #apakah branching? meaning masuk dalam probability of branching?
-                tes = randint(1,10) #select integer number randomly between 1 and 10
-                print 'check 3'
-                if tes in list_prob:#do branching
-                    '''2.1.1 Branching tip's movement: 1st tip movement: nom tip'''
-                    '''2.1.1.1 Checking no back and stay movement'''
-                    no1_back = list_tip_movement[nom]
-                    no_back = list_tip_movement[nom]
-                    dirr = dirr[1:]
-                    dirr2 = []
-                    for a in dirr:
-                        dirr2.append(a)
-                    maxx = max(dirr2)
-                    print dirr
-                    while no_back == list_tip_movement[nom]:
-                        if maxx == dirr[0]: #left
-                            no_back = 'right'
-                        elif maxx == dirr[1]: #right
-                            no_back = 'left'
-                        elif maxx == dirr[2]: #down
-                            no_back = 'up'
-                        else: #>dirr[3] #up
-                            no_back = 'down'
-                        if list_tip_movement[nom] == no_back:
-                            dirr2.remove(maxx)
-                            maxx = max(dirr2)
-                    #movement 1st tip
-                    if no_back == 'right':
-                        tip_1 = 'left'
-                        xpos_new = matrix_tip[nom][-1][0] - 2
-                        ypos_new = matrix_tip[nom][-1][1]
-                        matrix_tip[nom].append((xpos_new,ypos_new))
-                    elif no_back == 'left':
-                        tip_1 = 'right'
-                        xpos_new = matrix_tip[nom][-1][0] + 2
-                        ypos_new = matrix_tip[nom][-1][1]
-                        matrix_tip[nom].append((xpos_new,ypos_new))
-                    elif no_back == 'up':
-                        tip_1 = 'down'
-                        xpos_new = matrix_tip[nom][-1][0]
-                        ypos_new = matrix_tip[nom][-1][1] - 2
-                        matrix_tip[nom].append((xpos_new,ypos_new))
-                    else:
-                        tip_1 = 'up'
-                        xpos_new = matrix_tip[nom][-1][0]
-                        ypos_new = matrix_tip[nom][-1][1] + 2
-                        matrix_tip[nom].append((xpos_new,ypos_new))
-                    n[xpos_new,ypos_new] = 1
-                    
-                    '''2.1 Branhcing'''
-                    print 'check 4'
-                    matrix_tip.append([(xb,yb)])
-                    #waktunya diriset
-                    life_time_tip.append(0)
-                    life_time_tip[nom] = 0
-                    
-                    '''2.1.2 Branching tip's movement: 2nd tip movement : num_sp tip'''
-                    '''2.1.2.1 Checking no back, tip 1, stay movement'''
-                    #ada no1_back
-                    #ada tip_1
-                    dom = tip_1
-                    max2 = second_largest(dirr2)
-                    while no1_back == list_tip_movement[nom] or dom == tip_1:
-                        if max2 == dirr[0]: #left
-                            dom = 'left'
-                            no1_back = 'right'
-                        elif max2 == dirr[1]: #right
-                            dom = 'right'
-                            no1_back = 'left'
-                        elif max2 == dirr[2]: #down
-                            dom = 'down'
-                            no1_back = 'up'
-                        else: #>dirr[3] #up
-                            dom = 'up'
-                            no1_back = 'down'
-                        if no1_back == list_tip_movement[nom] or dom == tip_1:
-                            dirr2.remove(max2)
-                            max2 = max(dirr2)
-                    print 'check 5'
-                    #movement 2nd tip
-                    if dom == 'left':
-                        xpos_new = matrix_tip[-1][-1][0] - 2
-                        ypos_new = matrix_tip[-1][-1][1]
-                        matrix_tip[-1].append((xpos_new,ypos_new))
-                    elif dom == 'right':
-                        xpos_new = matrix_tip[-1][-1][0] + 2
-                        ypos_new = matrix_tip[-1][-1][1]
-                        matrix_tip[-1].append((xpos_new,ypos_new))
-                    elif dom == 'down':
-                        xpos_new = matrix_tip[-1][-1][0]
-                        ypos_new = matrix_tip[-1][-1][1] - 2
-                        matrix_tip[-1].append((xpos_new,ypos_new))
-                    else: #dom == 'up'
-                        xpos_new = matrix_tip[-1][-1][0]
-                        ypos_new = matrix_tip[-1][-1][1] + 2
-                        matrix_tip[-1].append((xpos_new,ypos_new))
-                    
-                    n[xpos_new,ypos_new] = 1
-                    
-                    '''2.1.3 Renewal Some Vars'''
-                    list_tip_movement.append(dom)
-                    list_tip_movement[nom] = tip_1  
-                    
-                else: #no branching
-                    dirr = [dirr[0],dirr[0]+dirr[1],dirr[0]+dirr[1]+dirr[2],dirr[0]+dirr[1]+dirr[2]+dirr[3],1]
-                    print 'check 6,no branch'
-                    '''2.2 No Branching'''
-                    '''Movement only'''
-                    '''2.2.1 Checking no back movement'''
-                    life_time_tip[nom] += tp
-                    no_back = list_tip_movement[nom]
-                    while no_back == list_tip_movement[nom]:
-                        trial = random.uniform(0,1)
-                        if trial <= dirr[0]: #stay
-                            no_back = 'pro' #stay
-                        elif trial <= dirr[1]: #left
-                            no_back = 'right'
-                        elif trial <= dirr[2]: #right
-                            no_back = 'left'
-                        elif trial <= dirr[3]: #down
-                            no_back = 'up'
-                        else: #>dirr[3] #up
-                            no_back = 'down'
-                    print 'check 7,no branch'
-                    if no_back == 'pro':
-                        tipp = 'stay'
-#                        globals()['sp%s' % nom].append(globals()['sp%s' % nom][-1])
-                    elif no_back == 'right':
-                        tipp = 'left'
-                        xpos_new = matrix_tip[nom][-1][0] - 2
-                        ypos_new = matrix_tip[nom][-1][1]
-                        matrix_tip[nom].append((xpos_new,ypos_new))
-                        n[xpos_new,ypos_new] = 1
-                    elif no_back == 'left':
-                        tipp = 'right'
-                        xpos_new = matrix_tip[nom][-1][0] + 2
-                        ypos_new = matrix_tip[nom][-1][1]
-                        matrix_tip[nom].append((xpos_new,ypos_new)) 
-                        n[xpos_new,ypos_new] = 1
-                    elif no_back == 'up':
-                        tipp = 'down'
-                        xpos_new = matrix_tip[nom][-1][0]
-                        ypos_new = matrix_tip[nom][-1][1] - 2
-                        matrix_tip[nom].append((xpos_new,ypos_new)) 
-                        n[xpos_new,ypos_new] = 1
-                    else:
-                        tipp = 'up'
-                        xpos_new = matrix_tip[nom][-1][0]
-                        ypos_new = matrix_tip[nom][-1][1] + 2
-                        matrix_tip[nom].append((xpos_new,ypos_new))
-                        n[xpos_new,ypos_new] = 1
-                    print 'check 8,no branch'    
-                    '''2.2.2 Renewal Some Vars'''
-                    if not tipp == 'stay':
-                        list_tip_movement[nom] = tipp 
+                            dom = tipp #other movement
+                            no_back = list_tip_movement[-1]
+                 #           print 'check 2'
+                            while no_back == list_tip_movement[-1] or dom == tipp:
+                                trial = random.uniform(0,1)
+                                if trial <= dirr1[0]: #stay
+                                    no_back = 'pro' #stay
+                                    dom = 'pro'
+                                elif trial <= dirr1[1]: #left
+                                    no_back = 'right'
+                                    dom = 'left'
+                                elif trial <= dirr1[2]: #right
+                                    no_back = 'left'
+                                    dom = 'right'
+                                elif trial <= dirr1[3]: #down
+                                    no_back = 'up'
+                                    dom = 'down'
+                                else: #>dirr1[3] #up
+                                    no_back = 'down'
+                                    dom = 'up'
+                            print 'check 3'
+                            if no_back == 'pro':
+                                tipp = 'stay'
+                            elif no_back == 'right':
+                                tipp = 'left'
+                                xpos_new = matrix_tip[-1][-1][0] - 2
+                                ypos_new = matrix_tip[-1][-1][1]
+                                matrix_tip[nom].append((xpos_new,ypos_new))
+                                n[xpos_new,ypos_new] = 1
+                                list_tip_movement[-1] = tipp
+                            elif no_back == 'left':
+                                tipp = 'right'
+                                xpos_new = matrix_tip[-1][-1][0] + 2
+                                ypos_new = matrix_tip[-1][-1][1]
+                                matrix_tip[nom].append((xpos_new,ypos_new)) 
+                                n[xpos_new,ypos_new] = 1
+                                list_tip_movement[-1] = tipp
+                            elif no_back == 'up':
+                                tipp = 'down'
+                                xpos_new = matrix_tip[-1][-1][0]
+                                ypos_new = matrix_tip[-1][-1][1] - 2
+                                matrix_tip[nom].append((xpos_new,ypos_new)) 
+                                n[xpos_new,ypos_new] = 1
+                                list_tip_movement[-1] = tipp
+                            else:
+                                tipp = 'up'
+                                xpos_new = matrix_tip[-1][-1][0]
+                                ypos_new = matrix_tip[-1][-1][1] + 2
+                                matrix_tip[nom].append((xpos_new,ypos_new))
+                                n[xpos_new,ypos_new] = 1
+                                list_tip_movement[-1] = tipp
+                            if not tipp == 'stay':
+                                if dirr[5] == 'stop' and tipp == 'left':
+                                    sp_stop.append(len(matrix_tip)-1)
+                                if dirr[6] == 'stop' and tipp == 'right':
+                                    sp_stop.append(len(matrix_tip)-1)
+                                if dirr[7] == 'stop' and tipp == 'down':
+                                    sp_stop.append(len(matrix_tip)-1)
+                                if dirr[8] == 'stop' and tipp == 'up':
+                                    sp_stop.append(len(matrix_tip)-1)
+                        else:
+                            life_time_tip[nom] += tp    
+                    else: 
+                        life_time_tip[nom] += tp       
+                else:
+                    life_time_tip[nom] += tp            
+                                       
     for i in range(0, len(matrix_tip)):
         print 'tip',i,':',matrix_tip[i]
 #         print 'life time tip',i+1,':', life_time_tip[i]   
@@ -491,116 +438,132 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
     print 'Total Tips:', len(matrix_tip)
     print 'Total Stop Tips:', len(sp_stop)    
     '''***BRANCHING/PY END***'''
-    c_o = c
-    f_o = f
-    p_o = p
+    c_o = c[:]
+    f_o = f[:]
+    if not mic == 0 or not kappa == 0:
+        p_o = p[:]
     
     '''Solve c, f, p at sub lattice'''
     h3 = h2 
     for y in range(0,Ny+1,2):
         for x in range(0,Nx+1,2):
             r_f = (x*hh-O_x)**2 + (y*hh-O_y)**2
-            n_bool = 0
             if r_f <= (r_min**2 + Error + hh):
                 if x >= matrix_tip[2][0][0] and y >= matrix_tip[0][0][1]: #area 1
                     if n[x+1,y+1] == 1 or n[x-1,y+1] == 1 or n[x+1,y-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    if m[x+1,y+1] == 1 or m[x-1,y+1] == 1 or [x+1,y-1] == 1:
-                        m_bool = 1
-                    else:
-                        m_bool = 0
+                    if not mic == 0 or not kappa == 0:
+                        if m[x+1,y+1] == 1 or m[x-1,y+1] == 1 or [x+1,y-1] == 1:
+                            m_bool = 1
+                        else:
+                            m_bool = 0
+                        p[x,y] = (a_p*m_bool+b_p)*n_bool + p_o[x,y]*(1-dl) #Ang1
                     c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool) + d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y+2]-2*c_o[x,y])
                     f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*m_bool+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                    
     
                 elif x < matrix_tip[2][0][0] and y > matrix_tip[0][0][1]: #area 2
                     if n[x-1,y+1] == 1 or n[x+1,y+1] == 1 or n[x-1,y-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    if m[x-1,y+1] == 1 or m[x+1,y+1] == 1 or m[x-1,y-1] == 1:
-                        m_bool = 1
-                    else:
-                        m_bool = 0
+                    if not mic == 0 or not kappa == 0:
+                        if m[x-1,y+1] == 1 or m[x+1,y+1] == 1 or m[x-1,y-1] == 1:
+                            m_bool = 1
+                        else:
+                            m_bool = 0
+                        p[x,y] = (a_p*m_bool+b_p)*n_bool + p_o[x,y]*(1-dl) #Ang1
                     c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y+2]-2*c_o[x,y])
                     f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*m_bool+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                    
                         
                 elif x <= matrix_tip[2][0][0] and y <= matrix_tip[0][0][1]: #area 3
                     if n[x+1,y-1] == 1 or n[x-1,y+1] == 1 or n[x-1,y-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    if m[x+1,y-1] == 1 or m[x-1,y+1] == 1 or m[x-1,y-1] == 1:
-                        m_bool = 1
-                    else:
-                        m_bool = 0
+                    if not mic == 0 or not kappa == 0:
+                        if m[x+1,y-1] == 1 or m[x-1,y+1] == 1 or m[x-1,y-1] == 1:
+                            m_bool = 1
+                        else:
+                            m_bool = 0
+                        p[x,y] = (a_p*m_bool+b_p)*n_bool + p_o[x,y]*(1-dl) #Ang1
                     c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y-2]-2*c_o[x,y])
                     f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*m_bool+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                    
                         
                 elif x > matrix_tip[2][0][0] and y < matrix_tip[0][0][1]: #area 4
                     if n[x+1,y+1] == 1 or n[x-1,y-1] == 1 or n[x+1,y-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    if m[x+1,y+1] == 1 or m[x-1,y-1] == 1 or m[x+1,y-1] == 1:
-                        m_bool = 1
-                    else:
-                        m_bool = 0
+                    if not mic == 0 or not kappa == 0:
+                        if m[x+1,y+1] == 1 or m[x-1,y-1] == 1 or m[x+1,y-1] == 1:
+                            m_bool = 1
+                        else:
+                            m_bool = 0
+                        p[x,y] = (a_p*m_bool+b_p)*n_bool + p_o[x,y]*(1-dl) #Ang1
                     c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y-2]-2*c_o[x,y])
                     f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*m_bool+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                    
                     
             elif y == 0:
                 if x == 0:
                     c[x,y] = c_o[x,y]*(1 - tp*nu*n[1,1])+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y+2]-2*c_o[x,y])
                     f[x,y] = f_o[x,y] + tp*be*n[1,1] - tp*ga*f_o[x,y]*n[1,1]
-                    p[x,y] = (a_p*m[1,1]+b_p)*n[1,1] - p_o[x,y]*(1-dl) #Ang1
+                    if not mic == 0 or not kappa == 0:
+                        p[x,y] = (a_p*m[1,1]+b_p)*n[1,1] + p_o[x,y]*(1-dl) #Ang1
                         
                 elif x == Nx:
                     c[x,y] = c_o[x,y]*(1 - tp*nu*n[Nx-1,1])+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y+2]-2*c_o[x,y])
                     f[x,y] = f_o[x,y] + tp*be*n[Nx-1,1] - tp*ga*f_o[x,y]*n[Nx-1,1]
-                    p[x,y] = (a_p*m[Nx-1,1]+b_p)*n[Nx-1,1] - p_o[x,y]*(1-dl) #Ang1
+                    if not mic == 0 or not kappa == 0:
+                        p[x,y] = (a_p*m[Nx-1,1]+b_p)*n[Nx-1,1] + p_o[x,y]*(1-dl) #Ang1
                     
                 else:
                     if n[x+1,1] == 1 or n[x-1,1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    if m[x+1,1] == 1 or m[x-1,1] == 1:
-                        m_bool = 1
-                    else:
-                        m_bool = 0
+                    if not mic == 0 or not kappa == 0:
+                        if m[x+1,1] == 1 or m[x-1,1] == 1:
+                            m_bool = 1
+                        else:
+                            m_bool = 0
+                        p[x,y] = (a_p*m_bool+b_p)*n_bool + p_o[x,y]*(1-dl) #Ang1
                     c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y+2]-3*c_o[x,y])
                     f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*m_bool+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                    
                 
             elif y == Ny:
                 if x == 0:
                     c[x,y] = c_o[x,y]*(1 - tp*nu*n[1,Ny-1])+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y-2]-2*c_o[x,y])
                     f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n[1,Ny-1]
-                    p[x,y] = (a_p*m[1,Ny-1]+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                    if not mic == 0 or not kappa == 0:
+                        p[x,y] = (a_p*m[1,Ny-1]+b_p)*n_bool + p_o[x,y]*(1-dl) #Ang1
                     
                 elif x == Nx:
                     c[x,y] = c_o[x,y]*(1 - tp*nu*n[Nx-1,Ny-1])+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y-2]-2*c_o[x,y])
                     f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n[Nx-1,Ny-1]
-                    p[x,y] = (a_p*m[Nx-1,Ny-1]+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                    if not mic == 0 or not kappa == 0:
+                        p[x,y] = (a_p*m[Nx-1,Ny-1]+b_p)*n_bool + p_o[x,y]*(1-dl) #Ang1
                     
                 else:
                     if n[x+1,Ny-1] == 1 or n[x-1,Ny-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    if m[x+1,Ny-1] == 1 or m[x-1,Ny-1] == 1:
-                        m_bool = 1
-                    else:
-                        m_bool = 0
+                    if not mic == 0 or not kappa == 0:
+                        if m[x+1,Ny-1] == 1 or m[x-1,Ny-1] == 1:
+                            m_bool = 1
+                        else:
+                            m_bool = 0
+                        p[x,y] = (a_p*m_bool+b_p)*n_bool + p_o[x,y]*(1-dl) #Ang1
                     c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y-2]-3*c_o[x,y])
                     f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*m_bool+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                    
                         
             else:
                 if x == 0:
@@ -608,81 +571,83 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                         n_bool = 1
                     else:
                         n_bool = 0
-                    if m[x+1,y+1] == 1 or m[x+1,y-1] == 1:
-                        m_bool = 1
-                    else:
-                        m_bool = 0
+                    if not mic == 0 or not kappa == 0:
+                        if m[x+1,y+1] == 1 or m[x+1,y-1] == 1:
+                            m_bool = 1
+                        else:
+                            m_bool = 0
+                        p[x,y] = (a_p*m_bool+b_p)*n_bool + p_o[x,y]*(1-dl) #Ang1
                     c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x,y+2]+c_o[x,y-2]-3*c_o[x,y])
                     f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*m_bool+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
                     
                 elif x == Nx:
                     if n[x-1,y+1] == 1 or n[x-1,y-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    if m[x-1,y+1] == 1 or m[x-1,y-1] == 1:
-                        m_bool = 1
-                    else:
-                        m_bool = 0
+                    if not mic == 0 or not kappa == 0:
+                        if m[x-1,y+1] == 1 or m[x-1,y-1] == 1:
+                            m_bool = 1
+                        else:
+                            m_bool = 0
+                        p[x,y] = (a_p*m_bool+b_p)*n_bool + p_o[x,y]*(1-dl) #Ang1
                     c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x-2,y]+c_o[x,y+2]+c_o[x,y-2]-3*c_o[x,y])
                     f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*m_bool+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
+                    
                     
                 else:
                     if n[x+1,y+1] == 1 or n[x-1,y+1] == 1 or n[x+1,y-1] == 1 or n[x-1,y-1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
-                    if m[x+1,y+1] == 1 or m[x-1,y+1] == 1 or m[x+1,y-1] == 1 or m[x-1,y-1] == 1:
-                        m_bool = 1
-                    else:
-                        m_bool = 0
+                    if not mic == 0 or not kappa == 0:
+                        if m[x+1,y+1] == 1 or m[x-1,y+1] == 1 or m[x+1,y-1] == 1 or m[x-1,y-1] == 1:
+                            m_bool = 1
+                        else:
+                            m_bool = 0
+                        p[x,y] = (a_p*m_bool+b_p)*n_bool + p_o[x,y]*(1-dl) #Ang1
                     c[x,y] = c_o[x,y]*(1 - tp*nu*n_bool)+ d_c*tp/h3**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y+2]+c_o[x,y-2]-4*c_o[x,y])
                     f[x,y] = f_o[x,y] + tp*be*n_bool - tp*ga*f_o[x,y]*n_bool
-                    p[x,y] = (a_p*m_bool+b_p)*n_bool - p_o[x,y]*(1-dl) #Ang1
                     
-
+                    
+    
     '''m movement'''
-    for dot in range(0,len(index_m)):
-        xb = index_m[dot][0]
-        yb = index_m[dot][1]
-        dirr_m = movement_dir(x_pos = xb, y_pos = yb, cc = p_o, ff = fake,
-                                    tep = tp, h1 = h2, R_min = r_min, error = Error,
-                                    d_n1 = d_m, ki_n1 = ki_m, al_n1 = al_m, ro1 = ro_m, 
-                                    n_x = Nx, n_y = Ny, Matrix_tip = matrix_tip, n_dir = False)
-        dirr_m = [dirr_m[0],dirr_m[0]+dirr_m[1],dirr_m[0]+dirr_m[1]+dirr_m[2],dirr_m[0]+dirr_m[1]+dirr_m[2]+dirr_m[3],1]
-        trial = random.uniform(0,1)
-        if trial <= dirr_m[0]: #stay
-            lop = 1
-            #do nothing
-        elif trial <= dirr_m[1]: #left
-            #print 'LEFT'
-            newx = xb - 2
-            m[newx, yb] = 1
-            m[xb,yb] = 0
-        elif trial <= dirr_m[2]: #right
-            #print 'RIGHT'
-            newx = xb + 2
-            m[newx, yb] = 1
-            m[xb,yb] = 0
-        elif trial <= dirr_m[3]: #down
-            #print 'DOWN'
-            newy = yb - 2
-            m[xb, newy] = 1
-            m[xb,yb] = 0
-        else: #>dirr[3] #up
-            #print 'UP'
-            newy = yb + 2
-            m[xb, newy] = 1
-            m[xb,yb] = 0
-    index_m = []
-    for y in range(1,Ny,2):
-        for x in range(1,Nx,2):
-            if m[x,y] == 1:
-                index_m.append((x,y))
+    if not mic == 0 or not kappa == 0:
+        m_o = m[:]
+        for yb in range(1,Ny,2):
+            for xb in range(1,Nx,2):
+                if m_o[xb,yb] == 1:
+                    dirr_m = movement_dir(x_pos = xb, y_pos = yb, cc = p_o, ff = fake,
+                                          tep = tp, h1 = h2, R_min = r_min, error = Error,
+                                          d_n1 = d_m, ki_n1 = ki_m, al_n1 = al_m, ro1 = ro_m, 
+                                          n_x = Nx, n_y = Ny, Matrix_tip = matrix_tip, n_dir = False)
+                    dirr_m = [dirr_m[0],dirr_m[0]+dirr_m[1],dirr_m[0]+dirr_m[1]+dirr_m[2],dirr_m[0]+dirr_m[1]+dirr_m[2]+dirr_m[3],1]
+                    trial = random.uniform(0,1)
+                    if trial <= dirr_m[0]: #stay
+                        lop = 1
+                        #do nothing
+                    elif trial <= dirr_m[1]: #left
+                        #print 'LEFT'
+                        newx = xb - 2
+                        m[newx, yb] = 1
+                        m[xb,yb] = 0
+                    elif trial <= dirr_m[2]: #right
+                        #print 'RIGHT'
+                        newx = xb + 2
+                        m[newx, yb] = 1
+                        m[xb,yb] = 0
+                    elif trial <= dirr_m[3]: #down
+                        #print 'DOWN'
+                        newy = yb - 2
+                        m[xb, newy] = 1
+                        m[xb,yb] = 0
+                    else: #>dirr[3] #up
+                        #print 'UP'
+                        newy = yb + 2
+                        m[xb, newy] = 1
+                        m[xb,yb] = 0
     ty = tp
-    gg = [matrix_tip, list_tip_movement, life_time_tip, stop_iter, sp_stop, n, c, f, ty, p, m, index_m]
+    gg = [matrix_tip, list_tip_movement, life_time_tip, stop_iter, sp_stop, n, c, f, ty, p, m]
     
     return gg
     

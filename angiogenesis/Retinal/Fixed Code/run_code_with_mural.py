@@ -27,33 +27,27 @@ Ro = 0.16
 D_n = 0.00018
 Ki_n = 0.4
 Al_n = 0.6
-
 D_c = 0.005 #
 Nu = 0.1
-
 Beta = 0.05
 Gama = 0.1
-
 D_m = 0.00018 #
 Ki_m = 0.4 #
 Al_m = 0.6 #
-
 A_p = 0.2 #
 B_p = 0.2 #
 Dl = 0.05 #
-
-Kappa = 0 #0.3 #
-Mic = 0.6 #0.1 #
-
+Kappa = 0.#0.3 #
+Mic = 0 #0.1 #
 ##INI YANG BETUL CODENYA
 '''Spatial and Temporal Meshes Number'''
+T = 3
 h = 0.02
 X = 4.4
 Y = 4.4
 Hh = h/2
 nx = int(X/Hh)
 ny = int(Y/Hh)
-
 R_min = 0.52/2
 R_max = X
 Nt = 100000
@@ -61,13 +55,12 @@ Nt = 100000
 '''Setting up '''
 t = 0
 k = 0
-T = 1.5
 dt = 0.001
 error = 0.01
 
 T_branch = 0.078 #
 
-g = [0, 0, 0, 0, 0, 0, 0, 0, dt, 0, 0, 0]
+g = [0, 0, 0, 0, 0, 0, 0, 0, dt, 0, 0]
 surf = 0
 while t <= T and k < Nt:
     start1 = timer()
@@ -87,8 +80,7 @@ while t <= T and k < Nt:
                              stop_iter = g[3], sp_stop = g[4],
                              n = g[5], c = g[6], f = g[7], tp = g[8], p = g[9], m = g[10],
                              Error = error,
-                             t_branch = T_branch,
-                             index_m = g[11])                   
+                             t_branch = T_branch)                   
 
 
       
@@ -98,6 +90,7 @@ while t <= T and k < Nt:
         k = g[3]
     print 'at Time', t
     print 'NILAI C, F, P MAX', g[6].max(), ',', g[7].max(), ',', g[9].max()
+    print 'NILAI C, F, P MIN', g[6].min(), ',', g[7].min(), ',', g[9].min()
     print 'process time of Hybrid:', start2-start1
     print 'total time of processing:', time.clock()
     print '***************************************************'

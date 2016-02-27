@@ -253,7 +253,7 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
                     sp_stop.append(noms)
     for i in sp_stop:
         list_tip_movement[i] = 'stop'
-    print 'check 1'
+    #print 'check 1'
     
     '''2. Branching and Movement'''        
     if len(sp_stop) == len(matrix_tip):
