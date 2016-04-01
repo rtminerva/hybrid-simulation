@@ -193,7 +193,7 @@ def discrete_1_iter(iter = 0, hh = 0, Nx = 0, Ny = 0,
     O_x = Nx/2*hh
     O_y = Ny/2*hh
     
-    fake = numpy.zeros((Nx+1,Ny+1))
+    #fake = numpy.zeros((Nx+1,Ny+1))
     
     '''Define Initial Profile'''
     if iter == 1:
