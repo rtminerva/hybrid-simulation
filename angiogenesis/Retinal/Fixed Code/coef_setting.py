@@ -4,6 +4,9 @@ def declare_coef():
     coef = {}
     set = {}
     
+    coef['Ang2'] = False
+    
+    
     ##Endothelial (n)
     Ro = 0.16
     coef['Ro'] = 0.16
