@@ -1,8 +1,6 @@
-import numpy
 import random
 from random import randint
 from dirrection_of_movement import movement_dir
-
 
 def hybrid_tech_c(coef, set, sol):
     ##branching decision and action. Also movement   
@@ -42,7 +40,7 @@ def hybrid_tech_c(coef, set, sol):
             elif no_back == 'right':
                 tipp = 'left'
                 xpos_new = sol['matrix_tip'][nom][-1][0] - 2
-                ypos_new = sol['matrix_tip'][nom][-1][1]
+                ypos_new = sol['matrix_tip'][nom][-1][1]                    
                 sol['matrix_tip'][nom].append((xpos_new,ypos_new))
                 sol['n'][xpos_new,ypos_new] = 1
                 sol['list_tip_movement'][nom] = tipp
@@ -67,16 +65,20 @@ def hybrid_tech_c(coef, set, sol):
                 sol['matrix_tip'][nom].append((xpos_new,ypos_new))
                 sol['n'][xpos_new,ypos_new] = 1
                 sol['list_tip_movement'][nom] = tipp
+            #Kalau di posisi n baru ada m, m nya dibuang
+            if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
+                if sol['m'][xpos_new,ypos_new] == 1:
+                    sol['m'][xpos_new,ypos_new] == 0
             '''2.1 Branching Decision'''
             if not tipp == 'stay':
                 if dirr[5] == 'stop' and tipp == 'left':
-                    sp_stop.append(nom)
+                    sol['sp_stop'].append(nom)
                 if dirr[6] == 'stop' and tipp == 'right':
-                    sp_stop.append(nom)
+                    sol['sp_stop'].append(nom)
                 if dirr[7] == 'stop' and tipp == 'down':
-                    sp_stop.append(nom)
+                    sol['sp_stop'].append(nom)
                 if dirr[8] == 'stop' and tipp == 'up':
-                    sp_stop.append(nom)
+                    sol['sp_stop'].append(nom)
                 if sol['life_time_tip'][nom] >= coef['T_branch']: #being able to branch by life time               
                     #probabilty of branching
 #                    print 'NILAI C', c[xb+1,yb+1]
@@ -97,7 +99,6 @@ def hybrid_tech_c(coef, set, sol):
                     if tes in list_prob:#do branching
                         '''2.1 Branhcing'''
                         sol['life_time_tip'][nom] = 0
-                        
                         sol['matrix_tip'].append([(xb,yb)])
                         sol['life_time_tip'].append(0)
                         sol['list_tip_movement'].append('start')
@@ -157,19 +158,24 @@ def hybrid_tech_c(coef, set, sol):
                             sol['matrix_tip'][nom].append((xpos_new,ypos_new))
                             sol['n'][xpos_new,ypos_new] = 1
                             sol['list_tip_movement'][-1] = tipp
+                        #Kalau di posisi n baru ada m, m nya dibuang
+                        if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
+                            if sol['m'][xpos_new,ypos_new] == 1:
+                                sol['m'][xpos_new,ypos_new] == 0    
+                        
                         if not tipp == 'stay':
                             if dirr[5] == 'stop' and tipp == 'left':
-                                sp_stop.append(len(sol['matrix_tip'])-1)
+                                sol['sp_stop'].append(len(sol['matrix_tip'])-1)
                             if dirr[6] == 'stop' and tipp == 'right':
-                                sp_stop.append(len(sol['matrix_tip'])-1)
+                                sol['sp_stop'].append(len(sol['matrix_tip'])-1)
                             if dirr[7] == 'stop' and tipp == 'down':
-                                sp_stop.append(len(sol['matrix_tip'])-1)
+                                sol['sp_stop'].append(len(sol['matrix_tip'])-1)
                             if dirr[8] == 'stop' and tipp == 'up':
-                                sp_stop.append(len(sol['matrix_tip'])-1)
+                                sol['sp_stop'].append(len(sol['matrix_tip'])-1)
                     else:
-                        sol['life_time_tip'][nom] += tp    
+                        sol['life_time_tip'][nom] += sol['tp']    
                 else: 
-                    sol['life_time_tip'][nom] += tp       
+                    sol['life_time_tip'][nom] += sol['tp']       
             else:
-                sol['life_time_tip'][nom] += tp
+                sol['life_time_tip'][nom] += sol['tp']
     return sol

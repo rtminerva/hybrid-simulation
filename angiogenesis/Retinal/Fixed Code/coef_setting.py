@@ -5,7 +5,7 @@ def declare_coef():
     set = {}
     
     ##With Ang2
-    coef['Ang2'] == False
+    coef['Ang2'] = False
       
     ##Endothelial (n)
     Ro = 0.16
@@ -59,10 +59,12 @@ def declare_coef():
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah
-    T = 0.004
-    set['T'] = 0.004
+    T = 8.004
+    set['T'] = T
     X = 4.4
+    coef['X'] = 4.4
     Y = 4.4
+    coef['Y'] = 4.4
     Nt = 100000
     set['Nt'] = 100000
     h = 0.02
@@ -91,13 +93,13 @@ def declare_coef():
     set['k'] = 0
     dt = 0.002
     set['dt'] = 0.002
-    sol['tp'] = dt
     error = 0.01
     set['error'] = 0.01
        
     '''To store solutions'''
     ##sol dictionaries dapat berubah
     sol = {}
+    sol['tp'] = dt
     sol['matrix_tip'] = 0
     sol['list_tip_movement'] = 0
     sol['life_time_tip'] = 0

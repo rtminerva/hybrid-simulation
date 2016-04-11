@@ -33,7 +33,7 @@ def check_anastomosis(sol):
     if len(sol['sp_stop']) > 0:               
         for e,tip in enumerate(sol['matrix_tip']):
             if not e in sol['sp_stop']:
-                sol['tip_cell'].append(sol['matrix_tip'][tip][-1])
+                sol['tip_cell'].append(tip[-1])
         
     return sol
 
@@ -57,11 +57,9 @@ def boolean_1_iter(coef, set, sol):
         else:
             sol = hybrid_tech_c(coef, set, sol)
             if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-                sol = hybrid_tech_m(coef, set, sol, h2)
+                sol = hybrid_tech_m(coef, set, sol)
         
         print 'Total Tips:', len(sol['matrix_tip'])
-        print 'Total Stop Tips:', len(sol['sp_stop'])
-        
-            
+        print 'Total Stop Tips:', len(sol['sp_stop'])  
+                    
     return sol
-    
