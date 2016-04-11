@@ -1,63 +1,61 @@
-def movement_dir(xb = 0, yb = 0, cc = 0, f = 0, mm = 0,
-                 tep = 0, h1 = 0, R_min = 0, error = 0,
-                 d_n1 = 0, ki_n1 = 0, al_n1 = 0, ro1 = 0, sol['Mic'] = 0, sol['Kappa'] = 0,
-                 n_x = 0, n_y = 0, Matrix_tip = 0, Index_m = 0, n_dir = True, Nom = 0, ml = 'f', mr = 'f', md = 'f', mu = 'f'):
-
-def movement_dir(coef, set, sol, xb, yb, h2, n_dir = True):
-    la = sol['tp']/(h2**2)
-
-    vvx = 0.5/h1*(sol['c']xb+1,yb+1]-sol['c']xb-1,yb+1]+sol['c']xb+1,yb-1]-sol['c']xb-1,yb-1])
-    vvy = 0.5/h1*(sol['c']xb+1,yb+1]+sol['c']xb-1,yb+1]-sol['c']xb+1,yb-1]-sol['c']xb-1,yb-1])
+def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
+    ml = 'f'
+    mr = 'f'
+    md = 'f'
+    mu = 'f'
+    la = sol['tp']/(set['h']**2)
     
-    vvx_p = max(0,vvx)
-    vvx_n = max(0,-vvx)
-    vvy_p = max(0,vvy)
-    vvy_n = max(0,-vvy)
- 
     if n_dir == True:
-        wwx = 0.5/h1*(sol['f'][xb+1,yb+1]-sol['f'][xb-1,yb+1]+sol['f'][xb+1,yb-1]-sol['f'][xb-1,yb-1])
-        wwy = 0.5/h1*(sol['f'][xb+1,yb+1]+sol['f'][xb-1,yb+1]-sol['f'][xb+1,yb-1]-sol['f'][xb-1,yb-1])
+        vvx = 0.5/set['h']*(sol['c']xb+1,yb+1]-sol['c']xb-1,yb+1]+sol['c']xb+1,yb-1]-sol['c']xb-1,yb-1])
+        vvy = 0.5/set['h']*(sol['c']xb+1,yb+1]+sol['c']xb-1,yb+1]-sol['c']xb+1,yb-1]-sol['c']xb-1,yb-1])
+        vvx_p = max(0,vvx)
+        vvx_n = max(0,-vvx)
+        vvy_p = max(0,vvy)
+        vvy_n = max(0,-vvy)
+        
+        wwx = 0.5/set['h']*(sol['f'][xb+1,yb+1]-sol['f'][xb-1,yb+1]+sol['f'][xb+1,yb-1]-sol['f'][xb-1,yb-1])
+        wwy = 0.5/set['h']*(sol['f'][xb+1,yb+1]+sol['f'][xb-1,yb+1]-sol['f'][xb+1,yb-1]-sol['f'][xb-1,yb-1])
         wwx_p = max(0,wwx)
         wwx_n = max(0,-wwx)
         wwy_p = max(0,wwy)
         wwy_n = max(0,-wwy)
-        #print 'NILAI M', mm[xb,yb]
+        
         if not sol['Mic'] == 0 or not sol['Kappa'] == 0:
-            #if not mm[xb,yb] == 0:
-            #    print 'M EXIST'
+            
             if mm[xb,yb] == 1: #or mm[xb+2,yb] == 1 or mm[xb-2,yb] == 1 or mm[xb,yb+2] == 1 or mm[xb,yb-2] == 1 or mm[xb+2,yb+2] == 1 or mm[xb-2,yb+2] == 1 or mm[xb-2,yb-2] == 1 or mm[xb+2,yb-2] == 1:
                 mm_bool = 1
             else:
                 mm_bool = 0
-            P_1 = la*d_n1+la*h1*vvx_n*ki_n1/( (1+sol['Mic']*mm_bool) * (1+al_n1*sol['c']xb-1,yb+1]) ) + la*h1*(ro1+sol['Kappa']*mm_bool)*wwx_n
-            P_2 = la*d_n1+la*h1*vvx_p*ki_n1/( (1+sol['Mic']*mm_bool) * (1+al_n1*sol['c']xb+1,yb+1]) ) + la*h1*(ro1+sol['Kappa']*mm_bool)*wwx_p
+            P_1 = la*coef['D_n']+la*set['h']*vvx_n*coef['Ki_n']/( (1+sol['Mic']*mm_bool) * (1+coef['Al_n']*sol['c']xb-1,yb+1]) ) + la*set['h']*(coef['Ro']+sol['Kappa']*mm_bool)*wwx_n
+            P_2 = la*coef['D_n']+la*set['h']*vvx_p*coef['Ki_n']/( (1+sol['Mic']*mm_bool) * (1+coef['Al_n']*sol['c']xb+1,yb+1]) ) + la*set['h']*(coef['Ro']+sol['Kappa']*mm_bool)*wwx_p
             
-            P_3 = la*d_n1+la*h1*vvy_n*ki_n1/( (1+sol['Mic']*mm_bool) * (1+al_n1*sol['c']xb+1,yb-1]) ) + la*h1*(ro1+sol['Kappa']*mm_bool)*wwy_n
-            P_4 = la*d_n1+la*h1*vvy_p*ki_n1/( (1+sol['Mic']*mm_bool) * (1+al_n1*sol['c']xb+1,yb+1]) ) + la*h1*(ro1+sol['Kappa']*mm_bool)*wwy_p
+            P_3 = la*coef['D_n']+la*set['h']*vvy_n*coef['Ki_n']/( (1+sol['Mic']*mm_bool) * (1+coef['Al_n']*sol['c']xb+1,yb-1]) ) + la*set['h']*(coef['Ro']+sol['Kappa']*mm_bool)*wwy_n
+            P_4 = la*coef['D_n']+la*set['h']*vvy_p*coef['Ki_n']/( (1+sol['Mic']*mm_bool) * (1+coef['Al_n']*sol['c']xb+1,yb+1]) ) + la*set['h']*(coef['Ro']+sol['Kappa']*mm_bool)*wwy_p
         else:
-            P_1 = la*d_n1+la*h1*ki_n1/(1+al_n1*sol['c']xb-1,yb+1])*vvx_n + la*h1*ro1*wwx_n
-            P_2 = la*d_n1+la*h1*ki_n1/(1+al_n1*sol['c']xb+1,yb+1])*vvx_p + la*h1*ro1*wwx_p
+            P_1 = la*coef['D_n']+la*set['h']*coef['Ki_n']/(1+coef['Al_n']*sol['c']xb-1,yb+1])*vvx_n + la*set['h']*coef['Ro']*wwx_n
+            P_2 = la*coef['D_n']+la*set['h']*coef['Ki_n']/(1+coef['Al_n']*sol['c']xb+1,yb+1])*vvx_p + la*set['h']*coef['Ro']*wwx_p
             
-            P_3 = la*d_n1+la*h1*ki_n1/(1+al_n1*sol['c']xb+1,yb-1])*vvy_n + la*h1*ro1*wwy_n
-            P_4 = la*d_n1+la*h1*ki_n1/(1+al_n1*sol['c']xb+1,yb+1])*vvy_p + la*h1*ro1*wwy_p
+            P_3 = la*coef['D_n']+la*set['h']*coef['Ki_n']/(1+coef['Al_n']*sol['c']xb+1,yb-1])*vvy_n + la*set['h']*coef['Ro']*wwy_n
+            P_4 = la*coef['D_n']+la*set['h']*coef['Ki_n']/(1+coef['Al_n']*sol['c']xb+1,yb+1])*vvy_p + la*set['h']*coef['Ro']*wwy_p
     else:
-        #if sol['c']xb,yb] == 1 or sol['c']xb+2,yb] == 1 or sol['c']xb-2,yb] == 1 or sol['c']xb,yb+2] == 1 or sol['c']xb,yb-2] == 1 or sol['c']xb+2,yb+2] == 1 or sol['c']xb-2,yb+2] == 1 or sol['c']xb-2,yb-2] == 1 or sol['c']xb+2,yb-2] == 1:
-        #    cc_bool = 1
-        #else:
-        #    cc_bool = 0
-        P_1 = la*d_n1+la*h1*ki_n1/(1+al_n1*sol['c']xb-1,yb+1])*vvx_n #+ la*h1*ro1*wwx_n
-        P_2 = la*d_n1+la*h1*ki_n1/(1+al_n1*sol['c']xb+1,yb+1])*vvx_p #+ la*h1*ro1*wwx_p
+        vvx = 0.5/set['h']*(sol['p']xb+1,yb+1]-sol['p']xb-1,yb+1]+sol['p']xb+1,yb-1]-sol['p']xb-1,yb-1])
+        vvy = 0.5/set['h']*(sol['p']xb+1,yb+1]+sol['p']xb-1,yb+1]-sol['p']xb+1,yb-1]-sol['p']xb-1,yb-1])
+        vvx_p = max(0,vvx)
+        vvx_n = max(0,-vvx)
+        vvy_p = max(0,vvy)
+        vvy_n = max(0,-vvy)
+
+        P_1 = la*coef['D_n']+la*set['h']*coef['Ki_n']/(1+coef['Al_n']*sol['p']xb-1,yb+1])*vvx_n
+        P_2 = la*coef['D_n']+la*set['h']*coef['Ki_n']/(1+coef['Al_n']*sol['p']xb+1,yb+1])*vvx_p 
         
-        P_3 = la*d_n1+la*h1*ki_n1/(1+al_n1*sol['c']xb+1,yb-1])*vvy_n #+ la*h1*ro1*wwy_n
-        P_4 = la*d_n1+la*h1*ki_n1/(1+al_n1*sol['c']xb+1,yb+1])*vvy_p #+ la*h1*ro1*wwy_p
+        P_3 = la*coef['D_n']+la*set['h']*coef['Ki_n']/(1+coef['Al_n']*sol['p']xb+1,yb-1])*vvy_n 
+        P_4 = la*coef['D_n']+la*set['h']*coef['Ki_n']/(1+coef['Al_n']*sol['p']xb+1,yb+1])*vvy_p 
     
     if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
         print 'ADA P yang Negative'
     
     '''Boundary on the inner circle'''
-    O_x = n_x/2*set['Hh']
-    O_y = n_y/2*set['Hh']
-    r_f = (xb*set['Hh']-O_x)**2 + (yb*set['Hh']-O_y)**2
+    r_f = (xb*set['Hh']-set['O_x'])**2 + (yb*set['Hh']-set['O_y'])**2
     Pos = (xb,yb)
     
     '''Checking space for n & m'''
@@ -68,51 +66,39 @@ def movement_dir(coef, set, sol, xb, yb, h2, n_dir = True):
     uy = yb + 2
     if n_dir == True:
         '''Checking space for n'''
-        for tep in range(0,len(Matrix_tip)):
-            if not tep == Nom:
-               # if (lx,yb) in Matrix_tip[tep] and (rx,yb) in Matrix_tip[tep] and (xb,dy) in Matrix_tip[tep] and (xb,uy) in Matrix_tip[tep]:
+        for tep in range(0,len(sol['matrix_tip'])):
+            if not tep == nom:
+               # if (lx,yb) in sol['matrix_tip'][tep] and (rx,yb) in sol['matrix_tip'][tep] and (xb,dy) in sol['matrix_tip'][tep] and (xb,uy) in sol['matrix_tip'][tep]:
                #     move = 'stop'
-                if (lx,yb) in Matrix_tip[tep]:
+                if (lx,yb) in sol['matrix_tip'][tep]:
                     ml = 'stop'
-                if (rx,yb) in Matrix_tip[tep]:
+                if (rx,yb) in sol['matrix_tip'][tep]:
                     mr = 'stop'
-                if (xb,dy) in Matrix_tip[tep]:
+                if (xb,dy) in sol['matrix_tip'][tep]:
                     md = 'stop'
-                if (xb,uy) in Matrix_tip[tep]:
+                if (xb,uy) in sol['matrix_tip'][tep]:
                     mu = 'stop'
         
-        
-        '''
-        if [lx,yb] in Index_m:
-            P_1 = 0
-        if [rx,yb] in Index_m:
-            P_2 = 0
-        if [xb,dy] in Index_m:
-            P_3 = 0
-        if [xb,uy] in Index_m:
-            P_4 = 0
-        '''
-        
     '''Boundary Checking'''    
-    if Pos == Matrix_tip[0][0]:
+    if Pos == sol['matrix_tip'][0][0]:
         P_2 = 0        
-    elif Pos == Matrix_tip[1][0]:
+    elif Pos == sol['matrix_tip'][1][0]:
         P_1 = 0
-    elif Pos == Matrix_tip[2][0]:
+    elif Pos == sol['matrix_tip'][2][0]:
         P_4 = 0
-    elif Pos == Matrix_tip[3][0]:
+    elif Pos == sol['matrix_tip'][3][0]:
         P_3 = 0
     elif r_f <= (R_min**2 + error):
-        if xb >= Matrix_tip[2][0][0] and yb >= Matrix_tip[0][0][1]:
+        if xb >= sol['matrix_tip'][2][0][0] and yb >= sol['matrix_tip'][0][0][1]:
             P_1 = 0
             P_3 = 0
-        elif xb <= Matrix_tip[2][0][0] and yb >= Matrix_tip[0][0][1]:
+        elif xb <= sol['matrix_tip'][2][0][0] and yb >= sol['matrix_tip'][0][0][1]:
             P_2 = 0
             P_3 = 0
-        elif xb <= Matrix_tip[2][0][0] and yb <= Matrix_tip[0][0][1]:
+        elif xb <= sol['matrix_tip'][2][0][0] and yb <= sol['matrix_tip'][0][0][1]:
             P_2 = 0
             P_4 = 0
-        elif xb >= Matrix_tip[2][0][0] and yb <= Matrix_tip[0][0][1]:
+        elif xb >= sol['matrix_tip'][2][0][0] and yb <= sol['matrix_tip'][0][0][1]:
             P_1 = 0
             P_4 = 0
     elif yb == 1: #batas bawah
@@ -137,16 +123,16 @@ def movement_dir(coef, set, sol, xb, yb, h2, n_dir = True):
     if not n_dir == True:
         '''Checking space for m'''
         if not P_1 == 0:
-            if mm[lx,yb] == 1:
+            if sol['m'][lx,yb] == 1:
                 P_1 = 0
         if not P_2 == 0:
-            if mm[rx,yb] == 1:
+            if sol['m'][rx,yb] == 1:
                 P_2 = 0
         if not P_3 == 0:
-            if mm[xb,dy] == 1:
+            if sol['m'][xb,dy] == 1:
                 P_3 = 0
         if not P_4 == 0:
-            if mm[xb,uy] == 1:
+            if sol['m'][xb,uy] == 1:
                 P_4 = 0
     
     '''Using Non-reflection Boundary'''           

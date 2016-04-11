@@ -55,7 +55,7 @@ def boolean_1_iter(coef, set, sol):
             sol['stop_iter'] = 100000 #sp_stop harus dicek di setiap movement and branching. karena sudah tidak bergerak lagi yang ada di list ini.
             print 'all looping itself or anastomosis'
         else:
-            sol = hybrid_tech_c(coef, set, sol, h2)
+            sol = hybrid_tech_c(coef, set, sol)
             if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
                 sol = hybrid_tech_m(coef, set, sol, h2)
         

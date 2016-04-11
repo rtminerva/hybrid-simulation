@@ -3,28 +3,23 @@ import random
 from random import randint
 from dirrection_of_movement import movement_dir
 
-def hybrid_tech_c(coef, set, sol, h2):
+
+def hybrid_tech_c(coef, set, sol):
     ##branching decision and action. Also movement   
     line = range(1,11) #for Pb
     n_sp = len(sol['matrix_tip']) #to save original number of tips before branching
     
     for nom in range(0,n_sp): #dicek setiap tip
-        if nom in sol['sp_stop']: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
-#                 print 'no_moving for tip', nom
-            pass
-        else:
+        if not nom in sol['sp_stop']: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
             yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
             #print 'xb,yb', xb,',',yb
-            dirr = movement_dir(coef, set, sol, xb, yb, h2)
-            
-            dirr = movement_dir(x_pos = xb, y_pos = yb, cc = c, ff = f, mm = m,
-                                tep = tp, h1 = h2, R_min = r_min, error = Error,
-                                d_n1 = d_n, ki_n1 = ki_n, al_n1 = al_n, ro1 = ro, Mic = mic, Kappa = kappa,
-                                n_x = Nx, n_y = Ny, Matrix_tip = matrix_tip, Nom = nom)
+            dirr = movement_dir(coef, set, sol, xb, yb, nom, n_dir = True)
+    
             dirr1 = [dirr[0],dirr[0]+dirr[1],dirr[0]+dirr[1]+dirr[2],dirr[0]+dirr[1]+dirr[2]+dirr[3],1]
-            #print dirr                
+                     
             no_back = sol['list_tip_movement'][nom]
+            
             k = 0
             while no_back == sol['list_tip_movement'][nom]:
                 trial = random.uniform(0,1)
