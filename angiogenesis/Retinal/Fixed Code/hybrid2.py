@@ -12,43 +12,56 @@ def hybrid_tech_m(coef, set, sol):
             
                 dirr_m = [dirr[0],dirr[0]+dirr[1],dirr[0]+dirr[1]+dirr[2],dirr[0]+dirr[1]+dirr[2]+dirr[3],1]
                 #print dirr
-                trial = random.uniform(0,1)
-                if trial <= dirr_m[0]: #stay
-                    lop = 1
-                    #print 'STAY'
-                    #do nothing
-                elif trial <= dirr_m[1]: #left
-                    #print 'LEFT'
-                    #print sol['m'][xb,yb]
-                    #index_sol['m'][dot][0] = xb - 2
+                keep = True
+                dire = 'f'
+                while keep == True:
+                    trial = random.uniform(0,1)
+                    if trial <= dirr_m[0]: #stay
+                        dire = 'stay'
+                        keep = False
+                    elif trial <= dirr_m[1]: #left
+                        if (xb - 2, yb) not in sol['tip_cell']:
+                            keep = False
+                            dire = 'left'
+                            trial = 100
+                            sol['m'][xb - 2, yb] = 1
+                            sol['m'][xb,yb] = 0
+                    elif trial <= dirr_m[2]: #right
+                        if (xb + 2, yb) not in sol['tip_cell']:
+                            keep = False
+                            dire = 'right'
+                            trial = 100
+                        sol['m'][xb + 2, yb] = 1
+                        sol['m'][xb,yb] = 0
+                    elif trial <= dirr_m[3]: #down
+                        if (xb, yb - 2) not in sol['tip_cell']:
+                            keep = False
+                            dire = 'down'
+                            trial = 100
+                        sol['m'][xb, yb - 2] = 1
+                        sol['m'][xb,yb] = 0
+                    elif trial <= dirr_m[4]: #>dirr[3] #up
+                        if (xb, yb + 2) not in sol['tip_cell']:
+                            keep = False
+                            dire = 'up'
+                            trial = 100
+                        sol['m'][xb, yb + 2] = 1
+                        sol['m'][xb,yb] = 0
+                
+                
+                if dire == 'left': #stay
                     sol['m'][xb - 2, yb] = 1
                     sol['m'][xb,yb] = 0
-                    #print sol['m'][xb,yb]
-                    #print sol['m'][xb - 2, yb]
-                elif trial <= dirr_m[2]: #right
-                    #print 'RIGHT'
-                    #print sol['m'][xb,yb]
-                    #index_sol['m'][dot][0] = xb + 2
+                elif dire == 'right': #right
                     sol['m'][xb + 2, yb] = 1
                     sol['m'][xb,yb] = 0
-                    #print sol['m'][xb,yb]
-                    #print sol['m'][xb + 2, yb]
-                elif trial <= dirr_m[3]: #down
-                    #print 'DOWN'
-                    #print sol['m'][xb,yb]
-                    #index_sol['m'][dot][1] = yb - 2
+                elif dire == 'down': #down
                     sol['m'][xb, yb - 2] = 1
                     sol['m'][xb,yb] = 0
-                    #print sol['m'][xb,yb]
-                   # print sol['m'][xb, yb - 2]
-                else: #>dirr[3] #up
-                    #print 'UP'
-                    #print sol['m'][xb,yb]
-                    #index_sol['m'][dot][1] = yb + 2
+                elif dire == 'up': #>dirr[3] #up
                     sol['m'][xb, yb + 2] = 1
                     sol['m'][xb,yb] = 0
-                    #print sol['m'][xb,yb]
-                    #print sol['m'][xb, yb + 2]
+                
                 for ec_i in range(0,len(sol['matrix_tip'])):
                     if (xb,yb) in sol['matrix_tip'][ec_i]:
                         sol['index_mn'].append([xb,yb])

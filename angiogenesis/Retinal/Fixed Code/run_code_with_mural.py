@@ -45,6 +45,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     #to print as control
     print 'Total Tips:', len(sol['matrix_tip'])
     print 'Total Stop Tips:', len(sol['sp_stop'])
+    print 'TIP CELL', sol['tip_cell']
     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
         print 'NILAI C, F, P MAX', sol['c'].max(), ',', sol['f'].max(), ',', sol['p'].max()
         print 'NILAI C, F, P MIN', sol['c'].min(), ',', sol['f'].min(), ',', sol['p'].min()
@@ -75,23 +76,23 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                 globals()['plo%s' % i] = ax.plot(x_p, y_p, 'b')
             plt.draw()
              
-            plt.figure()
-            plt.xlim(set['Hh'],coef['X']-set['Hh'])
-            plt.ylim(set['Hh'],coef['Y']-set['Hh'])
-            x_p = []
-            y_p = []
-            for y in range(1,ny,2):
-                for x in range(1,nx,2):
-                    if sol['m'][x,y] == 1:
-                        x_p.append(x*set['Hh'])
-                        y_p.append(y*set['Hh'])
-            '''
-            for i in range(0,len(sol['m'])):
-                x_p.append(sol['m'][i][0]*set['Hh'])
-                y_p.append(sol['m'][i][1]*set['Hh'])
-            '''
-            plt.scatter(x_p, y_p, marker = 'o', s = 0.5, color ='green')
-            plt.draw()  
+#             plt.figure()
+#             plt.xlim(set['Hh'],coef['X']-set['Hh'])
+#             plt.ylim(set['Hh'],coef['Y']-set['Hh'])
+#             x_p = []
+#             y_p = []
+#             for y in range(1,set['Ny'],2):
+#                 for x in range(1,set['Nx'],2):
+#                     if sol['m'][x,y] == 1:
+#                         x_p.append(x*set['Hh'])
+#                         y_p.append(y*set['Hh'])
+#             '''
+#             for i in range(0,len(sol['m'])):
+#                 x_p.append(sol['m'][i][0]*set['Hh'])
+#                 y_p.append(sol['m'][i][1]*set['Hh'])
+#             '''
+#             plt.scatter(x_p, y_p, marker = 'o', s = 0.5, color ='green')
+#             plt.draw()  
              
             plt.figure()
             plt.xlim(set['Hh'],coef['X']-set['Hh'])
@@ -117,9 +118,9 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             y_sub_axis = numpy.arange(0, coef['Y']+set['Hh'], h)
             x_sub_axis, y_sub_axis = numpy.meshgrid(x_sub_axis, y_sub_axis)
              
-            p_sol = numpy.zeros((nx/2+1, ny/2+1))
-            for j, y in enumerate(range(0,ny+1,2)):
-                for i, x in enumerate(range(0,nx+1,2)):
+            p_sol = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
+            for j, y in enumerate(range(0,set['Ny']+1,2)):
+                for i, x in enumerate(range(0,set['Nx']+1,2)):
                     p_sol[i,j] = g[9][x,y]
             surf = ax.plot_surface(x_sub_axis, y_sub_axis, p_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
                     linewidth=0, antialiased=False)
@@ -202,9 +203,9 @@ x_main_axis = numpy.arange(0, coef['X']+Hh, h)
 y_main_axis = numpy.arange(0, Y+Hh, h)
 x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
 
-c_sol = numpy.zeros((nx/2+1, ny/2+1))
-for j, y in enumerate(range(0,ny+1,2)):
-    for i, x in enumerate(range(0,nx+1,2)):
+c_sol = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
+for j, y in enumerate(range(0,set['Ny']+1,2)):
+    for i, x in enumerate(range(0,set['Nx']+1,2)):
         c_sol[i,j] = g[8][x,y]
 surf = ax.plot_surface(x_main_axis, y_main_axis, c_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
         linewidth=0, antialiased=False)
