@@ -1,4 +1,4 @@
-def movement_dir(xb = 0, yb = 0, cc = 0, sol['f'] = 0, mm = 0,
+def movement_dir(xb = 0, yb = 0, cc = 0, f = 0, mm = 0,
                  tep = 0, h1 = 0, R_min = 0, error = 0,
                  d_n1 = 0, ki_n1 = 0, al_n1 = 0, ro1 = 0, sol['Mic'] = 0, sol['Kappa'] = 0,
                  n_x = 0, n_y = 0, Matrix_tip = 0, Index_m = 0, n_dir = True, Nom = 0, ml = 'f', mr = 'f', md = 'f', mu = 'f'):

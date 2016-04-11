@@ -4,9 +4,9 @@ def declare_coef():
     coef = {}
     set = {}
     
-    coef['Ang2'] = False
-    
-    
+    ##With Ang2
+    coef['Ang2'] == False
+      
     ##Endothelial (n)
     Ro = 0.16
     coef['Ro'] = 0.16
@@ -44,8 +44,6 @@ def declare_coef():
     coef['B_p'] = 0.3
     Dl = 0.05 #
     coef['Dl'] = 0.05
-    ##Angiopoietin
-    #rec = 'Ang1'
     
     ##Chemotaxis inhibition & Haptotaxis Activation
     Kappa = 0#0.4
@@ -60,6 +58,7 @@ def declare_coef():
     coef['T_mitosis'] = 0.709
     
     '''Spatial and Temporal Meshes Number'''
+    ##set dictionaries tidak pernah berubah
     T = 0.004
     set['T'] = 0.004
     X = 4.4
@@ -67,6 +66,7 @@ def declare_coef():
     Nt = 100000
     set['Nt'] = 100000
     h = 0.02
+    set['h'] = h
     
     Hh = h/2
     set['Hh'] = h/2
@@ -79,8 +79,10 @@ def declare_coef():
     R_max = X/2
     set['R_max'] = X/2
     
-    #O_x = nx/2*Hh
-    #O_y = ny/2*Hh
+    O_x = set['Nx']/2*set['Hh']
+    O_y = set['Ny']/2*set['Hh']
+    set['O_x'] = O_x
+    set['O_y'] = O_y
     
     '''Initial Setting'''
     t = 0
@@ -89,10 +91,12 @@ def declare_coef():
     set['k'] = 0
     dt = 0.002
     set['dt'] = 0.002
+    sol['tp'] = dt
     error = 0.01
     set['error'] = 0.01
        
     '''To store solutions'''
+    ##sol dictionaries dapat berubah
     sol = {}
     sol['matrix_tip'] = 0
     sol['list_tip_movement'] = 0
@@ -102,9 +106,9 @@ def declare_coef():
     sol['n'] = 0
     sol['c'] = 0
     sol['f'] = 0
-    sol['tp'] = dt
     sol['p'] = 0
     sol['m'] = 0
     sol['index_mn'] = 0
+    sol['tip_cell'] = 0
     #g = [0, 0, 0, 0, 0, 0, 0, 0, dt, 0, 0, 0]
     return coef, set, sol

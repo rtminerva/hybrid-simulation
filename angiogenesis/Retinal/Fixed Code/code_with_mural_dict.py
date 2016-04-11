@@ -18,6 +18,7 @@ def second_largest(numbers):
 def check_anastomosis(sol):
     #creating list of tips to be checked if the tip meets
     sp_in = []
+    '''Check Anastomosis'''
     for noms in range(0,len(sol['matrix_tip'])):         
         if not noms in sol['sp_stop']:
             sp_in.append(noms)
@@ -27,39 +28,28 @@ def check_anastomosis(sol):
                 if sol['matrix_tip'][tip_o][-1] == sol['matrix_tip'][tips][-1]:
                     sol['sp_stop'].append(tip_o)
                     sol['list_tip_movement'][tip_o] = 'stop'
-    return sol['sp_stop'], sol['list_tip_movement']
-
-
-def boolean_1_iter(coef, set, sol):
-#     iter = 0, hh = 0, Nx = 0, Ny = 0,
-#                     r_min = 0, r_max = 0,
-#                     ro = 0, d_n = 0, ki_n = 0, al_n = 0,
-#                     kappa = 0, mic = 0,
-#                     d_c = 0, nu = 0,
-#                     be = 0, ga = 0,
-#                     d_m = 0, ki_m = 0, al_m = 0, #ro_m = 0,
-#                     a_p = 0, b_p = 0, dl = 0,
-#                     matrix_tip = 0,
-#                     list_tip_movement = 0, life_time_tip = 0,
-#                     stop_iter = 0, sp_stop = 0,
-#                     n = 0, c = 0, f = 0, tp = 0, m = 0, p = 0, #index_m = 0,
-#                     t_branch = 0,
-#                     Error = 0, Rec = 0, index_mn = 0
-#                     
-    h2 = 2*set['Hh']
-    O_x = set['Nx']/2*set['Hh']
-    O_y = set['Ny']/2*set['Hh']
     
+    '''TIP CELL'''
+    if len(sol['sp_stop']) > 0:               
+        for e,tip in enumerate(sol['matrix_tip']):
+            if not e in sol['sp_stop']:
+                sol['tip_cell'].append(sol['matrix_tip'][tip][-1])
+        
+    return sol
+
+
+def boolean_1_iter(coef, set, sol):                       
     if set['k'] == 0:
         '''Initial Profile'''
-        sol = initial_prof(coef, set, sol, h2, O_x, O_y)  #done
-    else:                      
+        sol = initial_prof(coef, set, sol)  #done
+    else:
+        '''1. Anastomosis & Tip Cell'''
+        if set['k'] > 1:
+            sol = check_anastomosis(sol)
+                              
         '''Solving c,f,T'''
-        sol = c_f_T(coef, set, sol, h2, O_x, O_y)
-        
-        '''1. Anastomosis'''
-        sol['sp_stop'], sol['list_tip_movement'] = check_anastomosis(sol)
-               
+        sol = c_f_T(coef, set, sol)
+                       
         '''2. Branching and Movement'''        
         if len(sol['sp_stop']) == len(sol['matrix_tip']):
             sol['stop_iter'] = 100000 #sp_stop harus dicek di setiap movement and branching. karena sudah tidak bergerak lagi yang ada di list ini.

@@ -26,7 +26,6 @@ Untuk Plot'''
 
 #declare coefficients & initial settings
 coef, set, sol = declare_coef()
-
 #to plot interactively
 plt.ion()
 
