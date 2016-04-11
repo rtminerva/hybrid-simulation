@@ -195,7 +195,7 @@ def c_f_T(coef, set, sol):
                         n_bool = 0
                         
                     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-                        if m[x+1,y+1] == 1 or m[x+1,y-1] == 1:
+                        if sol['m'][x+1,y+1] == 1 or sol['m'][x+1,y-1] == 1:
                             m_bool = 1
                         else:
                             m_bool = 0
@@ -215,7 +215,7 @@ def c_f_T(coef, set, sol):
                         n_bool = 0
                         
                     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-                        if m[x-1,y+1] == 1 or m[x-1,y-1] == 1:
+                        if sol['m'][x-1,y+1] == 1 or sol['m'][x-1,y-1] == 1:
                             m_bool = 1
                         else:
                             m_bool = 0
@@ -236,7 +236,7 @@ def c_f_T(coef, set, sol):
                         n_bool = 0
                         
                     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-                        if m[x+1,y+1] == 1 or m[x-1,y+1] == 1 or m[x+1,y-1] == 1 or m[x-1,y-1] == 1:
+                        if sol['m'][x+1,y+1] == 1 or sol['m'][x-1,y+1] == 1 or sol['m'][x+1,y-1] == 1 or sol['m'][x-1,y-1] == 1:
                             m_bool = 1
                         else:
                             m_bool = 0
@@ -248,4 +248,4 @@ def c_f_T(coef, set, sol):
                             
                     sol['c'][x,y] = c_o[x,y]*(1 - sol['tp']*coef['Nu']*n_bool*n_tip)+ coef['D_c']*sol['tp']/set['h']**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y+2]+c_o[x,y-2]-4*c_o[x,y])
                     sol['f'][x,y] = f_o[x,y] + sol['tp']*coef['Beta']*n_bool*n_tip - sol['tp']*coef['Gama']*f_o[x,y]*n_bool*n_tip
-    return sol
+    return sol['c'], sol['f'], sol['p']

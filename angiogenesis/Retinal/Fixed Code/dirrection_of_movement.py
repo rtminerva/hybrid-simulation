@@ -21,7 +21,7 @@ def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
         wwy_n = max(0,-wwy)
         
         if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-            if mm[xb,yb] == 1: #or mm[xb+2,yb] == 1 or mm[xb-2,yb] == 1 or mm[xb,yb+2] == 1 or mm[xb,yb-2] == 1 or mm[xb+2,yb+2] == 1 or mm[xb-2,yb+2] == 1 or mm[xb-2,yb-2] == 1 or mm[xb+2,yb-2] == 1:
+            if sol['m'][xb,yb] == 1: #or sol['m'][xb+2,yb] == 1 or sol['m'][xb-2,yb] == 1 or sol['m'][xb,yb+2] == 1 or sol['m'][xb,yb-2] == 1 or sol['m'][xb+2,yb+2] == 1 or sol['m'][xb-2,yb+2] == 1 or sol['m'][xb-2,yb-2] == 1 or sol['m'][xb+2,yb-2] == 1:
                 mm_bool = 1
             else:
                 mm_bool = 0

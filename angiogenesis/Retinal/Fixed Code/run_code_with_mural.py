@@ -43,6 +43,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     set['k'] += 1
     
     #to print as control
+    print 'Total Tips:', len(sol['matrix_tip'])
+    print 'Total Stop Tips:', len(sol['sp_stop'])
     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
         print 'NILAI C, F, P MAX', sol['c'].max(), ',', sol['f'].max(), ',', sol['p'].max()
         print 'NILAI C, F, P MIN', sol['c'].min(), ',', sol['f'].min(), ',', sol['p'].min()

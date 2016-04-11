@@ -13,11 +13,11 @@ def hybrid_tech_m(coef, set, sol):
                 dirr_m = [dirr[0],dirr[0]+dirr[1],dirr[0]+dirr[1]+dirr[2],dirr[0]+dirr[1]+dirr[2]+dirr[3],1]
                 #print dirr
                 trial = random.uniform(0,1)
-                if trial <= dirr_sol['m'][0]: #stay
+                if trial <= dirr_m[0]: #stay
                     lop = 1
                     #print 'STAY'
                     #do nothing
-                elif trial <= dirr_sol['m'][1]: #left
+                elif trial <= dirr_m[1]: #left
                     #print 'LEFT'
                     #print sol['m'][xb,yb]
                     #index_sol['m'][dot][0] = xb - 2
@@ -25,7 +25,7 @@ def hybrid_tech_m(coef, set, sol):
                     sol['m'][xb,yb] = 0
                     #print sol['m'][xb,yb]
                     #print sol['m'][xb - 2, yb]
-                elif trial <= dirr_sol['m'][2]: #right
+                elif trial <= dirr_m[2]: #right
                     #print 'RIGHT'
                     #print sol['m'][xb,yb]
                     #index_sol['m'][dot][0] = xb + 2
@@ -33,7 +33,7 @@ def hybrid_tech_m(coef, set, sol):
                     sol['m'][xb,yb] = 0
                     #print sol['m'][xb,yb]
                     #print sol['m'][xb + 2, yb]
-                elif trial <= dirr_sol['m'][3]: #down
+                elif trial <= dirr_m[3]: #down
                     #print 'DOWN'
                     #print sol['m'][xb,yb]
                     #index_sol['m'][dot][1] = yb - 2
@@ -49,7 +49,7 @@ def hybrid_tech_m(coef, set, sol):
                     sol['m'][xb,yb] = 0
                     #print sol['m'][xb,yb]
                     #print sol['m'][xb, yb + 2]
-                for ec_i in range(0,len(matrix_tip)):
-                    if (xb,yb) in matrix_tip[ec_i]:
+                for ec_i in range(0,len(sol['matrix_tip'])):
+                    if (xb,yb) in sol['matrix_tip'][ec_i]:
                         sol['index_mn'].append([xb,yb])
     return sol

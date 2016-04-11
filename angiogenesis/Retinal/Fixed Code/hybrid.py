@@ -66,9 +66,10 @@ def hybrid_tech_c(coef, set, sol):
                 sol['n'][xpos_new,ypos_new] = 1
                 sol['list_tip_movement'][nom] = tipp
             #Kalau di posisi n baru ada m, m nya dibuang
-            if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-                if sol['m'][xpos_new,ypos_new] == 1:
-                    sol['m'][xpos_new,ypos_new] == 0
+            if not tipp == 'stay':
+                if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
+                    if sol['m'][xpos_new,ypos_new] == 1:
+                        sol['m'][xpos_new,ypos_new] == 0
             '''2.1 Branching Decision'''
             if not tipp == 'stay':
                 if dirr[5] == 'stop' and tipp == 'left':
@@ -159,10 +160,7 @@ def hybrid_tech_c(coef, set, sol):
                             sol['n'][xpos_new,ypos_new] = 1
                             sol['list_tip_movement'][-1] = tipp
                         #Kalau di posisi n baru ada m, m nya dibuang
-                        if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-                            if sol['m'][xpos_new,ypos_new] == 1:
-                                sol['m'][xpos_new,ypos_new] == 0    
-                        
+                   
                         if not tipp == 'stay':
                             if dirr[5] == 'stop' and tipp == 'left':
                                 sol['sp_stop'].append(len(sol['matrix_tip'])-1)
@@ -172,6 +170,9 @@ def hybrid_tech_c(coef, set, sol):
                                 sol['sp_stop'].append(len(sol['matrix_tip'])-1)
                             if dirr[8] == 'stop' and tipp == 'up':
                                 sol['sp_stop'].append(len(sol['matrix_tip'])-1)
+                            if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
+                                if sol['m'][xpos_new,ypos_new] == 1:
+                                    sol['m'][xpos_new,ypos_new] == 0 
                     else:
                         sol['life_time_tip'][nom] += sol['tp']    
                 else: 
