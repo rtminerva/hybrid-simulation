@@ -2,6 +2,8 @@ import code_with_mural_dict as disc
 from coef_setting import declare_coef
 import numpy
 
+
+
 from timeit import default_timer as timer 
 import time
 
@@ -45,7 +47,6 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     #to print as control
     print 'Total Tips:', len(sol['matrix_tip'])
     print 'Total Stop Tips:', len(sol['sp_stop'])
-    print 'TIP CELL', sol['tip_cell']
     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
         print 'NILAI C, F, P MAX', sol['c'].max(), ',', sol['f'].max(), ',', sol['p'].max()
         print 'NILAI C, F, P MIN', sol['c'].min(), ',', sol['f'].min(), ',', sol['p'].min()
@@ -60,7 +61,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
 #         print 'TIP', i,':',tip    
      
     if not coef['Kappa'] == 0 or not coef['Mic'] == 0:
-        if set['k'] == 500 or set['k'] == 1000 or set['k'] == 1500 or set['k'] == 2000 or set['k'] == 2500 or set['k'] == 3000 or set['k'] == 3500 or set['k'] == 4000:
+        if set['k'] == 100 or set['k'] == 500 or set['k'] == 1000 or set['k'] == 1500 or set['k'] == 2000 or set['k'] == 2500 or set['k'] == 3000 or set['k'] == 3500 or set['k'] == 4000:
             fig = plt.figure()
             plt.xlim(set['Hh'],coef['X']-set['Hh'])
             plt.ylim(set['Hh'],coef['Y']-set['Hh'])
@@ -74,6 +75,12 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                     x_p.append(sol['matrix_tip'][i][j][0]*set['Hh'])
                     y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
                 globals()['plo%s' % i] = ax.plot(x_p, y_p, 'b')
+            x_p = []
+            y_p = []
+            for i in range(0,len(sol['index_mn'])):
+                x_p.append(sol['index_mn'][i][0]*set['Hh'])
+                y_p.append(sol['index_mn'][i][1]*set['Hh'])
+            plt.scatter(x_p, y_p, marker = 'o', s = 0.2, color ='red')
             plt.draw()
              
 #             plt.figure()
@@ -94,18 +101,18 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
 #             plt.scatter(x_p, y_p, marker = 'o', s = 0.5, color ='green')
 #             plt.draw()  
              
-            plt.figure()
-            plt.xlim(set['Hh'],coef['X']-set['Hh'])
-            plt.ylim(set['Hh'],coef['Y']-set['Hh'])
-            #plt.xlim(set['Hh']*100,coef['X']-set['Hh']*100)
-            #plt.ylim(set['Hh']*100,coef['Y']-set['Hh']*100)
-            x_p = []
-            y_p = []
-            for i in range(0,len(sol['index_mn'])):
-                x_p.append(sol['index_mn'][i][0]*set['Hh'])
-                y_p.append(sol['index_mn'][i][1]*set['Hh'])
-            plt.scatter(x_p, y_p, marker = 'o', s = 0.5, color ='red')
-            plt.draw()
+#            plt.figure()
+#            plt.xlim(set['Hh'],coef['X']-set['Hh'])
+#            plt.ylim(set['Hh'],coef['Y']-set['Hh'])
+#            #plt.xlim(set['Hh']*100,coef['X']-set['Hh']*100)
+#            #plt.ylim(set['Hh']*100,coef['Y']-set['Hh']*100)
+#            x_p = []
+#            y_p = []
+#            for i in range(0,len(sol['index_mn'])):
+#                x_p.append(sol['index_mn'][i][0]*set['Hh'])
+#                y_p.append(sol['index_mn'][i][1]*set['Hh'])
+#            plt.scatter(x_p, y_p, marker = 'o', s = 0.5, color ='red')
+#            plt.draw()
              
             '''
             fig1 = plt.figure(1)
