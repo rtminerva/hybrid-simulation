@@ -5,7 +5,7 @@ def declare_coef():
     set = {}
     
     ##With Ang2
-    coef['Ang2'] = False
+    coef['Ang2'] = True
       
     ##Endothelial (n)
     coef['Ro'] = 0.16
@@ -29,14 +29,14 @@ def declare_coef():
     ##Tie2 with Angiopoietin (T), Ang1 & Ang2
     coef['A_p'] = 0.3
     coef['B_p'] = 0.3
-    coef['Dl'] = 0.05
+    coef['Dl'] = 0.2
     
     ##Chemotaxis inhibition & Haptotaxis Activation
     coef['Kappa'] = 0.4#0.4
     coef['Mic'] = 0.4#0.4
 
     '''Branching & Mitosis'''
-    coef['T_branch'] = 0.078
+    coef['T_branch'] = 0.25#0.078
     coef['T_mitosis'] = 0.709
     
     '''Spatial and Temporal Meshes Number'''
@@ -65,6 +65,7 @@ def declare_coef():
     '''To store solutions'''
     ##sol dictionaries dapat berubah
     sol = {}
+    sol['st'] = 0
     sol['tp'] = set['dt']
     sol['matrix_tip'] = 0
     sol['list_tip_movement'] = 0
@@ -78,5 +79,7 @@ def declare_coef():
     sol['m'] = 0
     sol['index_mn'] = 0
     sol['tip_cell'] = 0
+    sol['number_ec'] = 0
+    sol['MC_per_EC'] = {}
     #g = [0, 0, 0, 0, 0, 0, 0, 0, dt, 0, 0, 0]
     return coef, set, sol

@@ -65,13 +65,15 @@ def hybrid_tech_c(coef, set, sol):
                 sol['matrix_tip'][nom].append((xpos_new,ypos_new))
                 sol['n'][xpos_new,ypos_new] = 1
                 sol['list_tip_movement'][nom] = tipp
-            #Kalau di posisi n baru ada m, m nya dibuang
-            if not tipp == 'stay':
+            '''2.1 Branching Decision'''
+            if not tipp == 'stay':               
+                #Kalau di posisi n baru ada m, m nya dibuang
                 if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
                     if sol['m'][xpos_new,ypos_new] == 1:
                         sol['m'][xpos_new,ypos_new] == 0
-            '''2.1 Branching Decision'''
-            if not tipp == 'stay':
+                    #calculate number of EC
+                    sol['number_ec'] += 1
+                
                 if dirr[5] == 'stop' and tipp == 'left':
                     sol['sp_stop'].append(nom)
                 if dirr[6] == 'stop' and tipp == 'right':
@@ -172,7 +174,9 @@ def hybrid_tech_c(coef, set, sol):
                                 sol['sp_stop'].append(len(sol['matrix_tip'])-1)
                             if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
                                 if sol['m'][xpos_new,ypos_new] == 1:
-                                    sol['m'][xpos_new,ypos_new] == 0 
+                                    sol['m'][xpos_new,ypos_new] == 0
+                            #calculate number of EC
+                            sol['number_ec'] += 1
                     else:
                         sol['life_time_tip'][nom] += sol['tp']    
                 else: 

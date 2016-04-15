@@ -41,8 +41,6 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         set['k'] = sol['stop_iter']
         
     print 'at Time', set['t']
-    set['t'] += set['dt']
-    set['k'] += 1
     
     #to print as control
     print 'Total Tips:', len(sol['matrix_tip'])
@@ -55,14 +53,23 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'NILAI C, F MIN', sol['c'].min(), ',', sol['f'].min()
     print 'process time of Hybrid:', start2-start1
     print 'total time of processing:', time.clock()
+    
+    print '# of MC', len(sol['index_mn'])
+    print '# of EC', sol['number_ec']
+    gg = len(sol['index_mn'])*100/(sol['number_ec'])
+    print gg, '%'
+    
     print '***************************************************'
     print
 #     for i, tip in enumerate(sol['matrix_tip']):
 #         print 'TIP', i,':',tip    
-     
-    if not coef['Kappa'] == 0 or not coef['Mic'] == 0:
-        if set['k'] == 100 or set['k'] == 500 or set['k'] == 1000 or set['k'] == 1500 or set['k'] == 2000 or set['k'] == 2500 or set['k'] == 3000 or set['k'] == 3500 or set['k'] == 4000:
+    if not coef['Kappa'] == 0 or not coef['Mic'] == 0:   
+        if set['k'] % 100 == 0:
+            sol['MC_per_EC'][set['k']] = gg        
+        if set['k'] % 500 == 0: #and not set['k'] == 0 :    
+            '''EC & MC'''           
             fig = plt.figure()
+            plt.title('%s%d' % ('EC & MC at k=',set['k']))
             plt.xlim(set['Hh'],coef['X']-set['Hh'])
             plt.ylim(set['Hh'],coef['Y']-set['Hh'])
             #plt.xlim(set['Hh']*100,coef['X']-set['Hh']*300)
@@ -80,39 +87,76 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             for i in range(0,len(sol['index_mn'])):
                 x_p.append(sol['index_mn'][i][0]*set['Hh'])
                 y_p.append(sol['index_mn'][i][1]*set['Hh'])
-            plt.scatter(x_p, y_p, marker = 'o', s = 0.2, color ='red')
-            plt.draw()
-             
-#             plt.figure()
-#             plt.xlim(set['Hh'],coef['X']-set['Hh'])
-#             plt.ylim(set['Hh'],coef['Y']-set['Hh'])
-#             x_p = []
-#             y_p = []
-#             for y in range(1,set['Ny'],2):
-#                 for x in range(1,set['Nx'],2):
-#                     if sol['m'][x,y] == 1:
-#                         x_p.append(x*set['Hh'])
-#                         y_p.append(y*set['Hh'])
-#             '''
-#             for i in range(0,len(sol['m'])):
-#                 x_p.append(sol['m'][i][0]*set['Hh'])
-#                 y_p.append(sol['m'][i][1]*set['Hh'])
-#             '''
-#             plt.scatter(x_p, y_p, marker = 'o', s = 0.5, color ='green')
-#             plt.draw()  
-             
-#            plt.figure()
-#            plt.xlim(set['Hh'],coef['X']-set['Hh'])
-#            plt.ylim(set['Hh'],coef['Y']-set['Hh'])
-#            #plt.xlim(set['Hh']*100,coef['X']-set['Hh']*100)
-#            #plt.ylim(set['Hh']*100,coef['Y']-set['Hh']*100)
-#            x_p = []
-#            y_p = []
-#            for i in range(0,len(sol['index_mn'])):
-#                x_p.append(sol['index_mn'][i][0]*set['Hh'])
-#                y_p.append(sol['index_mn'][i][1]*set['Hh'])
-#            plt.scatter(x_p, y_p, marker = 'o', s = 0.5, color ='red')
-#            plt.draw()
+            plt.scatter(x_p, y_p, marker = 'o', s = 0.5, color ='red')
+            sol['st'] +=1  
+            flag = 'x=%s' % str(sol['st']) 
+            plt.savefig("%s.png" % flag)
+            plt.close()
+            #plt.draw()
+            
+            '''EC'''
+            fig = plt.figure()
+            plt.title('%s%d' % ('EC at k=',set['k']))
+            plt.xlim(set['Hh'],coef['X']-set['Hh'])
+            plt.ylim(set['Hh'],coef['Y']-set['Hh'])
+            #plt.xlim(set['Hh']*100,coef['X']-set['Hh']*300)
+            #plt.ylim(set['Hh']*100,coef['Y']-set['Hh']*300)
+            ax = fig.add_subplot(111)
+            for i in range(0,len(sol['matrix_tip'])):
+                x_p = []
+                y_p = []
+                for j in range(0,len(sol['matrix_tip'][i])):
+                    x_p.append(sol['matrix_tip'][i][j][0]*set['Hh'])
+                    y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
+                globals()['plo%s' % i] = ax.plot(x_p, y_p, 'b')
+            sol['st'] +=1  
+            flag = 'x=%s' % str(sol['st']) 
+            plt.savefig("%s.png" % flag)
+            plt.close()
+            #plt.draw()
+            
+            '''MC'''
+            plt.figure()
+            plt.title('%s%d' % ('MC at k=',set['k']))
+            plt.xlim(set['Hh'],coef['X']-set['Hh'])
+            plt.ylim(set['Hh'],coef['Y']-set['Hh'])
+            x_p = []
+            y_p = []
+            for y in range(1,set['Ny'],2):
+                for x in range(1,set['Nx'],2):
+                    if sol['m'][x,y] == 1:
+                        x_p.append(x*set['Hh'])
+                        y_p.append(y*set['Hh'])
+            '''
+            for i in range(0,len(sol['m'])):
+                x_p.append(sol['m'][i][0]*set['Hh'])
+                y_p.append(sol['m'][i][1]*set['Hh'])
+            '''
+            plt.scatter(x_p, y_p, marker = 'o', s = 0.5, color ='green')
+            sol['st'] +=1  
+            flag = 'x=%s' % str(sol['st']) 
+            plt.savefig("%s.png" % flag)
+            plt.close()
+            #plt.draw()  
+            
+            '''MC on EC''' 
+            plt.figure()
+            plt.title('%s%d' % ('MC on EC at k=',set['k']))
+            plt.xlim(set['Hh'],coef['X']-set['Hh'])
+            plt.ylim(set['Hh'],coef['Y']-set['Hh'])
+            #plt.xlim(set['Hh']*100,coef['X']-set['Hh']*100)
+            #plt.ylim(set['Hh']*100,coef['Y']-set['Hh']*100)
+            x_p = []
+            y_p = []
+            for i in range(0,len(sol['index_mn'])):
+                x_p.append(sol['index_mn'][i][0]*set['Hh'])
+                y_p.append(sol['index_mn'][i][1]*set['Hh'])
+            plt.scatter(x_p, y_p, marker = 'o', s = 0.5, color ='red')
+            sol['st'] +=1  
+            flag = 'x=%s' % str(sol['st']) 
+            plt.savefig("%s.png" % flag)
+            plt.close()
+            #plt.draw()
              
             '''
             fig1 = plt.figure(1)
@@ -195,8 +239,10 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             plt.scatter(x_p, y_p, marker = 'o', s = 0.5)
             plt.draw() 
         '''
+    set['t'] += set['dt']
+    set['k'] += 1
      
-    
+print 'Percentage of MC on EC:', sol['MC_per_EC']
 print '*************DONE*****************'
 
 '''Plot Continuous
@@ -249,8 +295,6 @@ for i in range(0,len(g[11])):
 scat = ax.scatter(x_p, y_p, marker = 'o')
 fig3.show()   
 '''
-
-
 raw_input()
 # plt.show(block=True)
 

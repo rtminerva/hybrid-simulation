@@ -4,6 +4,7 @@ from dirrection_of_movement import movement_dir
 def hybrid_tech_m(coef, set, sol):
     mo = sol['m'][:]
     nom = 0
+    sol['index_mn'] = []
     for yb in range(1,set['Ny'],2):
         for xb in range(1,set['Nx'],2):
             #print mo[xb,yb]

@@ -23,6 +23,7 @@ def initial_prof(coef, set, sol):
     sol['life_time_tip'] = []
     sol['sp_stop'] = []
     sol['tip_cell'] = []
+    sol['number_ec'] = 8
                     
     sol['n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     
