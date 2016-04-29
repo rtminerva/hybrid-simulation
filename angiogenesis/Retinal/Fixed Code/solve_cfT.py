@@ -36,6 +36,7 @@ def c_f_T(coef, set, sol):
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks #Ang1
                         else:
                             sol['p'][x,y] = sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-coef['Dl']*sol['tp']*n_bool*n_stacks*(1-m_bool)) #Ang2
+                            #sol['p'][x,y] = sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-(coef['A_p']*m_bool+coef['B_p'])*sol['tp']*n_tip) #Ang2
                             
                     sol['c'][x,y] = c_o[x,y]*(1 - sol['tp']*coef['Nu']*n_bool*n_tip) + coef['D_c']*sol['tp']/set['h']**2*(c_o[x+2,y]+c_o[x,y+2]-2*c_o[x,y])
                     sol['f'][x,y] = f_o[x,y] + sol['tp']*coef['Beta']*n_bool*n_tip - sol['tp']*coef['Gama']*f_o[x,y]*n_bool*n_tip
@@ -57,6 +58,7 @@ def c_f_T(coef, set, sol):
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks #Ang1
                         else:
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-coef['Dl']*sol['tp']*n_bool*n_stacks*(1-m_bool)) #Ang2
+                            #sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-(coef['A_p']*m_bool+coef['B_p'])*sol['tp']*n_tip) #Ang2
                             
                     sol['c'][x,y] = c_o[x,y]*(1 - sol['tp']*coef['Nu']*n_bool*n_tip)+ coef['D_c']*sol['tp']/set['h']**2*(c_o[x-2,y]+c_o[x,y+2]-2*c_o[x,y])
                     sol['f'][x,y] = f_o[x,y] + sol['tp']*coef['Beta']*n_bool*n_tip - sol['tp']*coef['Gama']*f_o[x,y]*n_bool*n_tip
@@ -78,6 +80,7 @@ def c_f_T(coef, set, sol):
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks #Ang1
                         else:
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-coef['Dl']*sol['tp']*n_bool*n_stacks*(1-m_bool)) #Ang2
+                            #sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-(coef['A_p']*m_bool+coef['B_p'])*sol['tp']*n_tip) #Ang2
                             
                     sol['c'][x,y] = c_o[x,y]*(1 - sol['tp']*coef['Nu']*n_bool*n_tip)+ coef['D_c']*sol['tp']/set['h']**2*(c_o[x-2,y]+c_o[x,y-2]-2*c_o[x,y])
                     sol['f'][x,y] = f_o[x,y] + sol['tp']*coef['Beta']*n_bool*n_tip - sol['tp']*coef['Gama']*f_o[x,y]*n_bool*n_tip
@@ -99,6 +102,7 @@ def c_f_T(coef, set, sol):
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks #Ang1
                         else:
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-coef['Dl']*sol['tp']*n_bool*n_stacks*(1-m_bool)) #Ang2
+                            #sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-(coef['A_p']*m_bool+coef['B_p'])*sol['tp']*n_tip) #Ang2
                             
                     sol['c'][x,y] = c_o[x,y]*(1 - sol['tp']*coef['Nu']*n_bool*n_tip)+ coef['D_c']*sol['tp']/set['h']**2*(c_o[x+2,y]+c_o[x,y-2]-2*c_o[x,y])
                     sol['f'][x,y] = f_o[x,y] + sol['tp']*coef['Beta']*n_bool*n_tip - sol['tp']*coef['Gama']*f_o[x,y]*n_bool*n_tip
@@ -114,6 +118,7 @@ def c_f_T(coef, set, sol):
                             sol['p'][x,y] = (coef['A_p']*sol['m'][1,1]+coef['B_p'])*sol['n'][1,1]*n_stacks #Ang1
                         else:
                             sol['p'][x,y] = (coef['A_p']*sol['m'][1,1]+coef['B_p'])*sol['n'][1,1]*n_stacks*sol['tp'] + p_o[x,y]*(1-coef['Dl']*sol['tp']*sol['n'][1,1]*n_stacks*(1-sol['m'][1,1])) #Ang2   
+                            #sol['p'][x,y] = (coef['A_p']*sol['m'][1,1]+coef['B_p'])*sol['n'][1,1]*n_stacks*sol['tp'] + p_o[x,y]*(1-(coef['A_p']*sol['m'][1,1]+coef['B_p'])*sol['tp']*n_tip) #Ang2   
                                                  
                 elif x == set['Nx']:
                     sol['c'][x,y] = c_o[x,y]*(1 - sol['tp']*coef['Nu']*sol['n'][set['Nx']-1,1]*n_tip)+ coef['D_c']*sol['tp']/set['h']**2*(c_o[x-2,y]+c_o[x,y+2]-2*c_o[x,y])
@@ -124,6 +129,7 @@ def c_f_T(coef, set, sol):
                             sol['p'][x,y] = (coef['A_p']*sol['m'][set['Nx']-1,1]+coef['B_p'])*sol['n'][set['Nx']-1,1]*n_stacks #Ang1
                         else:
                             sol['p'][x,y] = (coef['A_p']*sol['m'][set['Nx']-1,1]+coef['B_p'])*sol['n'][set['Nx']-1,1]*n_stacks*sol['tp'] + p_o[x,y]*(1-coef['Dl']*sol['tp']*sol['n'][set['Nx']-1,1]*n_stacks*(1-sol['m'][set['Nx']-1,1])) #Ang2
+                            #sol['p'][x,y] = (coef['A_p']*sol['m'][set['Nx']-1,1]+coef['B_p'])*sol['n'][set['Nx']-1,1]*n_stacks*sol['tp'] + p_o[x,y]*(1-(coef['A_p']*sol['m'][set['Nx']-1,1]+coef['B_p'])*sol['tp']*n_tip) #Ang2
                 
                 else:
                     if sol['n'][x+1,1] == 1 or sol['n'][x-1,1] == 1:
@@ -140,7 +146,8 @@ def c_f_T(coef, set, sol):
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks #Ang1
                         else:
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-coef['Dl']*sol['tp']*n_bool*n_stacks*(1-m_bool)) #Ang2
-                            
+                            #sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-(coef['A_p']*m_bool+coef['B_p'])*sol['tp']*n_tip) #Ang2
+                             
                     sol['c'][x,y] = c_o[x,y]*(1 - sol['tp']*coef['Nu']*n_bool*n_tip)+ coef['D_c']*sol['tp']/set['h']**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y+2]-3*c_o[x,y])
                     sol['f'][x,y] = f_o[x,y] + sol['tp']*coef['Beta']*n_bool*n_tip - sol['tp']*coef['Gama']*f_o[x,y]*n_bool*n_tip
                     
@@ -155,6 +162,7 @@ def c_f_T(coef, set, sol):
                             sol['p'][x,y] = (coef['A_p']*sol['m'][1,set['Ny']-1]+coef['B_p'])*sol['n'][1,set['Ny']-1]*n_stacks #Ang1
                         else:
                             sol['p'][x,y] = (coef['A_p']*sol['m'][1,set['Ny']-1]+coef['B_p'])*sol['n'][1,set['Ny']-1]*n_stacks*sol['tp'] + p_o[x,y]*(1-coef['Dl']*sol['tp']*sol['n'][1,set['Ny']-1]*n_stacks*(1-sol['m'][1,set['Ny']-1])) #Ang2
+                            #sol['p'][x,y] = (coef['A_p']*sol['m'][1,set['Ny']-1]+coef['B_p'])*sol['n'][1,set['Ny']-1]*n_stacks*sol['tp'] + p_o[x,y]*(1-(coef['A_p']*sol['m'][1,set['Ny']-1]+coef['B_p'])*sol['tp']*n_tip) #Ang2
                     
                 elif x == set['Nx']:
                     sol['c'][x,y] = c_o[x,y]*(1 - sol['tp']*coef['Nu']*sol['n'][set['Nx']-1,set['Ny']-1]*n_tip)+ coef['D_c']*sol['tp']/set['h']**2*(c_o[x-2,y]+c_o[x,y-2]-2*c_o[x,y])
@@ -165,7 +173,8 @@ def c_f_T(coef, set, sol):
                             sol['p'][x,y] = (coef['A_p']*sol['m'][set['Nx']-1,set['Ny']-1]+coef['B_p'])*sol['n'][set['Nx']-1,set['Ny']-1]*n_stacks #Ang1
                         else:
                             sol['p'][x,y] = (coef['A_p']*sol['m'][set['Nx']-1,set['Ny']-1]+coef['B_p'])*sol['n'][set['Nx']-1,set['Ny']-1]*n_stacks*sol['tp'] + p_o[x,y]*(1-coef['Dl']*sol['tp']*sol['n'][set['Nx']-1,set['Ny']-1]*n_stacks*(1-sol['m'][set['Nx']-1,set['Ny']-1])) #Ang2
-                    
+                            #sol['p'][x,y] = (coef['A_p']*sol['m'][set['Nx']-1,set['Ny']-1]+coef['B_p'])*sol['n'][set['Nx']-1,set['Ny']-1]*n_stacks*sol['tp'] + p_o[x,y]*(1-(coef['A_p']*sol['m'][set['Nx']-1,set['Ny']-1]+coef['B_p'])*sol['tp']*n_tip) #Ang2
+                            
                 else:
                     if sol['n'][x+1,set['Ny']-1] == 1 or sol['n'][x-1,set['Ny']-1] == 1:
                         n_bool = 1
@@ -182,6 +191,7 @@ def c_f_T(coef, set, sol):
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks #Ang1
                         else:
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-coef['Dl']*sol['tp']*n_bool*n_stacks*(1-m_bool)) #Ang2
+                            #sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-(coef['A_p']*m_bool+coef['B_p'])*sol['tp']*n_tip) #Ang2
                             
                     sol['c'][x,y] = c_o[x,y]*(1 - sol['tp']*coef['Nu']*n_bool*n_tip)+ coef['D_c']*sol['tp']/set['h']**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y-2]-3*c_o[x,y])
                     sol['f'][x,y] = f_o[x,y] + sol['tp']*coef['Beta']*n_bool*n_tip - sol['tp']*coef['Gama']*f_o[x,y]*n_bool*n_tip
@@ -204,6 +214,7 @@ def c_f_T(coef, set, sol):
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks #Ang1
                         else:
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-coef['Dl']*sol['tp']*n_bool*n_stacks*(1-m_bool)) #Ang2
+                            #sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-(coef['A_p']*m_bool+coef['B_p'])*sol['tp']*n_tip) #Ang2
                             
                     sol['c'][x,y] = c_o[x,y]*(1 - sol['tp']*coef['Nu']*n_bool*n_tip)+ coef['D_c']*sol['tp']/set['h']**2*(c_o[x+2,y]+c_o[x,y+2]+c_o[x,y-2]-3*c_o[x,y])
                     sol['f'][x,y] = f_o[x,y] + sol['tp']*coef['Beta']*n_bool*n_tip - sol['tp']*coef['Gama']*f_o[x,y]*n_bool*n_tip
@@ -224,6 +235,7 @@ def c_f_T(coef, set, sol):
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks #Ang1
                         else:
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-coef['Dl']*sol['tp']*n_bool*n_stacks*(1-m_bool)) #Ang2
+                            #sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-(coef['A_p']*m_bool+coef['B_p'])*sol['tp']*n_tip) #Ang2
                             
                     sol['c'][x,y] = c_o[x,y]*(1 - sol['tp']*coef['Nu']*n_bool*n_tip)+ coef['D_c']*sol['tp']/set['h']**2*(c_o[x-2,y]+c_o[x,y+2]+c_o[x,y-2]-3*c_o[x,y])
                     sol['f'][x,y] = f_o[x,y] + sol['tp']*coef['Beta']*n_bool*n_tip - sol['tp']*coef['Gama']*f_o[x,y]*n_bool*n_tip
@@ -245,6 +257,7 @@ def c_f_T(coef, set, sol):
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks #Ang1
                         else:
                             sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-coef['Dl']*sol['tp']*n_bool*n_stacks*(1-m_bool)) #Ang2
+                            #sol['p'][x,y] = (coef['A_p']*m_bool+coef['B_p'])*n_bool*n_stacks*sol['tp'] + p_o[x,y]*(1-(coef['A_p']*m_bool+coef['B_p'])*sol['tp']*n_tip) #Ang2
                             
                     sol['c'][x,y] = c_o[x,y]*(1 - sol['tp']*coef['Nu']*n_bool*n_tip)+ coef['D_c']*sol['tp']/set['h']**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y+2]+c_o[x,y-2]-4*c_o[x,y])
                     sol['f'][x,y] = f_o[x,y] + sol['tp']*coef['Beta']*n_bool*n_tip - sol['tp']*coef['Gama']*f_o[x,y]*n_bool*n_tip

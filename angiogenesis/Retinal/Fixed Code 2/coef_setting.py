@@ -7,7 +7,7 @@ def declare_coef():
     set = {}
     
     ##With Ang2
-    coef['Ang2'] = True
+    coef['Ang2'] = False
       
     ##Endothelial (n)
     coef['Ro'] = 0.16
@@ -34,8 +34,8 @@ def declare_coef():
     coef['Dl'] = 0.2 #0.5
     
     ##Chemotaxis inhibition & Haptotaxis Activation
-    coef['Kappa'] = 0.4#0.4
-    coef['Mic'] = 0.4#0.4
+    coef['Kappa'] = 0#0.4#0.4
+    coef['Mic'] = 0#0.4#0.4
 
     '''Branching & Mitosis'''
     coef['T_branch'] = 0.25#0.078
@@ -43,20 +43,19 @@ def declare_coef():
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah
-    set['T'] = 8.002
+    set['T'] = 0.004
     coef['X'] = 4.4
     coef['Y'] = 4.4
     set['Nt'] = 100000
-    set['h'] = 0.02
-    
-    set['Hh'] = set['h']/2
-    set['Nx'] = int(coef['X']/set['Hh'])
-    set['Ny'] = int(coef['Y']/set['Hh'])
+    set['h'] = 0.01
+
+    set['Nx'] = int(coef['X']/set['h'])
+    set['Ny'] = int(coef['Y']/set['h'])
     set['R_min'] = 0.52/2
     set['R_max'] = coef['X']/2
     
-    set['O_x'] = set['Nx']/2*set['Hh']
-    set['O_y'] = set['Ny']/2*set['Hh']
+    set['O_x'] = set['Nx']/2*set['h']
+    set['O_y'] = set['Ny']/2*set['h']
     
     '''Initial Setting'''
     set['t'] = 0
