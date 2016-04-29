@@ -128,7 +128,6 @@ def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
     
     if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
         print 'ADA P yang Negative'
-    print 'PPPP', P_0, ',',P_1,',',P_2,',',P_3,',',P_4
 #     RR = P_0 + P_1 + P_2 + P_3 + P_4
 #     
 #     P_0 = P_0/RR

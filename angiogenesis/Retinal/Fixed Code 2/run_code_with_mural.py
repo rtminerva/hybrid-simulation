@@ -70,7 +70,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         if set['k'] % 500 == 0: #and not set['k'] == 0 :    
             '''EC & MC'''           
             fig = plt.figure()
-            plt.title('%s%d' % ('EC & MC at k=',set['k']))
+            plt.title('%s%d' % ('EC & MC at t=',set['t']))
             plt.xlim(set['Hh'],coef['X']-set['Hh'])
             plt.ylim(set['Hh'],coef['Y']-set['Hh'])
             #plt.xlim(set['Hh']*100,coef['X']-set['Hh']*300)
@@ -97,7 +97,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             
             '''EC'''
             fig = plt.figure()
-            plt.title('%s%d' % ('EC at k=',set['k']))
+            plt.title('%s%d' % ('EC at t=',set['t']))
             plt.xlim(set['Hh'],coef['X']-set['Hh'])
             plt.ylim(set['Hh'],coef['Y']-set['Hh'])
             #plt.xlim(set['Hh']*100,coef['X']-set['Hh']*300)
@@ -118,7 +118,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             
             '''MC'''
             plt.figure()
-            plt.title('%s%d' % ('MC at k=',set['k']))
+            plt.title('%s%d' % ('MC at t=',set['t']))
             plt.xlim(set['Hh'],coef['X']-set['Hh'])
             plt.ylim(set['Hh'],coef['Y']-set['Hh'])
             x_p = []
@@ -142,7 +142,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             
             '''MC on EC''' 
             plt.figure()
-            plt.title('%s%d' % ('MC on EC at k=',set['k']))
+            plt.title('%s%d' % ('MC on EC at t=',set['y']))
             plt.xlim(set['Hh'],coef['X']-set['Hh'])
             plt.ylim(set['Hh'],coef['Y']-set['Hh'])
             #plt.xlim(set['Hh']*100,coef['X']-set['Hh']*100)
@@ -200,6 +200,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         '''  
         if set['k'] == 100 or set['k'] == 500 or set['k'] == 1000 or set['k'] == 1500 or set['k'] == 2000 or set['k'] == 2500 or set['k'] == 3000 or set['k'] == 3500 or set['k'] == 4000:
             fig = plt.figure()
+            plt.title('%s%d' % ('EC (without mural activity) at t=',set['t']))
             plt.xlim(0,coef['X'])
             plt.ylim(0,coef['Y'])
             ax = fig.add_subplot(111)
@@ -210,7 +211,11 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                     x_p.append(sol['matrix_tip'][i][j][0]*set['h'])
                     y_p.append(sol['matrix_tip'][i][j][1]*set['h'])
                 globals()['plo%s' % i] = ax.plot(x_p, y_p, 'b')
-            plt.draw()
+            sol['st'] +=1  
+            flag = 'figure_%s' % str(sol['st']) 
+            plt.savefig("%s.png" % flag)
+            plt.close()
+            #plt.draw()
             del x_p
             del y_p          
          
