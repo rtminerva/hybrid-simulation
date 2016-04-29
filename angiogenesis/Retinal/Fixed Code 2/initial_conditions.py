@@ -12,7 +12,7 @@ def initial_prof(coef, set, sol):
     for y in range(0,set['Ny']+1):
         for x in range(0,set['Nx']+1):
             r_f = numpy.sqrt((x*set['h']-set['O_x'])**2 + (y*set['h']-set['O_y'])**2)
-            if r_f >= set['R_min'] + numpy.sqrt(set['error']):
+            if r_f > set['R_min']:
                 sol['c'][x,y] = 0.5-0.45*numpy.exp(-(r_f**2)/0.45)
                 sol['f'][x,y] = 0.5
                 #f[x,y] = 0.5-0.45*numpy.exp(-(set['R_max']-r_f)**2/0.45) 
@@ -45,12 +45,12 @@ def initial_prof(coef, set, sol):
     y1 = set['Ny']/2
     x = 1
     while x < set['Nx']+1:
-        if (x*set['h']-set['O_x'])**2 + (y1*set['h']-set['O_y'])**2 < set['R_min']**2 + set['error'] and (x*set['h']-set['O_x'])**2 + (y1*set['h']-set['O_y'])**2 > set['R_min']**2:
-                sol['matrix_tip'].append([(x,y1)])
-                sol['n'][x,y1] = 1
-                sol['list_tip_movement'].append('start') #movement tip
-                sol['life_time_tip'].append(0) #lifetime
-                u = 10
+        if (x*set['h']-set['O_x'])**2 + (y1*set['h']-set['O_y'])**2 < set['R_min']**2 + 0.01 and (x*set['h']-set['O_x'])**2 + (y1*set['h']-set['O_y'])**2 > set['R_min']**2:
+            sol['matrix_tip'].append([(x,y1)])
+            sol['n'][x,y1] = 1
+            sol['list_tip_movement'].append('start') #movement tip
+            sol['life_time_tip'].append(0) #lifetime
+            u = 10
         else:
             u = 2           
         x += u
@@ -59,12 +59,12 @@ def initial_prof(coef, set, sol):
     y1 = set['Nx']/2
     x = 1
     while x < set['Nx']+1:
-        if (x*set['h']-set['O_x'])**2 + (y1*set['h']-set['O_y'])**2 < set['R_min']**2 + set['error'] and (x*set['h']-set['O_x'])**2 + (y1*set['h']-set['O_y'])**2 > set['R_min']**2:
-                sol['matrix_tip'].append([(y1,x)])
-                sol['n'][y1,x] = 1
-                sol['list_tip_movement'].append('start') #movement tip
-                sol['life_time_tip'].append(0) #lifetime
-                u = 10
+        if (x*set['h']-set['O_x'])**2 + (y1*set['h']-set['O_y'])**2 < set['R_min']**2 + 0.01 and (x*set['h']-set['O_x'])**2 + (y1*set['h']-set['O_y'])**2 > set['R_min']**2:
+            sol['matrix_tip'].append([(y1,x)])
+            sol['n'][y1,x] = 1
+            sol['list_tip_movement'].append('start') #movement tip
+            sol['life_time_tip'].append(0) #lifetime
+            u = 10
         else:
             u = 2           
         x += u
@@ -73,12 +73,12 @@ def initial_prof(coef, set, sol):
     y1 = sol['matrix_tip'][2][0][0] + (sol['matrix_tip'][1][0][0]- sol['matrix_tip'][2][0][0])/2
     x = 1
     while x < set['Nx']+1:
-        if (x*set['h']-set['O_x'])**2 + (y1*set['h']-set['O_y'])**2 < set['R_min']**2 + set['error'] and (x*set['h']-set['O_x'])**2 + (y1*set['h']-set['O_y'])**2 > set['R_min']**2:
-                sol['matrix_tip'].append([(y1,x)])
-                sol['n'][y1,x] = 1
-                sol['list_tip_movement'].append('start') #movement tip
-                sol['life_time_tip'].append(0) #lifetime
-                u = 10
+        if (x*set['h']-set['O_x'])**2 + (y1*set['h']-set['O_y'])**2 < set['R_min']**2 + 0.01 and (x*set['h']-set['O_x'])**2 + (y1*set['h']-set['O_y'])**2 > set['R_min']**2:
+            sol['matrix_tip'].append([(y1,x)])
+            sol['n'][y1,x] = 1
+            sol['list_tip_movement'].append('start') #movement tip
+            sol['life_time_tip'].append(0) #lifetime
+            u = 10
         else:
             u = 2           
         x += u
@@ -87,12 +87,12 @@ def initial_prof(coef, set, sol):
     y1 = sol['matrix_tip'][0][0][0] + (sol['matrix_tip'][2][0][0]-sol['matrix_tip'][0][0][0])/2
     x = 1
     while x < set['Nx']+1:
-        if (x*set['h']-set['O_x'])**2 + (y1*set['h']-set['O_y'])**2 < set['R_min']**2 + set['error'] and (x*set['h']-set['O_x'])**2 + (y1*set['h']-set['O_y'])**2 > set['R_min']**2:
-                sol['matrix_tip'].append([(y1,x)])
-                sol['n'][y1,x] = 1
-                sol['list_tip_movement'].append('start') #movement tip
-                sol['life_time_tip'].append(0) #lifetime
-                u = 10
+        if (x*set['h']-set['O_x'])**2 + (y1*set['h']-set['O_y'])**2 < set['R_min']**2 + 0.01 and (x*set['h']-set['O_x'])**2 + (y1*set['h']-set['O_y'])**2 > set['R_min']**2:
+            sol['matrix_tip'].append([(y1,x)])
+            sol['n'][y1,x] = 1
+            sol['list_tip_movement'].append('start') #movement tip
+            sol['life_time_tip'].append(0) #lifetime
+            u = 10
         else:
             u = 2           
         x += u

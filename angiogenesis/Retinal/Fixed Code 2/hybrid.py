@@ -39,14 +39,14 @@ def hybrid_tech_c(coef, set, sol):
                 tipp = 'stay'
             elif no_back == 'right':
                 tipp = 'left'
-                xpos_new = sol['matrix_tip'][nom][-1][0] - 2
+                xpos_new = sol['matrix_tip'][nom][-1][0] - 1
                 ypos_new = sol['matrix_tip'][nom][-1][1]                    
                 sol['matrix_tip'][nom].append((xpos_new,ypos_new))
                 sol['n'][xpos_new,ypos_new] = 1
                 sol['list_tip_movement'][nom] = tipp
             elif no_back == 'left':
                 tipp = 'right'
-                xpos_new = sol['matrix_tip'][nom][-1][0] + 2
+                xpos_new = sol['matrix_tip'][nom][-1][0] + 1
                 ypos_new = sol['matrix_tip'][nom][-1][1]
                 sol['matrix_tip'][nom].append((xpos_new,ypos_new)) 
                 sol['n'][xpos_new,ypos_new] = 1
@@ -54,14 +54,14 @@ def hybrid_tech_c(coef, set, sol):
             elif no_back == 'up':
                 tipp = 'down'
                 xpos_new = sol['matrix_tip'][nom][-1][0]
-                ypos_new = sol['matrix_tip'][nom][-1][1] - 2
+                ypos_new = sol['matrix_tip'][nom][-1][1] - 1
                 sol['matrix_tip'][nom].append((xpos_new,ypos_new)) 
                 sol['n'][xpos_new,ypos_new] = 1
                 sol['list_tip_movement'][nom] = tipp
             else:
                 tipp = 'up'
                 xpos_new = sol['matrix_tip'][nom][-1][0]
-                ypos_new = sol['matrix_tip'][nom][-1][1] + 2
+                ypos_new = sol['matrix_tip'][nom][-1][1] + 1
                 sol['matrix_tip'][nom].append((xpos_new,ypos_new))
                 sol['n'][xpos_new,ypos_new] = 1
                 sol['list_tip_movement'][nom] = tipp
@@ -85,16 +85,16 @@ def hybrid_tech_c(coef, set, sol):
                 if sol['life_time_tip'][nom] >= coef['T_branch']: #being able to branch by life time               
                     #probabilty of branching
 #                    print 'NILAI C', c[xb+1,yb+1]
-                    if sol['c'][xb+1,yb+1] >= 0 and sol['c'][xb+1,yb+1] < 0.1:
+                    if sol['c'][xb,yb] >= 0 and sol['c'][xb,yb] < 0.1:
                         prob_weight = 7 # set the number to select here.
                         list_prob = random.sample(line, prob_weight) #list of selected numbers from line
-                    elif sol['c'][xb+1,yb+1] >= 0.05 and sol['c'][xb+1,yb+1] < 0.2:
+                    elif sol['c'][xb,yb] >= 0.05 and sol['c'][xb,yb] < 0.2:
                         prob_weight = 8 # set the number to select here.
                         list_prob = random.sample(line, prob_weight)   
-                    elif sol['c'][xb+1,yb+1] >= 0.2 and sol['c'][xb+1,yb+1] < 0.3:
+                    elif sol['c'][xb,yb] >= 0.2 and sol['c'][xb,yb] < 0.3:
                         prob_weight = 9 # set the number to select here.
                         list_prob = random.sample(line, prob_weight)  
-                    elif sol['c'][xb+1,yb+1] >= 0.3: #do branching
+                    elif sol['c'][xb,yb] >= 0.3: #do branching
                         list_prob = line
                     #apakah branching? meaning masuk dalam probability of branching?
                     tes = randint(1,10) #select integer number randomly between 1 and 10
@@ -135,14 +135,14 @@ def hybrid_tech_c(coef, set, sol):
                             tipp = 'stay'
                         elif no_back == 'right':
                             tipp = 'left'
-                            xpos_new = sol['matrix_tip'][-1][-1][0] - 2
+                            xpos_new = sol['matrix_tip'][-1][-1][0] - 1
                             ypos_new = sol['matrix_tip'][-1][-1][1]
                             sol['matrix_tip'][nom].append((xpos_new,ypos_new))
                             sol['n'][xpos_new,ypos_new] = 1
                             sol['list_tip_movement'][-1] = tipp
                         elif no_back == 'left':
                             tipp = 'right'
-                            xpos_new = sol['matrix_tip'][-1][-1][0] + 2
+                            xpos_new = sol['matrix_tip'][-1][-1][0] + 1
                             ypos_new = sol['matrix_tip'][-1][-1][1]
                             sol['matrix_tip'][nom].append((xpos_new,ypos_new)) 
                             sol['n'][xpos_new,ypos_new] = 1
@@ -150,14 +150,14 @@ def hybrid_tech_c(coef, set, sol):
                         elif no_back == 'up':
                             tipp = 'down'
                             xpos_new = sol['matrix_tip'][-1][-1][0]
-                            ypos_new = sol['matrix_tip'][-1][-1][1] - 2
+                            ypos_new = sol['matrix_tip'][-1][-1][1] - 1
                             sol['matrix_tip'][nom].append((xpos_new,ypos_new)) 
                             sol['n'][xpos_new,ypos_new] = 1
                             sol['list_tip_movement'][-1] = tipp
                         else:
                             tipp = 'up'
                             xpos_new = sol['matrix_tip'][-1][-1][0]
-                            ypos_new = sol['matrix_tip'][-1][-1][1] + 2
+                            ypos_new = sol['matrix_tip'][-1][-1][1] + 1
                             sol['matrix_tip'][nom].append((xpos_new,ypos_new))
                             sol['n'][xpos_new,ypos_new] = 1
                             sol['list_tip_movement'][-1] = tipp

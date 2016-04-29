@@ -48,16 +48,17 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
         print 'NILAI C, F, P MAX', sol['c'].max(), ',', sol['f'].max(), ',', sol['p'].max()
         print 'NILAI C, F, P MIN', sol['c'].min(), ',', sol['f'].min(), ',', sol['p'].min()
+        print '# of MC', len(sol['index_mn'])
+        print '# of EC', sol['number_ec']
+        gg = len(sol['index_mn'])*100/(sol['number_ec'])
+        print gg, '%'
     else:
         print 'NILAI C, F MAX', sol['c'].max(), ',', sol['f'].max()
         print 'NILAI C, F MIN', sol['c'].min(), ',', sol['f'].min()
     print 'process time of Hybrid:', start2-start1
     print 'total time of processing:', time.clock()
     
-    print '# of MC', len(sol['index_mn'])
-    print '# of EC', sol['number_ec']
-    gg = len(sol['index_mn'])*100/(sol['number_ec'])
-    print gg, '%'
+    
     
     print '***************************************************'
     print
@@ -197,17 +198,17 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             del x_p
             del y_p 
         '''  
-        if set['k'] == 500 or set['k'] == 1000 or set['k'] == 1500 or set['k'] == 2000 or set['k'] == 2500 or set['k'] == 3000 or set['k'] == 3500 or set['k'] == 4000:
+        if set['k'] == 100 or set['k'] == 500 or set['k'] == 1000 or set['k'] == 1500 or set['k'] == 2000 or set['k'] == 2500 or set['k'] == 3000 or set['k'] == 3500 or set['k'] == 4000:
             fig = plt.figure()
-            plt.xlim(set['Hh'],coef['X']-set['Hh'])
-            plt.ylim(set['Hh'],coef['Y']-set['Hh'])
+            plt.xlim(0,coef['X'])
+            plt.ylim(0,coef['Y'])
             ax = fig.add_subplot(111)
             for i in range(0,len(sol['matrix_tip'])):
                 x_p = []
                 y_p = []
                 for j in range(0,len(sol['matrix_tip'][i])):
-                    x_p.append(sol['matrix_tip'][i][j][0]*set['Hh'])
-                    y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
+                    x_p.append(sol['matrix_tip'][i][j][0]*set['h'])
+                    y_p.append(sol['matrix_tip'][i][j][1]*set['h'])
                 globals()['plo%s' % i] = ax.plot(x_p, y_p, 'b')
             plt.draw()
             del x_p

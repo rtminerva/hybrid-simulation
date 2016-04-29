@@ -38,7 +38,7 @@ def check_anastomosis(sol):
 def boolean_1_iter(coef, set, sol):                       
     if set['k'] == 0:
         '''Initial Profile'''
-        sol = initial_prof(coef, set, sol)  #done
+        sol = initial_prof(coef, set, sol)  #DONE
     else:
         '''1. Anastomosis & Tip Cell'''
         start1 = timer()

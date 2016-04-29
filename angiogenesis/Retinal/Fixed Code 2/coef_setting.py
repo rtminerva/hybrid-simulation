@@ -43,7 +43,7 @@ def declare_coef():
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah
-    set['T'] = 0.004
+    set['T'] = 4
     coef['X'] = 4.4
     coef['Y'] = 4.4
     set['Nt'] = 100000
@@ -61,7 +61,7 @@ def declare_coef():
     set['t'] = 0
     set['k'] = 0
     set['dt'] = 0.002
-    set['error'] = 0.01
+    set['error'] = 0.005
        
     '''To store solutions'''
     ##sol dictionaries dapat berubah

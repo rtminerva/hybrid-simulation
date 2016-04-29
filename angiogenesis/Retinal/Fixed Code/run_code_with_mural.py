@@ -48,16 +48,17 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
         print 'NILAI C, F, P MAX', sol['c'].max(), ',', sol['f'].max(), ',', sol['p'].max()
         print 'NILAI C, F, P MIN', sol['c'].min(), ',', sol['f'].min(), ',', sol['p'].min()
+        print '# of MC', len(sol['index_mn'])
+        print '# of EC', sol['number_ec']
+        gg = len(sol['index_mn'])*100/(sol['number_ec'])
+        print gg, '%'
     else:
         print 'NILAI C, F MAX', sol['c'].max(), ',', sol['f'].max()
         print 'NILAI C, F MIN', sol['c'].min(), ',', sol['f'].min()
     print 'process time of Hybrid:', start2-start1
     print 'total time of processing:', time.clock()
     
-    print '# of MC', len(sol['index_mn'])
-    print '# of EC', sol['number_ec']
-    gg = len(sol['index_mn'])*100/(sol['number_ec'])
-    print gg, '%'
+    
     
     print '***************************************************'
     print

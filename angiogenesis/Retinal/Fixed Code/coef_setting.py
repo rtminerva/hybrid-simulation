@@ -34,8 +34,8 @@ def declare_coef():
     coef['Dl'] = 0.2 #0.5
     
     ##Chemotaxis inhibition & Haptotaxis Activation
-    coef['Kappa'] = 0.4#0.4
-    coef['Mic'] = 0.4#0.4
+    coef['Kappa'] = 0#0.4#0.4
+    coef['Mic'] = 0#0.4#0.4
 
     '''Branching & Mitosis'''
     coef['T_branch'] = 0.25#0.078
