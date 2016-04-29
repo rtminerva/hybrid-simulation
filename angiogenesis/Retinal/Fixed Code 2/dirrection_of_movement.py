@@ -6,15 +6,17 @@ def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
     la = sol['tp']/(set['h']**2)
     
     if n_dir == True:
-        vvx = 0.5/set['h']*(sol['c'][xb+1,yb+1]-sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb-1]-sol['c'][xb-1,yb-1])
-        vvy = 0.5/set['h']*(sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb+1]-sol['c'][xb+1,yb-1]-sol['c'][xb-1,yb-1])
+        #P(i,j)
+        vvx = 
+        vvy = 
         vvx_p = max(0,vvx)
         vvx_n = max(0,-vvx)
         vvy_p = max(0,vvy)
         vvy_n = max(0,-vvy) 
-              
-        wwx = 0.5/set['h']*(sol['f'][xb+1,yb+1]-sol['f'][xb-1,yb+1]+sol['f'][xb+1,yb-1]-sol['f'][xb-1,yb-1])
-        wwy = 0.5/set['h']*(sol['f'][xb+1,yb+1]+sol['f'][xb-1,yb+1]-sol['f'][xb+1,yb-1]-sol['f'][xb-1,yb-1])
+        
+        #P(i+1)      
+        wwx = 
+        wwy = 
         wwx_p = max(0,wwx)
         wwx_n = max(0,-wwx)
         wwy_p = max(0,wwy)
