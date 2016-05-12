@@ -198,7 +198,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             del x_p
             del y_p 
         '''  
-        if set['k'] == 100 or set['k'] == 500 or set['k'] == 1000 or set['k'] == 1500 or set['k'] == 2000 or set['k'] == 2500 or set['k'] == 3000 or set['k'] == 3500 or set['k'] == 4000:
+        if set['k'] % 500 == 0:
             fig = plt.figure()
             plt.title('%s%d' % ('EC (without mural activity) at t=',set['t']))
             plt.xlim(0,coef['X'])

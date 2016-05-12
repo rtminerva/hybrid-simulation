@@ -34,8 +34,8 @@ def declare_coef():
     coef['Dl'] = 0.2 #0.5
     
     ##Chemotaxis inhibition & Haptotaxis Activation
-    coef['Kappa'] = 0#0.4#0.4
-    coef['Mic'] = 0#0.4#0.4
+    coef['Kappa'] = 0.4#0.4
+    coef['Mic'] = 0.4#0.4
 
     '''Branching & Mitosis'''
     coef['T_branch'] = 0.25#0.078
@@ -62,7 +62,7 @@ def declare_coef():
     set['t'] = 0
     set['k'] = 0
     set['dt'] = 0.002
-    set['error'] = 0.01
+    set['error'] = 0.02
        
     '''To store solutions'''
     ##sol dictionaries dapat berubah
@@ -83,5 +83,4 @@ def declare_coef():
     sol['tip_cell'] = 0
     sol['number_ec'] = 0
     sol['MC_per_EC'] = OrderedDict()
-    #g = [0, 0, 0, 0, 0, 0, 0, 0, dt, 0, 0, 0]
     return coef, set, sol

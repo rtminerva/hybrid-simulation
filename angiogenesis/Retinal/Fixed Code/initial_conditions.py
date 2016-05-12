@@ -12,77 +12,154 @@ def initial_prof(coef, set, sol):
     for y in range(0,set['Ny']+1,2):
         for x in range(0,set['Nx']+1,2):
             r_f = numpy.sqrt((x*set['Hh']-set['O_x'])**2 + (y*set['Hh']-set['O_y'])**2)
-            if r_f >= set['R_min'] + numpy.sqrt(set['error']):
+            if r_f >= set['R_min']:# + numpy.sqrt(set['error']):
                 sol['c'][x,y] = 0.5-0.45*numpy.exp(-(r_f**2)/0.45)
                 sol['f'][x,y] = 0.5
                 #f[x,y] = 0.5-0.45*numpy.exp(-(set['R_max']-r_f)**2/0.45) 
     
-    ''''Initial Tips'''
+    sol['n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['matrix_tip'] = []
     sol['list_tip_movement'] = []
     sol['life_time_tip'] = []
     sol['sp_stop'] = []
     sol['tip_cell'] = []
     sol['number_ec'] = 8
-                    
-    sol['n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     
+    ''''Initial Tips at cente of small circle'''                
+    
+    '''
+                TIP 3
+    
+    
+        TIP 7           TIP 5
+    
+    
+    TIP 0                    TIP 1
+    
+    
+        TIP 6           TIP 4
+    
+    
+                TIP 2
+    '''
+    
+    '''TIP 0 & 1'''
     y1 = set['Ny']/2 + 1
-    x = 1
-    while x < set['Nx']+1:
-        if (x*set['Hh']-set['O_x'])**2 + (y1*set['Hh']-set['O_y'])**2 < set['R_min']**2 + set['error'] and (x*set['Hh']-set['O_x'])**2 + (y1*set['Hh']-set['O_y'])**2 > set['R_min']**2:
-                sol['matrix_tip'].append([(x,y1)])
-                sol['n'][x,y1] = 1
-                sol['list_tip_movement'].append('start') #movement tip
-                sol['life_time_tip'].append(0) #lifetime
-                u = 10
+    x = set['Nx']/2 + 1
+    '''Tip 0'''
+    while x > 1:
+        #if (x*set['Hh']-set['O_x'])**2 + (y1*set['Hh']-set['O_y'])**2 < set['R_min']**2 + set['error'] and (x*set['Hh']-set['O_x'])**2 + (y1*set['Hh']-set['O_y'])**2 > set['R_min']**2:
+        r_f = numpy.sqrt((x*set['Hh']-set['O_x'])**2 + (y1*set['Hh']-set['O_y'])**2)
+        if r_f >= set['R_min'] and r_f < set['R_min'] + set['error']:
+            sol['matrix_tip'].append([(x,y1)])
+            sol['n'][x,y1] = 1
+            sol['list_tip_movement'].append('start') #movement tip
+            sol['life_time_tip'].append(0) #lifetime
+            x = 0
         else:
-            u = 2           
-        x += u
-        
-    y1 = set['Nx']/2 + 1
-    x = 1
+            x -=2
+    x = set['Nx']/2 + 1
+    '''Tip 1'''
     while x < set['Nx']+1:
-        if (x*set['Hh']-set['O_x'])**2 + (y1*set['Hh']-set['O_y'])**2 < set['R_min']**2 + set['error'] and (x*set['Hh']-set['O_x'])**2 + (y1*set['Hh']-set['O_y'])**2 > set['R_min']**2:
-                sol['matrix_tip'].append([(y1,x)])
-                sol['n'][y1,x] = 1
-                sol['list_tip_movement'].append('start') #movement tip
-                sol['life_time_tip'].append(0) #lifetime
-                u = 10
+        #if (x*set['Hh']-set['O_x'])**2 + (y1*set['Hh']-set['O_y'])**2 < set['R_min']**2 + set['error'] and (x*set['Hh']-set['O_x'])**2 + (y1*set['Hh']-set['O_y'])**2 > set['R_min']**2:
+        r_f = numpy.sqrt((x*set['Hh']-set['O_x'])**2 + (y1*set['Hh']-set['O_y'])**2)
+        if r_f >= set['R_min'] and r_f < set['R_min'] + set['error']:
+            sol['matrix_tip'].append([(x,y1)])
+            sol['n'][x,y1] = 1
+            sol['list_tip_movement'].append('start') #movement tip
+            sol['life_time_tip'].append(0) #lifetime
+            x = set['Nx']+1
         else:
-            u = 2           
-        x += u
-             
-    y1 = sol['matrix_tip'][2][0][0] + (sol['matrix_tip'][1][0][0]- sol['matrix_tip'][2][0][0])/2
-    if y1 % 2 == 0:
-        y1 += 1
-    x = 1
-    while x < set['Nx']+1:
-        if (x*set['Hh']-set['O_x'])**2 + (y1*set['Hh']-set['O_y'])**2 < set['R_min']**2 + set['error'] and (x*set['Hh']-set['O_x'])**2 + (y1*set['Hh']-set['O_y'])**2 > set['R_min']**2:
-                sol['matrix_tip'].append([(y1,x)])
-                sol['n'][y1,x] = 1
-                sol['list_tip_movement'].append('start') #movement tip
-                sol['life_time_tip'].append(0) #lifetime
-                u = 10
+            x +=2           
+     
+    '''TIP 2 & 3'''    
+    x1 = set['Nx']/2 + 1
+    y = set['Ny']/2 + 1
+    '''TIP 2'''
+    while y > 1:
+        #if (x*set['Hh']-set['O_x'])**2 + (y1*set['Hh']-set['O_y'])**2 < set['R_min']**2 + set['error'] and (x*set['Hh']-set['O_x'])**2 + (y1*set['Hh']-set['O_y'])**2 > set['R_min']**2:
+        r_f = numpy.sqrt((x1*set['Hh']-set['O_x'])**2 + (y*set['Hh']-set['O_y'])**2)
+        if r_f >= set['R_min'] and r_f < set['R_min'] + set['error']:
+            sol['matrix_tip'].append([(x1,y)])
+            sol['n'][x1,y] = 1
+            sol['list_tip_movement'].append('start') #movement tip
+            sol['life_time_tip'].append(0) #lifetime
+            y = 0
         else:
-            u = 2           
-        x += u
-                
-    y1 = sol['matrix_tip'][0][0][0] + (sol['matrix_tip'][2][0][0]-sol['matrix_tip'][0][0][0])/2
-    if y1 % 2 == 0:
-        y1 += 1
-    x = 1
-    while x < set['Nx']+1:
-        if (x*set['Hh']-set['O_x'])**2 + (y1*set['Hh']-set['O_y'])**2 < set['R_min']**2 + set['error'] and (x*set['Hh']-set['O_x'])**2 + (y1*set['Hh']-set['O_y'])**2 > set['R_min']**2:
-                sol['matrix_tip'].append([(y1,x)])
-                sol['n'][y1,x] = 1
-                sol['list_tip_movement'].append('start') #movement tip
-                sol['life_time_tip'].append(0) #lifetime
-                u = 10
+            y -=2          
+    y = set['Ny']/2 + 1
+    '''TIP 3'''
+    while y < set['Ny']+1:
+        r_f = numpy.sqrt((x1*set['Hh']-set['O_x'])**2 + (y*set['Hh']-set['O_y'])**2)
+        if r_f >= set['R_min'] and r_f < set['R_min'] + set['error']:
+            sol['matrix_tip'].append([(x1,y)])
+            sol['n'][x1,y] = 1
+            sol['list_tip_movement'].append('start') #movement tip
+            sol['life_time_tip'].append(0) #lifetime
+            y = set['Ny']+1
         else:
-            u = 2           
-        x += u
+            y +=2          
+    
+    '''TIP 4 & 5'''        
+    x1 = sol['matrix_tip'][2][0][0] + (sol['matrix_tip'][1][0][0]- sol['matrix_tip'][2][0][0])/2
+    if x1 % 2 == 0:
+        x1 += 1
+    y = set['Ny']/2 + 1
+    '''TIP 4'''
+    while y > 1:
+        r_f = numpy.sqrt((x1*set['Hh']-set['O_x'])**2 + (y*set['Hh']-set['O_y'])**2)
+        if r_f >= set['R_min'] and r_f < set['R_min'] + set['error']:
+            sol['matrix_tip'].append([(x1,y)])
+            sol['n'][x1,y] = 1
+            sol['list_tip_movement'].append('start') #movement tip
+            sol['life_time_tip'].append(0) #lifetime
+            y = 0
+        else:
+            y -=2       
+    y = set['Ny']/2 + 1
+    '''TIP 5'''
+    while y < set['Ny']+1:
+        r_f = numpy.sqrt((x1*set['Hh']-set['O_x'])**2 + (y*set['Hh']-set['O_y'])**2)
+        if r_f >= set['R_min'] and r_f < set['R_min'] + set['error']:
+            sol['matrix_tip'].append([(x1,y)])
+            sol['n'][x1,y] = 1
+            sol['list_tip_movement'].append('start') #movement tip
+            sol['life_time_tip'].append(0) #lifetime
+            y = set['Ny']+1
+        else:
+            y +=2          
+    
+    '''TIP 6 & 7'''           
+    x1 = sol['matrix_tip'][0][0][0] + (sol['matrix_tip'][2][0][0]-sol['matrix_tip'][0][0][0])/2
+    if x1 % 2 == 0:
+        x1 += 1
+    y = set['Ny']/2 + 1
+    '''TIP 6'''
+    while y > 1:
+        r_f = numpy.sqrt((x1*set['Hh']-set['O_x'])**2 + (y*set['Hh']-set['O_y'])**2)
+        if r_f >= set['R_min'] and r_f < set['R_min'] + set['error']:
+            sol['matrix_tip'].append([(x1,y)])
+            sol['n'][x1,y] = 1
+            sol['list_tip_movement'].append('start') #movement tip
+            sol['life_time_tip'].append(0) #lifetime
+            y = 0
+        else:
+            y -=2       
+    
+    y = set['Ny']/2 + 1
+    '''TIP 7'''
+    while y < set['Ny']+1:
+        r_f = numpy.sqrt((x1*set['Hh']-set['O_x'])**2 + (y*set['Hh']-set['O_y'])**2)
+        if r_f >= set['R_min'] and r_f < set['R_min'] + set['error']:
+            sol['matrix_tip'].append([(x1,y)])
+            sol['n'][x1,y] = 1
+            sol['list_tip_movement'].append('start') #movement tip
+            sol['life_time_tip'].append(0) #lifetime
+            y = set['Ny']+1
+        else:
+            y +=2 
 
+    '''Identifying Tip Cell'''
     for e,ti in enumerate(sol['matrix_tip']):
         sol['tip_cell'].append(sol['matrix_tip'][e][-1])
     

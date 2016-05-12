@@ -5,8 +5,8 @@ def hybrid_tech_m(coef, set, sol):
     mo = sol['m'][:]
     nom = 0
     sol['index_mn'] = []
-    for yb in range(1,set['Ny'],2):
-        for xb in range(1,set['Nx'],2):
+    for yb in range(1,set['Ny']):
+        for xb in range(1,set['Nx']):
             #print mo[xb,yb]
             if mo[xb,yb] == 1: #and not [xb,yb] in sol['sol['index_mn']']:
                 dirr = movement_dir(coef, set, sol, xb, yb, nom, n_dir = False)
@@ -37,9 +37,9 @@ def hybrid_tech_m(coef, set, sol):
                     if trial <= dirr_m[0]: #stay
                         keep = False
                     elif trial <= dirr_m[1]: #left
-                        if (xb - 2, yb) not in sol['tip_cell']:
+                        if (xb - 1, yb) not in sol['tip_cell']:
                             keep = False
-                            sol['m'][xb - 2, yb] = 1
+                            sol['m'][xb - 1, yb] = 1
                             sol['m'][xb,yb] = 0
                         else:
                             trial = 100

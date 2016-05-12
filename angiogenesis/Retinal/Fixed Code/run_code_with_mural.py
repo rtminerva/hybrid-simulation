@@ -2,8 +2,6 @@ import code_with_mural_dict as disc
 from coef_setting import declare_coef
 import numpy
 
-
-
 from timeit import default_timer as timer 
 import time
 
@@ -28,6 +26,7 @@ Untuk Plot'''
 
 #declare coefficients & initial settings
 coef, set, sol = declare_coef()
+
 #to plot interactively
 plt.ion()
 
@@ -39,10 +38,9 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     
     if sol['stop_iter'] >=100000:
         set['k'] = sol['stop_iter']
-        
-    print 'at Time', set['t']
     
-    #to print as control
+    '''PRINTING RESULT AS CONTROL'''  
+    print 'at Time', set['t']
     print 'Total Tips:', len(sol['matrix_tip'])
     print 'Total Stop Tips:', len(sol['sp_stop'])
     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
@@ -57,13 +55,11 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'NILAI C, F MIN', sol['c'].min(), ',', sol['f'].min()
     print 'process time of Hybrid:', start2-start1
     print 'total time of processing:', time.clock()
-    
-    
-    
     print '***************************************************'
     print
 #     for i, tip in enumerate(sol['matrix_tip']):
-#         print 'TIP', i,':',tip    
+#         print 'TIP', i,':',tip
+    '''SAVING PICTURES'''    
     if not coef['Kappa'] == 0 or not coef['Mic'] == 0:   
         if set['k'] % 100 == 0:
             sol['MC_per_EC'][set['k']] = gg        
@@ -182,6 +178,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
              
             del x_p
             del y_p
+        print 'Percentage of MC on EC:', sol['MC_per_EC']
     else:
         '''
         if  == 1:
@@ -243,14 +240,6 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     set['t'] += set['dt']
     set['k'] += 1
      
-print 'Percentage of MC on EC:', sol['MC_per_EC']
-#fg =[]
-#for 
-#plt.plot([1,2,3,4], [1,4,9,16], 'ro')
-#plt.axis([0, 6, 0, 20])
-
-
-
 print '*************DONE*****************'
 
 '''Plot Continuous
