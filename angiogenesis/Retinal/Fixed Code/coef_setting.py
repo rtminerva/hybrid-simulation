@@ -34,16 +34,16 @@ def declare_coef():
     coef['Dl'] = 0.2 #0.5
     
     ##Chemotaxis inhibition & Haptotaxis Activation
-    coef['Kappa'] = 0.4#0.4
-    coef['Mic'] = 0.4#0.4
+    coef['Kappa'] = 0#0.4#0.4
+    coef['Mic'] = 0#0.4#0.4
 
     '''Branching & Mitosis'''
-    coef['T_branch'] = 0.25#0.078
+    coef['T_branch'] = 0.078#0.25#
     coef['T_mitosis'] = 0.709
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah
-    set['T'] = 0.002
+    set['T'] = 10.002
     coef['X'] = 4.4
     coef['Y'] = 4.4
     set['Nt'] = 100000

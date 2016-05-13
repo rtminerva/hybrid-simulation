@@ -48,7 +48,7 @@ def check_anastomosis(sol):
 def boolean_1_iter(coef, set, sol):                       
     if set['k'] == 0:
         '''Initial Profile'''
-        sol = initial_prof(coef, set, sol)  #done
+        sol = initial_prof(coef, set, sol)  
     else:
         '''1. Anastomosis & Tip Cell'''
         start1 = timer()
@@ -66,7 +66,7 @@ def boolean_1_iter(coef, set, sol):
                 sol = hybrid_tech_m(coef, set, sol)
                 start4 = timer()
         '''Solving c,f,T'''
-        sol['c'], sol['f'], sol['p'] = c_f_T(coef, set, sol)
+        sol = c_f_T(coef, set, sol)
         start5 = timer()            
         print 'Check Anastomosis Time', start2-start1
         print 'Hybrid for n time', start3-start2

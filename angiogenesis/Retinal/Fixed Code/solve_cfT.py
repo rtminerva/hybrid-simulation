@@ -1,4 +1,5 @@
 from random import randint, sample, uniform
+import numpy
 
 def c_f_T(coef, set, sol):
     #, set['h'], set['O_x'], set['O_y']):
@@ -10,7 +11,7 @@ def c_f_T(coef, set, sol):
     '''Solve c, f, p at sub lattice'''
     for y in range(0,set['Ny']+1,2):
         for x in range(0,set['Nx']+1,2):           
-            r_f = (x*set['Hh']-set['O_x'])**2 + (y*set['Hh']-set['O_y'])**2
+            r_f = numpy.sqrt((x*set['Hh']-set['O_x'])**2 + (y*set['Hh']-set['O_y'])**2)
             
             '''TIP CELL?'''
             if (x,y) in sol['tip_cell']:
@@ -19,15 +20,15 @@ def c_f_T(coef, set, sol):
                 n_tip = 0
             n_stacks = 1-n_tip                               
             
-            if r_f <= (set['R_min']**2 + set['error'] + set['Hh']):
+            if r_f <= (set['R_min'] + set['error']):
                 if x >= sol['matrix_tip'][2][0][0] and y >= sol['matrix_tip'][0][0][1]: #area 1
-                    if sol['n'][x+1,y+1] == 1 or sol['n'][x-1,y+1] == 1 or sol['n'][x+1,y-1] == 1:
+                    if sol['n'][x-1,y-1] == 1 or sol['n'][x-1,y+1] == 1 or sol['n'][x+1,y-1] == 1 or sol['n'][x+1,y+1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
                         
                     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-                        if sol['m'][x+1,y+1] == 1 or sol['m'][x-1,y+1] == 1 or sol['m'][x+1,y-1] == 1:
+                        if sol['m'][x-1,y-1] == 1 or sol['m'][x-1,y+1] == 1 or sol['m'][x+1,y-1] == 1 or sol['m'][x+1,y+1] == 1:
                             m_bool = 1
                         else:
                             m_bool = 0
@@ -43,13 +44,13 @@ def c_f_T(coef, set, sol):
                     
     
                 elif x < sol['matrix_tip'][2][0][0] and y > sol['matrix_tip'][0][0][1]: #area 2
-                    if sol['n'][x-1,y+1] == 1 or sol['n'][x+1,y+1] == 1 or sol['n'][x-1,y-1] == 1:
+                    if sol['n'][x-1,y-1] == 1 or sol['n'][x-1,y+1] == 1 or sol['n'][x+1,y-1] == 1 or sol['n'][x+1,y+1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
                         
                     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-                        if sol['m'][x-1,y+1] == 1 or sol['m'][x+1,y+1] == 1 or sol['m'][x-1,y-1] == 1:
+                        if sol['m'][x-1,y-1] == 1 or sol['m'][x-1,y+1] == 1 or sol['m'][x+1,y-1] == 1 or sol['m'][x+1,y+1] == 1:
                             m_bool = 1
                         else:
                             m_bool = 0
@@ -65,13 +66,13 @@ def c_f_T(coef, set, sol):
                     
                         
                 elif x <= sol['matrix_tip'][2][0][0] and y <= sol['matrix_tip'][0][0][1]: #area 3
-                    if sol['n'][x+1,y-1] == 1 or sol['n'][x-1,y+1] == 1 or sol['n'][x-1,y-1] == 1:
+                    if sol['n'][x-1,y-1] == 1 or sol['n'][x-1,y+1] == 1 or sol['n'][x+1,y-1] == 1 or sol['n'][x+1,y+1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
                         
                     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-                        if sol['m'][x+1,y-1] == 1 or sol['m'][x-1,y+1] == 1 or sol['m'][x-1,y-1] == 1:
+                        if sol['m'][x-1,y-1] == 1 or sol['m'][x-1,y+1] == 1 or sol['m'][x+1,y-1] == 1 or sol['m'][x+1,y+1] == 1:
                             m_bool = 1
                         else:
                             m_bool = 0
@@ -87,13 +88,13 @@ def c_f_T(coef, set, sol):
                     
                         
                 elif x > sol['matrix_tip'][2][0][0] and y < sol['matrix_tip'][0][0][1]: #area 4
-                    if sol['n'][x+1,y+1] == 1 or sol['n'][x-1,y-1] == 1 or sol['n'][x+1,y-1] == 1:
+                    if sol['n'][x-1,y-1] == 1 or sol['n'][x-1,y+1] == 1 or sol['n'][x+1,y-1] == 1 or sol['n'][x+1,y+1] == 1:
                         n_bool = 1
                     else:
                         n_bool = 0
                         
                     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-                        if sol['m'][x+1,y+1] == 1 or sol['m'][x-1,y-1] == 1 or sol['m'][x+1,y-1] == 1:
+                        if sol['m'][x-1,y-1] == 1 or sol['m'][x-1,y+1] == 1 or sol['m'][x+1,y-1] == 1 or sol['m'][x+1,y+1] == 1:
                             m_bool = 1
                         else:
                             m_bool = 0
@@ -261,4 +262,5 @@ def c_f_T(coef, set, sol):
                             
                     sol['c'][x,y] = c_o[x,y]*(1 - sol['tp']*coef['Nu']*n_bool*n_tip)+ coef['D_c']*sol['tp']/set['h']**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y+2]+c_o[x,y-2]-4*c_o[x,y])
                     sol['f'][x,y] = f_o[x,y] + sol['tp']*coef['Beta']*n_bool*n_tip - sol['tp']*coef['Gama']*f_o[x,y]*n_bool*n_tip
-    return sol['c'], sol['f'], sol['p']
+    
+    return sol

@@ -9,178 +9,170 @@ def hybrid_tech_c(coef, set, sol):
     
     for nom in range(0,n_sp): #dicek setiap tip
         if not nom in sol['sp_stop']: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
+            line_1 = range(1,10001)
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
             yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
             #print 'xb,yb', xb,',',yb
             dirr = movement_dir(coef, set, sol, xb, yb, nom, n_dir = True)
-    
-            dirr1 = [dirr[0],dirr[0]+dirr[1],dirr[0]+dirr[1]+dirr[2],dirr[0]+dirr[1]+dirr[2]+dirr[3],1]
-                     
-            no_back = sol['list_tip_movement'][nom]
             
-            k = 0
-            while no_back == sol['list_tip_movement'][nom]:
-                trial = random.uniform(0,1)
-                if trial <= dirr1[0]: #stay
-                    no_back = 'pro' #stay
-                elif trial <= dirr1[1]: #left
-                    no_back = 'right'
-                elif trial <= dirr1[2]: #right
-                    no_back = 'left'
-                elif trial <= dirr1[3]: #down
-                    no_back = 'up'
-                else: #>dirr1[3] #up
-                    no_back = 'down'
-                k += 1
-                if k >= 100:
-                    print 'Error code 1 here'
-            #print 'check 1'
-            if no_back == 'pro':
-                tipp = 'stay'
-            elif no_back == 'right':
-                tipp = 'left'
-                xpos_new = sol['matrix_tip'][nom][-1][0] - 2
-                ypos_new = sol['matrix_tip'][nom][-1][1]                    
-                sol['matrix_tip'][nom].append((xpos_new,ypos_new))
-                sol['n'][xpos_new,ypos_new] = 1
-                sol['list_tip_movement'][nom] = tipp
-            elif no_back == 'left':
-                tipp = 'right'
-                xpos_new = sol['matrix_tip'][nom][-1][0] + 2
-                ypos_new = sol['matrix_tip'][nom][-1][1]
-                sol['matrix_tip'][nom].append((xpos_new,ypos_new)) 
-                sol['n'][xpos_new,ypos_new] = 1
-                sol['list_tip_movement'][nom] = tipp
-            elif no_back == 'up':
-                tipp = 'down'
-                xpos_new = sol['matrix_tip'][nom][-1][0]
-                ypos_new = sol['matrix_tip'][nom][-1][1] - 2
-                sol['matrix_tip'][nom].append((xpos_new,ypos_new)) 
-                sol['n'][xpos_new,ypos_new] = 1
-                sol['list_tip_movement'][nom] = tipp
+            if dirr[1] == 0 and dirr[2] == 0 and dirr[3] == 0 and dirr[4] == 0:
+                sol['sp_stop'].append(nom)
             else:
-                tipp = 'up'
-                xpos_new = sol['matrix_tip'][nom][-1][0]
-                ypos_new = sol['matrix_tip'][nom][-1][1] + 2
-                sol['matrix_tip'][nom].append((xpos_new,ypos_new))
-                sol['n'][xpos_new,ypos_new] = 1
-                sol['list_tip_movement'][nom] = tipp
-            '''2.1 Branching Decision'''
-            if not tipp == 'stay':               
-                #Kalau di posisi n baru ada m, m nya dibuang
-                if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-                    if sol['m'][xpos_new,ypos_new] == 1:
-                        sol['m'][xpos_new,ypos_new] == 0
-                    #calculate number of EC
-                    sol['number_ec'] += 1
+                if dirr[1] == 0:
+                    list_prob_1 = []
+                else:
+                    list_prob_1 = random.sample(line_1, dirr[1])
+                    for i in list_prob_1:
+                        line_1.remove(i)
                 
-                if dirr[5] == 'stop' and tipp == 'left':
-                    sol['sp_stop'].append(nom)
-                if dirr[6] == 'stop' and tipp == 'right':
-                    sol['sp_stop'].append(nom)
-                if dirr[7] == 'stop' and tipp == 'down':
-                    sol['sp_stop'].append(nom)
-                if dirr[8] == 'stop' and tipp == 'up':
-                    sol['sp_stop'].append(nom)
-                if sol['life_time_tip'][nom] >= coef['T_branch']: #being able to branch by life time               
-                    #probabilty of branching
-#                    print 'NILAI C', c[xb+1,yb+1]
-                    if sol['c'][xb+1,yb+1] >= 0 and sol['c'][xb+1,yb+1] < 0.1:
-                        prob_weight = 7 # set the number to select here.
-                        list_prob = random.sample(line, prob_weight) #list of selected numbers from line
-                    elif sol['c'][xb+1,yb+1] >= 0.05 and sol['c'][xb+1,yb+1] < 0.2:
-                        prob_weight = 8 # set the number to select here.
-                        list_prob = random.sample(line, prob_weight)   
-                    elif sol['c'][xb+1,yb+1] >= 0.2 and sol['c'][xb+1,yb+1] < 0.3:
-                        prob_weight = 9 # set the number to select here.
-                        list_prob = random.sample(line, prob_weight)  
-                    elif sol['c'][xb+1,yb+1] >= 0.3: #do branching
-                        list_prob = line
-                    #apakah branching? meaning masuk dalam probability of branching?
-                    tes = randint(1,10) #select integer number randomly between 1 and 10
-                    #print 'check 3'
-                    if tes in list_prob:#do branching
-                        '''2.1 Branhcing'''
-                        sol['life_time_tip'][nom] = 0
-                        sol['matrix_tip'].append([(xb,yb)])
-                        sol['life_time_tip'].append(0)
-                        sol['list_tip_movement'].append('start')
-
-                        dom = tipp #other movement
-                        no_back = sol['list_tip_movement'][-1]
-             #           print 'check 2'
-                        k = 0
-                        while no_back == sol['list_tip_movement'][-1] or dom == tipp:
-                            trial = random.uniform(0,1)
-                            if trial <= dirr1[0]: #stay
-                                no_back = 'pro' #stay
-                                dom = 'pro'
-                            elif trial <= dirr1[1]: #left
-                                no_back = 'right'
-                                dom = 'left'
-                            elif trial <= dirr1[2]: #right
-                                no_back = 'left'
-                                dom = 'right'
-                            elif trial <= dirr1[3]: #down
-                                no_back = 'up'
-                                dom = 'down'
-                            else: #>dirr1[3] #up
-                                no_back = 'down'
-                                dom = 'up'
-                            k += 1
-                            if k >= 100:
-                                print 'Error code 2 here'
-                        #print 'check 3'
-                        if no_back == 'pro':
-                            tipp = 'stay'
-                        elif no_back == 'right':
-                            tipp = 'left'
-                            xpos_new = sol['matrix_tip'][-1][-1][0] - 2
-                            ypos_new = sol['matrix_tip'][-1][-1][1]
-                            sol['matrix_tip'][nom].append((xpos_new,ypos_new))
-                            sol['n'][xpos_new,ypos_new] = 1
-                            sol['list_tip_movement'][-1] = tipp
-                        elif no_back == 'left':
-                            tipp = 'right'
-                            xpos_new = sol['matrix_tip'][-1][-1][0] + 2
-                            ypos_new = sol['matrix_tip'][-1][-1][1]
-                            sol['matrix_tip'][nom].append((xpos_new,ypos_new)) 
-                            sol['n'][xpos_new,ypos_new] = 1
-                            sol['list_tip_movement'][-1] = tipp
-                        elif no_back == 'up':
-                            tipp = 'down'
-                            xpos_new = sol['matrix_tip'][-1][-1][0]
-                            ypos_new = sol['matrix_tip'][-1][-1][1] - 2
-                            sol['matrix_tip'][nom].append((xpos_new,ypos_new)) 
-                            sol['n'][xpos_new,ypos_new] = 1
-                            sol['list_tip_movement'][-1] = tipp
-                        else:
-                            tipp = 'up'
-                            xpos_new = sol['matrix_tip'][-1][-1][0]
-                            ypos_new = sol['matrix_tip'][-1][-1][1] + 2
-                            sol['matrix_tip'][nom].append((xpos_new,ypos_new))
-                            sol['n'][xpos_new,ypos_new] = 1
-                            sol['list_tip_movement'][-1] = tipp
+                if dirr[2] == 0:
+                    list_prob_2 = []
+                else:
+                    list_prob_2 = random.sample(line_1, dirr[2])
+                    for i in list_prob_2:
+                        line_1.remove(i)
+                
+                if dirr[3] == 0:
+                    list_prob_3 = []
+                else:   
+                    list_prob_3 = random.sample(line_1, dirr[3])
+                    for i in list_prob_3:
+                        line_1.remove(i)
+                
+                if dirr[4] == 0:
+                    list_prob_4 = []
+                else:
+                    list_prob_4 = random.sample(line_1, dirr[4])
+                    for i in list_prob_4:
+                        line_1.remove(i)
+                
+                list_prob_0 = line_1
+                
+                tes = randint(1,10000) #select integer number randomly between 1 and 100000
+                if tes in list_prob_0:
+                    tipp = 'stay'
+                elif tes in list_prob_1:
+                    tipp = 'left'
+                    xpos_new = sol['matrix_tip'][nom][-1][0] - 2
+                    ypos_new = sol['matrix_tip'][nom][-1][1]                    
+                    sol['matrix_tip'][nom].append((xpos_new,ypos_new))
+                    sol['n'][xpos_new,ypos_new] = 1
+                    sol['list_tip_movement'][nom] = tipp
+                    for i in list_prob_1:
+                        list_prob_0.append(i)
+                elif tes in list_prob_2:   
+                    tipp = 'right'
+                    xpos_new = sol['matrix_tip'][nom][-1][0] + 2
+                    ypos_new = sol['matrix_tip'][nom][-1][1]
+                    sol['matrix_tip'][nom].append((xpos_new,ypos_new)) 
+                    sol['n'][xpos_new,ypos_new] = 1
+                    sol['list_tip_movement'][nom] = tipp
+                    for i in list_prob_2:
+                        list_prob_0.append(i)
+                elif tes in list_prob_3: 
+                    tipp = 'down'
+                    xpos_new = sol['matrix_tip'][nom][-1][0]
+                    ypos_new = sol['matrix_tip'][nom][-1][1] - 2
+                    sol['matrix_tip'][nom].append((xpos_new,ypos_new)) 
+                    sol['n'][xpos_new,ypos_new] = 1
+                    sol['list_tip_movement'][nom] = tipp
+                    for i in list_prob_3:
+                        list_prob_0.append(i)
+                elif tes in list_prob_4: 
+                    tipp = 'up'
+                    xpos_new = sol['matrix_tip'][nom][-1][0]
+                    ypos_new = sol['matrix_tip'][nom][-1][1] + 2
+                    sol['matrix_tip'][nom].append((xpos_new,ypos_new))
+                    sol['n'][xpos_new,ypos_new] = 1
+                    sol['list_tip_movement'][nom] = tipp
+                    for i in list_prob_4:
+                        list_prob_0.append(i)
+                
+                '''Checking m space and calculating number of EC'''
+                if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
+                    if not tipp == 'stay':  
+                        #calculate number of EC
+                        sol['number_ec'] += 1
+                                     
                         #Kalau di posisi n baru ada m, m nya dibuang
-                   
-                        if not tipp == 'stay':
-                            if dirr[5] == 'stop' and tipp == 'left':
-                                sol['sp_stop'].append(len(sol['matrix_tip'])-1)
-                            if dirr[6] == 'stop' and tipp == 'right':
-                                sol['sp_stop'].append(len(sol['matrix_tip'])-1)
-                            if dirr[7] == 'stop' and tipp == 'down':
-                                sol['sp_stop'].append(len(sol['matrix_tip'])-1)
-                            if dirr[8] == 'stop' and tipp == 'up':
-                                sol['sp_stop'].append(len(sol['matrix_tip'])-1)
-                            if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-                                if sol['m'][xpos_new,ypos_new] == 1:
-                                    sol['m'][xpos_new,ypos_new] == 0
-                            #calculate number of EC
-                            sol['number_ec'] += 1
+                        if sol['m'][xpos_new,ypos_new] == 1:
+                            sol['m'][xpos_new,ypos_new] == 0
+                        
+                '''2.1 Branching Decision'''
+                if tipp == 'stay':
+                    sol['life_time_tip'][nom] += sol['tp']
+                else:
+                    dirr_14 = dirr[:]
+                    if dirr_14.count(0) >= 3:
+                        sol['life_time_tip'][nom] += sol['tp']
                     else:
-                        sol['life_time_tip'][nom] += sol['tp']    
-                else: 
-                    sol['life_time_tip'][nom] += sol['tp']       
-            else:
-                sol['life_time_tip'][nom] += sol['tp']
+                        if sol['life_time_tip'][nom] < coef['T_branch']: 
+                            sol['life_time_tip'][nom] += sol['tp']
+                        else: #being able to branch by life time              
+                            #probabilty of branching
+        #                    print 'NILAI C', c[xb+1,yb+1]
+                            if sol['c'][xb+1,yb+1] >= 0 and sol['c'][xb+1,yb+1] < 0.1:
+                                prob_weight = 7 # set the number to select here.
+                                list_prob = random.sample(line, prob_weight) #list of selected numbers from line
+                            elif sol['c'][xb+1,yb+1] >= 0.1 and sol['c'][xb+1,yb+1] < 0.2:
+                                prob_weight = 8 # set the number to select here.
+                                list_prob = random.sample(line, prob_weight)   
+                            elif sol['c'][xb+1,yb+1] >= 0.2 and sol['c'][xb+1,yb+1] < 0.3:
+                                prob_weight = 9 # set the number to select here.
+                                list_prob = random.sample(line, prob_weight)  
+                            elif sol['c'][xb+1,yb+1] >= 0.3: #do branching
+                                list_prob = line
+                            #apakah branching? meaning masuk dalam probability of branching?
+                            tes = randint(1,10) #select integer number randomly between 1 and 10
+                            #print 'check 3'
+                            if not tes in list_prob:
+                                sol['life_time_tip'][nom] += sol['tp']
+                            else: #do branching
+                                '''2.1 Branhcing'''
+                                sol['life_time_tip'][nom] = 0
+                                sol['matrix_tip'].append([(xb,yb)])
+                                sol['life_time_tip'].append(0)
+                                sol['list_tip_movement'].append('start')
+        
+                                tes = randint(1,100000) #select integer number randomly between 1 and 100000
+                                if tes in list_prob_0:
+                                    tipp = 'stay'
+                                elif tes in list_prob_1:
+                                    tipp = 'left'
+                                    xpos_new = sol['matrix_tip'][-1][-1][0] - 2
+                                    ypos_new = sol['matrix_tip'][-1][-1][1]                    
+                                    sol['matrix_tip'][-1].append((xpos_new,ypos_new))
+                                    sol['n'][xpos_new,ypos_new] = 1
+                                    sol['list_tip_movement'][-1] = tipp
+                                elif tes in list_prob_2:   
+                                    tipp = 'right'
+                                    xpos_new = sol['matrix_tip'][-1][-1][0] + 2
+                                    ypos_new = sol['matrix_tip'][-1][-1][1]
+                                    sol['matrix_tip'][-1].append((xpos_new,ypos_new)) 
+                                    sol['n'][xpos_new,ypos_new] = 1
+                                    sol['list_tip_movement'][-1] = tipp
+                                elif tes in list_prob_3: 
+                                    tipp = 'down'
+                                    xpos_new = sol['matrix_tip'][-1][-1][0]
+                                    ypos_new = sol['matrix_tip'][-1][-1][1] - 2
+                                    sol['matrix_tip'][-1].append((xpos_new,ypos_new)) 
+                                    sol['n'][xpos_new,ypos_new] = 1
+                                    sol['list_tip_movement'][-1] = tipp
+                                elif tes in list_prob_4: 
+                                    tipp = 'up'
+                                    xpos_new = sol['matrix_tip'][-1][-1][0]
+                                    ypos_new = sol['matrix_tip'][-1][-1][1] + 2
+                                    sol['matrix_tip'][-1].append((xpos_new,ypos_new))
+                                    sol['n'][xpos_new,ypos_new] = 1
+                                    sol['list_tip_movement'][-1] = tipp
+                                
+                                '''Checking m space and calculating number of EC'''
+                                if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
+                                    if not tipp == 'stay':  
+                                        #calculate number of EC
+                                        sol['number_ec'] += 1
+                                        #Kalau di posisi n baru ada m, m nya dibuang
+                                        if sol['m'][xpos_new,ypos_new] == 1:
+                                            sol['m'][xpos_new,ypos_new] == 0
+        
     return sol
