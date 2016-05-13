@@ -13,7 +13,7 @@ def hybrid_tech_c(coef, set, sol):
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
             yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
             #print 'xb,yb', xb,',',yb
-            dirr = movement_dir(coef, set, sol, xb, yb, nom, n_dir = True)
+            dirr, space = movement_dir(coef, set, sol, xb, yb, nom, n_dir = True)
             
             if dirr[1] == 0 and dirr[2] == 0 and dirr[3] == 0 and dirr[4] == 0:
                 sol['sp_stop'].append(nom)
@@ -88,6 +88,17 @@ def hybrid_tech_c(coef, set, sol):
                     for i in list_prob_4:
                         list_prob_0.append(i)
                 
+                '''Checking if new position hits any existing vessel'''
+                if not tipp == 'stay':
+                    if tipp == 'left' and space[0] == 'stop':
+                        sol['sp_stop'].append(nom)
+                    elif tipp == 'right' and space[1] == 'stop':
+                        sol['sp_stop'].append(nom)
+                    elif tipp == 'down' and space[2] == 'stop':
+                        sol['sp_stop'].append(nom)
+                    elif tipp == 'up' and space[3] == 'stop':
+                        sol['sp_stop'].append(nom)
+                
                 '''Checking m space and calculating number of EC'''
                 if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
                     if not tipp == 'stay':  
@@ -134,45 +145,55 @@ def hybrid_tech_c(coef, set, sol):
                                 sol['life_time_tip'].append(0)
                                 sol['list_tip_movement'].append('start')
         
-                                tes = randint(1,100000) #select integer number randomly between 1 and 100000
-                                if tes in list_prob_0:
-                                    tipp = 'stay'
-                                elif tes in list_prob_1:
-                                    tipp = 'left'
-                                    xpos_new = sol['matrix_tip'][-1][-1][0] - 2
-                                    ypos_new = sol['matrix_tip'][-1][-1][1]                    
-                                    sol['matrix_tip'][-1].append((xpos_new,ypos_new))
-                                    sol['n'][xpos_new,ypos_new] = 1
-                                    sol['list_tip_movement'][-1] = tipp
-                                elif tes in list_prob_2:   
-                                    tipp = 'right'
-                                    xpos_new = sol['matrix_tip'][-1][-1][0] + 2
-                                    ypos_new = sol['matrix_tip'][-1][-1][1]
-                                    sol['matrix_tip'][-1].append((xpos_new,ypos_new)) 
-                                    sol['n'][xpos_new,ypos_new] = 1
-                                    sol['list_tip_movement'][-1] = tipp
-                                elif tes in list_prob_3: 
-                                    tipp = 'down'
-                                    xpos_new = sol['matrix_tip'][-1][-1][0]
-                                    ypos_new = sol['matrix_tip'][-1][-1][1] - 2
-                                    sol['matrix_tip'][-1].append((xpos_new,ypos_new)) 
-                                    sol['n'][xpos_new,ypos_new] = 1
-                                    sol['list_tip_movement'][-1] = tipp
-                                elif tes in list_prob_4: 
-                                    tipp = 'up'
-                                    xpos_new = sol['matrix_tip'][-1][-1][0]
-                                    ypos_new = sol['matrix_tip'][-1][-1][1] + 2
-                                    sol['matrix_tip'][-1].append((xpos_new,ypos_new))
-                                    sol['n'][xpos_new,ypos_new] = 1
-                                    sol['list_tip_movement'][-1] = tipp
+                                while tipp == 'stay':
+                                    tes = randint(1,100000) #select integer number randomly between 1 and 100000
+                                    if tes in list_prob_0:
+                                        tipp = 'stay'
+                                    elif tes in list_prob_1:
+                                        tipp = 'left'
+                                        xpos_new = sol['matrix_tip'][-1][-1][0] - 2
+                                        ypos_new = sol['matrix_tip'][-1][-1][1]                    
+                                        sol['matrix_tip'][-1].append((xpos_new,ypos_new))
+                                        sol['n'][xpos_new,ypos_new] = 1
+                                        sol['list_tip_movement'][-1] = tipp
+                                    elif tes in list_prob_2:   
+                                        tipp = 'right'
+                                        xpos_new = sol['matrix_tip'][-1][-1][0] + 2
+                                        ypos_new = sol['matrix_tip'][-1][-1][1]
+                                        sol['matrix_tip'][-1].append((xpos_new,ypos_new)) 
+                                        sol['n'][xpos_new,ypos_new] = 1
+                                        sol['list_tip_movement'][-1] = tipp
+                                    elif tes in list_prob_3: 
+                                        tipp = 'down'
+                                        xpos_new = sol['matrix_tip'][-1][-1][0]
+                                        ypos_new = sol['matrix_tip'][-1][-1][1] - 2
+                                        sol['matrix_tip'][-1].append((xpos_new,ypos_new)) 
+                                        sol['n'][xpos_new,ypos_new] = 1
+                                        sol['list_tip_movement'][-1] = tipp
+                                    elif tes in list_prob_4: 
+                                        tipp = 'up'
+                                        xpos_new = sol['matrix_tip'][-1][-1][0]
+                                        ypos_new = sol['matrix_tip'][-1][-1][1] + 2
+                                        sol['matrix_tip'][-1].append((xpos_new,ypos_new))
+                                        sol['n'][xpos_new,ypos_new] = 1
+                                        sol['list_tip_movement'][-1] = tipp
+                                
+                                '''Checking if new position hits any existing vessel'''
+                                if tipp == 'left' and space[0] == 'stop':
+                                    sol['sp_stop'].append(len(sol['matrix_tip'])-1)
+                                elif tipp == 'right' and space[1] == 'stop':
+                                    sol['sp_stop'].append(len(sol['matrix_tip'])-1)
+                                elif tipp == 'down' and space[2] == 'stop':
+                                    sol['sp_stop'].append(len(sol['matrix_tip'])-1)
+                                elif tipp == 'up' and space[3] == 'stop':
+                                    sol['sp_stop'].append(len(sol['matrix_tip'])-1)
                                 
                                 '''Checking m space and calculating number of EC'''
-                                if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-                                    if not tipp == 'stay':  
-                                        #calculate number of EC
-                                        sol['number_ec'] += 1
-                                        #Kalau di posisi n baru ada m, m nya dibuang
-                                        if sol['m'][xpos_new,ypos_new] == 1:
-                                            sol['m'][xpos_new,ypos_new] == 0
+                                if not coef['Mic'] == 0 or not coef['Kappa'] == 0: 
+                                    #calculate number of EC
+                                    sol['number_ec'] += 1
+                                    #Kalau di posisi n baru ada m, m nya dibuang
+                                    if sol['m'][xpos_new,ypos_new] == 1:
+                                        sol['m'][xpos_new,ypos_new] == 0
         
     return sol

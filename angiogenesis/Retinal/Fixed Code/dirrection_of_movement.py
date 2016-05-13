@@ -1,8 +1,8 @@
 def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
-    #ml = 'f'
-    #mr = 'f'
-    #md = 'f'
-    #mu = 'f'
+    ml = 'f'
+    mr = 'f'
+    md = 'f'
+    mu = 'f'
     
     lx = xb - 2
     rx = xb + 2
@@ -48,17 +48,17 @@ def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
                # if (lx,yb) in sol['matrix_tip'][tep] and (rx,yb) in sol['matrix_tip'][tep] and (xb,dy) in sol['matrix_tip'][tep] and (xb,uy) in sol['matrix_tip'][tep]:
                #     move = 'stop'
                 if (lx,yb) in sol['matrix_tip'][tep]:
-                    P_1 = 0
-                    #ml = 'stop'
+                    #P_1 = 0
+                    ml = 'stop'
                 if (rx,yb) in sol['matrix_tip'][tep]:
-                    P_2 = 0
-                    #mr = 'stop'
+                    #P_2 = 0
+                    mr = 'stop'
                 if (xb,dy) in sol['matrix_tip'][tep]:
-                    P_3 = 0
-                    #md = 'stop'
+                    #P_3 = 0
+                    md = 'stop'
                 if (xb,uy) in sol['matrix_tip'][tep]:
-                    P_4 = 0
-                    #mu = 'stop'
+                    #P_4 = 0
+                    mu = 'stop'
         
         
     else:
@@ -140,6 +140,7 @@ def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
         
     P_0 = 10000-(P_1+P_2+P_3+P_4)
     
-    prob_range = [P_0,P_1,P_2,P_3,P_4]#,ml,mr,md,mu]
+    prob_range = [P_0,P_1,P_2,P_3,P_4]
+    space = [ml,mr,md,mu]
 #    print 'probability P', P_0, ',',P_1,',',P_2,',',P_3,',',P_4
-    return prob_range;
+    return prob_range, space

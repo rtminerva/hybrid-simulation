@@ -21,7 +21,7 @@ def declare_coef():
     
     ##Fibronectin (f)
     coef['Beta'] = 0.05
-    coef['Gama'] = 0.1
+    coef['Gama'] = 0.1/5
     
     ##Mural Cell (m)
     coef['D_m'] = 0.009 #0.00018
