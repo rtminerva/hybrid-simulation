@@ -75,16 +75,21 @@ def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
         P_3 = int((sol['tp']/(set['h']**2)*coef['D_n']+sol['tp']/(set['h'])*Gijy_n)*100000)
         P_4 = int((sol['tp']/(set['h']**2)*coef['D_n']+sol['tp']/(set['h'])*Gijy_p)*100000)
         
-        if not P_1 == 0:
+        r_fl = numpy.sqrt((lx*set['Hh']-set['O_x'])**2 + (yb*set['Hh']-set['O_y'])**2)
+        r_fr = numpy.sqrt((rx*set['Hh']-set['O_x'])**2 + (yb*set['Hh']-set['O_y'])**2)
+        r_fd = numpy.sqrt((xb*set['Hh']-set['O_x'])**2 + (dy*set['Hh']-set['O_y'])**2)
+        r_fu = numpy.sqrt((xb*set['Hh']-set['O_x'])**2 + (uy*set['Hh']-set['O_y'])**2)
+        
+        if not P_1 == 0 and lx>0 and r_f <= (set['R_min'] + set['error']):
             if sol['m'][lx,yb] == 1:
                 P_1 = 0
-        if not P_2 == 0:
+        if not P_2 == 0 and rx>0 and r_f <= (set['R_min'] + set['error']):
             if sol['m'][rx,yb] == 1:
                 P_2 = 0
-        if not P_3 == 0:
+        if not P_3 == 0 and dy>0 and r_f <= (set['R_min'] + set['error']):
             if sol['m'][xb,dy] == 1:
                 P_3 = 0
-        if not P_4 == 0:
+        if not P_4 == 0 and uy>0 and r_f <= (set['R_min'] + set['error']):
             if sol['m'][xb,uy] == 1:
                 P_4 = 0  
     

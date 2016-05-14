@@ -17,11 +17,11 @@ def declare_coef():
     
     ##VEGF (c)
     coef['D_c'] = 0.005
-    coef['Nu'] = 0.1
+    coef['Nu'] = 0.1#/5
     
     ##Fibronectin (f)
     coef['Beta'] = 0.05
-    coef['Gama'] = 0.1 #/5
+    coef['Gama'] = 0.1/5
     
     ##Mural Cell (m)
     coef['D_m'] = 0.009 #0.00018
@@ -34,8 +34,8 @@ def declare_coef():
     coef['Dl'] = 0.2 #0.5
     
     ##Chemotaxis inhibition & Haptotaxis Activation
-    coef['Kappa'] = 0.4#0.4#0.4
-    coef['Mic'] = 0.4#0.4#0.4
+    coef['Kappa'] = 0#0.4#0.4#0.4
+    coef['Mic'] = 0#0.4#0.4#0.4
 
     '''Branching & Mitosis'''
     coef['T_branch'] = 0.078#0.25#
