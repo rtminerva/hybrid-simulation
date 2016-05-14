@@ -1,4 +1,5 @@
 import random
+from random import randint
 from dirrection_of_movement import movement_dir
 
 def hybrid_tech_m(coef, set, sol):
@@ -7,80 +8,58 @@ def hybrid_tech_m(coef, set, sol):
     sol['index_mn'] = []
     for yb in range(1,set['Ny'],2):
         for xb in range(1,set['Nx'],2):
-            #print mo[xb,yb]
             if mo[xb,yb] == 1: #and not [xb,yb] in sol['sol['index_mn']']:
-                dirr = movement_dir(coef, set, sol, xb, yb, nom, n_dir = False)
+                line_1 = range(1,10001)
             
-                dirr_m = [dirr[0],dirr[0]+dirr[1],dirr[0]+dirr[1]+dirr[2],dirr[0]+dirr[1]+dirr[2]+dirr[3],1]
+                dirr, space = movement_dir(coef, set, sol, xb, yb, nom, n_dir = False)
                 
-                '''
-                trial = random.uniform(0,1)
-                if trial <= dirr_m[0]: #stay
-                    keep = 1
-                elif trial <= dirr_m[1]: #left
-                    sol['m'][xb - 2, yb] = 1
-                    sol['m'][xb,yb] = 0
-                elif trial <= dirr_m[2]: #right
-                    sol['m'][xb + 2, yb] = 1
-                    sol['m'][xb,yb] = 0
-                elif trial <= dirr_m[3]: #down
-                    sol['m'][xb, yb - 2] = 1
-                    sol['m'][xb,yb] = 0
-                elif trial <= dirr_m[4]: #>dirr[3] #up
-                    sol['m'][xb, yb + 2] = 1
-                    sol['m'][xb,yb] = 0
+                if dirr[1] == 0:
+                    list_prob_1 = []
+                else:
+                    list_prob_1 = random.sample(line_1, dirr[1])
+                    for i in list_prob_1:
+                        line_1.remove(i)
                 
-                '''
-                keep = True
-                while keep == True:
-                    trial = random.uniform(0,1)
-                    if trial <= dirr_m[0]: #stay
-                        keep = False
-                    elif trial <= dirr_m[1]: #left
-                        if (xb - 2, yb) not in sol['tip_cell']:
-                            keep = False
-                            sol['m'][xb - 2, yb] = 1
-                            sol['m'][xb,yb] = 0
-                        else:
-                            trial = 100
-                    elif trial <= dirr_m[2]: #right
-                        if (xb + 2, yb) not in sol['tip_cell']:
-                            keep = False
-                            sol['m'][xb + 2, yb] = 1
-                            sol['m'][xb,yb] = 0
-                        else:
-                            trial = 100
-                    elif trial <= dirr_m[3]: #down
-                        if (xb, yb - 2) not in sol['tip_cell']:
-                            keep = False
-                            sol['m'][xb, yb - 2] = 1
-                            sol['m'][xb,yb] = 0
-                        else:
-                            trial = 100
-                    elif trial <= dirr_m[4]: #>dirr[3] #up
-                        if (xb, yb + 2) not in sol['tip_cell']:
-                            keep = False
-                            sol['m'][xb, yb + 2] = 1
-                            sol['m'][xb,yb] = 0
-                        else:
-                            trial = 100
-                '''
-                trial = random.uniform(0,1)
-                if trial <= dirr_m[0]: #stay
-                    keep = 0
-                elif trial <= dirr_m[1]: #left
-                    sol['m'][xb - 2, yb] = 1
-                    sol['m'][xb,yb] = 0
-                elif trial <= dirr_m[2]: #right
-                    sol['m'][xb + 2, yb] = 1
-                    sol['m'][xb,yb] = 0
-                elif trial <= dirr_m[3]: #down
-                    sol['m'][xb, yb - 2] = 1
-                    sol['m'][xb,yb] = 0
-                elif trial <= dirr_m[4]: #>dirr[3] #up
-                    sol['m'][xb, yb + 2] = 1
-                    sol['m'][xb,yb] = 0
-                '''
+                if dirr[2] == 0:
+                    list_prob_2 = []
+                else:
+                    list_prob_2 = random.sample(line_1, dirr[2])
+                    for i in list_prob_2:
+                        line_1.remove(i)
+                
+                if dirr[3] == 0:
+                    list_prob_3 = []
+                else:   
+                    list_prob_3 = random.sample(line_1, dirr[3])
+                    for i in list_prob_3:
+                        line_1.remove(i)
+                
+                if dirr[4] == 0:
+                    list_prob_4 = []
+                else:
+                    list_prob_4 = random.sample(line_1, dirr[4])
+                    for i in list_prob_4:
+                        line_1.remove(i)
+                
+                list_prob_0 = line_1
+                
+                tes = randint(1,10000) #select integer number randomly between 1 and 100000
+                if tes in list_prob_1:
+                    if (xb - 2, yb) not in sol['tip_cell']:
+                        sol['m'][xb - 2, yb] = 1
+                        sol['m'][xb,yb] = 0
+                elif tes in list_prob_2:   
+                    if (xb + 2, yb) not in sol['tip_cell']:
+                        sol['m'][xb + 2, yb] = 1
+                        sol['m'][xb,yb] = 0
+                elif tes in list_prob_3: 
+                    if (xb, yb - 2) not in sol['tip_cell']:
+                        sol['m'][xb, yb - 2] = 1
+                        sol['m'][xb,yb] = 0
+                elif tes in list_prob_4: 
+                    if (xb, yb + 2) not in sol['tip_cell']:
+                        sol['m'][xb, yb + 2] = 1
+                        sol['m'][xb,yb] = 0
                                           
                 for ec_i in range(0,len(sol['matrix_tip'])):
                     if (xb,yb) in sol['matrix_tip'][ec_i]:

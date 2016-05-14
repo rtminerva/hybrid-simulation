@@ -59,6 +59,7 @@ def boolean_1_iter(coef, set, sol):
         if len(sol['sp_stop']) == len(sol['matrix_tip']):
             sol['stop_iter'] = 100000 #sp_stop harus dicek di setiap movement and branching. karena sudah tidak bergerak lagi yang ada di list ini.
             print 'all looping itself or anastomosis'
+            check = 'in'
         else:
             sol = hybrid_tech_c(coef, set, sol)
             start3 = timer()
@@ -69,11 +70,12 @@ def boolean_1_iter(coef, set, sol):
         sol = c_f_T(coef, set, sol)
         start5 = timer()            
         print 'Check Anastomosis Time', start2-start1
-        print 'Hybrid for n time', start3-start2
-        if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-            print 'Hybrid for m time', start4-start3
-            print 'Solve c,f,T time', start5-start4
-        else:
-            print 'Solve c,f,T time', start5-start3
+        if not check == 'in':
+            print 'Hybrid for n time', start3-start2
+            if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
+                print 'Hybrid for m time', start4-start3
+                print 'Solve c,f,T time', start5-start4
+            else:
+                print 'Solve c,f,T time', start5-start3
                     
     return sol
