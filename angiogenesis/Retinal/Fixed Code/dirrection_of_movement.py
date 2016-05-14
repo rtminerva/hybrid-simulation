@@ -1,3 +1,5 @@
+import numpy
+
 def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
     ml = 'f'
     mr = 'f'
@@ -80,16 +82,16 @@ def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
         r_fd = numpy.sqrt((xb*set['Hh']-set['O_x'])**2 + (dy*set['Hh']-set['O_y'])**2)
         r_fu = numpy.sqrt((xb*set['Hh']-set['O_x'])**2 + (uy*set['Hh']-set['O_y'])**2)
         
-        if not P_1 == 0 and lx>0 and r_f <= (set['R_min'] + set['error']):
+        if not P_1 == 0 and lx>0 and r_fl <= (set['R_min'] + set['error']):
             if sol['m'][lx,yb] == 1:
                 P_1 = 0
-        if not P_2 == 0 and rx>0 and r_f <= (set['R_min'] + set['error']):
+        if not P_2 == 0 and rx>0 and r_fr <= (set['R_min'] + set['error']):
             if sol['m'][rx,yb] == 1:
                 P_2 = 0
-        if not P_3 == 0 and dy>0 and r_f <= (set['R_min'] + set['error']):
+        if not P_3 == 0 and dy>0 and r_fd <= (set['R_min'] + set['error']):
             if sol['m'][xb,dy] == 1:
                 P_3 = 0
-        if not P_4 == 0 and uy>0 and r_f <= (set['R_min'] + set['error']):
+        if not P_4 == 0 and uy>0 and r_fu <= (set['R_min'] + set['error']):
             if sol['m'][xb,uy] == 1:
                 P_4 = 0  
     
@@ -100,7 +102,6 @@ def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
       
         
     '''Boundary Checking'''
-    import numpy
     Pos = (xb,yb)
     r_f = numpy.sqrt((xb*set['Hh']-set['O_x'])**2 + (yb*set['Hh']-set['O_y'])**2) 
     if Pos == sol['matrix_tip'][0][0]:

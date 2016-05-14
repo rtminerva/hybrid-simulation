@@ -285,20 +285,21 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     set['k'] += 1
      
 print '*************DONE*****************'
-print 'Percentage of MC on EC:', sol['MC_per_EC']
-'''Percentage MC on EC'''
-t1 = numpy.arange(0.0, 10.1, 0.1)
-MC_per_EC_p=[]
-for ti in range(0,set['k']+1,500):
-    MC_per_EC_p.append(sol['MC_per_EC'][ti])
-plt.figure(10)
-plt.title('%s%f' % ('Percentage of MC on EC at t=',set['t']))
-plt.subplot(211)
-plt.plot(t1, MC_per_EC_p, 'bo', t1, MC_per_EC_p, 'k')
-sol['st'] +=1  
-flag = 'x=%s' % str(sol['st']) 
-plt.savefig("%s.png" % flag)
-plt.close()
+if not coef['Kappa'] == 0 or not coef['Mic'] == 0:
+    print 'Percentage of MC on EC:', sol['MC_per_EC']
+    '''Percentage MC on EC'''
+    t1 = numpy.arange(0.0, 10.1, 0.1)
+    MC_per_EC_p=[]
+    for ti in range(0,set['k']+1,500):
+        MC_per_EC_p.append(sol['MC_per_EC'][ti])
+    plt.figure(10)
+    plt.title('%s%f' % ('Percentage of MC on EC at t=',set['t']))
+    plt.subplot(211)
+    plt.plot(t1, MC_per_EC_p, 'bo', t1, MC_per_EC_p, 'k')
+    sol['st'] +=1  
+    flag = 'x=%s' % str(sol['st']) 
+    plt.savefig("%s.png" % flag)
+    plt.close()
 '''Plot Continuous
 fig1 = plt.figure(1)
 ax = fig1.gca(projection='3d')
