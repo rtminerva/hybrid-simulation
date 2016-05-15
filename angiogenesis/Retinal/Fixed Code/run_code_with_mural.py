@@ -285,6 +285,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     set['k'] += 1
      
 print '*************DONE*****************'
+print 'Ro = zero with new G. Gamma per five as normal condition'
 if not coef['Kappa'] == 0 or not coef['Mic'] == 0:
     print 'Percentage of MC on EC:', sol['MC_per_EC']
     '''Percentage MC on EC'''

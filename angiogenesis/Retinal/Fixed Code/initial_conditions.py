@@ -15,7 +15,7 @@ def initial_prof(coef, set, sol):
             if r_f >= set['R_min']:# + numpy.sqrt(set['error']):
                 sol['c'][x,y] = 0.5-0.45*numpy.exp(-(r_f**2)/0.45)
                 sol['f'][x,y] = 0.5
-                #f[x,y] = 0.5-0.45*numpy.exp(-(set['R_max']-r_f)**2/0.45) 
+                #sol['f'][x,y] = 0.5-0.45*numpy.exp(-(set['R_max']-r_f)**2/0.45) 
     
     sol['n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['matrix_tip'] = []

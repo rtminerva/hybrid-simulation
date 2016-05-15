@@ -10,7 +10,7 @@ def declare_coef():
     coef['Ang2'] = True
       
     ##Endothelial (n)
-    coef['Ro'] = 0#0.16
+    coef['Ro'] = 0#.16
     coef['D_n'] = 0.00018
     coef['Ki_n'] = 0.4
     coef['Al_n'] = 0.6
@@ -21,7 +21,7 @@ def declare_coef():
     
     ##Fibronectin (f)
     coef['Beta'] = 0.05
-    coef['Gama'] = 0.1
+    coef['Gama'] = 0.1/5
     
     ##Mural Cell (m)
     coef['D_m'] = 0.009 #0.00018
