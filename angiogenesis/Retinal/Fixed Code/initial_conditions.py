@@ -23,7 +23,7 @@ def initial_prof(coef, set, sol):
     sol['life_time_tip'] = []
     sol['sp_stop'] = []
     sol['tip_cell'] = []
-    sol['number_ec'] = 8
+    
     
     ''''Initial Tips at cente of small circle'''                
     
@@ -166,15 +166,15 @@ def initial_prof(coef, set, sol):
     
     '''Initial Mural & Tie2''' #???????????????????????????
     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-        #index_m = []
+        sol['number_ec'] = 8
         sol['index_mn'] = []
         sol['m'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
         sol['p'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
         
         '''Randomly spotted in domain'''
         for tt in range(0,250):
-            idx_m_1 = random.sample(range(1,440,2),50)
-            idx_m_2 = random.sample(range(1,440,2),50)
+            idx_m_1 = random.sample(range(101,357,2),50)
+            idx_m_2 = random.sample(range(101,357,2),50)
             for id in range(0,len(idx_m_1)):
                 r_f = numpy.sqrt((idx_m_1[id]*set['Hh']-set['O_x'])**2 + (idx_m_2[id]*set['Hh']-set['O_y'])**2)
                 if not sol['m'][idx_m_1[id], idx_m_2[id]] == 1 and not [(idx_m_1[id], idx_m_2[id])] in sol['matrix_tip'] and r_f > set['R_min']:

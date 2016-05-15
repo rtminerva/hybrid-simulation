@@ -17,9 +17,7 @@ def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
                 mm_bool = 1
             else:
                 mm_bool = 0
-            Gijx = coef['Ki_n']/((1+coef['Mic']*mm_bool)*(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1])))*1/(2*set['h'])*(sol['c'][xb+1,yb+1]-sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb-1]-sol['c'][xb-1,yb-1])+(coef['Ro']+coef['Kappa']*mm_bool)*1/(2*set['h'])*(sol['f'][xb+1,yb+1]-sol['f'][xb-1,yb+1]+sol['f'][xb+1,yb-1]-sol['f'][xb-1,yb-1])
-            Gijy = coef['Ki_n']/((1+coef['Mic']*mm_bool)*(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1])))*1/(2*set['h'])*(sol['c'][xb+1,yb+1]-sol['c'][xb+1,yb-1]+sol['c'][xb-1,yb+1]-sol['c'][xb-1,yb-1])+(coef['Ro']+coef['Kappa']*mm_bool)*1/(2*set['h'])*(sol['f'][xb+1,yb+1]-sol['f'][xb+1,yb-1]+sol['f'][xb-1,yb+1]-sol['f'][xb-1,yb-1])
-        else:
+            
             cijx = 1/(2*set['h'])*(sol['c'][xb+1,yb+1]-sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb-1]-sol['c'][xb-1,yb-1])
             cijy = 1/(2*set['h'])*(sol['c'][xb+1,yb+1]-sol['c'][xb+1,yb-1]+sol['c'][xb-1,yb+1]-sol['c'][xb-1,yb-1])
             
@@ -37,10 +35,31 @@ def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
             fijy_n = max(0,-fijy)
             
             
-        Gijx_p = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijx_p+coef['Ro']*fijx_p
-        Gijx_n = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijx_n+coef['Ro']*fijx_n
-        Gijy_p = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijy_p+coef['Ro']*fijy_p
-        Gijy_n = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijy_n+coef['Ro']*fijy_n
+            Gijx_p = coef['Ki_n']/((1+coef['Mic']*mm_bool)*(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1])))*cijx_p+(coef['Ro']+coef['Kappa']*mm_bool)*fijx_p
+            Gijx_n = coef['Ki_n']/((1+coef['Mic']*mm_bool)*(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1])))*cijx_n+(coef['Ro']+coef['Kappa']*mm_bool)*fijx_n
+            Gijy_p = coef['Ki_n']/((1+coef['Mic']*mm_bool)*(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1])))*cijy_p+(coef['Ro']+coef['Kappa']*mm_bool)*fijy_p
+            Gijy_n = coef['Ki_n']/((1+coef['Mic']*mm_bool)*(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1])))*cijy_n+(coef['Ro']+coef['Kappa']*mm_bool)*fijy_n
+        else:
+            cijx = 1/(2*set['h'])*(sol['c'][xb+1,yb+1]-sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb-1]-sol['c'][xb-1,yb-1])
+            cijy = 1/(2*set['h'])*(sol['c'][xb+1,yb+1]-sol['c'][xb+1,yb-1]+sol['c'][xb-1,yb+1]-sol['c'][xb-1,yb-1])
+            
+            cijx_p = max(0,cijx)
+            cijx_n = max(0,-cijx)
+            cijy_p = max(0,cijy)
+            cijy_n = max(0,-cijy)
+            
+            fijx = 1/(2*set['h'])*(sol['f'][xb+1,yb+1]-sol['f'][xb-1,yb+1]+sol['f'][xb+1,yb-1]-sol['f'][xb-1,yb-1])
+            fijy = 1/(2*set['h'])*(sol['f'][xb+1,yb+1]-sol['f'][xb+1,yb-1]+sol['f'][xb-1,yb+1]-sol['f'][xb-1,yb-1])
+            
+            fijx_p = max(0,fijx)
+            fijx_n = max(0,-fijx)
+            fijy_p = max(0,fijy)
+            fijy_n = max(0,-fijy)
+            
+            Gijx_p = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijx_p+coef['Ro']*fijx_p
+            Gijx_n = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijx_n+coef['Ro']*fijx_n
+            Gijy_p = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijy_p+coef['Ro']*fijy_p
+            Gijy_n = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijy_n+coef['Ro']*fijy_n
         
           
         P_1 = int((sol['tp']/(set['h']**2)*coef['D_n']+sol['tp']/(set['h'])*Gijx_n)*10000)
@@ -78,16 +97,21 @@ def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
                 if (xb,uy) in sol['matrix_tip'][tep]:
                     #P_4 = 0
                     mu = 'stop'
-        
-        
+            
     else:
-        Gijx = coef['Ki_m']/(1+coef['Al_m']*1/4*(sol['p'][xb-1,yb+1]+sol['p'][xb+1,yb+1]+sol['p'][xb-1,yb-1]+sol['p'][xb+1,yb-1]))*1/(2*set['h'])*(sol['p'][xb+1,yb+1]-sol['p'][xb-1,yb+1]+sol['p'][xb+1,yb-1]-sol['p'][xb-1,yb-1])
-        Gijy = coef['Ki_m']/(1+coef['Al_m']*1/4*(sol['p'][xb-1,yb+1]+sol['p'][xb+1,yb+1]+sol['p'][xb-1,yb-1]+sol['p'][xb+1,yb-1]))*1/(2*set['h'])*(sol['p'][xb+1,yb+1]-sol['p'][xb+1,yb-1]+sol['p'][xb-1,yb+1]-sol['p'][xb-1,yb-1])
-
-        Gijx_p = max(0,Gijx)
-        Gijx_n = max(0,-Gijx)
-        Gijy_p = max(0,Gijy)
-        Gijy_n = max(0,-Gijy)
+        pijx = 1/(2*set['h'])*(sol['p'][xb+1,yb+1]-sol['p'][xb-1,yb+1]+sol['p'][xb+1,yb-1]-sol['p'][xb-1,yb-1])
+        pijy = 1/(2*set['h'])*(sol['p'][xb+1,yb+1]-sol['p'][xb+1,yb-1]+sol['p'][xb-1,yb+1]-sol['p'][xb-1,yb-1])
+        
+        pijx_p = max(0,pijx)
+        pijx_n = max(0,-pijx)
+        pijy_p = max(0,pijy)
+        pijy_n = max(0,-pijy)
+            
+        
+        Gijx_p = coef['Ki_m']/(1+coef['Al_m']*1/4*(sol['p'][xb-1,yb+1]+sol['p'][xb+1,yb+1]+sol['p'][xb-1,yb-1]+sol['p'][xb+1,yb-1]))*pijx_p
+        Gijx_n = coef['Ki_m']/(1+coef['Al_m']*1/4*(sol['p'][xb-1,yb+1]+sol['p'][xb+1,yb+1]+sol['p'][xb-1,yb-1]+sol['p'][xb+1,yb-1]))*pijx_n
+        Gijy_p = coef['Ki_m']/(1+coef['Al_m']*1/4*(sol['p'][xb-1,yb+1]+sol['p'][xb+1,yb+1]+sol['p'][xb-1,yb-1]+sol['p'][xb+1,yb-1]))*pijy_p
+        Gijy_n = coef['Ki_m']/(1+coef['Al_m']*1/4*(sol['p'][xb-1,yb+1]+sol['p'][xb+1,yb+1]+sol['p'][xb-1,yb-1]+sol['p'][xb+1,yb-1]))*pijy_n
         
         P_1 = int((sol['tp']/(set['h']**2)*coef['D_n']+sol['tp']/(set['h'])*Gijx_n)*10000)
         P_2 = int((sol['tp']/(set['h']**2)*coef['D_n']+sol['tp']/(set['h'])*Gijx_p)*10000)

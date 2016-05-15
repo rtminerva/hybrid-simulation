@@ -5,9 +5,6 @@ def declare_coef():
     #to store coefficients
     coef = {}
     set = {}
-    
-    ##With Ang2
-    coef['Ang2'] = True
       
     ##Endothelial (n)
     coef['Ro'] = 0#.16
@@ -17,29 +14,34 @@ def declare_coef():
     
     ##VEGF (c)
     coef['D_c'] = 0.005
-    coef['Nu'] = 0.1#/5
+    coef['Nu'] = 0.1
     
     ##Fibronectin (f)
-    coef['Beta'] = 0.05
-    coef['Gama'] = 0.1/5
+    coef['Beta'] = 0.05#0.05
+    coef['Gama'] = 0.07#0.1
     
-    ##Mural Cell (m)
-    coef['D_m'] = 0.009 #0.00018
-    coef['Ki_m'] = 0.6
-    coef['Al_m'] = 0.4
-    
-    ##Tie2 with Angiopoietin (T), Ang1 & Ang2
-    coef['A_p'] = 0.3#0.3
-    coef['B_p'] = 0.3
-    coef['Dl'] = 0.2 #0.5
     
     ##Chemotaxis inhibition & Haptotaxis Activation
     coef['Kappa'] = 0#.4
     coef['Mic'] = 0#.4
+    
+    if not coef['Kappa'] == 0 or not coef['Mic'] == 0:
+        ##With Ang2
+        coef['Ang2'] = True
+        
+        ##Mural Cell (m)
+        coef['D_m'] = 0.009 #0.00018
+        coef['Ki_m'] = 0.6
+        coef['Al_m'] = 0.4
+        
+        ##Tie2 with Angiopoietin (T), Ang1 & Ang2
+        coef['A_p'] = 0.3#0.3
+        coef['B_p'] = 0.3
+        coef['Dl'] = 0.2 #0.5
 
     '''Branching & Mitosis'''
     coef['T_branch'] = 0.078#0.25#
-    coef['T_mitosis'] = 0.709
+    #coef['T_mitosis'] = 0.709
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah
@@ -77,10 +79,11 @@ def declare_coef():
     sol['n'] = 0
     sol['c'] = 0
     sol['f'] = 0
-    sol['p'] = 0
-    sol['m'] = 0
-    sol['index_mn'] = 0
     sol['tip_cell'] = 0
-    sol['number_ec'] = 0
-    sol['MC_per_EC'] = OrderedDict()
+    if not coef['Kappa'] == 0 or not coef['Mic'] == 0:
+        sol['p'] = 0
+        sol['m'] = 0
+        sol['index_mn'] = 0
+        sol['number_ec'] = 0
+        sol['MC_per_EC'] = OrderedDict()
     return coef, set, sol
