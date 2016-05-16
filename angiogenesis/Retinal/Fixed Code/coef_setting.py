@@ -7,7 +7,7 @@ def declare_coef():
     set = {}
       
     ##Endothelial (n)
-    coef['Ro'] = 0#.16
+    coef['Ro'] = 0.16
     coef['D_n'] = 0.00018
     coef['Ki_n'] = 0.4
     coef['Al_n'] = 0.6
@@ -22,12 +22,12 @@ def declare_coef():
     
     
     ##Chemotaxis inhibition & Haptotaxis Activation
-    coef['Kappa'] = 0#.4
-    coef['Mic'] = 0#.4
+    coef['Kappa'] = 0.4
+    coef['Mic'] = 0.4
     
     if not coef['Kappa'] == 0 or not coef['Mic'] == 0:
         ##With Ang2
-        coef['Ang2'] = True
+        coef['Ang2'] = False
         
         ##Mural Cell (m)
         coef['D_m'] = 0.009 #0.00018
@@ -35,8 +35,8 @@ def declare_coef():
         coef['Al_m'] = 0.4
         
         ##Tie2 with Angiopoietin (T), Ang1 & Ang2
-        coef['A_p'] = 0.3#0.3
-        coef['B_p'] = 0.3
+        coef['A_p'] = 0.03#0.3
+        coef['B_p'] = 0.03
         coef['Dl'] = 0.2 #0.5
 
     '''Branching & Mitosis'''

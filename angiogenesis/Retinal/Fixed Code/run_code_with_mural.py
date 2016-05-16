@@ -39,7 +39,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
         print 'NILAI C, F, P MAX', sol['c'].max(), ',', sol['f'].max(), ',', sol['p'].max()
         print 'NILAI C, F, P MIN', sol['c'].min(), ',', sol['f'].min(), ',', sol['p'].min()
-        print '# of MC', len(sol['index_mn'])
+        print '# of MC on EC', len(sol['index_mn'])
         print '# of EC', sol['number_ec']
         gg = len(sol['index_mn'])*100/(sol['number_ec'])
         print gg, '%'
@@ -54,9 +54,9 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
 #         print 'TIP', i,':',tip
     '''SAVING PICTURES'''    
     if not coef['Kappa'] == 0 or not coef['Mic'] == 0:   
-        if set['k'] % 100 == 0:
+        if set['k'] % 50 == 0:
             sol['MC_per_EC'][set['k']] = gg        
-        if set['k'] % 500 == 0: #and not set['k'] == 0 :                            
+        if set['k'] % 50 == 0: #and not set['k'] == 0 :                            
             '''EC & MC'''           
             fig = plt.figure()
             plt.title('%s%f' % ('EC & MC at t=',set['t']))
@@ -292,7 +292,7 @@ if not coef['Kappa'] == 0 or not coef['Mic'] == 0:
     '''Percentage MC on EC'''
     t1 = numpy.arange(0.0, 10.1, 0.1)
     MC_per_EC_p=[]
-    for ti in range(0,set['k']+1,500):
+    for ti in range(0,set['k']+1,50):
         MC_per_EC_p.append(sol['MC_per_EC'][ti])
     plt.figure(10)
     plt.title('%s%f' % ('Percentage of MC on EC at t=',set['t']))

@@ -49,29 +49,29 @@ def boolean_1_iter(coef, set, sol, check = 'out'):
     if set['k'] == 0:
         '''Initial Profile'''
         sol = initial_prof(coef, set, sol)  
-    else:
-        '''1. Anastomosis & Tip Cell'''
-        start1 = timer()
-        if set['k'] > 1:
-            sol = check_anastomosis(sol)
-        start2 = timer()                        
-        '''2. Branching and Movement'''        
+    else:                             
         if len(sol['sp_stop']) == len(sol['matrix_tip']):
             sol['stop_iter'] = 100000 #sp_stop harus dicek di setiap movement and branching. karena sudah tidak bergerak lagi yang ada di list ini.
             print 'all looping itself or anastomosis'
             check = 'in'
         else:
+            '''2. Branching and Movement''' 
+            start1 = timer()  
             sol = hybrid_tech_c(coef, set, sol)
+            start2 = timer()
+            '''1. Anastomosis & Tip Cell'''
+            if set['k'] > 1:
+                sol = check_anastomosis(sol)
             start3 = timer()
             if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
                 sol = hybrid_tech_m(coef, set, sol)
                 start4 = timer()
-        '''Solving c,f,T'''
-        sol = c_f_T(coef, set, sol)
-        start5 = timer()            
-        print 'Check Anastomosis Time', start2-start1
+                '''Solving c,f,T'''
+                sol = c_f_T(coef, set, sol)
+                start5 = timer()            
         if not check == 'in':
-            print 'Hybrid for n time', start3-start2
+            print 'Check Anastomosis Time', start3-start2
+            print 'Hybrid for n time', start2-start1
             if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
                 print 'Hybrid for m time', start4-start3
                 print 'Solve c,f,T time', start5-start4

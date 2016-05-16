@@ -16,6 +16,7 @@ def initial_prof(coef, set, sol):
                 sol['c'][x,y] = 0.5-0.45*numpy.exp(-(r_f**2)/0.45)
                 sol['f'][x,y] = 0.5
                 #sol['f'][x,y] = 0.5-0.45*numpy.exp(-(set['R_max']-r_f)**2/0.45) 
+                
     
     sol['n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['matrix_tip'] = []
@@ -173,8 +174,8 @@ def initial_prof(coef, set, sol):
         
         '''Randomly spotted in domain'''
         for tt in range(0,250):
-            idx_m_1 = random.sample(range(101,357,2),50)
-            idx_m_2 = random.sample(range(101,357,2),50)
+            idx_m_1 = random.sample(range(1,440,2),100)
+            idx_m_2 = random.sample(range(1,440,2),100)
             for id in range(0,len(idx_m_1)):
                 r_f = numpy.sqrt((idx_m_1[id]*set['Hh']-set['O_x'])**2 + (idx_m_2[id]*set['Hh']-set['O_y'])**2)
                 if not sol['m'][idx_m_1[id], idx_m_2[id]] == 1 and not [(idx_m_1[id], idx_m_2[id])] in sol['matrix_tip'] and r_f > set['R_min']:
