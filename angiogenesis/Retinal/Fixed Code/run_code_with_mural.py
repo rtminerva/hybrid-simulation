@@ -40,8 +40,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'NILAI C, F, P MAX', sol['c'].max(), ',', sol['f'].max(), ',', sol['p'].max()
         print 'NILAI C, F, P MIN', sol['c'].min(), ',', sol['f'].min(), ',', sol['p'].min()
         print '# of MC on EC', len(sol['index_mn'])
-        print '# of EC', sol['number_ec']
-        gg = len(sol['index_mn'])*100/(sol['number_ec'])
+        print '# of EC', numpy.count_nonzero(sol['n'])
+        gg = len(sol['index_mn'])*100/(numpy.count_nonzero(sol['n']))
         print gg, '%'
     else:
         print 'NILAI C, F MAX', sol['c'].max(), ',', sol['f'].max()
@@ -68,36 +68,98 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             plt.subplot(211)
             plt.plot(t1, MC_per_EC_p, 'bo', t1, MC_per_EC_p, 'k')
             sol['stZZ'] +=1  
-            flag = 'ZZ=%s' % str(sol['st']) 
+            flag = 'ZZ=%s' % str(sol['stZZ']) 
             plt.savefig("%s.png" % flag)
             plt.close()      
-        if set['k'] % 50 == 0: #and not set['k'] == 0 :                            
-            '''EC & MC'''           
-            fig = plt.figure()
-            plt.title('%s%f' % ('EC & MC at t=',set['t']))
-            plt.xlim(set['Hh'],coef['X']-set['Hh'])
-            plt.ylim(set['Hh'],coef['Y']-set['Hh'])
-            #plt.xlim(set['Hh']*100,coef['X']-set['Hh']*300)
-            #plt.ylim(set['Hh']*100,coef['Y']-set['Hh']*300)
-            ax = fig.add_subplot(111)
-            for i in range(0,len(sol['matrix_tip'])):
+        if set['k'] % 50 == 0:
+            if set['t'] > set['tm']:                         
+                '''EC & MC'''           
+                fig = plt.figure()
+                plt.title('%s%f' % ('EC & MC at t=',set['t']))
+                plt.xlim(set['Hh'],coef['X']-set['Hh'])
+                plt.ylim(set['Hh'],coef['Y']-set['Hh'])
+                #plt.xlim(set['Hh']*100,coef['X']-set['Hh']*300)
+                #plt.ylim(set['Hh']*100,coef['Y']-set['Hh']*300)
+                ax = fig.add_subplot(111)
+                for i in range(0,len(sol['matrix_tip'])):
+                    x_p = []
+                    y_p = []
+                    for j in range(0,len(sol['matrix_tip'][i])):
+                        x_p.append(sol['matrix_tip'][i][j][0]*set['Hh'])
+                        y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
+                    globals()['plo%s' % i] = ax.plot(x_p, y_p, 'y')
                 x_p = []
                 y_p = []
-                for j in range(0,len(sol['matrix_tip'][i])):
-                    x_p.append(sol['matrix_tip'][i][j][0]*set['Hh'])
-                    y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
-                globals()['plo%s' % i] = ax.plot(x_p, y_p, 'y')
-            x_p = []
-            y_p = []
-            for i in range(0,len(sol['index_mn'])):
-                x_p.append(sol['index_mn'][i][0]*set['Hh'])
-                y_p.append(sol['index_mn'][i][1]*set['Hh'])
-            plt.scatter(x_p, y_p, marker = 'o', s = 1, color ='k')
-            sol['stT'] +=1  
-            flag = 'T=%s' % str(sol['st']) 
-            plt.savefig("%s.png" % flag)
-            plt.close()
-            #plt.draw()
+                for i in range(0,len(sol['index_mn'])):
+                    x_p.append(sol['index_mn'][i][0]*set['Hh'])
+                    y_p.append(sol['index_mn'][i][1]*set['Hh'])
+                plt.scatter(x_p, y_p, marker = 'o', s = 1, color ='k')
+                sol['stT'] +=1  
+                flag = 'T=%s' % str(sol['stT']) 
+                plt.savefig("%s.png" % flag)
+                plt.close()
+                #plt.draw()
+                
+                '''MC'''
+                plt.figure()
+                plt.title('%s%f' % ('MC at t=',set['t']))
+                plt.xlim(set['Hh'],coef['X']-set['Hh'])
+                plt.ylim(set['Hh'],coef['Y']-set['Hh'])
+                x_p = []
+                y_p = []
+                for y in range(1,set['Ny'],2):
+                    for x in range(1,set['Nx'],2):
+                        if sol['m'][x,y] == 1:
+                            x_p.append(x*set['Hh'])
+                            y_p.append(y*set['Hh'])
+                '''
+                for i in range(0,len(sol['m'])):
+                    x_p.append(sol['m'][i][0]*set['Hh'])
+                    y_p.append(sol['m'][i][1]*set['Hh'])
+                '''
+                plt.scatter(x_p, y_p, marker = 'o', s = 1, color ='k')
+                sol['stV'] +=1  
+                flag = 'V=%s' % str(sol['stV']) 
+                plt.savefig("%s.png" % flag)
+                plt.close()
+                #plt.draw()  
+                
+                '''MC on EC''' 
+                plt.figure()
+                plt.title('%s%f' % ('MC on EC at t=',set['t']))
+                plt.xlim(set['Hh'],coef['X']-set['Hh'])
+                plt.ylim(set['Hh'],coef['Y']-set['Hh'])
+                #plt.xlim(set['Hh']*100,coef['X']-set['Hh']*100)
+                #plt.ylim(set['Hh']*100,coef['Y']-set['Hh']*100)
+                x_p = []
+                y_p = []
+                for i in range(0,len(sol['index_mn'])):
+                    x_p.append(sol['index_mn'][i][0]*set['Hh'])
+                    y_p.append(sol['index_mn'][i][1]*set['Hh'])
+                plt.scatter(x_p, y_p, marker = 'o', s = 1, color ='k')
+                sol['stW'] +=1  
+                flag = 'W=%s' % str(sol['stW']) 
+                plt.savefig("%s.png" % flag)
+                plt.close()
+                
+                fig3 = plt.figure(3)
+                plt.title('%s%f' % ('Tie2 at t=',set['t']))
+                ax = fig3.gca(projection='3d')
+                ax.set_zlim(-0.1, 1)
+                ax.zaxis.set_major_locator(LinearLocator(10))
+                ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+                
+                p_sol = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
+                for j, y in enumerate(range(0,set['Ny']+1,2)):
+                    for i, x in enumerate(range(0,set['Nx']+1,2)):
+                        p_sol[i,j] = sol['p'][x,y]
+                surf = ax.plot_surface(x_sub_axis, y_sub_axis, p_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
+                        linewidth=0, antialiased=False)
+                fig3.colorbar(surf, shrink=0.5, aspect=5)
+                sol['stZ'] +=1  
+                flag = 'Z=%s' % str(sol['stZ']) 
+                plt.savefig("%s.png" % flag)
+                plt.close()
             
             '''EC'''
             fig = plt.figure()
@@ -115,53 +177,10 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                     y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
                 globals()['plo%s' % i] = ax.plot(x_p, y_p, 'b')
             sol['stU'] +=1  
-            flag = 'U=%s' % str(sol['st']) 
+            flag = 'U=%s' % str(sol['stU']) 
             plt.savefig("%s.png" % flag)
             plt.close()
             #plt.draw()
-            
-            '''MC'''
-            plt.figure()
-            plt.title('%s%f' % ('MC at t=',set['t']))
-            plt.xlim(set['Hh'],coef['X']-set['Hh'])
-            plt.ylim(set['Hh'],coef['Y']-set['Hh'])
-            x_p = []
-            y_p = []
-            for y in range(1,set['Ny'],2):
-                for x in range(1,set['Nx'],2):
-                    if sol['m'][x,y] == 1:
-                        x_p.append(x*set['Hh'])
-                        y_p.append(y*set['Hh'])
-            '''
-            for i in range(0,len(sol['m'])):
-                x_p.append(sol['m'][i][0]*set['Hh'])
-                y_p.append(sol['m'][i][1]*set['Hh'])
-            '''
-            plt.scatter(x_p, y_p, marker = 'o', s = 1, color ='k')
-            sol['stV'] +=1  
-            flag = 'V=%s' % str(sol['st']) 
-            plt.savefig("%s.png" % flag)
-            plt.close()
-            #plt.draw()  
-            
-            '''MC on EC''' 
-            plt.figure()
-            plt.title('%s%f' % ('MC on EC at t=',set['t']))
-            plt.xlim(set['Hh'],coef['X']-set['Hh'])
-            plt.ylim(set['Hh'],coef['Y']-set['Hh'])
-            #plt.xlim(set['Hh']*100,coef['X']-set['Hh']*100)
-            #plt.ylim(set['Hh']*100,coef['Y']-set['Hh']*100)
-            x_p = []
-            y_p = []
-            for i in range(0,len(sol['index_mn'])):
-                x_p.append(sol['index_mn'][i][0]*set['Hh'])
-                y_p.append(sol['index_mn'][i][1]*set['Hh'])
-            plt.scatter(x_p, y_p, marker = 'o', s = 1, color ='k')
-            sol['stW'] +=1  
-            flag = 'W=%s' % str(sol['st']) 
-            plt.savefig("%s.png" % flag)
-            plt.close()
-            
             
             '''Continuous Plot'''
             fig1 = plt.figure(1)
@@ -183,7 +202,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                     linewidth=0, antialiased=False)
             fig1.colorbar(surf, shrink=0.5, aspect=5)
             sol['stX'] +=1  
-            flag = 'X=%s' % str(sol['st']) 
+            flag = 'X=%s' % str(sol['stX']) 
             plt.savefig("%s.png" % flag)
             plt.close()
             
@@ -203,27 +222,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                     linewidth=0, antialiased=False)
             fig2.colorbar(surf, shrink=0.5, aspect=5)
             sol['stY'] +=1  
-            flag = 'Y=%s' % str(sol['st']) 
-            plt.savefig("%s.png" % flag)
-            plt.close()
-            
-            
-            fig3 = plt.figure(3)
-            plt.title('%s%f' % ('Tie2 at t=',set['t']))
-            ax = fig3.gca(projection='3d')
-            ax.set_zlim(-0.1, 1)
-            ax.zaxis.set_major_locator(LinearLocator(10))
-            ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
-            
-            p_sol = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
-            for j, y in enumerate(range(0,set['Ny']+1,2)):
-                for i, x in enumerate(range(0,set['Nx']+1,2)):
-                    p_sol[i,j] = sol['p'][x,y]
-            surf = ax.plot_surface(x_sub_axis, y_sub_axis, p_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
-                    linewidth=0, antialiased=False)
-            fig3.colorbar(surf, shrink=0.5, aspect=5)
-            sol['stZ'] +=1  
-            flag = 'Z=%s' % str(sol['st']) 
+            flag = 'Y=%s' % str(sol['stY']) 
             plt.savefig("%s.png" % flag)
             plt.close()
                      
@@ -244,7 +243,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                     y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
                 globals()['plo%s' % i] = ax.plot(x_p, y_p, 'b')
             sol['stT'] +=1  
-            flag = 'T=%s' % str(sol['st']) 
+            flag = 'T=%s' % str(sol['stT']) 
             plt.savefig("%s.png" % flag)
             plt.close()
             #plt.draw()
@@ -268,7 +267,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                     linewidth=0, antialiased=False)
             fig1.colorbar(surf, shrink=0.5, aspect=5)
             sol['stU'] +=1  
-            flag = 'U=%s' % str(sol['st']) 
+            flag = 'U=%s' % str(sol['stU']) 
             plt.savefig("%s.png" % flag)
             plt.close()
             
@@ -288,7 +287,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                     linewidth=0, antialiased=False)
             fig2.colorbar(surf, shrink=0.5, aspect=5)
             sol['stV'] +=1  
-            flag = 'V=%s' % str(sol['st']) 
+            flag = 'V=%s' % str(sol['stV']) 
             plt.savefig("%s.png" % flag)
             plt.close()          
              
@@ -314,7 +313,7 @@ print coef
 #    plt.subplot(211)
 #    plt.plot(t1, MC_per_EC_p, 'bo', t1, MC_per_EC_p, 'k')
 #    sol['stZZ'] +=1  
-#    flag = 'ZZ=%s' % str(sol['st']) 
+#    flag = 'ZZ=%s' % str(sol['stZZ']) 
 #    plt.savefig("%s.png" % flag)
 #    plt.close()
 '''Plot Continuous

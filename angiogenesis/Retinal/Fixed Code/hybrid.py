@@ -101,9 +101,9 @@ def hybrid_tech_c(coef, set, sol):
                 
                 '''Checking m space and calculating number of EC'''
                 if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-                    if not tipp == 'stay':  
+                    if not tipp == 'stay' and set['t'] > set['tm']:  
                         #calculate number of EC
-                        sol['number_ec'] += 1
+                        #sol['number_ec'] += 1
                                      
                         #Kalau di posisi n baru ada m, m nya dibuang
                         if sol['m'][xpos_new,ypos_new] == 1:
@@ -192,10 +192,11 @@ def hybrid_tech_c(coef, set, sol):
                                 '''Checking m space and calculating number of EC'''
                                 if not coef['Mic'] == 0 or not coef['Kappa'] == 0: 
                                     #calculate number of EC
-                                    sol['number_ec'] += 1
+                                    #sol['number_ec'] += 1
                                     #Kalau di posisi n baru ada m, m nya dibuang
-                                    if sol['m'][xpos_new,ypos_new] == 1:
-                                        sol['m'][xpos_new,ypos_new] == 0
-                                        sol['cell_m'].remove([xpos_new,ypos_new])
+                                    if set['t'] > set['tm']:
+                                        if sol['m'][xpos_new,ypos_new] == 1:
+                                            sol['m'][xpos_new,ypos_new] == 0
+                                            sol['cell_m'].remove([xpos_new,ypos_new])
         
     return sol

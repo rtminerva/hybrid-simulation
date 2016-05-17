@@ -8,12 +8,14 @@ def hybrid_tech_m(coef, set, sol):
     nom = 0
     
     '''Identify The fartest tip from center'''
+    '''
     distance = []
     for tip in sol['tip_cell']:
         r_f = numpy.sqrt((tip[0]*set['Hh']-set['O_x'])**2 + (tip[1]*set['Hh']-set['O_y'])**2)
         distance.append(r_f)
     far = max(distance) + 0.4
-    
+    '''
+    far = 100
     for cell in sol['cell_m']:
         xb = cell[0]
         yb = cell[1]

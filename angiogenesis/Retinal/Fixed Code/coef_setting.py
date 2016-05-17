@@ -65,6 +65,7 @@ def declare_coef():
     set['k'] = 0
     set['dt'] = 0.002
     set['error'] = 0.02
+    set['tm'] = 0.5
        
     '''To store solutions'''
     ##sol dictionaries dapat berubah
@@ -92,6 +93,6 @@ def declare_coef():
         sol['m'] = 0
         sol['cell_m'] = 0
         sol['index_mn'] = 0
-        sol['number_ec'] = 0
+        #sol['number_ec'] = 0
         sol['MC_per_EC'] = OrderedDict()
     return coef, set, sol
