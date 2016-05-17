@@ -21,7 +21,7 @@ def c_f_T(coef, set, sol):
             n_stacks = 1-n_tip                               
             
             if r_f <= (set['R_min'] + set['error']):
-                if x >= sol['matrix_tip'][2][0][0] and y >= sol['matrix_tip'][0][0][1]: #area 1
+                if x >= sol['inner_bound_tip'][2][0][0] and y >= sol['inner_bound_tip'][0][0][1]: #area 1
                     if sol['n'][x-1,y-1] == 1 or sol['n'][x-1,y+1] == 1 or sol['n'][x+1,y-1] == 1 or sol['n'][x+1,y+1] == 1:
                         n_bool = 1
                     else:
@@ -43,7 +43,7 @@ def c_f_T(coef, set, sol):
                     sol['f'][x,y] = f_o[x,y] + sol['tp']*coef['Beta']*n_bool*n_tip - sol['tp']*coef['Gama']*f_o[x,y]*n_bool*n_tip
                     
     
-                elif x < sol['matrix_tip'][2][0][0] and y > sol['matrix_tip'][0][0][1]: #area 2
+                elif x < sol['inner_bound_tip'][2][0][0] and y > sol['inner_bound_tip'][0][0][1]: #area 2
                     if sol['n'][x-1,y-1] == 1 or sol['n'][x-1,y+1] == 1 or sol['n'][x+1,y-1] == 1 or sol['n'][x+1,y+1] == 1:
                         n_bool = 1
                     else:
@@ -65,7 +65,7 @@ def c_f_T(coef, set, sol):
                     sol['f'][x,y] = f_o[x,y] + sol['tp']*coef['Beta']*n_bool*n_tip - sol['tp']*coef['Gama']*f_o[x,y]*n_bool*n_tip
                     
                         
-                elif x <= sol['matrix_tip'][2][0][0] and y <= sol['matrix_tip'][0][0][1]: #area 3
+                elif x <= sol['inner_bound_tip'][2][0][0] and y <= sol['inner_bound_tip'][0][0][1]: #area 3
                     if sol['n'][x-1,y-1] == 1 or sol['n'][x-1,y+1] == 1 or sol['n'][x+1,y-1] == 1 or sol['n'][x+1,y+1] == 1:
                         n_bool = 1
                     else:
@@ -87,7 +87,7 @@ def c_f_T(coef, set, sol):
                     sol['f'][x,y] = f_o[x,y] + sol['tp']*coef['Beta']*n_bool*n_tip - sol['tp']*coef['Gama']*f_o[x,y]*n_bool*n_tip
                     
                         
-                elif x > sol['matrix_tip'][2][0][0] and y < sol['matrix_tip'][0][0][1]: #area 4
+                elif x > sol['inner_bound_tip'][2][0][0] and y < sol['inner_bound_tip'][0][0][1]: #area 4
                     if sol['n'][x-1,y-1] == 1 or sol['n'][x-1,y+1] == 1 or sol['n'][x+1,y-1] == 1 or sol['n'][x+1,y+1] == 1:
                         n_bool = 1
                     else:

@@ -47,6 +47,7 @@ def hybrid_tech_c(coef, set, sol):
                         line_1.remove(i)
                 
                 list_prob_0 = line_1
+                #print 'corret:', len(list_prob_0), len(list_prob_1), len(list_prob_2), len(list_prob_3), len(list_prob_4)
                 
                 tes = randint(1,10000) #select integer number randomly between 1 and 100000
                 if tes in list_prob_0:
@@ -60,6 +61,7 @@ def hybrid_tech_c(coef, set, sol):
                     sol['list_tip_movement'][nom] = tipp
                     for i in list_prob_1:
                         list_prob_0.append(i)
+                    list_prob_1 =[]
                 elif tes in list_prob_2:   
                     tipp = 'right'
                     xpos_new = sol['matrix_tip'][nom][-1][0] + 2
@@ -69,6 +71,7 @@ def hybrid_tech_c(coef, set, sol):
                     sol['list_tip_movement'][nom] = tipp
                     for i in list_prob_2:
                         list_prob_0.append(i)
+                    list_prob_2 =[]
                 elif tes in list_prob_3: 
                     tipp = 'down'
                     xpos_new = sol['matrix_tip'][nom][-1][0]
@@ -78,6 +81,7 @@ def hybrid_tech_c(coef, set, sol):
                     sol['list_tip_movement'][nom] = tipp
                     for i in list_prob_3:
                         list_prob_0.append(i)
+                    list_prob_3 =[]
                 elif tes in list_prob_4: 
                     tipp = 'up'
                     xpos_new = sol['matrix_tip'][nom][-1][0]
@@ -87,6 +91,7 @@ def hybrid_tech_c(coef, set, sol):
                     sol['list_tip_movement'][nom] = tipp
                     for i in list_prob_4:
                         list_prob_0.append(i)
+                    list_prob_4 =[]
                 
                 '''Checking if new position hits any existing vessel'''
                 if not tipp == 'stay':
@@ -108,14 +113,13 @@ def hybrid_tech_c(coef, set, sol):
                         #Kalau di posisi n baru ada m, m nya dibuang
                         if sol['m'][xpos_new,ypos_new] == 1:
                             sol['m'][xpos_new,ypos_new] == 0
-                            sol['cell_m'].remove([xpos_new,ypos_new])
+                            #sol['cell_m'].remove([xpos_new,ypos_new])
                         
                 '''2.1 Branching Decision'''
                 if tipp == 'stay':
                     sol['life_time_tip'][nom] += sol['tp']
                 else:
-                    dirr_14 = dirr[:]
-                    if dirr_14.count(0) >= 3:
+                    if dirr.count(0) >= 3:
                         sol['life_time_tip'][nom] += sol['tp']
                     else:
                         if sol['life_time_tip'][nom] < coef['T_branch']: 
@@ -197,6 +201,6 @@ def hybrid_tech_c(coef, set, sol):
                                     if set['t'] > set['tm']:
                                         if sol['m'][xpos_new,ypos_new] == 1:
                                             sol['m'][xpos_new,ypos_new] == 0
-                                            sol['cell_m'].remove([xpos_new,ypos_new])
+                                           # sol['cell_m'].remove([xpos_new,ypos_new])
         
     return sol

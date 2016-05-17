@@ -5,7 +5,10 @@ def declare_coef():
     #to store coefficients
     coef = {}
     set = {}
-      
+    
+    #set['initial_prof'] ='retina_tip'
+    set['initial_prof'] = 'test_1_tip'
+    
     ##Endothelial (n)
     coef['Ro'] = 0.16
     coef['D_n'] = 0.00018
@@ -65,15 +68,16 @@ def declare_coef():
     set['k'] = 0
     set['dt'] = 0.002
     set['error'] = 0.02
-    set['tm'] = 0.5
+    set['tm'] = 0.004
        
     '''To store solutions'''
     ##sol dictionaries dapat berubah
     sol = {}
-    sol['stT'] = 0
-    sol['stU'] = 0
-    sol['stV'] = 0
+    sol['stEC'] = 0
+    sol['stVEGF'] = 0
+    sol['stFb'] = 0
     sol['tp'] = set['dt']
+    sol['inner_bound_tip'] = 0
     sol['matrix_tip'] = 0
     sol['list_tip_movement'] = 0
     sol['life_time_tip'] = 0
@@ -84,14 +88,18 @@ def declare_coef():
     sol['f'] = 0
     sol['tip_cell'] = 0
     if not coef['Kappa'] == 0 or not coef['Mic'] == 0:
-        sol['stW'] = 0
-        sol['stX'] = 0
-        sol['stY'] = 0
-        sol['stZ'] = 0
-        sol['stZZ'] = 0
+        set['initial_m'] = 'retina_tip'
+        if set['initial_prof'] == 'test_1_tip':
+            sol['stEC_MC_dist'] = 0
+        sol['stEC_MC'] = 0
+        sol['stMC'] = 0
+        sol['stMC_on_EC'] = 0
+        sol['stTie2'] = 0
+        sol['stPercentage_MC_on_EC'] = 0
         sol['p'] = 0
         sol['m'] = 0
-        sol['cell_m'] = 0
+        #sol['cell_m'] = 0
+        sol['kk'] = 1
         sol['index_mn'] = 0
         #sol['number_ec'] = 0
         sol['MC_per_EC'] = OrderedDict()

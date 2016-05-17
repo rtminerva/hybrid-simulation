@@ -7,17 +7,25 @@ def hybrid_tech_m(coef, set, sol):
     mo = sol['m'][:]
     nom = 0
     sol['index_mn'] = []
+    sol['cell_m'] = []
+    
+    for y in range(1,set['Ny'],2):
+        for x in range(1,set['Nx'],2):
+            if sol['m'][x,y] == 1:
+                sol['cell_m'].append([x,y])
+#    print 'Banyaknya cell m',len(sol['cell_m'])
+#     print 'Banyaknya m yang 1',numpy.count_nonzero(sol['m'])
     
     '''Identify The fartest tip from center'''
-    '''
+    
     distance = []
     for tip in sol['tip_cell']:
         r_f = numpy.sqrt((tip[0]*set['Hh']-set['O_x'])**2 + (tip[1]*set['Hh']-set['O_y'])**2)
         distance.append(r_f)
     far = max(distance) + 0.4
-    '''
-    far = 100
-    for cell in sol['cell_m']:
+    
+    #far = 100
+    for e, cell in enumerate(sol['cell_m']):
         xb = cell[0]
         yb = cell[1]
         r_f = numpy.sqrt((xb*set['Hh']-set['O_x'])**2 + (yb*set['Hh']-set['O_y'])**2)
@@ -86,7 +94,7 @@ def hybrid_tech_m(coef, set, sol):
                         nx = xb
                         ny = yb + 2
                         sol['m'][xb, yb + 2] = 1
-                        sol['m'][xb,yb] = 0
+                        sol['m'][xb,yb] = 0              
                         
                 #if sol['n'][nx,ny] == 1:
                 #    if [xb,yb] in sol['index_mn']:
@@ -97,8 +105,8 @@ def hybrid_tech_m(coef, set, sol):
                 #        sol['index_mn'].append([nx,ny])
     for y in range(1,set['Ny'],2):
         for x in range(1,set['Nx'],2):
-            if not [x,y] in sol['tip_cell']:
-                if sol['m'][x,y] == 1 and sol['n'][x,y] == 1:
-                    sol['index_mn'].append([x,y])
+            if sol['m'][x,y] == 1 and sol['n'][x,y] == 1:
+                sol['index_mn'].append([x,y])
+#     print 'Banyaknya MC yang di EC', len(sol['index_mn'])
     
     return sol

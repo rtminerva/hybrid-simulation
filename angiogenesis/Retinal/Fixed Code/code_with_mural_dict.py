@@ -61,14 +61,20 @@ def boolean_1_iter(coef, set, sol, check = 'out'):
             sol = hybrid_tech_c(coef, set, sol)
             start2 = timer()
             '''1. Anastomosis & Tip Cell'''
-            if set['k'] > 1:
-                sol = check_anastomosis(sol)
+            sol = check_anastomosis(sol)
             start3 = timer()
             if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
+                #print set['tm'], set['t']
                 if set['t'] > set['tm']:
-                    sol = init_m(coef,set,sol)
-                    sol = hybrid_tech_m(coef, set, sol)
-                    start4 = timer()
+                    #print sol['kk']
+                    if sol['kk'] == 1:
+                        sol = init_m(coef,set,sol)
+                        sol['kk']+= 1
+                    else:
+                        sol['kk'] = 10
+                        #print 'enter here'
+                        sol = hybrid_tech_m(coef, set, sol)
+                        start4 = timer()
                 '''Solving c,f,T'''
                 sol = c_f_T(coef, set, sol)
                 start5 = timer()            
@@ -76,7 +82,7 @@ def boolean_1_iter(coef, set, sol, check = 'out'):
             print 'Check Anastomosis Time', start3-start2
             print 'Hybrid for n time', start2-start1
             if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-                if set['t'] > set['tm']:
+                if sol['kk'] > 2:
                     print 'Hybrid for m time', start4-start3
                     print 'Solve c,f,T time', start5-start4
                 else:
