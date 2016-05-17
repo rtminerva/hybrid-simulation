@@ -6,6 +6,7 @@ import numpy
 def hybrid_tech_m(coef, set, sol):
     mo = sol['m'][:]
     nom = 0
+    sol['index_mn'] = []
     
     '''Identify The fartest tip from center'''
     '''
@@ -63,34 +64,41 @@ def hybrid_tech_m(coef, set, sol):
                 ny = yb
                 tes = randint(1,10000) #select integer number randomly between 1 and 100000
                 if tes in list_prob_1:
-                    if (xb - 2, yb) not in sol['tip_cell']:
+                    if [xb - 2, yb] not in sol['tip_cell']:
                         nx = xb - 2
                         ny = yb
                         sol['m'][xb - 2, yb] = 1
                         sol['m'][xb,yb] = 0
                 elif tes in list_prob_2:   
-                    if (xb + 2, yb) not in sol['tip_cell']:
+                    if [xb + 2, yb] not in sol['tip_cell']:
                         nx = xb + 2
                         ny = yb
                         sol['m'][xb + 2, yb] = 1
                         sol['m'][xb,yb] = 0
                 elif tes in list_prob_3: 
-                    if (xb, yb - 2) not in sol['tip_cell']:
+                    if [xb, yb - 2] not in sol['tip_cell']:
                         nx = xb
                         ny = yb - 2
                         sol['m'][xb, yb - 2] = 1
                         sol['m'][xb,yb] = 0
                 elif tes in list_prob_4: 
-                    if (xb, yb + 2) not in sol['tip_cell']:
+                    if [xb, yb + 2] not in sol['tip_cell']:
                         nx = xb
                         ny = yb + 2
                         sol['m'][xb, yb + 2] = 1
                         sol['m'][xb,yb] = 0
-                if sol['n'][nx,ny] == 1:
-                    if [xb,yb] in sol['index_mn']:
-                        sol['index_mn'].remove([xb,yb])
-                    sol['index_mn'].append([nx,ny])
+                        
+                #if sol['n'][nx,ny] == 1:
+                #    if [xb,yb] in sol['index_mn']:
+                #        sol['index_mn'].remove([xb,yb])
+                #    sol['index_mn'].append([nx,ny])
                 #for ec_i in range(0,len(sol['matrix_tip'])):
                 #    if (nx,ny) in sol['matrix_tip'][ec_i]:
                 #        sol['index_mn'].append([nx,ny])
+    for y in range(1,set['Ny'],2):
+        for x in range(1,set['Nx'],2):
+            if not [x,y] in sol['tip_cell']:
+                if sol['m'][x,y] == 1 and sol['n'][x,y] == 1:
+                    sol['index_mn'].append([x,y])
+    
     return sol

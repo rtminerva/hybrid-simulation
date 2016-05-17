@@ -14,7 +14,7 @@ def c_f_T(coef, set, sol):
             r_f = numpy.sqrt((x*set['Hh']-set['O_x'])**2 + (y*set['Hh']-set['O_y'])**2)
             
             '''TIP CELL?'''
-            if (x-1,y-1) in sol['tip_cell'] or (x+1,y-1) in sol['tip_cell'] or (x+1,y+1) in sol['tip_cell'] or (x-1,y+1) in sol['tip_cell']:
+            if [x-1,y-1] in sol['tip_cell'] or [x+1,y-1] in sol['tip_cell'] or [x+1,y+1] in sol['tip_cell'] or [x-1,y+1] in sol['tip_cell']:
                 n_tip = 1
             else:
                 n_tip = 0

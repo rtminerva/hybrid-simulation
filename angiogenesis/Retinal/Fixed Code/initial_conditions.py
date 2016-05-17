@@ -162,7 +162,7 @@ def initial_prof(coef, set, sol):
 
     '''Identifying Tip Cell'''
     for e,ti in enumerate(sol['matrix_tip']):
-        sol['tip_cell'].append(sol['matrix_tip'][e][-1])
+        sol['tip_cell'].append([sol['matrix_tip'][e][-1][0],sol['matrix_tip'][e][-1][1]])
     
     
     '''Initial Mural & Tie2''' #???????????????????????????

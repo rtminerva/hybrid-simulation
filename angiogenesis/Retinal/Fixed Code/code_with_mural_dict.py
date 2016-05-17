@@ -38,10 +38,10 @@ def check_anastomosis(sol):
     if len(sol['sp_stop']) > 0:               
         for e,tip in enumerate(sol['matrix_tip']):
             if not e in sol['sp_stop']:
-                sol['tip_cell'].append(tip[-1])
+                sol['tip_cell'].append([tip[-1][0],tip[-1][1]])
     else:
         for tip in sol['matrix_tip']:
-            sol['tip_cell'].append(tip[-1])
+            sol['tip_cell'].append([tip[-1][0],tip[-1][1]])
                 
     return sol
 
