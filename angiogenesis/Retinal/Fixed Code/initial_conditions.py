@@ -170,6 +170,7 @@ def initial_prof(coef, set, sol):
         sol['number_ec'] = 8
         sol['index_mn'] = []
         sol['m'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
+        sol['cell_m'] = []
         sol['p'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
         
         '''Randomly spotted in domain'''
@@ -180,6 +181,7 @@ def initial_prof(coef, set, sol):
                 r_f = numpy.sqrt((idx_m_1[id]*set['Hh']-set['O_x'])**2 + (idx_m_2[id]*set['Hh']-set['O_y'])**2)
                 if not sol['m'][idx_m_1[id], idx_m_2[id]] == 1 and not [(idx_m_1[id], idx_m_2[id])] in sol['matrix_tip'] and r_f > set['R_min']:
                     sol['m'][idx_m_1[id], idx_m_2[id]] = 1
+                    sol['cell_m'].append([idx_m_1[id], idx_m_2[id]])
         del idx_m_1
         del idx_m_2
      

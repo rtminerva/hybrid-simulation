@@ -55,7 +55,22 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     '''SAVING PICTURES'''    
     if not coef['Kappa'] == 0 or not coef['Mic'] == 0:   
         if set['k'] % 50 == 0:
-            sol['MC_per_EC'][set['k']] = gg        
+            sol['MC_per_EC'][set['k']] = gg
+        if set['k'] % 500 == 0 and not set['k'] == 0:
+            print 'Percentage of MC on EC:', sol['MC_per_EC']
+            '''Percentage MC on EC'''
+            t1 = numpy.arange(0.0, set['t'], 0.1)
+            MC_per_EC_p=[]
+            for ti in range(0,set['k']+1,50):
+                MC_per_EC_p.append(sol['MC_per_EC'][ti])
+            plt.figure(10)
+            plt.title('%s%f' % ('Percentage of MC on EC at t=',set['t']))
+            plt.subplot(211)
+            plt.plot(t1, MC_per_EC_p, 'bo', t1, MC_per_EC_p, 'k')
+            sol['stZZ'] +=1  
+            flag = 'ZZ=%s' % str(sol['st']) 
+            plt.savefig("%s.png" % flag)
+            plt.close()      
         if set['k'] % 50 == 0: #and not set['k'] == 0 :                            
             '''EC & MC'''           
             fig = plt.figure()
@@ -78,8 +93,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                 x_p.append(sol['index_mn'][i][0]*set['Hh'])
                 y_p.append(sol['index_mn'][i][1]*set['Hh'])
             plt.scatter(x_p, y_p, marker = 'o', s = 1, color ='k')
-            sol['st'] +=1  
-            flag = 'x=%s' % str(sol['st']) 
+            sol['stT'] +=1  
+            flag = 'T=%s' % str(sol['st']) 
             plt.savefig("%s.png" % flag)
             plt.close()
             #plt.draw()
@@ -99,8 +114,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                     x_p.append(sol['matrix_tip'][i][j][0]*set['Hh'])
                     y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
                 globals()['plo%s' % i] = ax.plot(x_p, y_p, 'b')
-            sol['st'] +=1  
-            flag = 'x=%s' % str(sol['st']) 
+            sol['stU'] +=1  
+            flag = 'U=%s' % str(sol['st']) 
             plt.savefig("%s.png" % flag)
             plt.close()
             #plt.draw()
@@ -123,8 +138,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                 y_p.append(sol['m'][i][1]*set['Hh'])
             '''
             plt.scatter(x_p, y_p, marker = 'o', s = 1, color ='k')
-            sol['st'] +=1  
-            flag = 'x=%s' % str(sol['st']) 
+            sol['stV'] +=1  
+            flag = 'V=%s' % str(sol['st']) 
             plt.savefig("%s.png" % flag)
             plt.close()
             #plt.draw()  
@@ -142,8 +157,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                 x_p.append(sol['index_mn'][i][0]*set['Hh'])
                 y_p.append(sol['index_mn'][i][1]*set['Hh'])
             plt.scatter(x_p, y_p, marker = 'o', s = 1, color ='k')
-            sol['st'] +=1  
-            flag = 'x=%s' % str(sol['st']) 
+            sol['stW'] +=1  
+            flag = 'W=%s' % str(sol['st']) 
             plt.savefig("%s.png" % flag)
             plt.close()
             
@@ -167,8 +182,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             surf = ax.plot_surface(x_sub_axis, y_sub_axis, c_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
                     linewidth=0, antialiased=False)
             fig1.colorbar(surf, shrink=0.5, aspect=5)
-            sol['st'] +=1  
-            flag = 'x=%s' % str(sol['st']) 
+            sol['stX'] +=1  
+            flag = 'X=%s' % str(sol['st']) 
             plt.savefig("%s.png" % flag)
             plt.close()
             
@@ -187,8 +202,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             surf = ax.plot_surface(x_sub_axis, y_sub_axis, f_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
                     linewidth=0, antialiased=False)
             fig2.colorbar(surf, shrink=0.5, aspect=5)
-            sol['st'] +=1  
-            flag = 'x=%s' % str(sol['st']) 
+            sol['stY'] +=1  
+            flag = 'Y=%s' % str(sol['st']) 
             plt.savefig("%s.png" % flag)
             plt.close()
             
@@ -207,8 +222,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             surf = ax.plot_surface(x_sub_axis, y_sub_axis, p_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
                     linewidth=0, antialiased=False)
             fig3.colorbar(surf, shrink=0.5, aspect=5)
-            sol['st'] +=1  
-            flag = 'x=%s' % str(sol['st']) 
+            sol['stZ'] +=1  
+            flag = 'Z=%s' % str(sol['st']) 
             plt.savefig("%s.png" % flag)
             plt.close()
                      
@@ -228,8 +243,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                     x_p.append(sol['matrix_tip'][i][j][0]*set['Hh'])
                     y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
                 globals()['plo%s' % i] = ax.plot(x_p, y_p, 'b')
-            sol['st'] +=1  
-            flag = 'x=%s' % str(sol['st']) 
+            sol['stT'] +=1  
+            flag = 'T=%s' % str(sol['st']) 
             plt.savefig("%s.png" % flag)
             plt.close()
             #plt.draw()
@@ -252,8 +267,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             surf = ax.plot_surface(x_sub_axis, y_sub_axis, c_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
                     linewidth=0, antialiased=False)
             fig1.colorbar(surf, shrink=0.5, aspect=5)
-            sol['st'] +=1  
-            flag = 'x=%s' % str(sol['st']) 
+            sol['stU'] +=1  
+            flag = 'U=%s' % str(sol['st']) 
             plt.savefig("%s.png" % flag)
             plt.close()
             
@@ -272,8 +287,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             surf = ax.plot_surface(x_sub_axis, y_sub_axis, f_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
                     linewidth=0, antialiased=False)
             fig2.colorbar(surf, shrink=0.5, aspect=5)
-            sol['st'] +=1  
-            flag = 'x=%s' % str(sol['st']) 
+            sol['stV'] +=1  
+            flag = 'V=%s' % str(sol['st']) 
             plt.savefig("%s.png" % flag)
             plt.close()          
              
@@ -287,21 +302,21 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
 print '*************DONE*****************'
 print '''All coefficients:'''
 print coef
-if not coef['Kappa'] == 0 or not coef['Mic'] == 0:
-    print 'Percentage of MC on EC:', sol['MC_per_EC']
-    '''Percentage MC on EC'''
-    t1 = numpy.arange(0.0, 10.1, 0.1)
-    MC_per_EC_p=[]
-    for ti in range(0,set['k']+1,50):
-        MC_per_EC_p.append(sol['MC_per_EC'][ti])
-    plt.figure(10)
-    plt.title('%s%f' % ('Percentage of MC on EC at t=',set['t']))
-    plt.subplot(211)
-    plt.plot(t1, MC_per_EC_p, 'bo', t1, MC_per_EC_p, 'k')
-    sol['st'] +=1  
-    flag = 'x=%s' % str(sol['st']) 
-    plt.savefig("%s.png" % flag)
-    plt.close()
+#if not coef['Kappa'] == 0 or not coef['Mic'] == 0:
+#    print 'Percentage of MC on EC:', sol['MC_per_EC']
+#    '''Percentage MC on EC'''
+#    t1 = numpy.arange(0.0, 10.1, 0.1)
+#    MC_per_EC_p=[]
+#    for ti in range(0,set['k']+1,50):
+#        MC_per_EC_p.append(sol['MC_per_EC'][ti])
+#    plt.figure(10)
+#    plt.title('%s%f' % ('Percentage of MC on EC at t=',set['t']))
+#    plt.subplot(211)
+#    plt.plot(t1, MC_per_EC_p, 'bo', t1, MC_per_EC_p, 'k')
+#    sol['stZZ'] +=1  
+#    flag = 'ZZ=%s' % str(sol['st']) 
+#    plt.savefig("%s.png" % flag)
+#    plt.close()
 '''Plot Continuous
 fig1 = plt.figure(1)
 ax = fig1.gca(projection='3d')

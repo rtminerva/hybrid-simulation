@@ -108,6 +108,7 @@ def hybrid_tech_c(coef, set, sol):
                         #Kalau di posisi n baru ada m, m nya dibuang
                         if sol['m'][xpos_new,ypos_new] == 1:
                             sol['m'][xpos_new,ypos_new] == 0
+                            sol['cell_m'].remove([xpos_new,ypos_new])
                         
                 '''2.1 Branching Decision'''
                 if tipp == 'stay':
@@ -195,5 +196,6 @@ def hybrid_tech_c(coef, set, sol):
                                     #Kalau di posisi n baru ada m, m nya dibuang
                                     if sol['m'][xpos_new,ypos_new] == 1:
                                         sol['m'][xpos_new,ypos_new] == 0
+                                        sol['cell_m'].remove([xpos_new,ypos_new])
         
     return sol

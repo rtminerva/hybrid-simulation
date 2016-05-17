@@ -69,7 +69,9 @@ def declare_coef():
     '''To store solutions'''
     ##sol dictionaries dapat berubah
     sol = {}
-    sol['st'] = 0
+    sol['stT'] = 0
+    sol['stU'] = 0
+    sol['stV'] = 0
     sol['tp'] = set['dt']
     sol['matrix_tip'] = 0
     sol['list_tip_movement'] = 0
@@ -81,8 +83,14 @@ def declare_coef():
     sol['f'] = 0
     sol['tip_cell'] = 0
     if not coef['Kappa'] == 0 or not coef['Mic'] == 0:
+        sol['stW'] = 0
+        sol['stX'] = 0
+        sol['stY'] = 0
+        sol['stZ'] = 0
+        sol['stZZ'] = 0
         sol['p'] = 0
         sol['m'] = 0
+        sol['cell_m'] = 0
         sol['index_mn'] = 0
         sol['number_ec'] = 0
         sol['MC_per_EC'] = OrderedDict()
