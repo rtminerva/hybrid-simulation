@@ -50,6 +50,7 @@ def boolean_1_iter(coef, set, sol, check = 'out'):
     if set['k'] == 0:
         '''Initial Profile'''
         sol = initial_prof(coef, set, sol)  
+        sol = init_m(coef,set,sol)
     else:                             
         if len(sol['sp_stop']) == len(sol['matrix_tip']):
             sol['stop_iter'] = 100000 #sp_stop harus dicek di setiap movement and branching. karena sudah tidak bergerak lagi yang ada di list ini.
@@ -65,10 +66,10 @@ def boolean_1_iter(coef, set, sol, check = 'out'):
             start3 = timer()
             if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
                 #print set['tm'], set['t']
-                if set['t'] > set['tm']:
+                if set['t'] >= set['tm']:
                     #print sol['kk']
                     if sol['kk'] == 1:
-                        sol = init_m(coef,set,sol)
+                        #sol = init_m(coef,set,sol)
                         sol['kk']+= 1
                     else:
                         sol['kk'] = 10

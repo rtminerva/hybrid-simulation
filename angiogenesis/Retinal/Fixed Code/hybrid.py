@@ -149,9 +149,9 @@ def hybrid_tech_c(coef, set, sol):
                                 sol['matrix_tip'].append([(xb,yb)])
                                 sol['life_time_tip'].append(0)
                                 sol['list_tip_movement'].append('start')
-        
+                                tipp = 'stay'
                                 while tipp == 'stay':
-                                    tes = randint(1,100000) #select integer number randomly between 1 and 100000
+                                    tes = randint(1,10000) #select integer number randomly between 1 and 100000
                                     if tes in list_prob_0:
                                         tipp = 'stay'
                                     elif tes in list_prob_1:

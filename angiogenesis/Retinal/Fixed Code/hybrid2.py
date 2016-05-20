@@ -8,28 +8,34 @@ def hybrid_tech_m(coef, set, sol):
     nom = 0
     sol['index_mn'] = []
     sol['cell_m'] = []
+    look = 0
     
     for y in range(1,set['Ny'],2):
         for x in range(1,set['Nx'],2):
             if sol['m'][x,y] == 1:
                 sol['cell_m'].append([x,y])
-#    print 'Banyaknya cell m',len(sol['cell_m'])
+    print 'Banyaknya cell m',len(sol['cell_m'])
 #     print 'Banyaknya m yang 1',numpy.count_nonzero(sol['m'])
     
     '''Identify The fartest tip from center'''
-    
+    '''
     distance = []
     for tip in sol['tip_cell']:
         r_f = numpy.sqrt((tip[0]*set['Hh']-set['O_x'])**2 + (tip[1]*set['Hh']-set['O_y'])**2)
         distance.append(r_f)
     far = max(distance) + 0.4
-    
-    #far = 100
+    '''
+    far = 100
     for e, cell in enumerate(sol['cell_m']):
         xb = cell[0]
         yb = cell[1]
-        r_f = numpy.sqrt((xb*set['Hh']-set['O_x'])**2 + (yb*set['Hh']-set['O_y'])**2)
-        if r_f <= far:
+        if set['layout'] == 'retina':
+            r_f = numpy.sqrt((xb*set['Hh']-set['O_x'])**2 + (yb*set['Hh']-set['O_y'])**2)
+            if r_f <= far:
+                look = 1
+        else:
+            look = 1
+        if look == 1:
             line_1 = range(1,10001)
         
             dirr, space = movement_dir(coef, set, sol, xb, yb, nom, n_dir = False)

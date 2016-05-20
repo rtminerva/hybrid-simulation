@@ -102,6 +102,16 @@ def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
         pijx = 1/(2*set['h'])*(sol['p'][xb+1,yb+1]-sol['p'][xb-1,yb+1]+sol['p'][xb+1,yb-1]-sol['p'][xb-1,yb-1])
         pijy = 1/(2*set['h'])*(sol['p'][xb+1,yb+1]-sol['p'][xb+1,yb-1]+sol['p'][xb-1,yb+1]-sol['p'][xb-1,yb-1])
         
+        '''
+        print 'Tie around'
+        print sol['p'][xb+1,yb+1]
+        print sol['p'][xb+1,yb-1]
+        print sol['p'][xb-1,yb+1]
+        print sol['p'][xb-1,yb-1]
+        print 'pijx', pijx
+        print 'pijy', pijy
+        '''
+        
         pijx_p = max(0,pijx)
         pijx_n = max(0,-pijx)
         pijy_p = max(0,pijy)
@@ -113,27 +123,43 @@ def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
         Gijy_p = coef['Ki_m']/(1+coef['Al_m']*1/4*(sol['p'][xb-1,yb+1]+sol['p'][xb+1,yb+1]+sol['p'][xb-1,yb-1]+sol['p'][xb+1,yb-1]))*pijy_p
         Gijy_n = coef['Ki_m']/(1+coef['Al_m']*1/4*(sol['p'][xb-1,yb+1]+sol['p'][xb+1,yb+1]+sol['p'][xb-1,yb-1]+sol['p'][xb+1,yb-1]))*pijy_n
         
-        P_1 = int((sol['tp']/(set['h']**2)*coef['D_n']+sol['tp']/(set['h'])*Gijx_n)*10000)
-        P_2 = int((sol['tp']/(set['h']**2)*coef['D_n']+sol['tp']/(set['h'])*Gijx_p)*10000)
-        P_3 = int((sol['tp']/(set['h']**2)*coef['D_n']+sol['tp']/(set['h'])*Gijy_n)*10000)
-        P_4 = int((sol['tp']/(set['h']**2)*coef['D_n']+sol['tp']/(set['h'])*Gijy_p)*10000)
+        P_1 = int((sol['tp']/(set['h']**2)*coef['D_m']+sol['tp']/(set['h'])*Gijx_n)*10000)
+        P_2 = int((sol['tp']/(set['h']**2)*coef['D_m']+sol['tp']/(set['h'])*Gijx_p)*10000)
+        P_3 = int((sol['tp']/(set['h']**2)*coef['D_m']+sol['tp']/(set['h'])*Gijy_n)*10000)
+        P_4 = int((sol['tp']/(set['h']**2)*coef['D_m']+sol['tp']/(set['h'])*Gijy_p)*10000)
         
-        r_fl = numpy.sqrt((lx*set['Hh']-set['O_x'])**2 + (yb*set['Hh']-set['O_y'])**2)
-        r_fr = numpy.sqrt((rx*set['Hh']-set['O_x'])**2 + (yb*set['Hh']-set['O_y'])**2)
-        r_fd = numpy.sqrt((xb*set['Hh']-set['O_x'])**2 + (dy*set['Hh']-set['O_y'])**2)
-        r_fu = numpy.sqrt((xb*set['Hh']-set['O_x'])**2 + (uy*set['Hh']-set['O_y'])**2)
+        #print 'probability m', ',',P_1,',',P_2,',',P_3,',',P_4
         
-        if r_fl >= (set['R_min'] + set['error']):
-            if not P_1 == 0 and lx>0:# and r_fl >= (set['R_min'] + set['error']):
+        if set['layout'] == 'retina':
+            r_fl = numpy.sqrt((lx*set['Hh']-set['O_x'])**2 + (yb*set['Hh']-set['O_y'])**2)
+            r_fr = numpy.sqrt((rx*set['Hh']-set['O_x'])**2 + (yb*set['Hh']-set['O_y'])**2)
+            r_fd = numpy.sqrt((xb*set['Hh']-set['O_x'])**2 + (dy*set['Hh']-set['O_y'])**2)
+            r_fu = numpy.sqrt((xb*set['Hh']-set['O_x'])**2 + (uy*set['Hh']-set['O_y'])**2)
+            
+            if r_fl >= (set['R_min'] + set['error']):
+                if not P_1 == 0 and lx>0:# and r_fl >= (set['R_min'] + set['error']):
+                    if sol['m'][lx,yb] == 1:
+                        P_1 = 0
+                if not P_2 == 0 and rx<set['Nx']:# and r_fr >= (set['R_min'] + set['error']):
+                    if sol['m'][rx,yb] == 1:
+                        P_2 = 0
+                if not P_3 == 0 and dy>0:# and r_fd >= (set['R_min'] + set['error']):
+                    if sol['m'][xb,dy] == 1:
+                        P_3 = 0
+                if not P_4 == 0 and uy<set['Ny']:# and r_fu >= (set['R_min'] + set['error']):
+                    if sol['m'][xb,uy] == 1:
+                        P_4 = 0  
+        else:
+            if not P_1 == 0 and lx>0:
                 if sol['m'][lx,yb] == 1:
                     P_1 = 0
-            if not P_2 == 0 and rx<set['Nx']:# and r_fr >= (set['R_min'] + set['error']):
+            if not P_2 == 0 and rx<set['Nx']:
                 if sol['m'][rx,yb] == 1:
                     P_2 = 0
-            if not P_3 == 0 and dy>0:# and r_fd >= (set['R_min'] + set['error']):
+            if not P_3 == 0 and dy>0:
                 if sol['m'][xb,dy] == 1:
                     P_3 = 0
-            if not P_4 == 0 and uy<set['Ny']:# and r_fu >= (set['R_min'] + set['error']):
+            if not P_4 == 0 and uy<set['Ny']:
                 if sol['m'][xb,uy] == 1:
                     P_4 = 0  
     
@@ -144,30 +170,31 @@ def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
       
         
     '''Boundary Checking'''
-    Pos = (xb,yb)
-    r_f = numpy.sqrt((xb*set['Hh']-set['O_x'])**2 + (yb*set['Hh']-set['O_y'])**2) 
-    if Pos == sol['inner_bound_tip'][0][0]:
-        P_2 = 0        
-    elif Pos == sol['inner_bound_tip'][1][0]:
-        P_1 = 0
-    elif Pos == sol['inner_bound_tip'][2][0]:
-        P_4 = 0
-    elif Pos == sol['inner_bound_tip'][3][0]:
-        P_3 = 0
-    elif r_f <= (set['R_min'] + set['error']):
-        if xb >= sol['inner_bound_tip'][2][0][0] and yb >= sol['inner_bound_tip'][0][0][1]:
+    if set['layout'] == 'retina':
+        Pos = (xb,yb)
+        r_f = numpy.sqrt((xb*set['Hh']-set['O_x'])**2 + (yb*set['Hh']-set['O_y'])**2) 
+        if Pos == sol['inner_bound_tip'][0][0]:
+            P_2 = 0        
+        elif Pos == sol['inner_bound_tip'][1][0]:
             P_1 = 0
-            P_3 = 0
-        elif xb <= sol['inner_bound_tip'][2][0][0] and yb >= sol['inner_bound_tip'][0][0][1]:
-            P_2 = 0
-            P_3 = 0
-        elif xb <= sol['inner_bound_tip'][2][0][0] and yb <= sol['inner_bound_tip'][0][0][1]:
-            P_2 = 0
+        elif Pos == sol['inner_bound_tip'][2][0]:
             P_4 = 0
-        elif xb >= sol['inner_bound_tip'][2][0][0] and yb <= sol['inner_bound_tip'][0][0][1]:
-            P_1 = 0
-            P_4 = 0
-    elif yb == 1: #batas bawah
+        elif Pos == sol['inner_bound_tip'][3][0]:
+            P_3 = 0
+        elif r_f <= (set['R_min'] + set['error']):
+            if xb >= sol['inner_bound_tip'][2][0][0] and yb >= sol['inner_bound_tip'][0][0][1]:
+                P_1 = 0
+                P_3 = 0
+            elif xb <= sol['inner_bound_tip'][2][0][0] and yb >= sol['inner_bound_tip'][0][0][1]:
+                P_2 = 0
+                P_3 = 0
+            elif xb <= sol['inner_bound_tip'][2][0][0] and yb <= sol['inner_bound_tip'][0][0][1]:
+                P_2 = 0
+                P_4 = 0
+            elif xb >= sol['inner_bound_tip'][2][0][0] and yb <= sol['inner_bound_tip'][0][0][1]:
+                P_1 = 0
+                P_4 = 0
+    if yb == 1: #batas bawah
         P_3 = 0
         if xb == 1: #pojok kiri bawah
             P_1 = 0

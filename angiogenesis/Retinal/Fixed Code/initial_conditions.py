@@ -10,13 +10,20 @@ def initial_prof(coef, set, sol):
     sol['c'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['f'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     
-    for y in range(0,set['Ny']+1,2):
-        for x in range(0,set['Nx']+1,2):
-            r_f = numpy.sqrt((x*set['Hh']-set['O_x'])**2 + (y*set['Hh']-set['O_y'])**2)
-            if r_f >= set['R_min']:# + numpy.sqrt(set['error']):
-                sol['c'][x,y] = 0.5-0.45*numpy.exp(-(r_f**2)/0.45)
+    if set['layout'] == 'retina':
+        for y in range(0,set['Ny']+1,2):
+            for x in range(0,set['Nx']+1,2):
+                r_f = numpy.sqrt((x*set['Hh']-set['O_x'])**2 + (y*set['Hh']-set['O_y'])**2)
+                if r_f >= set['R_min']:# + numpy.sqrt(set['error']):
+                    sol['c'][x,y] = 0.5-0.45*numpy.exp(-(r_f**2)/0.45)
+                    sol['f'][x,y] = 0.5
+                    #sol['f'][x,y] = 0.5-0.45*numpy.exp(-(set['R_max']-r_f)**2/0.45) 
+    
+    if set['layout'] == 'rectangular':
+        for y in range(0,set['Ny']+1,2):
+            for x in range(0,set['Nx']+1,2):
+                sol['c'][x,y] = numpy.exp(-(1-x*set['Hh'])**2/0.45)
                 sol['f'][x,y] = 0.5
-                #sol['f'][x,y] = 0.5-0.45*numpy.exp(-(set['R_max']-r_f)**2/0.45) 
                 
     
     sol['n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
@@ -28,7 +35,21 @@ def initial_prof(coef, set, sol):
     sol['tip_cell'] = []
     
     
-    ''''Initial Tips at cente of small circle'''                
+    ''''Initial Tips'''
+    '''
+    
+    
+    TIP 2
+    
+    
+    TIP 1
+    
+    
+    TIP 0
+    
+    
+    '''  
+       
     
     '''
                 TIP 3
@@ -45,7 +66,42 @@ def initial_prof(coef, set, sol):
     
                 TIP 2
     '''
-    if set['initial_prof'] == 'test_1_tip':
+    if set['initial_prof'] == 'rectangular_1_tip':
+        y = set['Ny']/2 
+        if y % 2 == 0:
+            y += 1
+        sol['matrix_tip'].append([(1,y)])
+        sol['n'][1,y] = 1
+        sol['list_tip_movement'].append('start') #movement tip
+        sol['life_time_tip'].append(0) #lifetime
+    elif set['initial_prof'] == 'rectangular_tip':
+        '''Tip 0'''
+        y = set['Ny']/4
+        if y % 2 == 0:
+            y += 1
+        sol['matrix_tip'].append([(1,y)])
+        sol['n'][1,y] = 1
+        sol['list_tip_movement'].append('start') #movement tip
+        sol['life_time_tip'].append(0) #lifetime
+        
+        '''TIP 1'''
+        y1 = set['Ny']/2 
+        if y1 % 2 == 0:
+            y1 += 1
+        sol['matrix_tip'].append([(1,y1)])
+        sol['n'][1,y1] = 1
+        sol['list_tip_movement'].append('start') #movement tip
+        sol['life_time_tip'].append(0) #lifetime
+        
+        '''TIP 2'''
+        y2 = y + y1
+        if y2 % 2 == 0:
+            y2 += 1
+        sol['matrix_tip'].append([(1,y2)])
+        sol['n'][1,y2] = 1
+        sol['list_tip_movement'].append('start') #movement tip
+        sol['life_time_tip'].append(0) #lifetime
+    elif set['initial_prof'] == 'retina_1_tip':
         '''Tip 0'''
         y1 = set['Ny']/2 + 1
         x = set['Nx']/2 + 1
@@ -61,6 +117,7 @@ def initial_prof(coef, set, sol):
                 x = 0
             else:
                 x -=2
+        
         '''Other bound'''
         x = set['Nx']/2 + 1
         '''Tip 1'''
@@ -273,10 +330,8 @@ def initial_prof(coef, set, sol):
     
     '''Initial Mural & Tie2''' #???????????????????????????
     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-        #sol['number_ec'] = 8
         sol['index_mn'] = []
         sol['m'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
-        #sol['cell_m'] = []
         sol['p'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
      
     print 'initial tips:', sol['matrix_tip']
