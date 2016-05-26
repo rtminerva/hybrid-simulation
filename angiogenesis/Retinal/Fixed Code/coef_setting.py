@@ -27,7 +27,7 @@ def declare_coef():
     
     if not coef['Kappa'] == 0 or not coef['Mic'] == 0:
         ##With Ang2
-        coef['Ang2'] = True
+        coef['Ang2'] = False
         
         ##Mural Cell (m)
         coef['D_m'] = 0.00018 #0.009
