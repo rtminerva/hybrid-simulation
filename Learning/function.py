@@ -1,3 +1,0 @@
-def rin():
-   def ruy():
-    

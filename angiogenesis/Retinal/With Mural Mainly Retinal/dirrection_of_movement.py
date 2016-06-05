@@ -83,19 +83,13 @@ def movement_dir(coef, set, sol, xb, yb, nom, n_dir = True):
         '''Checking Space for n'''
         for tep in range(0,len(sol['matrix_tip'])):
             if not tep == nom:
-               # if (lx,yb) in sol['matrix_tip'][tep] and (rx,yb) in sol['matrix_tip'][tep] and (xb,dy) in sol['matrix_tip'][tep] and (xb,uy) in sol['matrix_tip'][tep]:
-               #     move = 'stop'
-                if (lx,yb) in sol['matrix_tip'][tep]:
-                    #P_1 = 0
+                if (lx,yb) in sol['matrix_tip'][tep] and not [lx,yb] in sol['tip_cell']:
                     ml = 'stop'
-                if (rx,yb) in sol['matrix_tip'][tep]:
-                    #P_2 = 0
+                if (rx,yb) in sol['matrix_tip'][tep] and not [rx,yb] in sol['tip_cell']:
                     mr = 'stop'
-                if (xb,dy) in sol['matrix_tip'][tep]:
-                    #P_3 = 0
+                if (xb,dy) in sol['matrix_tip'][tep] and not [xb,dy] in sol['tip_cell']:
                     md = 'stop'
-                if (xb,uy) in sol['matrix_tip'][tep]:
-                    #P_4 = 0
+                if (xb,uy) in sol['matrix_tip'][tep] and not [xb,uy] in sol['tip_cell']:
                     mu = 'stop'
             
     else:

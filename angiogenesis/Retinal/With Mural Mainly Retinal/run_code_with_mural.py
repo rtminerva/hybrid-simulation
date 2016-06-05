@@ -79,8 +79,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             x_p = []
             y_p = []
             for tip in sol['tip_cell']:
-                x_p.append(tip[0])
-                y_p.append(tip[1])
+                x_p.append(tip[0]*set['Hh'])
+                y_p.append(tip[1]*set['Hh'])
             ax.scatter(x_p, y_p, marker = 'o', s = 1, color ='r')
             sol['stEC_MC_dist'] +=1  
             flag = 'EC_MC_dist=%s' % str(sol['stEC_MC_dist']) 
@@ -114,8 +114,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                 x_p = []
                 y_p = []
                 for tip in sol['tip_cell']:
-                    x_p.append(tip[0])
-                    y_p.append(tip[1])
+                    x_p.append(tip[0]*set['Hh'])
+                    y_p.append(tip[1]*set['Hh'])
                 #print x_p
                 #print y_p
                 plt.scatter(x_p, y_p, marker = 'o', s = 2, color ='r')
@@ -157,8 +157,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                 x_p = []
                 y_p = []
                 for tip in sol['tip_cell']:
-                    x_p.append(tip[0])
-                    y_p.append(tip[1])
+                    x_p.append(tip[0]*set['Hh'])
+                    y_p.append(tip[1]*set['Hh'])
                 plt.scatter(x_p, y_p, marker = 'o', s = 2, color ='r')
                 sol['stEC_MC_full'] +=1  
                 flag = 'EC_MC_full=%s' % str(sol['stEC_MC_full']) 
@@ -253,8 +253,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             x_p = []
             y_p = []
             for tip in sol['tip_cell']:
-                x_p.append(tip[0])
-                y_p.append(tip[1])
+                x_p.append(tip[0]*set['Hh'])
+                y_p.append(tip[1]*set['Hh'])
             ax.scatter(x_p, y_p, marker = 'o', s = 1, color ='r')
             sol['stEC'] +=1  
             flag = 'EC=%s' % str(sol['stEC']) 
@@ -349,8 +349,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             x_p = []
             y_p = []
             for tip in sol['tip_cell']:
-                x_p.append(tip[0])
-                y_p.append(tip[1])
+                x_p.append(tip[0]*set['Hh'])
+                y_p.append(tip[1]*set['Hh'])
             ax.scatter(x_p, y_p, marker = 'o', s = 1, color ='r')
             sol['stT'] +=1  
             flag = 'T=%s' % str(sol['stT']) 
