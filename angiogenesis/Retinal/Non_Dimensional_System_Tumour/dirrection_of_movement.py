@@ -1,15 +1,6 @@
 import numpy
 
 def movement_dir(coef, set, sol, xb, yb, nom):
-    ml = 'f'
-    mr = 'f'
-    md = 'f'
-    mu = 'f'
-    
-    lx = xb - 2
-    rx = xb + 2
-    dy = yb - 2
-    uy = yb + 2
 
     cijx = 1/(2*set['h'])*(sol['c'][xb+1,yb+1]-sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb-1]-sol['c'][xb-1,yb-1])
     cijy = 1/(2*set['h'])*(sol['c'][xb+1,yb+1]-sol['c'][xb+1,yb-1]+sol['c'][xb-1,yb+1]-sol['c'][xb-1,yb-1])
@@ -51,17 +42,18 @@ def movement_dir(coef, set, sol, xb, yb, nom):
     elif no_back == 'down':
         P_4 = 0
     
-    '''Checking Space for n''' #if meet vessel (not tip)
-    for tep in range(0,len(sol['matrix_tip'])):
-        if not tep == nom:
-            if (lx,yb) in sol['matrix_tip'][tep] and not [lx,yb] in sol['tip_cell']:
-                ml = 'stop'
-            if (rx,yb) in sol['matrix_tip'][tep] and not [rx,yb] in sol['tip_cell']:
-                mr = 'stop'
-            if (xb,dy) in sol['matrix_tip'][tep] and not [xb,dy] in sol['tip_cell']:
-                md = 'stop'
-            if (xb,uy) in sol['matrix_tip'][tep] and not [xb,uy] in sol['tip_cell']:
-                mu = 'stop'
+    '''Checking if other tip meet this tip'''
+    cek = str(nom)
+    if cek in sol['pp']:
+        print 'HEREE'
+        if sol['pp'][nom][0] == 'right':
+            P_2 = 0
+        elif sol['pp'][nom][1] == 'left':
+            P_1 = 0
+        elif sol['pp'][nom][2] == 'up':
+            P_4 = 0
+        elif sol['pp'][nom][3] == 'down':
+            P_3 = 0
     
     if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
         print 'ADA P yang Negative'
@@ -92,6 +84,5 @@ def movement_dir(coef, set, sol, xb, yb, nom):
     P_0 = 10000-(P_1+P_2+P_3+P_4)
     
     prob_range = [P_0,P_1,P_2,P_3,P_4]
-    space = [ml,mr,md,mu]
     #print 'probability P', P_0, ',',P_1,',',P_2,',',P_3,',',P_4
-    return prob_range, space
+    return prob_range

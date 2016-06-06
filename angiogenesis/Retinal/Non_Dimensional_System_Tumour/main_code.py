@@ -13,7 +13,9 @@ def check_anastomosis(sol):
     for tip_o in sp_in:
         for tips in sp_in:
             if tips > tip_o:
-                if sol['matrix_tip'][tip_o][-1] == sol['matrix_tip'][tips][-1]:
+                cek1 = str(tip_o)
+                cek2 = str(tips)
+                if sol['matrix_tip'][tip_o][-1] == sol['matrix_tip'][tips][-1] and not cek1 in sol['pp'] and not cek2 in sol['pp']:
                     sol['sp_stop'].append(tip_o)
                     sol['list_tip_movement'][tip_o] = 'stop'
     

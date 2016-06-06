@@ -8,23 +8,26 @@ def declare_coef():
     sol = {}
     
     set['layout'] = '2D'
-    set['initial_prof'] = 'rectangular_1_tip'
+    #set['initial_prof'] = 'rectangular_1_tip'
+    set['initial_prof'] = 'rectangular_tip'
+    #set['c_prof'] = 'C1'
+    set['c_prof'] = 'C2'
     
     ##Tip (n)
-    coef['D_n'] = 2.6*10**(-4)
-    coef['Ki_n'] = 0.5616
-    coef['Al_n'] = 0
+    coef['D_n'] = 0.00035
+    coef['Ki_n'] = 0.38
+    coef['Al_n'] = 0#.6
     
     ##VEGF (c)
-    coef['D_c'] = 2.6*10**(-4)
+    coef['D_c'] = 0.00035
     coef['Nu'] = 0.1
     
     ##ECM Fibronectin (f)
     #coef['Beta'] = 0.05
-    #coef['Gama'] = 0.085
+    #coef['Gama'] = 0.1
  
     '''Branching & Mitosis'''
-    coef['T_branch'] = 0.75
+    coef['T_branch'] = 0.25
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah
@@ -33,8 +36,8 @@ def declare_coef():
     set['T'] = 10.002
     set['Nt'] = 100000
     
-    set['h'] = 0.01
-    set['dt'] = 0.001
+    set['h'] = 0.005
+    set['dt'] = 0.002
     
     set['Hh'] = set['h']/2
     set['Nx'] = int(coef['X']/set['Hh'])
@@ -60,5 +63,6 @@ def declare_coef():
     sol['n'] = 0
     sol['c'] = 0
     sol['tip_cell'] = 0
+    sol['pp'] = {}
 
     return coef, set, sol

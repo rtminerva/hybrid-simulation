@@ -26,7 +26,7 @@ plt.ion()
 #hybrid part
 while set['t'] <= set['T'] and set['k'] < set['Nt']:
     start1 = timer()
-    sol = main.boolean_1_iter(coef, set, sol)                   
+    sol = main.boolean_1_iter(coef, set, sol)                  
     start2 = timer()
     
     if sol['stop_iter'] >=100000:
@@ -43,7 +43,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'process time of Hybrid:', start2-start1
 
     '''SAVING PICTURES'''    
-    if set['k'] % 1 == 0:
+    if set['k'] % 25 == 0:
         
         if set['layout'] == '2D':
             '''EC'''
@@ -66,7 +66,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             for tip in sol['tip_cell']:
                 x_p.append(tip[0]*set['Hh'])
                 y_p.append(tip[1]*set['Hh'])
-            ax.scatter(x_p, y_p, marker = 'o', s = 1.5, color ='b')
+            ax.scatter(x_p, y_p, marker = 'o', s = 2, color ='b')
             sol['stEC'] +=1  
             flag = 'EC=%s' % str(sol['stEC']) 
             plt.savefig("%s.png" % flag)
@@ -131,8 +131,10 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     set['k'] += 1
      
 print '*************DONE*****************'
-print '''All coefficients:'''
+print '''All Coefficients:'''
 print coef
+print '''All Set'''
+print set
 raw_input()
 # plt.show(block=True)
 
