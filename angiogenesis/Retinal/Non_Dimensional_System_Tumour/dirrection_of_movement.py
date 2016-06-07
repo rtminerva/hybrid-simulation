@@ -42,6 +42,11 @@ def movement_dir(coef, set, sol, xb, yb, nom):
     elif no_back == 'down':
         P_4 = 0
     
+    lx = xb - 2
+    rx = xb + 2
+    dy = yb - 2
+    uy = yb + 2
+    
     '''Checking if other tip meet this tip'''
     cek = str(nom)
     if cek in sol['pp']:
@@ -54,7 +59,7 @@ def movement_dir(coef, set, sol, xb, yb, nom):
             P_4 = 0
         elif sol['pp'][nom][3] == 'down':
             P_3 = 0
-    
+            
     if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
         print 'ADA P yang Negative'
     if P_1 + P_2 + P_3 + P_4 > 10000:

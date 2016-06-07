@@ -70,23 +70,19 @@ def hybrid_tech_c(coef, set, sol):
                         if (lx,yb) in sol['matrix_tip'][tep]:
                             ml = 'stop'
                             if [lx,yb] in sol['tip_cell'] and tip_l<0:
-                                al = 'in'
                                 tip_l = e
                                 #sol['pp'][e] = 'start'
                         if (rx,yb) in sol['matrix_tip'][tep]:
                             mr = 'stop'
                             if [rx,yb] in sol['tip_cell'] and tip_r<0:
-                                al = 'in'
                                 tip_r = e
                                 #sol['pp'][e] = 'start'
                         if (xb,dy) in sol['matrix_tip'][tep]:
                             md = 'stop'
                             if [xb,dy] in sol['tip_cell'] and tip_u<0:
-                                al = 'in'
                                 tip_d = e
                                 #sol['pp'][e] = 'start'
                         if (xb,uy) in sol['matrix_tip'][tep]:
-                            mu = 'stop'
                             if [xb,uy] in sol['tip_cell'] and tip_u<0:
                                 al = 'in'
                                 tip_u = e
@@ -106,10 +102,18 @@ def hybrid_tech_c(coef, set, sol):
                     for i in list_prob_1:
                         list_prob_0.append(i)
                     list_prob_1 =[]
+                    if [xb,yb] in sol['tip_cell']:
+                        sol['tip_cell'].remove([xb,yb])
                     if ml == 'stop':
                         sol['sp_stop'].append(nom)
                         if tip_l>=0:
-                            sol['pp'][tip_l] = ['right','a','a','a']
+                            if str(tip_l) in sol['pp']:
+                                sol['pp'][tip_l] = ['right','a','a','a']
+                            else:
+                                sol['pp'][tip_l][0] = 'right'
+                    else:
+                        sol['tip_cell'].append([xpos_new,ypos_new])
+                    
                 elif tes in list_prob_2:   
                     tipp = 'right'
                     xpos_new = sol['matrix_tip'][nom][-1][0] + 2
@@ -120,10 +124,18 @@ def hybrid_tech_c(coef, set, sol):
                     for i in list_prob_2:
                         list_prob_0.append(i)
                     list_prob_2 =[]
+                    if [xb,yb] in sol['tip_cell']:
+                        sol['tip_cell'].remove([xb,yb])
                     if mr == 'stop':
                         sol['sp_stop'].append(nom)
                         if tip_r>=0:
-                            sol['pp'][tip_r] = ['a','left','a','a']
+                            if str(tip_r) in sol['pp']:
+                                sol['pp'][tip_r] = ['a','left','a','a']
+                            else:
+                                sol['pp'][tip_r][1] = 'left'
+                    else:
+                        sol['tip_cell'].append([xpos_new,ypos_new])
+                            
                 elif tes in list_prob_3: 
                     tipp = 'down'
                     xpos_new = sol['matrix_tip'][nom][-1][0]
@@ -134,10 +146,18 @@ def hybrid_tech_c(coef, set, sol):
                     for i in list_prob_3:
                         list_prob_0.append(i)
                     list_prob_3 =[]
+                    if [xb,yb] in sol['tip_cell']:
+                        sol['tip_cell'].remove([xb,yb])
                     if md == 'stop':
                         sol['sp_stop'].append(nom)
                         if tip_d>=0:
-                            sol['pp'][tip_d] = ['a','a','up','a']
+                            if str(tip_d) in sol['pp']:
+                                sol['pp'][tip_d] = ['a','a','up','a']
+                            else:
+                                sol['pp'][tip_d][2] = 'up'
+                    else:
+                        sol['tip_cell'].append([xpos_new,ypos_new])
+                            
                 elif tes in list_prob_4: 
                     tipp = 'up'
                     xpos_new = sol['matrix_tip'][nom][-1][0]
@@ -148,10 +168,18 @@ def hybrid_tech_c(coef, set, sol):
                     for i in list_prob_4:
                         list_prob_0.append(i)
                     list_prob_4 =[]
+                    if [xb,yb] in sol['tip_cell']:
+                        sol['tip_cell'].remove([xb,yb])
                     if mu == 'stop':
                         sol['sp_stop'].append(nom)
                         if tip_u>=0:
-                            sol['pp'][tip_u] = ['a','a','a','down']
+                            if str(tip_u) in sol['pp']:
+                                sol['pp'][tip_u] = ['a','a','a','down']
+                            else:
+                                sol['pp'][tip_u][3] = 'down'
+                    else:
+                        sol['tip_cell'].append([xpos_new,ypos_new])
+                        
                 
                 '''2.1 Branching Decision'''
                 if tipp == 'stay':
@@ -165,8 +193,10 @@ def hybrid_tech_c(coef, set, sol):
                     else:
                         if sol['life_time_tip'][nom] < coef['T_branch']: 
                             sol['life_time_tip'][nom] += set['dt']
+                            
                             if cek in sol['pp']:
                                 sol['pp'].pop('cek')
+                                
                         else: #being able to branch by life time              
                             #probabilty of branching
         #                    print 'NILAI C', c[xb+1,yb+1]
@@ -213,6 +243,9 @@ def hybrid_tech_c(coef, set, sol):
                                             sol['sp_stop'].append(nom)
                                             if tip_l>=0:
                                                 sol['pp'][tip_l][0] = 'right'
+                                        else:
+                                            sol['tip_cell'].append([xpos_new,ypos_new])
+                                                
                                     elif tes in list_prob_2:   
                                         tipp = 'right'
                                         xpos_new = sol['matrix_tip'][-1][-1][0] + 2
@@ -224,6 +257,9 @@ def hybrid_tech_c(coef, set, sol):
                                             sol['sp_stop'].append(nom)
                                             if tip_r>=0:
                                                 sol['pp'][tip_r][1] = 'left'
+                                        else:
+                                            sol['tip_cell'].append([xpos_new,ypos_new])
+                                                
                                     elif tes in list_prob_3: 
                                         tipp = 'down'
                                         xpos_new = sol['matrix_tip'][-1][-1][0]
@@ -235,6 +271,9 @@ def hybrid_tech_c(coef, set, sol):
                                             sol['sp_stop'].append(nom)
                                             if tip_d>=0:
                                                 sol['pp'][tip_d][2] = 'up'
+                                        else:
+                                            sol['tip_cell'].append([xpos_new,ypos_new])
+                                                
                                     elif tes in list_prob_4: 
                                         tipp = 'up'
                                         xpos_new = sol['matrix_tip'][-1][-1][0]
@@ -246,4 +285,7 @@ def hybrid_tech_c(coef, set, sol):
                                             sol['sp_stop'].append(nom)
                                             if tip_u>=0:
                                                 sol['pp'][tip_u][3] = 'down'
+                                        else:
+                                            sol['tip_cell'].append([xpos_new,ypos_new])
+                                                
     return sol

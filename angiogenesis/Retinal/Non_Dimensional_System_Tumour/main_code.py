@@ -15,7 +15,7 @@ def check_anastomosis(sol):
             if tips > tip_o:
                 cek1 = str(tip_o)
                 cek2 = str(tips)
-                if sol['matrix_tip'][tip_o][-1] == sol['matrix_tip'][tips][-1] and not cek1 in sol['pp'] and not cek2 in sol['pp']:
+                if sol['matrix_tip'][tip_o][-1] == sol['matrix_tip'][tips][-1]:# and not cek1 in sol['pp'] and not cek2 in sol['pp']:
                     sol['sp_stop'].append(tip_o)
                     sol['list_tip_movement'][tip_o] = 'stop'
     
@@ -47,7 +47,7 @@ def boolean_1_iter(coef, set, sol, check = 'out'):
             sol = hybrid_tech_c(coef, set, sol)
             start2 = timer()
             '''1. Anastomosis & Tip Cell'''
-            sol = check_anastomosis(sol)
+            #sol = check_anastomosis(sol)
             start3 = timer()
             '''Solving c,f,T'''
             sol = c_f_T(coef, set, sol)

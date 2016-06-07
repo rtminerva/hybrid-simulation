@@ -43,7 +43,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'process time of Hybrid:', start2-start1
 
     '''SAVING PICTURES'''    
-    if set['k'] % 25 == 0:
+    if set['k'] % 1 == 0:
         
         if set['layout'] == '2D':
             '''EC'''
@@ -73,7 +73,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             plt.close()
             #plt.draw()
             
-            '''Continuous Plot'''
+            '''Continuous Plot
             fig1 = plt.figure(1)
             plt.title('%s%f' % ('VEGF at t=',set['t']))
             ax = fig1.gca(projection='3d')
@@ -96,7 +96,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
             flag = 'VEGF=%s' % str(sol['stVEGF']) 
             plt.savefig("%s.png" % flag)
             plt.close()
-            
+            '''
             
     '''Recording Time'''         
     ttime = time.clock()
