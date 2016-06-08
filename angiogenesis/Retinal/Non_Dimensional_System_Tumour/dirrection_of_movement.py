@@ -64,8 +64,27 @@ def movement_dir(coef, set, sol, xb, yb, nom):
     
     if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
         print 'ADA P yang Negative'
+        print 'probability P', P_0, ',',P_1,',',P_2,',',P_3,',',P_4
+        if P_1 <0:
+            P_1 = 0
+        elif P_2<0:
+            P_2 = 0
+        elif P_3<0:
+            P_3 = 0
+        elif P_4<0:
+            P_4 = 0
+            
     if P_1 + P_2 + P_3 + P_4 > 10000:
         print 'ADA P yang Big'
+        print 'probability P', P_1,',',P_2,',',P_3,',',P_4
+        if P_1 > 10000:
+            P_1 = 0
+        elif P_2 > 10000:
+            P_2 = 0
+        elif P_3 > 10000:
+            P_3 = 0
+        elif P_4 > 10000:
+            P_4 = 0
       
         
     '''Boundary Checking'''

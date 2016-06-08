@@ -33,7 +33,7 @@ def pic_2d(coef,set,sol):
     plt.close()
     #plt.draw()
     
-    if set['k'] % 500 == 0:
+    if set['k'] % 100 == 0:
         '''Continuous Plot'''
         fig1 = plt.figure(1)
         plt.title('%s%f' % ('VEGF at t=',set['t']))
@@ -41,6 +41,10 @@ def pic_2d(coef,set,sol):
         ax.set_zlim(-0.1, 1)
         ax.zaxis.set_major_locator(LinearLocator(10))
         ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
          
         x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
         y_sub_axis = numpy.arange(0, coef['Y']+set['Hh'], set['h'])
@@ -59,13 +63,17 @@ def pic_2d(coef,set,sol):
         plt.close()
         
         
-        '''Continuous Plot f'''
+        '''Continuous Plot f
         fig1 = plt.figure(1)
         plt.title('%s%f' % ('VEGF at t=',set['t']))
         ax = fig1.gca(projection='3d')
         ax.set_zlim(-0.1, 1)
         ax.zaxis.set_major_locator(LinearLocator(10))
         ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+        
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
          
         x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
         y_sub_axis = numpy.arange(0, coef['Y']+set['Hh'], set['h'])
@@ -82,5 +90,6 @@ def pic_2d(coef,set,sol):
         flag = 'Fb=%s' % str(sol['stFb']) 
         plt.savefig("%s.png" % flag)
         plt.close()
+        '''
     
     return

@@ -54,7 +54,10 @@ def boolean_1_iter(coef, set, sol, check = 'out'):
             #sol = check_anastomosis(sol)
             start3 = timer()
             '''Solving c,f,T'''
-            sol = c_f_T(coef, set, sol)
+            if set['layout'] == '2D':
+                sol = c_f_T(coef, set, sol)
+            if set['layout'] == '3D':
+                sol = c_f_T_3d(coef, set, sol)
             start4 = timer()            
         if not check == 'in':
             print 'Check Anastomosis Time', start3-start2

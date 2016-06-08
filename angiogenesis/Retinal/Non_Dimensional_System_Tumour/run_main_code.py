@@ -32,7 +32,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'process time of Hybrid:', start2-start1
 
     '''SAVING PICTURES'''    
-    if set['k'] % 1 == 0:
+    if set['k'] % 10 == 0:
         if set['layout'] == '2D':
             pic_2d(coef,set,sol)
         if set['layout'] == '3D':

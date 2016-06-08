@@ -37,6 +37,9 @@ def anastomosis_tip_tip(sol,nom):
             #jj = len(sol['matrix_tip'][tep])-2
             if sol['matrix_tip'][nom][-1] == sol['matrix_tip'][tep][-1]:
                 sol['sp_stop'].append(nom)
+                if [sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]] in sol['tip_cell']:
+                    sol['tip_cell'].remove([sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]])
+                
             #elif sol['matrix_tip'][nom][-1] == sol['matrix_tip'][tep][jj] and sol['matrix_tip'][tep][-1] == (xb,yb):
     return sol
 
@@ -172,7 +175,9 @@ def move_up(sol,nom,xb,yb,list_prob_0,list_prob_4,mu,tip_u):
 def movement(sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4,ml,mr,md,mu,tip_l,tip_r,tip_d,tip_u):
     if nom in sol['pp']:
         tipp = 'stay'
-        while tipp == 'stay':
+        oo = 0
+        while tipp == 'stay' and oo < 1000:
+            oo +=1
             tes = randint(1,10000)
             if tes in list_prob_0:
                 tipp = 'stay'
@@ -343,7 +348,7 @@ def hybrid_tech_c(coef, set, sol):
                     sol['life_time_tip'][nom] += set['dt']
                 else: #there is possibility to branch
                     cek = str(nom)
-                    if dirr.count(0) >= 4: #no space to move
+                    if dirr.count(0) >= 3: #no space to move
                         sol['life_time_tip'][nom] += set['dt']
                         if cek in sol['pp']:
                             sol['pp'].pop('cek')
@@ -370,5 +375,8 @@ def hybrid_tech_c(coef, set, sol):
                                     sol['pp'].pop('cek')
                                 '''The Movement from branching'''
                                 while tipp == 'stay':
-                                    sol, tipp = movement_branch(tipp,sol,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4,ml,mr,md,mu,tip_l,tip_r,tip_d,tip_u)                          
+                                    sol, tipp = movement_branch(tipp,sol,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4,ml,mr,md,mu,tip_l,tip_r,tip_d,tip_u)
+                                
+                                '''Check Anastomosis'''
+                                sol=anastomosis_tip_tip(sol,len(sol['matrix_tip'])-1)
     return sol

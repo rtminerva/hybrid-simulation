@@ -7,25 +7,26 @@ def declare_coef():
     set = {}
     sol = {}
     
-    set['layout'] = '2D'
-    #set['layout'] = '3D'
+    #set['layout'] = '2D'
+    set['layout'] = '3D'
     
     #set['initial_prof'] = 'rectangular_1_tip'
     set['initial_prof'] = 'rectangular_tip'
     
-    #set['c_prof'] = 'C1'
-    set['c_prof'] = 'C2'
+    set['c_prof'] = 'C1'
+    #set['c_prof'] = 'C2'
     
     #set['f_prof'] = 'F1'
     set['f_prof'] = 'F2'
     
-    set['parent'] = 'one'   
+    #set['parent'] = 'one'   
+    set['parent'] = 'two' 
     
     ##Tip (n)
     coef['D_n'] = 0.00035
     coef['Ki_n'] = 0.38
     coef['Al_n'] = 0.6
-    coef['Ro'] = 0.3
+    coef['Ro'] = 0#.3
     
     ##VEGF (c)
     coef['D_c'] = 0.00035
@@ -45,8 +46,8 @@ def declare_coef():
     set['T'] = 10.002
     set['Nt'] = 100000
     
-    set['h'] = 0.005
-    set['dt'] = 0.002
+    set['h'] = 0.01#0.005
+    set['dt'] = 0.001
     
     set['Hh'] = set['h']/2
     set['Nx'] = int(coef['X']/set['Hh'])

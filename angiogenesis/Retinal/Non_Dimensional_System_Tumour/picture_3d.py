@@ -6,34 +6,95 @@ from mpl_toolkits.mplot3d import Axes3D
 import numpy
 
 def pic_3d(coef,set,sol):
-    '''EC'''
-    fig = plt.figure()
-    plt.title('%s%f' % ('EC at t=',set['t']))
-    plt.xlim(set['Hh'],coef['X']-set['Hh'])
-    plt.ylim(set['Hh'],coef['Y']-set['Hh'])
-    ax = fig.add_subplot(111, projection='3d')
-    for i in range(0,len(sol['matrix_tip'])):
+    if set['parent'] == 'two':
+        '''EC'''
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        plt.title('%s%f' % ('EC at t=',set['t']))
+        ax.set_xlim(set['Hh'],coef['X']-set['Hh'])
+        ax.set_ylim(set['Hh'],coef['Y']-set['Hh'])
+        ax.set_zlim(set['Hh'],coef['Z']-set['Hh'])
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+        '''Vein'''
+        for i in range(0,len(sol['matrix_tip'])):
+            x_p = []
+            y_p = []
+            z_p = []
+            for j in range(0,len(sol['matrix_tip'][i])):
+                x_p.append(sol['matrix_tip'][i][j][0]*set['Hh'])
+                y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
+                z_p.append(sol['matrix_tip'][i][j][2]*set['Hh'])
+            globals()['plo%s' % i] = ax.plot(x_p, y_p, z_p, 'c', color ='b')
+        '''Artery'''
         x_p = []
         y_p = []
         z_p = []
-        for j in range(0,len(sol['matrix_tip'][i])):
-            x_p.append(sol['matrix_tip'][i][j][0]*set['Hh'])
-            y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
-            z_p.append(sol['matrix_tip'][i][j][2]*set['Hh'])
-        globals()['plo%s' % i] = ax.plot(x_p, y_p, z_p, 'c', color ='r')
-    x_p = []
-    y_p = []
-    z_p = []
-    for tip in sol['tip_cell']:
-        x_p.append(tip[0]*set['Hh'])
-        y_p.append(tip[1]*set['Hh'])
-        z_p.append(tip[2]*set['Hh'])
-    ax.scatter(x_p, y_p, z_p, marker = 'o', s = 2, color ='b')
-    sol['stEC'] +=1  
-    flag = 'EC=%s' % str(sol['stEC']) 
-    plt.savefig("%s.png" % flag)
-    plt.close()
-    #plt.draw()
+        for i in range(0,len(sol['matrix_tip_2'])):
+            x_p = []
+            y_p = []
+            z_p = []
+            for j in range(0,len(sol['matrix_tip_2'][i])):
+                x_p.append(sol['matrix_tip_2'][i][j][0]*set['Hh'])
+                y_p.append(sol['matrix_tip_2'][i][j][1]*set['Hh'])
+                z_p.append(sol['matrix_tip_2'][i][j][2]*set['Hh'])
+            globals()['plo2%s' % i] = ax.plot(x_p, y_p, z_p, 'c', color ='r')
+        x_p = []
+        y_p = []
+        z_p = []
+        for tip in sol['tip_cell']:
+            x_p.append(tip[0]*set['Hh'])
+            y_p.append(tip[1]*set['Hh'])
+            z_p.append(tip[2]*set['Hh'])
+        ax.scatter(x_p, y_p, z_p, marker = 'o', s = 2, color ='g')
+        x_p = []
+        y_p = []
+        z_p = []
+        for tip in sol['tip_cell_2']:
+            x_p.append(tip[0]*set['Hh'])
+            y_p.append(tip[1]*set['Hh'])
+            z_p.append(tip[2]*set['Hh'])
+        ax.scatter(x_p, y_p, z_p, marker = 'o', s = 2, color ='c')
+        sol['stEC'] +=1  
+        flag = 'EC=%s' % str(sol['stEC']) 
+        plt.savefig("%s.png" % flag)
+        plt.close()
+        #plt.draw()
+    else:
+        '''EC'''
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        plt.title('%s%f' % ('EC at t=',set['t']))
+        ax.set_xlim(set['Hh'],coef['X']-set['Hh'])
+        ax.set_ylim(set['Hh'],coef['Y']-set['Hh'])
+        ax.set_zlim(set['Hh'],coef['Z']-set['Hh'])
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+        
+        for i in range(0,len(sol['matrix_tip'])):
+            x_p = []
+            y_p = []
+            z_p = []
+            for j in range(0,len(sol['matrix_tip'][i])):
+                x_p.append(sol['matrix_tip'][i][j][0]*set['Hh'])
+                y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
+                z_p.append(sol['matrix_tip'][i][j][2]*set['Hh'])
+            globals()['plo%s' % i] = ax.plot(x_p, y_p, z_p, 'c', color ='r')
+        x_p = []
+        y_p = []
+        z_p = []
+        for tip in sol['tip_cell']:
+            x_p.append(tip[0]*set['Hh'])
+            y_p.append(tip[1]*set['Hh'])
+            z_p.append(tip[2]*set['Hh'])
+        ax.scatter(x_p, y_p, z_p, marker = 'o', s = 2, color ='b')
+        sol['stEC'] +=1  
+        flag = 'EC=%s' % str(sol['stEC']) 
+        plt.savefig("%s.png" % flag)
+        plt.close()
+        #plt.draw()
     
     '''Continuous Plot
     fig1 = plt.figure(1)

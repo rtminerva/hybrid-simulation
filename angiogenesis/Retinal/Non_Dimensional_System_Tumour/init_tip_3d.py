@@ -106,10 +106,15 @@ def rec_5_tip_ar(coef,set,sol,z):
 
 def rec_tip_two_parent(coef,set,sol,z):
     '''Vein'''
-    sol = rec_5_tip(coef,set,sol,z)
+    z1 = z * 2
+    if z1 % 2 == 0:
+        z1 += 1
+    sol = rec_5_tip(coef,set,sol,z1)
     '''Artery'''
-    z *= 3
-    sol = rec_5_tip_ar(coef,set,sol,z)
+    z2 = z * 3
+    if z2 % 2 == 0:
+        z2 += 1
+    sol = rec_5_tip_ar(coef,set,sol,z2)
     return sol
 
 def init_tip_3d_(coef,set,sol):
@@ -126,25 +131,25 @@ def init_tip_3d_(coef,set,sol):
         sol['life_time_tip_2'] = []
         sol['sp_stop_2'] = []
         sol['tip_cell_2'] = []
-        z = set['Nz']/4 
+        z = set['Nz']/6 
         if z % 2 == 0:
             z += 1
         sol = rec_tip_two_parent(coef,set,sol,z)
         '''Identifying Tip Cell'''
         for e,ti in enumerate(sol['matrix_tip']):
-            sol['tip_cell'].append([sol['matrix_tip'][e][-1][0],sol['matrix_tip'][e][-1][1]])
+            sol['tip_cell'].append([sol['matrix_tip'][e][-1][0], sol['matrix_tip'][e][-1][1],sol['matrix_tip'][e][-1][2]])
         '''Identifying Tip Cell 2'''
         for e,ti in enumerate(sol['matrix_tip_2']):
-            sol['tip_cell_2'].append([sol['matrix_tip_2'][e][-1][0],sol['matrix_tip_2'][e][-1][1]])
+            sol['tip_cell_2'].append([sol['matrix_tip_2'][e][-1][0],sol['matrix_tip_2'][e][-1][1],sol['matrix_tip_2'][e][-1][2]])
     else:
         z = set['Nz']/2 
         if z % 2 == 0:
             z += 1
         if set['initial_prof'] == 'rectangular_1_tip':
-            sol = rec_1_tip(coef,set,sol)
+            sol = rec_1_tip(coef,set,sol,z)
         elif set['initial_prof'] == 'rectangular_tip':
-            sol = rec_5_tip(coef,set,sol)
+            sol = rec_5_tip(coef,set,sol,z)
         '''Identifying Tip Cell'''
         for e,ti in enumerate(sol['matrix_tip']):
-            sol['tip_cell'].append([sol['matrix_tip'][e][-1][0],sol['matrix_tip'][e][-1][1]])
+            sol['tip_cell'].append([sol['matrix_tip'][e][-1][0],sol['matrix_tip'][e][-1][1],sol['matrix_tip'][e][-1][2]])
     return sol
