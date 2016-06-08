@@ -13,11 +13,11 @@ def declare_coef():
     #set['initial_prof'] = 'rectangular_1_tip'
     set['initial_prof'] = 'rectangular_tip'
     
-    set['c_prof'] = 'C1'
-    #set['c_prof'] = 'C2'
+    #set['c_prof'] = 'C1'
+    set['c_prof'] = 'C2'
     
-    set['f_prof'] = 'F1'
-    #set['f_prof'] = 'F2'
+    #set['f_prof'] = 'F1'
+    set['f_prof'] = 'F2'
     
     set['parent'] = 'one'   
     
@@ -25,14 +25,14 @@ def declare_coef():
     coef['D_n'] = 0.00035
     coef['Ki_n'] = 0.38
     coef['Al_n'] = 0.6
-    coef['Ro'] = 0#.3
+    coef['Ro'] = 0.3
     
     ##VEGF (c)
     coef['D_c'] = 0.00035
     coef['Nu'] = 0.1
     
     ##ECM Fibronectin (f)
-    coef['Beta'] = 0.05
+    coef['Beta'] = 0.05#0.05
     coef['Gama'] = 0.1
  
     '''Branching & Mitosis'''

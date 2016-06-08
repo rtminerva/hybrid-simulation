@@ -6,6 +6,7 @@ from timeit import default_timer as timer
 import time
 import matplotlib.pyplot as plt 
 from picture_2d import pic_2d
+from picture_3d import pic_3d
 #declare coefficients & initial settings
 coef, set, sol = declare_coef()
 
@@ -26,14 +27,16 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'Total Stop Tips:', len(sol['sp_stop'])
     print 'NILAI C, F MAX', sol['c'].max(),',', sol['f'].max()
     print 'NILAI C, F MIN', sol['c'].min(),',', sol['f'].min()
-    print sol['tip_cell']
+    #print sol['tip_cell']
        
     print 'process time of Hybrid:', start2-start1
 
     '''SAVING PICTURES'''    
-    if set['k'] % 25 == 0:
+    if set['k'] % 1 == 0:
         if set['layout'] == '2D':
             pic_2d(coef,set,sol)
+        if set['layout'] == '3D':
+            pic_3d(coef,set,sol)
         
     '''Recording Time'''         
     ttime = time.clock()

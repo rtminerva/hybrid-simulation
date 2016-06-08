@@ -1,6 +1,8 @@
 from solve_cfT import c_f_T
+from solve_cfT_3d import c_f_T_3d
 from initial_conditions import initial_prof
 from hybrid import hybrid_tech_c
+from hybrid_c_3d import hybrid_tech_c_3d
 from timeit import default_timer as timer
 
 def check_anastomosis(sol):
@@ -43,7 +45,10 @@ def boolean_1_iter(coef, set, sol, check = 'out'):
         else:
             '''2. Branching and Movement''' 
             start1 = timer()  
-            sol = hybrid_tech_c(coef, set, sol)
+            if set['layout'] == '2D':
+                sol = hybrid_tech_c(coef, set, sol)
+            if set['layout'] == '3D':
+                sol = hybrid_tech_c_3d(coef, set, sol)
             start2 = timer()
             '''1. Anastomosis & Tip Cell'''
             #sol = check_anastomosis(sol)

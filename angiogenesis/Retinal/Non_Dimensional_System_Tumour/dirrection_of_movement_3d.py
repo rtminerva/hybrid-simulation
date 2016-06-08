@@ -1,6 +1,6 @@
 import numpy
 
-def movement_dir(coef, set, sol, xb, yb, nom):
+def movement_dir_3d(coef, set, sol, xb, yb, nom):
 
     cijx = 1/(2*set['h'])*(sol['c'][xb+1,yb+1]-sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb-1]-sol['c'][xb-1,yb-1])
     cijy = 1/(2*set['h'])*(sol['c'][xb+1,yb+1]-sol['c'][xb+1,yb-1]+sol['c'][xb-1,yb+1]-sol['c'][xb-1,yb-1])
@@ -31,7 +31,7 @@ def movement_dir(coef, set, sol, xb, yb, nom):
     P_4 = int((set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*Gijy_p)*10000)
     
 
-    '''Checking no back movement
+    '''Checking no back movement'''
     no_back = sol['list_tip_movement'][nom]
     if no_back == 'right':
         P_1 = 0
@@ -41,14 +41,13 @@ def movement_dir(coef, set, sol, xb, yb, nom):
         P_3 = 0
     elif no_back == 'down':
         P_4 = 0
-    '''
     
-    '''Checking if other tip meet this tip
     lx = xb - 2
     rx = xb + 2
     dy = yb - 2
     uy = yb + 2
      
+    '''Checking if other tip meet this tip'''
     cek = str(nom)
     if cek in sol['pp']:
         print 'HEREE'
@@ -60,8 +59,7 @@ def movement_dir(coef, set, sol, xb, yb, nom):
             P_4 = 0
         elif sol['pp'][nom][3] == 'down':
             P_3 = 0
-    '''
-    
+            
     if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
         print 'ADA P yang Negative'
     if P_1 + P_2 + P_3 + P_4 > 10000:

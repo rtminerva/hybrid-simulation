@@ -31,6 +31,15 @@ def set_list_prob(dirr):
     list_prob_0 = line_1
     return list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4
 
+def anastomosis_tip_tip(sol,nom):
+    for e,tep in enumerate(range(0,len(sol['matrix_tip']))):
+        if not tep == nom:
+            #jj = len(sol['matrix_tip'][tep])-2
+            if sol['matrix_tip'][nom][-1] == sol['matrix_tip'][tep][-1]:
+                sol['sp_stop'].append(nom)
+            #elif sol['matrix_tip'][nom][-1] == sol['matrix_tip'][tep][jj] and sol['matrix_tip'][tep][-1] == (xb,yb):
+    return sol
+
 def anastomosis_tip_branch(sol,nom,xb,yb,ml,mr,md,mu,tip_l,tip_r,tip_d,tip_u):
     lx = xb - 2
     rx = xb + 2
@@ -40,23 +49,20 @@ def anastomosis_tip_branch(sol,nom,xb,yb,ml,mr,md,mu,tip_l,tip_r,tip_d,tip_u):
         if not tep == nom:
             if (lx,yb) in sol['matrix_tip'][tep]:
                 ml = 'stop'
-                if [lx,yb] in sol['tip_cell'] and tip_l<0:
+                if (lx,yb) == sol['matrix_tip'][tep][-1]:
                     tip_l = e
-                    #sol['pp'][e] = 'start'
             if (rx,yb) in sol['matrix_tip'][tep]:
                 mr = 'stop'
-                if [rx,yb] in sol['tip_cell'] and tip_r<0:
+                if (rx,yb) == sol['matrix_tip'][tep][-1]:
                     tip_r = e
-                    #sol['pp'][e] = 'start'
             if (xb,dy) in sol['matrix_tip'][tep]:
                 md = 'stop'
-                if [xb,dy] in sol['tip_cell'] and tip_u<0:
+                if (xb,dy) == sol['matrix_tip'][tep][-1]:
                     tip_d = e
-                    #sol['pp'][e] = 'start'
             if (xb,uy) in sol['matrix_tip'][tep]:
-                if [xb,uy] in sol['tip_cell'] and tip_u<0:
+                mu = 'stop'
+                if (xb,uy) == sol['matrix_tip'][tep][-1]:
                     tip_u = e
-                    #sol['pp'][e] = 'start'
     return ml, mr, md, mu, tip_l, tip_r, tip_d, tip_u
 
 def move_left(sol,nom,xb,yb,list_prob_0,list_prob_1,ml,tip_l):
@@ -69,8 +75,6 @@ def move_left(sol,nom,xb,yb,list_prob_0,list_prob_1,ml,tip_l):
     for i in list_prob_1:
         list_prob_0.append(i)
     list_prob_1 =[]
-    if [xb,yb] in sol['tip_cell']:
-        sol['tip_cell'].remove([xb,yb])
     if ml == 'stop':
         sol['sp_stop'].append(nom)
         if tip_l>=0:
@@ -78,7 +82,12 @@ def move_left(sol,nom,xb,yb,list_prob_0,list_prob_1,ml,tip_l):
                 sol['pp'][tip_l][0] = 'right'
             else:
                 sol['pp'][tip_l] = ['right','a','a','a']
+        else:
+            if [xb,yb] in sol['tip_cell']:
+                sol['tip_cell'].remove([xb,yb])
     else:
+        if [xb,yb] in sol['tip_cell']:
+            sol['tip_cell'].remove([xb,yb])
         sol['tip_cell'].append([xpos_new,ypos_new])
     return sol, list_prob_0, list_prob_1, tipp
 
@@ -92,16 +101,19 @@ def move_right(sol,nom,xb,yb,list_prob_0,list_prob_2,mr,tip_r):
     for i in list_prob_2:
         list_prob_0.append(i)
     list_prob_2 =[]
-    if [xb,yb] in sol['tip_cell']:
-        sol['tip_cell'].remove([xb,yb])
     if mr == 'stop':
         sol['sp_stop'].append(nom)
         if tip_r>=0:
             if str(tip_r) in sol['pp']:
                 sol['pp'][tip_r][1] = 'left'
             else:
-                sol['pp'][tip_r] = ['a','left','a','a']       
+                sol['pp'][tip_r] = ['a','left','a','a']
+        else:
+            if [xb,yb] in sol['tip_cell']:
+                sol['tip_cell'].remove([xb,yb])       
     else:
+        if [xb,yb] in sol['tip_cell']:
+            sol['tip_cell'].remove([xb,yb])
         sol['tip_cell'].append([xpos_new,ypos_new])
     return sol, list_prob_0, list_prob_2, tipp
 
@@ -115,8 +127,6 @@ def move_down(sol,nom,xb,yb,list_prob_0,list_prob_3,md,tip_d):
     for i in list_prob_3:
         list_prob_0.append(i)
     list_prob_3 =[]
-    if [xb,yb] in sol['tip_cell']:
-        sol['tip_cell'].remove([xb,yb])
     if md == 'stop':
         sol['sp_stop'].append(nom)
         if tip_d>=0:
@@ -124,7 +134,12 @@ def move_down(sol,nom,xb,yb,list_prob_0,list_prob_3,md,tip_d):
                 sol['pp'][tip_d][2] = 'up'
             else:
                 sol['pp'][tip_d] = ['a','a','up','a']
+        else:
+            if [xb,yb] in sol['tip_cell']:
+                sol['tip_cell'].remove([xb,yb])
     else:
+        if [xb,yb] in sol['tip_cell']:
+            sol['tip_cell'].remove([xb,yb])
         sol['tip_cell'].append([xpos_new,ypos_new])
     return sol, list_prob_0, list_prob_3, tipp
 
@@ -138,8 +153,6 @@ def move_up(sol,nom,xb,yb,list_prob_0,list_prob_4,mu,tip_u):
     for i in list_prob_4:
         list_prob_0.append(i)
     list_prob_4 =[]
-    if [xb,yb] in sol['tip_cell']:
-        sol['tip_cell'].remove([xb,yb])
     if mu == 'stop':
         sol['sp_stop'].append(nom)
         if tip_u>=0:
@@ -147,7 +160,12 @@ def move_up(sol,nom,xb,yb,list_prob_0,list_prob_4,mu,tip_u):
                 sol['pp'][tip_u][3] = 'down'
             else:
                 sol['pp'][tip_u] = ['a','a','a','down']
+        else:
+            if [xb,yb] in sol['tip_cell']:
+                sol['tip_cell'].remove([xb,yb])
     else:
+        if [xb,yb] in sol['tip_cell']:
+            sol['tip_cell'].remove([xb,yb])
         sol['tip_cell'].append([xpos_new,ypos_new])
     return sol, list_prob_0, list_prob_4, tipp
 
@@ -283,9 +301,12 @@ def hybrid_tech_c(coef, set, sol):
             
             if dirr[1] == 0 and dirr[2] == 0 and dirr[3] == 0 and dirr[4] == 0:
                 sol['sp_stop'].append(nom)
+                sol['tip_cell'].remove([xb,yb])
+                
             else:
                 '''Making list of prob'''
                 list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = set_list_prob(dirr)
+                
                 '''Checking Space for n #if meet vessel'''
                 ml = 'f'
                 mr = 'f'
@@ -295,21 +316,34 @@ def hybrid_tech_c(coef, set, sol):
                 tip_r = -1
                 tip_d = -1
                 tip_u = -1
-                ml, mr, md, mu, tip_l, tip_r, tip_d, tip_u = anastomosis_tip_branch(sol,nom,xb,yb,ml,mr,md,mu,tip_l,tip_r,tip_d,tip_u)
+                
                 '''
+                ml, mr, md, mu, tip_l, tip_r, tip_d, tip_u = anastomosis_tip_branch(sol,nom,xb,yb,ml,mr,md,mu,tip_l,tip_r,tip_d,tip_u)
+                sol['pp'] ={}
+                ml = 'f'
+                mr = 'f'
+                md = 'f'
+                mu = 'f'
+                
                 tip_l = -1
                 tip_r = -1
                 tip_d = -1
                 tip_u = -1
                 '''
+                
                 '''The Movement'''
                 sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4,ml,mr,md,mu,tip_l,tip_r,tip_d,tip_u)
+                
+                '''Test Anastomosis tip-tip if move'''
+                if not tipp == 'stay':
+                    sol=anastomosis_tip_tip(sol,nom)
+                
                 '''2.1 Branching Decision'''
                 if tipp == 'stay': #not able to branch
                     sol['life_time_tip'][nom] += set['dt']
                 else: #there is possibility to branch
                     cek = str(nom)
-                    if dirr.count(0) >= 3: #no space to move
+                    if dirr.count(0) >= 4: #no space to move
                         sol['life_time_tip'][nom] += set['dt']
                         if cek in sol['pp']:
                             sol['pp'].pop('cek')
