@@ -24,7 +24,7 @@ def c_prof_2(coef,set,sol):
     for z in range(0,set['Nz']+1,2):
         for y in range(0,set['Ny']+1,2):
             for x in range(0,set['Nx']+1,2):
-                r_c = numpy.sqrt((x*set['Hh']-1)**2+(y*set['Hh']-0.5)**2)
+                r_c = numpy.sqrt((x*set['Hh']-1)**2+(y*set['Hh']-0.5)**2+(z*set['Hh']-0.5)**2)
                 if r_c >= 0.1:
                     sol['c'][x,y,z] = (viu-r_c)**2/(viu-0.1)**2
                 elif r_c>= 0 and r_c < 0.1:

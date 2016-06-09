@@ -228,7 +228,7 @@ def move_left_branch(sol,xb,yb,list_prob_0,list_prob_1,ml,tip_l):
     sol['n'][xpos_new,ypos_new] = 1
     sol['list_tip_movement'][-1] = tipp
     if ml == 'stop':
-        sol['sp_stop'].append(len(sol['matrix_tip']))
+        sol['sp_stop'].append(len(sol['matrix_tip'])-1)
         if tip_l>=0:
             sol['pp'][tip_l][0] = 'right'
     else:
@@ -243,7 +243,7 @@ def move_right_branch(sol,xb,yb,list_prob_0,list_prob_2,mr,tip_r):
     sol['n'][xpos_new,ypos_new] = 1
     sol['list_tip_movement'][-1] = tipp
     if mr == 'stop':
-        sol['sp_stop'].append(len(sol['matrix_tip']))
+        sol['sp_stop'].append(len(sol['matrix_tip'])-1)
         if tip_r>=0:
             sol['pp'][tip_r][1] = 'left'
     else:
@@ -258,7 +258,7 @@ def move_down_branch(sol,xb,yb,list_prob_0,list_prob_3,md,tip_d):
     sol['n'][xpos_new,ypos_new] = 1
     sol['list_tip_movement'][-1] = tipp
     if md == 'stop':
-        sol['sp_stop'].append(len(sol['matrix_tip']))
+        sol['sp_stop'].append(len(sol['matrix_tip'])-1)
         if tip_d>=0:
             sol['pp'][tip_d][2] = 'up'
     else:
@@ -273,7 +273,7 @@ def move_up_branch(sol,xb,yb,list_prob_0,list_prob_4,mu,tip_u):
     sol['n'][xpos_new,ypos_new] = 1
     sol['list_tip_movement'][-1] = tipp
     if mu == 'stop':
-        sol['sp_stop'].append(len(sol['matrix_tip']))
+        sol['sp_stop'].append(len(sol['matrix_tip'])-1)
         if tip_u>=0:
             sol['pp'][tip_u][3] = 'down'
     else:

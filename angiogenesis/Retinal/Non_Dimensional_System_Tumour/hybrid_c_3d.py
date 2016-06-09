@@ -321,11 +321,11 @@ def move_left_branch(sol,xb,yb,zb,list_prob_0,list_prob_1,ml,tip_l):
     xpos_new = sol['matrix_tip'][-1][-1][0] - 2
     ypos_new = sol['matrix_tip'][-1][-1][1]   
     zpos_new = sol['matrix_tip'][-1][-1][2]                 
-    sol['matrix_tip'][nom].append((xpos_new,ypos_new,zpos_new))
+    sol['matrix_tip'][-1].append((xpos_new,ypos_new,zpos_new))
     sol['n'][xpos_new,ypos_new,zpos_new] = 1
     sol['list_tip_movement'][-1] = tipp
     if ml == 'stop':
-        sol['sp_stop'].append(len(sol['matrix_tip']))
+        sol['sp_stop'].append(len(sol['matrix_tip'])-1)
         if tip_l>=0:
             sol['pp'][tip_l][0] = 'right'
     else:
@@ -341,7 +341,7 @@ def move_right_branch(sol,xb,yb,zb,list_prob_0,list_prob_2,mr,tip_r):
     sol['n'][xpos_new,ypos_new,zpos_new] = 1
     sol['list_tip_movement'][-1] = tipp
     if mr == 'stop':
-        sol['sp_stop'].append(len(sol['matrix_tip']))
+        sol['sp_stop'].append(len(sol['matrix_tip'])-1)
         if tip_r>=0:
             sol['pp'][tip_r][1] = 'left'
     else:
@@ -357,14 +357,14 @@ def move_down_branch(sol,xb,yb,zb,list_prob_0,list_prob_3,md,tip_d):
     sol['n'][xpos_new,ypos_new,zpos_new] = 1
     sol['list_tip_movement'][-1] = tipp
     if md == 'stop':
-        sol['sp_stop'].append(len(sol['matrix_tip']))
+        sol['sp_stop'].append(len(sol['matrix_tip'])-1)
         if tip_d>=0:
             sol['pp'][tip_d][2] = 'up'
     else:
         sol['tip_cell'].append([xpos_new,ypos_new,zpos_new])
     return sol, tipp
 
-def move_up_branch(sol,xb,yb,list_prob_0,list_prob_4,mu,tip_u):
+def move_up_branch(sol,xb,yb,zb,list_prob_0,list_prob_4,mu,tip_u):
     tipp = 'up'
     xpos_new = sol['matrix_tip'][-1][-1][0]
     ypos_new = sol['matrix_tip'][-1][-1][1] + 2
@@ -373,7 +373,7 @@ def move_up_branch(sol,xb,yb,list_prob_0,list_prob_4,mu,tip_u):
     sol['n'][xpos_new,ypos_new,zpos_new] = 1
     sol['list_tip_movement'][-1] = tipp
     if mu == 'stop':
-        sol['sp_stop'].append(len(sol['matrix_tip']))
+        sol['sp_stop'].append(len(sol['matrix_tip'])-1)
         if tip_u>=0:
             sol['pp'][tip_u][3] = 'down'
     else:
@@ -389,14 +389,14 @@ def move_zdown_branch(sol,xb,yb,zb,list_prob_0,list_prob_5,mzd,tip_zd):
     sol['n'][xpos_new,ypos_new,zpos_new] = 1
     sol['list_tip_movement'][-1] = tipp
     if mzd == 'stop':
-        sol['sp_stop'].append(len(sol['matrix_tip']))
+        sol['sp_stop'].append(len(sol['matrix_tip'])-1)
         if tip_zd>=0:
             sol['pp'][tip_zd][4] = 'up'
     else:
         sol['tip_cell'].append([xpos_new,ypos_new,zpos_new])
     return sol, tipp
 
-def move_zup_branch(sol,xb,yb,list_prob_0,list_prob_6,mzu,tip_zu):
+def move_zup_branch(sol,xb,yb,zb,list_prob_0,list_prob_6,mzu,tip_zu):
     tipp = 'up'
     xpos_new = sol['matrix_tip'][-1][-1][0]
     ypos_new = sol['matrix_tip'][-1][-1][1]
@@ -405,7 +405,7 @@ def move_zup_branch(sol,xb,yb,list_prob_0,list_prob_6,mzu,tip_zu):
     sol['n'][xpos_new,ypos_new,zpos_new] = 1
     sol['list_tip_movement'][-1] = tipp
     if mzu == 'stop':
-        sol['sp_stop'].append(len(sol['matrix_tip']))
+        sol['sp_stop'].append(len(sol['matrix_tip'])-1)
         if tip_zu>=0:
             sol['pp'][tip_zu][5] = 'down'
     else:
@@ -417,11 +417,11 @@ def move_left_branch_2(sol,xb,yb,zb,list_prob_0,list_prob_1,ml,tip_l):
     xpos_new = sol['matrix_tip_2'][-1][-1][0] - 2
     ypos_new = sol['matrix_tip_2'][-1][-1][1]   
     zpos_new = sol['matrix_tip_2'][-1][-1][2]                 
-    sol['matrix_tip_2'][nom].append((xpos_new,ypos_new,zpos_new))
+    sol['matrix_tip_2'][-1].append((xpos_new,ypos_new,zpos_new))
     sol['n'][xpos_new,ypos_new,zpos_new] = 1
     sol['list_tip_movement_2'][-1] = tipp
     if ml == 'stop':
-        sol['sp_stop_2'].append(len(sol['matrix_tip_2']))
+        sol['sp_stop_2'].append(len(sol['matrix_tip_2'])-1)
         if tip_l>=0:
             sol['pp_2'][tip_l][0] = 'right'
     else:
@@ -437,7 +437,7 @@ def move_right_branch_2(sol,xb,yb,zb,list_prob_0,list_prob_2,mr,tip_r):
     sol['n'][xpos_new,ypos_new,zpos_new] = 1
     sol['list_tip_movement_2'][-1] = tipp
     if mr == 'stop':
-        sol['sp_stop_2'].append(len(sol['matrix_tip_2']))
+        sol['sp_stop_2'].append(len(sol['matrix_tip_2'])-1)
         if tip_r>=0:
             sol['pp_2'][tip_r][1] = 'left'
     else:
@@ -453,14 +453,14 @@ def move_down_branch_2(sol,xb,yb,zb,list_prob_0,list_prob_3,md,tip_d):
     sol['n'][xpos_new,ypos_new,zpos_new] = 1
     sol['list_tip_movement_2'][-1] = tipp
     if md == 'stop':
-        sol['sp_stop_2'].append(len(sol['matrix_tip_2']))
+        sol['sp_stop_2'].append(len(sol['matrix_tip_2'])-1)
         if tip_d>=0:
             sol['pp_2'][tip_d][2] = 'up'
     else:
         sol['tip_cell_2'].append([xpos_new,ypos_new,zpos_new])
     return sol, tipp
 
-def move_up_branch_2(sol,xb,yb,list_prob_0,list_prob_4,mu,tip_u):
+def move_up_branch_2(sol,xb,yb,zb,list_prob_0,list_prob_4,mu,tip_u):
     tipp = 'up'
     xpos_new = sol['matrix_tip_2'][-1][-1][0]
     ypos_new = sol['matrix_tip_2'][-1][-1][1] + 2
@@ -469,7 +469,7 @@ def move_up_branch_2(sol,xb,yb,list_prob_0,list_prob_4,mu,tip_u):
     sol['n'][xpos_new,ypos_new,zpos_new] = 1
     sol['list_tip_movement_2'][-1] = tipp
     if mu == 'stop':
-        sol['sp_stop_2'].append(len(sol['matrix_tip_2']))
+        sol['sp_stop_2'].append(len(sol['matrix_tip_2'])-1)
         if tip_u>=0:
             sol['pp_2'][tip_u][3] = 'down'
     else:
@@ -485,14 +485,14 @@ def move_zdown_branch_2(sol,xb,yb,zb,list_prob_0,list_prob_5,mzd,tip_zd):
     sol['n'][xpos_new,ypos_new,zpos_new] = 1
     sol['list_tip_movement_2'][-1] = tipp
     if mzd == 'stop':
-        sol['sp_stop_2'].append(len(sol['matrix_tip_2']))
+        sol['sp_stop_2'].append(len(sol['matrix_tip_2'])-1)
         if tip_zd>=0:
             sol['pp_2'][tip_zd][4] = 'up'
     else:
         sol['tip_cell_2'].append([xpos_new,ypos_new,zpos_new])
     return sol, tipp
 
-def move_zup_branch_2(sol,xb,yb,list_prob_0,list_prob_6,mzu,tip_zu):
+def move_zup_branch_2(sol,xb,yb,zb,list_prob_0,list_prob_6,mzu,tip_zu):
     tipp = 'up'
     xpos_new = sol['matrix_tip_2'][-1][-1][0]
     ypos_new = sol['matrix_tip_2'][-1][-1][1]
@@ -501,14 +501,14 @@ def move_zup_branch_2(sol,xb,yb,list_prob_0,list_prob_6,mzu,tip_zu):
     sol['n'][xpos_new,ypos_new,zpos_new] = 1
     sol['list_tip_movement_2'][-1] = tipp
     if mzu == 'stop':
-        sol['sp_stop_2'].append(len(sol['matrix_tip_2']))
+        sol['sp_stop_2'].append(len(sol['matrix_tip_2'])-1)
         if tip_zu>=0:
             sol['pp_2'][tip_zu][5] = 'down'
     else:
         sol['tip_cell_2'].append([xpos_new,ypos_new,zpos_new])
     return sol, tipp
 
-def movement_branch(tipp,sol,xb,yb,zb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4,list_prob_5,list_prob_6,ml,mr,md,mu,mzd,mzu,tip_l,tip_r,tip_d,tip_u,tip_zd,tip_zu):
+def movement_branch(set,tipp,sol,xb,yb,zb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4,list_prob_5,list_prob_6,ml,mr,md,mu,mzd,mzu,tip_l,tip_r,tip_d,tip_u,tip_zd,tip_zu):
     if set['parent'] == 'two':
         tes = randint(1,10000)
         if tes in list_prob_0:
@@ -522,9 +522,9 @@ def movement_branch(tipp,sol,xb,yb,zb,list_prob_0,list_prob_1,list_prob_2,list_p
         elif tes in list_prob_4: 
             sol, tipp = move_up_branch_2(sol,xb,yb,zb,list_prob_0,list_prob_4,mu,tip_u)
         elif tes in list_prob_5: 
-            sol, tipp = move_zdown_branch_2(sol,nom,xb,yb,zb,list_prob_0,list_prob_5,mzd,tip_zd)   
+            sol, tipp = move_zdown_branch_2(sol,xb,yb,zb,list_prob_0,list_prob_5,mzd,tip_zd)   
         elif tes in list_prob_6: 
-            sol, tipp = move_zup_branch_2(sol,nom,xb,yb,zb,list_prob_0,list_prob_6,mzu,tip_zu)
+            sol, tipp = move_zup_branch_2(sol,xb,yb,zb,list_prob_0,list_prob_6,mzu,tip_zu)
     else:
         tes = randint(1,10000)
         if tes in list_prob_0:
@@ -538,9 +538,9 @@ def movement_branch(tipp,sol,xb,yb,zb,list_prob_0,list_prob_1,list_prob_2,list_p
         elif tes in list_prob_4: 
             sol, tipp = move_up_branch(sol,xb,yb,zb,list_prob_0,list_prob_4,mu,tip_u)
         elif tes in list_prob_5: 
-            sol, tipp = move_zdown_branch(sol,nom,xb,yb,zb,list_prob_0,list_prob_5,mzd,tip_zd)   
+            sol, tipp = move_zdown_branch(sol,xb,yb,zb,list_prob_0,list_prob_5,mzd,tip_zd)   
         elif tes in list_prob_6: 
-            sol, tipp = move_zup_branch(sol,nom,xb,yb,zb,list_prob_0,list_prob_6,mzu,tip_zu)
+            sol, tipp = move_zup_branch(sol,xb,yb,zb,list_prob_0,list_prob_6,mzu,tip_zu)
     return sol, tipp
 
 def anastomosis_tip_tip_2(sol,nom,set):
@@ -550,7 +550,7 @@ def anastomosis_tip_tip_2(sol,nom,set):
             if sol['matrix_tip_2'][nom][-1] == sol['matrix_tip_2'][tep][-1]:
                 sol['sp_stop_2'].append(nom)
                 if [sol['matrix_tip_2'][nom][-1][0],sol['matrix_tip_2'][nom][-1][1],sol['matrix_tip_2'][nom][-1][2]] in sol['tip_cell_2']:
-                    sol['tip_cell_2'].remove([sol['matrix_tip_2'][nom][-1][0],sol['matrix_tip_2'][nom][-1][1]],sol['matrix_tip_2'][nom][-1][2])
+                    sol['tip_cell_2'].remove([sol['matrix_tip_2'][nom][-1][0],sol['matrix_tip_2'][nom][-1][1],sol['matrix_tip_2'][nom][-1][2]])
                 
             #elif sol['matrix_tip_2'][nom][-1] == sol['matrix_tip_2'][tep][jj] and sol['matrix_tip_2'][tep][-1] == (xb,yb):
     if set['parent'] == 'two':
@@ -843,7 +843,7 @@ def hybrid_tech_c_3d(coef, set, sol):
                                     sol['pp'].pop('cek')
                                 '''The Movement from branching'''
                                 while tipp == 'stay':
-                                    sol, tipp = movement_branch(tipp,sol,xb,yb,zb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4,list_prob_5,list_prob_6,ml,mr,md,mu,mzd,mzu,tip_l,tip_r,tip_d,tip_u,tip_zd,tip_zd)                          
+                                    sol, tipp = movement_branch(set,tipp,sol,xb,yb,zb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4,list_prob_5,list_prob_6,ml,mr,md,mu,mzd,mzu,tip_l,tip_r,tip_d,tip_u,tip_zd,tip_zd)                          
     
                                 '''Check Anastomosis'''
                                 sol=anastomosis_tip_tip(sol,len(sol['matrix_tip'])-1,set)
@@ -928,7 +928,7 @@ def hybrid_tech_c_3d(coef, set, sol):
                                         sol['pp_2'].pop('cek')
                                     '''The Movement from branching'''
                                     while tipp == 'stay':
-                                        sol, tipp = movement_branch(tipp,sol,xb,yb,zb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4,list_prob_5,list_prob_6,ml,mr,md,mu,mzd,mzu,tip_l,tip_r,tip_d,tip_u,tip_zd,tip_zd)                          
+                                        sol, tipp = movement_branch(set,tipp,sol,xb,yb,zb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4,list_prob_5,list_prob_6,ml,mr,md,mu,mzd,mzu,tip_l,tip_r,tip_d,tip_u,tip_zd,tip_zd)                          
         
                                     '''Check Anastomosis'''
                                     sol=anastomosis_tip_tip_2(sol,len(sol['matrix_tip_2'])-1,set)
