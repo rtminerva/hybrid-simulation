@@ -66,21 +66,19 @@ def declare_coef():
     sol['stEC'] = 0
     sol['stVEGF'] = 0
     sol['stFb'] = 0
-    sol['matrix_tip'] = 0
-    sol['list_tip_movement'] = 0
-    sol['life_time_tip'] = 0
-    sol['stop_iter'] = 0
-    sol['sp_stop'] = 0
-    if set['parent'] == 'two':
-        sol['matrix_tip_2'] = 0
-        sol['list_tip_movement_2'] = 0
-        sol['life_time_tip_2'] = 0
-        sol['sp_stop_2'] = 0
-        sol['tip_cell_2'] = 0
-        sol['pp_2'] = {}
-    sol['n'] = 0
-    sol['c'] = 0
-    sol['tip_cell'] = 0
+    #sol['matrix_tip'] = 0
+    #sol['list_tip_movement'] = 0
+    #sol['life_time_tip'] = 0
+    #sol['stop_iter'] = 0
+    #sol['sp_stop'] = 0
+    #if set['parent'] == 'two':
+        #sol['matrix_tip_2'] = 0
+        #sol['list_tip_movement_2'] = 0
+        #sol['life_time_tip_2'] = 0
+        #sol['sp_stop_2'] = 0
+        #sol['tip_cell_2'] = 0
+        #sol['pp_2'] = {}
+    #sol['tip_cell'] = 0
     sol['pp'] = {}
 
     return coef, set, sol

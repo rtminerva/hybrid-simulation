@@ -11,16 +11,23 @@ def movement_dir_3d(coef, set, sol, xb, yb, zb, nom):
     cijy_n = max(0,-cijy)
     cijz_p = max(0,cijz)
     cijz_n = max(0,-cijz)
-    
-    fijx = 1/(4*set['h'])*(sol['f'][xb+1,yb+1,zb-1]-sol['f'][xb-1,yb+1,zb-1]+sol['f'][xb+1,yb-1,zb-1]-sol['f'][xb-1,yb-1,zb-1]+sol['f'][xb+1,yb+1,zb+1]-sol['f'][xb-1,yb+1,zb+1]+sol['f'][xb+1,yb-1,zb+1]-sol['f'][xb-1,yb-1,zb+1])
-    fijy = 1/(4*set['h'])*(sol['f'][xb+1,yb+1,zb-1]-sol['f'][xb+1,yb-1,zb-1]+sol['f'][xb-1,yb+1,zb-1]-sol['f'][xb-1,yb-1,zb-1]+sol['f'][xb+1,yb+1,zb+1]-sol['f'][xb+1,yb-1,zb+1]+sol['f'][xb-1,yb+1,zb+1]-sol['f'][xb-1,yb-1,zb+1])
-    fijz = 1/(4*set['h'])*(sol['f'][xb-1,yb-1,zb+1]-sol['f'][xb-1,yb-1,zb-1]+sol['f'][xb+1,yb-1,zb+1]-sol['f'][xb+1,yb-1,zb-1]+sol['f'][xb+1,yb+1,zb+1]-sol['f'][xb+1,yb+1,zb-1]+sol['f'][xb-1,yb+1,zb+1]-sol['f'][xb-1,yb+1,zb-1])
-    fijx_p = max(0,fijx)
-    fijx_n = max(0,-fijx)
-    fijy_p = max(0,fijy)
-    fijy_n = max(0,-fijy)
-    fijz_p = max(0,fijz)
-    fijz_n = max(0,-fijz)
+    if not set['Ro'] == 0:
+        fijx = 1/(4*set['h'])*(sol['f'][xb+1,yb+1,zb-1]-sol['f'][xb-1,yb+1,zb-1]+sol['f'][xb+1,yb-1,zb-1]-sol['f'][xb-1,yb-1,zb-1]+sol['f'][xb+1,yb+1,zb+1]-sol['f'][xb-1,yb+1,zb+1]+sol['f'][xb+1,yb-1,zb+1]-sol['f'][xb-1,yb-1,zb+1])
+        fijy = 1/(4*set['h'])*(sol['f'][xb+1,yb+1,zb-1]-sol['f'][xb+1,yb-1,zb-1]+sol['f'][xb-1,yb+1,zb-1]-sol['f'][xb-1,yb-1,zb-1]+sol['f'][xb+1,yb+1,zb+1]-sol['f'][xb+1,yb-1,zb+1]+sol['f'][xb-1,yb+1,zb+1]-sol['f'][xb-1,yb-1,zb+1])
+        fijz = 1/(4*set['h'])*(sol['f'][xb-1,yb-1,zb+1]-sol['f'][xb-1,yb-1,zb-1]+sol['f'][xb+1,yb-1,zb+1]-sol['f'][xb+1,yb-1,zb-1]+sol['f'][xb+1,yb+1,zb+1]-sol['f'][xb+1,yb+1,zb-1]+sol['f'][xb-1,yb+1,zb+1]-sol['f'][xb-1,yb+1,zb-1])
+        fijx_p = max(0,fijx)
+        fijx_n = max(0,-fijx)
+        fijy_p = max(0,fijy)
+        fijy_n = max(0,-fijy)
+        fijz_p = max(0,fijz)
+        fijz_n = max(0,-fijz)
+    else:
+        fijx_p = 0
+        fijx_n = 0
+        fijy_p = 0
+        fijy_n = 0
+        fijz_p = 0
+        fijz_n = 0
     
     Gijx_p = coef['Ki_n']/(1+coef['Al_n']*1/8*(sol['c'][xb-1,yb+1,zb+1]+sol['c'][xb+1,yb+1,zb+1]+sol['c'][xb-1,yb-1,zb+1]+sol['c'][xb+1,yb-1,zb+1]+sol['c'][xb-1,yb+1,zb-1]+sol['c'][xb+1,yb+1,zb-1]+sol['c'][xb-1,yb-1,zb-1]+sol['c'][xb+1,yb-1,zb-1]))*cijx_p+coef['Ro']*fijx_p
     Gijx_n = coef['Ki_n']/(1+coef['Al_n']*1/8*(sol['c'][xb-1,yb+1,zb+1]+sol['c'][xb+1,yb+1,zb+1]+sol['c'][xb-1,yb-1,zb+1]+sol['c'][xb+1,yb-1,zb+1]+sol['c'][xb-1,yb+1,zb-1]+sol['c'][xb+1,yb+1,zb-1]+sol['c'][xb-1,yb-1,zb-1]+sol['c'][xb+1,yb-1,zb-1]))*cijx_n+coef['Ro']*fijx_n
