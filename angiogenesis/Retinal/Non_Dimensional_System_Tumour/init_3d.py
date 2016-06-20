@@ -13,7 +13,7 @@ def c_prof_1(coef,set,sol):
         for y in range(0,set['Ny']+1,2):
             for x in range(0,set['Nx']+1,2):
                 sol['c'][x,y,z] = numpy.exp(-(1-x*set['Hh'])**2/0.45)
-                if not set['Ro'] == 0:
+                if not coef['Ro'] == 0:
                     if set['f_prof'] == 'F2':
                         sol = f_prof_2(coef,set,sol,x,y,z)
                     elif set['f_prof'] == 'F1':
@@ -31,7 +31,7 @@ def c_prof_2(coef,set,sol):
                     #sol['tumor'][x,y,z] = r_c
                 elif r_c>= 0 and r_c < 0.1:
                     sol['c'][x,y,z] = 1
-                if not set['Ro'] == 0:
+                if not coef['Ro'] == 0:
                     if set['f_prof'] == 'F2':
                         sol = f_prof_2(coef,set,sol,x,y,z)
                     elif set['f_prof'] == 'F1':
@@ -40,7 +40,7 @@ def c_prof_2(coef,set,sol):
 
 def init_3d_(coef,set,sol):
     sol['c'] = numpy.zeros((set['Nx']+1,set['Ny']+1,set['Nz']+1))
-    if not set['Ro'] == 0:
+    if not coef['Ro'] == 0:
         sol['f'] = numpy.zeros((set['Nx']+1,set['Ny']+1,set['Nz']+1))
     #sol['tumor'] = numpy.zeros((set['Nx']+1,set['Ny']+1,set['Nz']+1))
     if set['c_prof'] == 'C2':

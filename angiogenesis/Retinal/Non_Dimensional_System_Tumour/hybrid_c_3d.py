@@ -47,7 +47,7 @@ def anastomosis_tip_tip(sol,nom,set):
     for e,tep in enumerate(range(0,len(sol['matrix_tip']))):
         if not tep == nom:
             #jj = len(sol['matrix_tip'][tep])-2
-            if sol['matrix_tip'][nom][-1] == sol['matrix_tip'][tep][-1]:
+            if sol['matrix_tip'][nom][-1] == sol['matrix_tip'][tep][-1]  and [sol['matrix_tip'][tep][-1][0],sol['matrix_tip'][tep][-1][1],sol['matrix_tip'][nom][-1][2]] in sol['tip_cell'] and not tep in sol['sp_stop']:
                 sol['sp_stop'].append(nom)
                 if [sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1],sol['matrix_tip'][nom][-1][2]] in sol['tip_cell']:
                     sol['tip_cell'].remove([sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1],sol['matrix_tip'][nom][-1][2]])
@@ -547,7 +547,7 @@ def anastomosis_tip_tip_2(sol,nom,set):
     for e,tep in enumerate(range(0,len(sol['matrix_tip_2']))):
         if not tep == nom:
             #jj = len(sol['matrix_tip_2'][tep])-2
-            if sol['matrix_tip_2'][nom][-1] == sol['matrix_tip_2'][tep][-1]:
+            if sol['matrix_tip_2'][nom][-1] == sol['matrix_tip_2'][tep][-1]  and [sol['matrix_tip_2'][tep][-1][0],sol['matrix_tip_2'][tep][-1][1],sol['matrix_tip_2'][nom][-1][2]] in sol['tip_cell_2'] and not tep in sol['sp_stop_2']:
                 sol['sp_stop_2'].append(nom)
                 if [sol['matrix_tip_2'][nom][-1][0],sol['matrix_tip_2'][nom][-1][1],sol['matrix_tip_2'][nom][-1][2]] in sol['tip_cell_2']:
                     sol['tip_cell_2'].remove([sol['matrix_tip_2'][nom][-1][0],sol['matrix_tip_2'][nom][-1][1],sol['matrix_tip_2'][nom][-1][2]])
@@ -555,10 +555,10 @@ def anastomosis_tip_tip_2(sol,nom,set):
             #elif sol['matrix_tip_2'][nom][-1] == sol['matrix_tip_2'][tep][jj] and sol['matrix_tip_2'][tep][-1] == (xb,yb):
     if set['parent'] == 'two':
         for tep in range(0,len(sol['matrix_tip'])):
-            if sol['matrix_tip_2'][nom][-1] == sol['matrix_tip'][tep][-1]:
+            if sol['matrix_tip_2'][nom][-1] == sol['matrix_tip'][tep][-1]  and [sol['matrix_tip'][tep][-1][0],sol['matrix_tip'][tep][-1][1],sol['matrix_tip'][nom][-1][2]] in sol['tip_cell'] and not tep in sol['sp_stop']:
                 sol['sp_stop_2'].append(nom)
                 if [sol['matrix_tip_2'][nom][-1][0],sol['matrix_tip_2'][nom][-1][1],sol['matrix_tip_2'][nom][-1][2]] in sol['tip_cell_2']:
-                    sol['tip_cell_2'].remove([sol['matrix_tip_2'][nom][-1][0],sol['matrix_tip_2'][nom][-1][1]],sol['matrix_tip_2'][nom][-1][2])
+                    sol['tip_cell_2'].remove([sol['matrix_tip_2'][nom][-1][0],sol['matrix_tip_2'][nom][-1][1],sol['matrix_tip_2'][nom][-1][2]])
     return sol
 
 def move_left_2(sol,nom,xb,yb,zb,list_prob_0,list_prob_1,ml,tip_l):

@@ -25,14 +25,18 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'at Time', set['t']
     print 'Total Tips:', len(sol['matrix_tip'])
     print 'Total Stop Tips:', len(sol['sp_stop'])
-    print 'NILAI C, F MAX', sol['c'].max(),',', sol['f'].max()
-    print 'NILAI C, F MIN', sol['c'].min(),',', sol['f'].min()
+    if not coef['Ro'] == 0:
+        print 'NILAI C, F MAX', sol['c'].max(),',', sol['f'].max()
+        print 'NILAI C, F MIN', sol['c'].min(),',', sol['f'].min()
+    else:
+        print 'NILAI C MAX', sol['c'].max()
+        print 'NILAI C MIN', sol['c'].min()
     #print sol['tip_cell']
        
     print 'process time of Hybrid:', start2-start1
 
     '''SAVING PICTURES'''    
-    if set['k'] % 10 == 0:
+    if set['k'] % 50 == 0:
         if set['layout'] == '2D':
             pic_2d(coef,set,sol)
         if set['layout'] == '3D':
@@ -60,9 +64,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'total time of processing:', 0, 'hours', menit, 'minutes', detik, 'seconds'
     else:
         print 'total time of processing:', 0, 'hours', 0, 'minutes', ttime, 'seconds'
-            
-        
-            
+          
     #print 'total time of processing:', time.clock()
     print '***************************************************'
     print     

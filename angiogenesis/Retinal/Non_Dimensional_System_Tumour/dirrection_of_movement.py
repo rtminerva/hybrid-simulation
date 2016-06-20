@@ -10,7 +10,6 @@ def movement_dir(coef, set, sol, xb, yb, nom):
     cijy_p = max(0,cijy)
     cijy_n = max(0,-cijy)
     
-    
     fijx = 1/(2*set['h'])*(sol['f'][xb+1,yb+1]-sol['f'][xb-1,yb+1]+sol['f'][xb+1,yb-1]-sol['f'][xb-1,yb-1])
     fijy = 1/(2*set['h'])*(sol['f'][xb+1,yb+1]-sol['f'][xb+1,yb-1]+sol['f'][xb-1,yb+1]-sol['f'][xb-1,yb-1])
     fijx_p = max(0,fijx)
@@ -18,19 +17,34 @@ def movement_dir(coef, set, sol, xb, yb, nom):
     fijy_p = max(0,fijy)
     fijy_n = max(0,-fijy)
     
-    
     Gijx_p = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijx_p+coef['Ro']*fijx_p
     Gijx_n = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijx_n+coef['Ro']*fijx_n
     Gijy_p = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijy_p+coef['Ro']*fijy_p
     Gijy_n = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijy_n+coef['Ro']*fijy_n
-    
       
     P_1 = int((set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*Gijx_n)*10000)
     P_2 = int((set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*Gijx_p)*10000)
     P_3 = int((set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*Gijy_n)*10000)
     P_4 = int((set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*Gijy_p)*10000)
-    
 
+    '''Checking space if other tip meet nom tip
+    lx = xb - 2
+    rx = xb + 2
+    dy = yb - 2
+    uy = yb + 2
+    for e,tep in enumerate(range(0,len(sol['matrix_tip']))):
+        if not tep == nom:
+            if [sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]] == [sol['matrix_tip'][tep][-1][0],sol['matrix_tip'][tep][-1][1]]:
+                if [lx,yb] == [sol['matrix_tip'][tep][-2][0],sol['matrix_tip'][tep][-2][1]]:
+                    P_1 = 0
+                elif [rx,yb] == [sol['matrix_tip'][tep][-2][0],sol['matrix_tip'][tep][-2][1]]:
+                    P_2 = 0
+                elif [xb,dy] == [sol['matrix_tip'][tep][-2][0],sol['matrix_tip'][tep][-2][1]]:
+                    P_3 = 0
+                elif [xb,uy] == [sol['matrix_tip'][tep][-2][0],sol['matrix_tip'][tep][-2][1]]:
+                    P_4 = 0
+    '''
+    
     '''Checking no back movement
     no_back = sol['list_tip_movement'][nom]
     if no_back == 'right':
@@ -43,24 +57,6 @@ def movement_dir(coef, set, sol, xb, yb, nom):
         P_4 = 0
     '''
     
-    '''Checking if other tip meet this tip
-    lx = xb - 2
-    rx = xb + 2
-    dy = yb - 2
-    uy = yb + 2
-     
-    cek = str(nom)
-    if cek in sol['pp']:
-        print 'HEREE'
-        if sol['pp'][nom][0] == 'right':
-            P_2 = 0
-        elif sol['pp'][nom][1] == 'left':
-            P_1 = 0
-        elif sol['pp'][nom][2] == 'up':
-            P_4 = 0
-        elif sol['pp'][nom][3] == 'down':
-            P_3 = 0
-    '''
     
     if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
         print 'ADA P yang Negative'

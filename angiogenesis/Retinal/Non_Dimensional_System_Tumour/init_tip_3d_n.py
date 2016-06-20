@@ -19,7 +19,7 @@ def rec_5_tip(coef,set,sol,z):
     x = int(set['Nx']/12)
     if x % 2 == 0:
         x += 1
-    y = -2*x + 1
+    y = -2*x + set['Nx']  
     if y % 2 == 0:
         y += 1
     sol['matrix_tip'].append([(x,y,z)])
@@ -31,7 +31,7 @@ def rec_5_tip(coef,set,sol,z):
     x1 = 2*x
     if x1 % 2 == 0:
         x1 += 1
-    y1 = -2*x1 + 1
+    y1 = -2*x1 + set['Nx']
     if y1 % 2 == 0:
         y1 += 1
     sol['matrix_tip'].append([(x1,y1,z)])
@@ -43,7 +43,7 @@ def rec_5_tip(coef,set,sol,z):
     x2 = 3*x
     if x2 % 2 == 0:
         x2 += 1
-    y2 = -2*x2 + 1
+    y2 = -2*x2 + set['Nx']
     if y2 % 2 == 0:
         y2 += 1
     sol['matrix_tip'].append([(x2,y2,z)])
@@ -52,10 +52,10 @@ def rec_5_tip(coef,set,sol,z):
     sol['life_time_tip'].append(0) #lifetime
     
     '''TIP 3'''
-    x3 = 3*x
+    x3 = 4*x
     if x3 % 2 == 0:
         x3 += 1
-    y3 = -2*x3 + 1
+    y3 = -2*x3 + set['Nx']
     if y3 % 2 == 0:
         y3 += 1
     sol['matrix_tip'].append([(x3,y3,z)])
@@ -64,10 +64,10 @@ def rec_5_tip(coef,set,sol,z):
     sol['life_time_tip'].append(0) #lifetime
     
     '''TIP 4'''
-    x4 = 4*x
+    x4 = 5*x
     if x4 % 2 == 0:
         x4 += 1
-    y4 = -2*x4 + 1
+    y4 = -2*x4 + set['Nx']
     if y4 % 2 == 0:
         y4 += 1
     sol['matrix_tip'].append([(x4,y4,z)])
@@ -79,21 +79,22 @@ def rec_5_tip(coef,set,sol,z):
 def rec_5_tip_ar(coef,set,sol,z):
     '''Tip 0'''
     x = int(set['Nx']/12)
-    if x % 2 == 0:
-        x += 1
-    y = -2*x + 2
+    x0 = int(set['Nx']/2)+x
+    if x0 % 2 == 0:
+        x0 += 1
+    y = -2*x0 + 2*set['Nx']
     if y % 2 == 0:
         y += 1
-    sol['matrix_tip_2'].append([(x,y,z)])
-    sol['n'][x,y,z] = 1
+    sol['matrix_tip_2'].append([(x0,y,z)])
+    sol['n'][x0,y,z] = 1
     sol['list_tip_movement_2'].append('start') #movement tip
     sol['life_time_tip_2'].append(0) #lifetime
     
     '''TIP 1'''
-    x1 = 2*x
+    x1 = int(set['Nx']/2)+2*x
     if x1 % 2 == 0:
         x1 += 1
-    y1 = -2*x1 + 2
+    y1 = -2*x1 + 2*set['Nx']
     if y1 % 2 == 0:
         y1 += 1
     sol['matrix_tip_2'].append([(x1,y1,z)])
@@ -102,10 +103,10 @@ def rec_5_tip_ar(coef,set,sol,z):
     sol['life_time_tip_2'].append(0) #lifetime
     
     '''TIP 2'''
-    x2 = 3*x
+    x2 = int(set['Nx']/2)+3*x
     if x2 % 2 == 0:
         x2 += 1
-    y2 = -2*x2 + 2
+    y2 = -2*x2 + 2*set['Nx']
     if y2 % 2 == 0:
         y2 += 1
     sol['matrix_tip_2'].append([(x2,y2,z)])
@@ -114,10 +115,10 @@ def rec_5_tip_ar(coef,set,sol,z):
     sol['life_time_tip_2'].append(0) #lifetime
     
     '''TIP 3'''
-    x3 = 3*x
+    x3 = int(set['Nx']/2)+4*x
     if x3 % 2 == 0:
         x3 += 1
-    y3 = -2*x3 + 2
+    y3 = -2*x3 + 2*set['Nx']
     if y3 % 2 == 0:
         y3 += 1
     sol['matrix_tip_2'].append([(x3,y3,z)])
@@ -126,10 +127,10 @@ def rec_5_tip_ar(coef,set,sol,z):
     sol['life_time_tip_2'].append(0) #lifetime
     
     '''TIP 4'''
-    x4 = 4*x
+    x4 = int(set['Nx']/2)+5*x
     if x4 % 2 == 0:
         x4 += 1
-    y4 = -2*x4 + 2
+    y4 = -2*x4 + 2*set['Nx']
     if y4 % 2 == 0:
         y4 += 1
     sol['matrix_tip_2'].append([(x4,y4,z)])

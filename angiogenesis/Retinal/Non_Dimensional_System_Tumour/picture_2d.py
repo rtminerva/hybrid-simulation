@@ -33,18 +33,22 @@ def pic_2d(coef,set,sol):
     plt.close()
     #plt.draw()
     
-    if set['k'] % 100 == 0:
-        '''Continuous Plot'''
+    if set['k'] % 500 == 0:
+        ppp = 1
+        '''Continuous Plot
         fig1 = plt.figure(1)
         plt.title('%s%f' % ('VEGF at t=',set['t']))
-        ax = fig1.gca(projection='3d')
-        ax.set_zlim(-0.1, 1)
-        ax.zaxis.set_major_locator(LinearLocator(10))
-        ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+        #ax = fig1.gca(projection='3d')
+        #ax.set_zlim(-0.1, 1)
+        #ax.zaxis.set_major_locator(LinearLocator(10))
+        #ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 
-        ax.set_xlabel('X')
-        ax.set_ylabel('Y')
-        ax.set_zlabel('Z')
+        #plt.set_xlabel('X')
+        #plt.set_ylabel('Y')
+        #plt.set_zlabel('Z')
+        
+        plt.xlabel('X')
+        plt.ylabel('Y')
          
         x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
         y_sub_axis = numpy.arange(0, coef['Y']+set['Hh'], set['h'])
@@ -54,26 +58,27 @@ def pic_2d(coef,set,sol):
         for j, y in enumerate(range(0,set['Ny']+1,2)):
             for i, x in enumerate(range(0,set['Nx']+1,2)):
                 c_sol[i,j] = sol['c'][x,y]
-        surf = ax.plot_surface(x_sub_axis, y_sub_axis, c_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
-                linewidth=0, antialiased=False)
-        fig1.colorbar(surf, shrink=0.5, aspect=5)
+        #surf = ax.plot_surface(x_sub_axis, y_sub_axis, c_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
+        #        linewidth=0, antialiased=False)
+        #fig1.colorbar(surf, shrink=0.5, aspect=5)
+        plt.pcolormesh(y_sub_axis, x_sub_axis, c_sol)
         sol['stVEGF'] +=1  
         flag = 'VEGF=%s' % str(sol['stVEGF']) 
         plt.savefig("%s.png" % flag)
         plt.close()
+        '''
         
-        
-        '''Continuous Plot f
+        '''Continuous Plot f'''
         fig1 = plt.figure(1)
-        plt.title('%s%f' % ('VEGF at t=',set['t']))
-        ax = fig1.gca(projection='3d')
-        ax.set_zlim(-0.1, 1)
-        ax.zaxis.set_major_locator(LinearLocator(10))
-        ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+        plt.title('%s%f' % ('Fibronectin at t=',set['t']))
+        #ax = fig1.gca(projection='3d')
+        #ax.set_zlim(-0.1, 1)
+        #ax.zaxis.set_major_locator(LinearLocator(10))
+        #ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
         
-        ax.set_xlabel('X')
-        ax.set_ylabel('Y')
-        ax.set_zlabel('Z')
+        plt.xlabel('X')
+        plt.ylabel('Y')
+        
          
         x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
         y_sub_axis = numpy.arange(0, coef['Y']+set['Hh'], set['h'])
@@ -83,13 +88,14 @@ def pic_2d(coef,set,sol):
         for j, y in enumerate(range(0,set['Ny']+1,2)):
             for i, x in enumerate(range(0,set['Nx']+1,2)):
                 f_sol[i,j] = sol['f'][x,y]
-        surf = ax.plot_surface(x_sub_axis, y_sub_axis, f_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
-                linewidth=0, antialiased=False)
-        fig1.colorbar(surf, shrink=0.5, aspect=5)
+        #surf = ax.plot_surface(x_sub_axis, y_sub_axis, f_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
+        #        linewidth=0, antialiased=False)
+        #fig1.colorbar(surf, shrink=0.5, aspect=5)
+        plt.pcolormesh(y_sub_axis, x_sub_axis, f_sol)
         sol['stFb'] +=1  
         flag = 'Fb=%s' % str(sol['stFb']) 
         plt.savefig("%s.png" % flag)
         plt.close()
-        '''
+               
     
     return

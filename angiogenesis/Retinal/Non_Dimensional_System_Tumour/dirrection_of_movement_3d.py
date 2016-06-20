@@ -11,7 +11,7 @@ def movement_dir_3d(coef, set, sol, xb, yb, zb, nom):
     cijy_n = max(0,-cijy)
     cijz_p = max(0,cijz)
     cijz_n = max(0,-cijz)
-    if not set['Ro'] == 0:
+    if not coef['Ro'] == 0:
         fijx = 1/(4*set['h'])*(sol['f'][xb+1,yb+1,zb-1]-sol['f'][xb-1,yb+1,zb-1]+sol['f'][xb+1,yb-1,zb-1]-sol['f'][xb-1,yb-1,zb-1]+sol['f'][xb+1,yb+1,zb+1]-sol['f'][xb-1,yb+1,zb+1]+sol['f'][xb+1,yb-1,zb+1]-sol['f'][xb-1,yb-1,zb+1])
         fijy = 1/(4*set['h'])*(sol['f'][xb+1,yb+1,zb-1]-sol['f'][xb+1,yb-1,zb-1]+sol['f'][xb-1,yb+1,zb-1]-sol['f'][xb-1,yb-1,zb-1]+sol['f'][xb+1,yb+1,zb+1]-sol['f'][xb+1,yb-1,zb+1]+sol['f'][xb-1,yb+1,zb+1]-sol['f'][xb-1,yb-1,zb+1])
         fijz = 1/(4*set['h'])*(sol['f'][xb-1,yb-1,zb+1]-sol['f'][xb-1,yb-1,zb-1]+sol['f'][xb+1,yb-1,zb+1]-sol['f'][xb+1,yb-1,zb-1]+sol['f'][xb+1,yb+1,zb+1]-sol['f'][xb+1,yb+1,zb-1]+sol['f'][xb-1,yb+1,zb+1]-sol['f'][xb-1,yb+1,zb-1])

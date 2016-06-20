@@ -7,33 +7,33 @@ def declare_coef():
     set = {}
     sol = {}
     
-    #set['layout'] = '2D'
-    set['layout'] = '3D'
+    set['layout'] = '2D'
+    #set['layout'] = '3D'
     
     #set['initial_prof'] = 'rectangular_1_tip'
     set['initial_prof'] = 'rectangular_tip'
     
-    set['c_prof'] = 'C1'
-    #set['c_prof'] = 'C2'
+    #set['c_prof'] = 'C1'
+    set['c_prof'] = 'C2'
     
     #set['f_prof'] = 'F1'
     set['f_prof'] = 'F2'
     
-    #set['parent'] = 'one'   
-    set['parent'] = 'two' 
+    set['parent'] = 'one'   
+    #set['parent'] = 'two' 
     
     ##Tip (n)
     coef['D_n'] = 0.00035
     coef['Ki_n'] = 0.38
-    coef['Al_n'] = 0.6
-    coef['Ro'] = 0#.3
+    coef['Al_n'] = 0#.6
+    coef['Ro'] = 0.3
     
     ##VEGF (c)
     coef['D_c'] = 0.00035
     coef['Nu'] = 0.1
     
     ##ECM Fibronectin (f)
-    coef['Beta'] = 0.05#0.05
+    coef['Beta'] = 0.07#5
     coef['Gama'] = 0.1
  
     '''Branching & Mitosis'''
@@ -43,10 +43,10 @@ def declare_coef():
     ##set dictionaries tidak pernah berubah
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 10.002
+    set['T'] = 100.002
     set['Nt'] = 100000
     
-    set['h'] = 0.01#0.005
+    set['h'] = 0.005 #0.01#
     set['dt'] = 0.001
     
     set['Hh'] = set['h']/2
@@ -69,15 +69,15 @@ def declare_coef():
     #sol['matrix_tip'] = 0
     #sol['list_tip_movement'] = 0
     #sol['life_time_tip'] = 0
-    #sol['stop_iter'] = 0
+    sol['stop_iter'] = 0
     #sol['sp_stop'] = 0
-    #if set['parent'] == 'two':
+    if set['parent'] == 'two':
         #sol['matrix_tip_2'] = 0
         #sol['list_tip_movement_2'] = 0
         #sol['life_time_tip_2'] = 0
         #sol['sp_stop_2'] = 0
         #sol['tip_cell_2'] = 0
-        #sol['pp_2'] = {}
+        sol['pp_2'] = {}
     #sol['tip_cell'] = 0
     sol['pp'] = {}
 

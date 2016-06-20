@@ -31,16 +31,22 @@ def set_list_prob(dirr):
     list_prob_0 = line_1
     return list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4
 
+
 def anastomosis_tip_tip(sol,nom):
     for e,tep in enumerate(range(0,len(sol['matrix_tip']))):
         if not tep == nom:
             #jj = len(sol['matrix_tip'][tep])-2
-            if sol['matrix_tip'][nom][-1] == sol['matrix_tip'][tep][-1]:
+            if sol['matrix_tip'][nom][-1] == sol['matrix_tip'][tep][-1] and [sol['matrix_tip'][tep][-1][0],sol['matrix_tip'][tep][-1][1]] in sol['tip_cell'] and not tep in sol['sp_stop']:
                 sol['sp_stop'].append(nom)
                 if [sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]] in sol['tip_cell']:
                     sol['tip_cell'].remove([sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]])
-                
-            #elif sol['matrix_tip'][nom][-1] == sol['matrix_tip'][tep][jj] and sol['matrix_tip'][tep][-1] == (xb,yb):
+            '''TIP to Branch'''
+            if sol['matrix_tip'][nom][-1] in sol['matrix_tip'][tep]:
+                if not [sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]] == [sol['matrix_tip'][tep][-1][0],sol['matrix_tip'][tep][-1][1]] and not tep in sol['sp_stop']:
+                    sol['sp_stop'].append(nom)
+                    if [sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]] in sol['tip_cell']:
+                        sol['tip_cell'].remove([sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]])
+            
     return sol
 
 def anastomosis_tip_branch(sol,nom,xb,yb,ml,mr,md,mu,tip_l,tip_r,tip_d,tip_u):
@@ -176,7 +182,7 @@ def movement(sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_
     if nom in sol['pp']:
         tipp = 'stay'
         oo = 0
-        while tipp == 'stay' and oo < 1000:
+        while tipp == 'stay' and oo < 100:
             oo +=1
             tes = randint(1,10000)
             if tes in list_prob_0:
@@ -378,5 +384,6 @@ def hybrid_tech_c(coef, set, sol):
                                     sol, tipp = movement_branch(tipp,sol,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4,ml,mr,md,mu,tip_l,tip_r,tip_d,tip_u)
                                 
                                 '''Check Anastomosis'''
-                                sol=anastomosis_tip_tip(sol,len(sol['matrix_tip'])-1)
+                                if not tipp == 'stay':
+                                    sol=anastomosis_tip_tip(sol,len(sol['matrix_tip'])-1)
     return sol
