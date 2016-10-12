@@ -1,16 +1,17 @@
-import main_code as main
+from coef_setting import declare_coef #1
+import main_code as main #2
 #import main_code_con as main2
-from coef_setting import declare_coef
-import numpy
-
-from timeit import default_timer as timer 
-import time
-import matplotlib.pyplot as plt 
 from picture_2d import pic_2d
 #from picture_2d_con import pic_2d
 from picture_3d import pic_3d
+
+import numpy
+from timeit import default_timer as timer 
+import time
+import matplotlib.pyplot as plt 
+
 #declare coefficients & initial settings
-coef, set, sol = declare_coef()
+coef, set, sol = declare_coef() #1
 
 #to plot interactively
 plt.ion()
@@ -19,7 +20,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     if set['con'] == True:
         sol = main2.con_(coef, set, sol)
     else:
-        sol = main.boolean_1_iter(coef, set, sol)                  
+        sol = main.boolean_1_iter(coef, set, sol) #2                 
         
         if sol['stop_iter'] >=100000:
             set['k'] = sol['stop_iter']

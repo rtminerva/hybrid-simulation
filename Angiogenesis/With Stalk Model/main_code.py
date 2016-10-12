@@ -1,6 +1,6 @@
+from initial_conditions import initial_prof #2.1
 from solve_cfT import c_f_T
 from solve_cfT_3d import c_f_T_3d
-from initial_conditions import initial_prof
 from hybrid import hybrid_tech_c
 from hybrid_c_3d import hybrid_tech_c_3d
 from timeit import default_timer as timer
@@ -36,7 +36,7 @@ def check_anastomosis(sol):
 def boolean_1_iter(coef, set, sol, check = 'out'):                       
     if set['k'] == 0:
         '''Initial Profile'''
-        sol = initial_prof(coef, set, sol)  
+        sol = initial_prof(coef, set, sol) #2.1
     else:                             
         if len(sol['sp_stop']) == len(sol['matrix_tip']):
             sol['stop_iter'] = 100000 #sp_stop harus dicek di setiap movement and branching. karena sudah tidak bergerak lagi yang ada di list ini.

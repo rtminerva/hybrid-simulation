@@ -16,7 +16,7 @@ def declare_coef():
     set['c_prof'] = 'C1'
     #set['c_prof'] = 'C2'
     
-    set['f_prof'] = 'F1'
+    #set['f_prof'] = 'F1'
     #set['f_prof'] = 'F2'
     
     set['parent'] = 'one'   
@@ -28,6 +28,8 @@ def declare_coef():
     coef['Al_n'] = 0.6
     #coef['Ro'] = 0.3#0.34
     
+    ##Stalk (b)
+    
     ##VEGF (c)
     #coef['D_c'] = 0.00035
     coef['Nu'] = 0.1
@@ -38,7 +40,7 @@ def declare_coef():
  
     '''Branching & Mitosis'''
     coef['T_branch'] = 0.25
-    coef['T_mitosis'] = 1000#0.5
+    #coef['T_mitosis'] = 1000#0.5
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah
@@ -67,6 +69,7 @@ def declare_coef():
     '''To store solutions'''
     ##sol dictionaries dapat berubah
     sol['stEC'] = 0
+    sol['stStalk'] = 0
     sol['stVEGF'] = 0
     #sol['stFb'] = 0
     #sol['matrix_tip'] = 0
