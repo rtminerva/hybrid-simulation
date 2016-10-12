@@ -13,11 +13,11 @@ def declare_coef():
     #set['initial_prof'] = 'rectangular_1_tip'
     set['initial_prof'] = 'rectangular_tip'
     
-    #set['c_prof'] = 'C1'
-    set['c_prof'] = 'C2'
+    set['c_prof'] = 'C1'
+    #set['c_prof'] = 'C2'
     
-    #set['f_prof'] = 'F1'
-    set['f_prof'] = 'F2'
+    set['f_prof'] = 'F1'
+    #set['f_prof'] = 'F2'
     
     set['parent'] = 'one'   
     #set['parent'] = 'two' 
@@ -25,26 +25,29 @@ def declare_coef():
     ##Tip (n)
     coef['D_n'] = 0.00035
     coef['Ki_n'] = 0.38
-    coef['Al_n'] = 0#.6
-    coef['Ro'] = 0.3
+    coef['Al_n'] = 0.6
+    #coef['Ro'] = 0.3#0.34
     
     ##VEGF (c)
-    coef['D_c'] = 0.00035
+    #coef['D_c'] = 0.00035
     coef['Nu'] = 0.1
     
     ##ECM Fibronectin (f)
-    coef['Beta'] = 0.07#5
-    coef['Gama'] = 0.1
+    #coef['Beta'] = 0#.05#7
+    #coef['Gama'] = 0.1
  
     '''Branching & Mitosis'''
     coef['T_branch'] = 0.25
+    coef['T_mitosis'] = 1000#0.5
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 100.002
+    set['T'] = 20.002
     set['Nt'] = 100000
+    set['theta'] = 0.5
+    set['con'] = False
     
     set['h'] = 0.005 #0.01#
     set['dt'] = 0.001
@@ -65,7 +68,7 @@ def declare_coef():
     ##sol dictionaries dapat berubah
     sol['stEC'] = 0
     sol['stVEGF'] = 0
-    sol['stFb'] = 0
+    #sol['stFb'] = 0
     #sol['matrix_tip'] = 0
     #sol['list_tip_movement'] = 0
     #sol['life_time_tip'] = 0

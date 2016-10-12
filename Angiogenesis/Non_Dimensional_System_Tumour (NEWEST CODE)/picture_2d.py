@@ -96,6 +96,5 @@ def pic_2d(coef,set,sol):
         flag = 'Fb=%s' % str(sol['stFb']) 
         plt.savefig("%s.png" % flag)
         plt.close()
-               
     
     return

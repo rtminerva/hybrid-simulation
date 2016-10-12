@@ -19,6 +19,7 @@ def rec_5_tip(coef,set,sol):
     sol['n'][1,y] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
+    sol['life_mit'].append(0)
     
     '''TIP 1'''
     y1 = 2*y
@@ -28,6 +29,7 @@ def rec_5_tip(coef,set,sol):
     sol['n'][1,y1] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
+    sol['life_mit'].append(0)
     
     '''TIP 2'''
     y2 = 3*y
@@ -37,6 +39,7 @@ def rec_5_tip(coef,set,sol):
     sol['n'][1,y2] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
+    sol['life_mit'].append(0)
     
     '''TIP 3'''
     y2 = 4*y
@@ -46,6 +49,7 @@ def rec_5_tip(coef,set,sol):
     sol['n'][1,y2] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
+    sol['life_mit'].append(0)
     
     '''TIP 4'''
     y2 = 5*y
@@ -55,6 +59,7 @@ def rec_5_tip(coef,set,sol):
     sol['n'][1,y2] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
+    sol['life_mit'].append(0)
     return sol
 
 def init_tip_2d_(coef,set,sol):
@@ -62,6 +67,7 @@ def init_tip_2d_(coef,set,sol):
     sol['matrix_tip'] = []
     sol['list_tip_movement'] = []
     sol['life_time_tip'] = []
+    sol['life_mit'] = []
     sol['sp_stop'] = []
     sol['tip_cell'] = []
     

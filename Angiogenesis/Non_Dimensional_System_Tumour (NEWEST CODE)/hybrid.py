@@ -307,6 +307,43 @@ def hybrid_tech_c(coef, set, sol):
         if not nom in sol['sp_stop']: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
             yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
+            
+            '''Proliferation'''
+            if sol['life_mit'][nom] >= coef['T_mitosis']:
+                sol['life_mit'][nom] = 0
+                if sol['list_tip_movement'] == 'left':
+                    if [xb,yb] in sol['tip_cell']:
+                        sol['tip_cell'].remove([xb,yb])
+                    xs = sol['matrix_tip'][nom][-1][0] - 2
+                    ys = sol['matrix_tip'][nom][-1][1]
+                    sol['matrix_tip'][nom].append((xs,ys))
+                    sol['n'][xs,ys] = 1
+                    sol['tip_cell'].append([xs,ys])
+                elif sol['list_tip_movement'] == 'right':
+                    if [xb,yb] in sol['tip_cell']:
+                        sol['tip_cell'].remove([xb,yb])
+                    xs = sol['matrix_tip'][nom][-1][0] + 2
+                    ys = sol['matrix_tip'][nom][-1][1]
+                    sol['matrix_tip'][nom].append((xs,ys))
+                    sol['n'][xs,ys] = 1
+                    sol['tip_cell'].append([xs,ys])
+                elif sol['list_tip_movement'] == 'down':
+                    if [xb,yb] in sol['tip_cell']:
+                        sol['tip_cell'].remove([xb,yb])
+                    xs = sol['matrix_tip'][nom][-1][0]
+                    ys = sol['matrix_tip'][nom][-1][1] -2
+                    sol['matrix_tip'][nom].append((xs,ys))
+                    sol['n'][xs,ys] = 1
+                    sol['tip_cell'].append([xs,ys])
+                elif sol['list_tip_movement'] == 'up':
+                    if [xb,yb] in sol['tip_cell']:
+                        sol['tip_cell'].remove([xb,yb])
+                    xs = sol['matrix_tip'][nom][-1][0]
+                    ys = sol['matrix_tip'][nom][-1][1] + 2
+                    sol['matrix_tip'][nom].append((xs,ys))
+                    sol['n'][xs,ys] = 1
+                    sol['tip_cell'].append([xs,ys])
+            '''Proliferation'''
 
             dirr= movement_dir(coef, set, sol, xb, yb, nom)
             
@@ -352,15 +389,18 @@ def hybrid_tech_c(coef, set, sol):
                 '''2.1 Branching Decision'''
                 if tipp == 'stay': #not able to branch
                     sol['life_time_tip'][nom] += set['dt']
+                    sol['life_mit'][nom] += set['dt']
                 else: #there is possibility to branch
                     cek = str(nom)
                     if dirr.count(0) >= 3: #no space to move
                         sol['life_time_tip'][nom] += set['dt']
+                        sol['life_mit'][nom] += set['dt']
                         if cek in sol['pp']:
                             sol['pp'].pop('cek')
                     else: #there is possibility to branch
                         if sol['life_time_tip'][nom] < coef['T_branch']: #not able to branch
                             sol['life_time_tip'][nom] += set['dt']
+                            sol['life_mit'][nom] += set['dt']
                             if cek in sol['pp']:
                                 sol['pp'].pop('cek')
                         else: #there is possibility to branch
@@ -369,12 +409,15 @@ def hybrid_tech_c(coef, set, sol):
                             tes = randint(1,10)
                             if not tes in list_prob: #not able to branch
                                 sol['life_time_tip'][nom] += set['dt']
+                                sol['life_mit'][nom] += set['dt']
                                 if cek in sol['pp']:
                                     sol['pp'].pop('cek')
                             else: #BRANCHING!
                                 sol['life_time_tip'][nom] = 0
+                                sol['life_mit'][nom] += set['dt']
                                 sol['matrix_tip'].append([(xb,yb)])
                                 sol['life_time_tip'].append(0)
+                                sol['life_mit'].append(0)
                                 sol['list_tip_movement'].append('start')
                                 tipp = 'stay'
                                 if cek in sol['pp']:

@@ -1,8 +1,8 @@
 import matrix_sparse_continuous_B as sprB
+
 import numpy
 from timeit import default_timer as timer 
 import time
-
 import matplotlib.pyplot as plt 
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
