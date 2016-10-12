@@ -1,7 +1,7 @@
 from initial_conditions import initial_prof #2.1
 from hybrid import hybrid_tech_c #2.2
+from solve_cfT import c_f_T #2.3
 
-from solve_cfT import c_f_T
 from solve_cfT_3d import c_f_T_3d
 from hybrid_c_3d import hybrid_tech_c_3d
 from timeit import default_timer as timer
@@ -56,7 +56,7 @@ def boolean_1_iter(coef, set, sol, check = 'out'): #2
             start3 = timer()
             '''Solving c,f,T'''
             if set['layout'] == '2D':
-                sol = c_f_T(coef, set, sol)
+                sol = c_f_T(coef, set, sol) #2.3
             if set['layout'] == '3D':
                 sol = c_f_T_3d(coef, set, sol)
             start4 = timer()            
