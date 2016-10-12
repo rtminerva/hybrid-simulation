@@ -70,15 +70,14 @@ def F(coef,set,sol):
                     
                     F_sol_1[x,y] = -coef['D_n']/(set['h'])*(sol['n'][x+1,y-1]-sol['n'][x-1,y-1])+sol['n'][x-1,y-1]*G_plus_1-sol['n'][x+1,y-1]*G_neg_1
                     F_sol_2[x,y] = -coef['D_n']/(set['h'])*(sol['n'][x-1,y+1]-sol['n'][x-1,y-1])+sol['n'][x-1,y-1]*G_plus_2-sol['n'][x-1,y+1]*G_neg_2
-    return F_sol_1, F_sol_2
-            
-
+    return F_sol_1, F_sol_2        
 
 def c_f_T(coef, set, sol): #2.3
     c_o = sol['c'][:]
     #f_o = sol['f'][:]
     
     '''Calculate F on each sub lattice'''
+    ##2nd method
     
     
     '''Solve c, f, p at sub lattice'''
