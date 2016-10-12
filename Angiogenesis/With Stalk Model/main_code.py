@@ -1,7 +1,8 @@
 from initial_conditions import initial_prof #2.1
+from hybrid import hybrid_tech_c #2.2
+
 from solve_cfT import c_f_T
 from solve_cfT_3d import c_f_T_3d
-from hybrid import hybrid_tech_c
 from hybrid_c_3d import hybrid_tech_c_3d
 from timeit import default_timer as timer
 
@@ -33,7 +34,7 @@ def check_anastomosis(sol):
                 
     return sol
 
-def boolean_1_iter(coef, set, sol, check = 'out'):                       
+def boolean_1_iter(coef, set, sol, check = 'out'): #2                      
     if set['k'] == 0:
         '''Initial Profile'''
         sol = initial_prof(coef, set, sol) #2.1
@@ -46,7 +47,7 @@ def boolean_1_iter(coef, set, sol, check = 'out'):
             '''2. Branching and Movement''' 
             start1 = timer()  
             if set['layout'] == '2D':
-                sol = hybrid_tech_c(coef, set, sol)
+                sol = hybrid_tech_c(coef, set, sol) #2.2
             if set['layout'] == '3D':
                 sol = hybrid_tech_c_3d(coef, set, sol)
             start2 = timer()

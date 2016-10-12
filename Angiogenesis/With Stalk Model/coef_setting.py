@@ -25,10 +25,11 @@ def declare_coef():
     ##Tip (n)
     coef['D_n'] = 0.00035
     coef['Ki_n'] = 0.38
-    coef['Al_n'] = 0.6
+    coef['Al_n'] = 0#0.6
     #coef['Ro'] = 0.3#0.34
     
     ##Stalk (b)
+    coef['Si'] = 0.3
     
     ##VEGF (c)
     #coef['D_c'] = 0.00035
@@ -40,7 +41,7 @@ def declare_coef():
  
     '''Branching & Mitosis'''
     coef['T_branch'] = 0.25
-    #coef['T_mitosis'] = 1000#0.5
+    coef['T_mitosis'] = 1000#0.5
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah
