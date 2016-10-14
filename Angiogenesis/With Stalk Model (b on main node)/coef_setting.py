@@ -1,6 +1,6 @@
 from collections import OrderedDict
 
-def declare_coef():
+def declare_coef(): #1
     '''Coefficients'''
     #to store coefficients
     coef = {}

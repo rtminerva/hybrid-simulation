@@ -33,17 +33,17 @@ def c_prof_2(coef,set,sol): #2.1.1.(2)
 #                sol = f_prof_1(coef,set,sol,x,y)
     return sol
 
-def b_prof(coef,set,sol):
-    for y in range(0,set['Ny']+1,2):
-        sol['b'][0,y] = 1
+def b_prof(coef,set,sol): #2.1.1.(3)
+    for y in range(1,set['Ny'],2):
+        sol['b'][1,y] = 1
     return sol
 
 
-def init_2d_(coef,set,sol):
+def init_2d_(coef,set,sol): #2.1.1
     sol['c'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     #sol['f'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['b'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
-    b_prof(coef,set,sol)
+    b_prof(coef,set,sol) #2.1.1.(3)
     if set['c_prof'] == 'C2':
         sol = c_prof_2(coef,set,sol) #2.1.1.(2)
     elif set['c_prof'] == 'C1':

@@ -10,8 +10,57 @@ def movement_dir(coef, set, sol, xb, yb, nom): #2.2.1
     cijy_p = max(0,cijy)
     cijy_n = max(0,-cijy)
     
-    bijx = 1/(2*set['h'])*(sol['b'][xb+1,yb+1]-sol['b'][xb-1,yb+1]+sol['b'][xb+1,yb-1]-sol['b'][xb-1,yb-1])
-    bijy = 1/(2*set['h'])*(sol['b'][xb+1,yb+1]-sol['b'][xb+1,yb-1]+sol['b'][xb-1,yb+1]-sol['b'][xb-1,yb-1])
+    if yb == 1:
+        if xb == 1:
+            b_mean_ur = 1/4*(sol['b'][xb+2,yb+2]+sol['b'][xb,yb+2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])
+            b_mean_ul = 1/2*(sol['b'][xb,yb]+sol['b'][xb,yb+2])
+            b_mean_dr = 1/2*(sol['b'][xb,yb]+sol['b'][xb+2,yb])
+            b_mean_dl = sol['b'][xb,yb]
+        elif xb == set['Nx']-1:
+            b_mean_ur = 1/2*(sol['b'][xb,yb]+sol['b'][xb,yb+2])
+            b_mean_ul = 1/4*(sol['b'][xb-2,yb]+sol['b'][xb,yb+2]+sol['b'][xb-2,yb+2]+sol['b'][xb,yb])
+            b_mean_dr = sol['b'][xb,yb]
+            b_mean_dl = 1/2*(sol['b'][xb,yb]+sol['b'][xb-2,yb])
+        else:
+            b_mean_ur = 1/4*(sol['b'][xb+2,yb+2]+sol['b'][xb,yb+2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])
+            b_mean_ul = 1/4*(sol['b'][xb-2,yb-2]+sol['b'][xb,yb+2]+sol['b'][xb-2,yb]+sol['b'][xb,yb])
+            b_mean_dr = 1/2*(sol['b'][xb,yb]+sol['b'][xb+2,yb])
+            b_mean_dl = 1/2*(sol['b'][xb,yb]+sol['b'][xb-2,yb])
+    elif yb == set['Ny']-1:
+        if xb == 1:
+            b_mean_ur = 1/2*(sol['b'][xb,yb]+sol['b'][xb+2,yb])
+            b_mean_ul = sol['b'][xb,yb]
+            b_mean_dr = 1/4*(sol['b'][xb+2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])
+            b_mean_dl = 1/2*(sol['b'][xb,yb]+sol['b'][xb,yb-2])
+        elif xb == set['Nx']-1:
+            b_mean_ur = sol['b'][xb,yb]
+            b_mean_ul = 1/2*(sol['b'][xb,yb]+sol['b'][xb-2,yb])
+            b_mean_dr = 1/2*(sol['b'][xb,yb]+sol['b'][xb,yb-2])
+            b_mean_dl = 1/4*(sol['b'][xb-2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb-2,yb]+sol['b'][xb,yb])
+        else:
+            b_mean_ur = 1/2*(sol['b'][xb,yb]+sol['b'][xb+2,yb])
+            b_mean_ul = 1/2*(sol['b'][xb,yb]+sol['b'][xb-2,yb])
+            b_mean_dr = 1/4*(sol['b'][xb+2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])
+            b_mean_dl = 1/4*(sol['b'][xb-2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb-2,yb]+sol['b'][xb,yb])
+    else:
+        if xb == 1:
+            b_mean_ur = 1/4*(sol['b'][xb+2,yb+2]+sol['b'][xb,yb+2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])
+            b_mean_ul = 1/2*(sol['b'][xb,yb]+sol['b'][xb,yb+2])
+            b_mean_dr = 1/4*(sol['b'][xb+2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])
+            b_mean_dl = 1/2*(sol['b'][xb,yb]+sol['b'][xb,yb-2])
+        elif xb == set['Nx']-1:
+            b_mean_ur = 1/2*(sol['b'][xb,yb]+sol['b'][xb,yb+2])
+            b_mean_ul = 1/4*(sol['b'][xb-2,yb+2]+sol['b'][xb,yb+2]+sol['b'][xb-2,yb]+sol['b'][xb,yb])
+            b_mean_dr = 1/2*(sol['b'][xb,yb]+sol['b'][xb,yb-2])
+            b_mean_dl = 1/4*(sol['b'][xb-2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb-2,yb]+sol['b'][xb,yb])
+        else:
+            b_mean_ur = 1/4*(sol['b'][xb+2,yb+2]+sol['b'][xb,yb+2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])
+            b_mean_ul = 1/4*(sol['b'][xb-2,yb+2]+sol['b'][xb,yb+2]+sol['b'][xb-2,yb]+sol['b'][xb,yb])
+            b_mean_dr = 1/4*(sol['b'][xb+2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])
+            b_mean_dl = 1/4*(sol['b'][xb-2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb-2,yb]+sol['b'][xb,yb])
+        
+    bijx = 1/(2*set['h'])*(b_mean_ur-b_mean_ul+b_mean_dr-b_mean_dl)
+    bijy = 1/(2*set['h'])*(b_mean_ur-b_mean_dr+b_mean_ul-b_mean_dl)
     
     bijx_p = max(0,bijx)
     bijx_n = max(0,-bijx)
