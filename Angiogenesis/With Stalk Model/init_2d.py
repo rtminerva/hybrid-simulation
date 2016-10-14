@@ -35,7 +35,7 @@ def c_prof_2(coef,set,sol): #2.1.1.(2)
 
 def b_prof(coef,set,sol):
     for y in range(0,set['Ny']+1,2):
-        sol['c'][0,y] = 1
+        sol['b'][0,y] = 1
     return sol
 
 

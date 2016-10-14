@@ -1,9 +1,9 @@
 from coef_setting import declare_coef #1
 import main_code as main #2
 #import main_code_con as main2
-from picture_2d import pic_2d
+#from picture_2d import pic_2d
 #from picture_2d_con import pic_2d
-from picture_3d import pic_3d
+#from picture_3d import pic_3d
 
 import numpy
 from timeit import default_timer as timer 
@@ -29,27 +29,28 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'at Time', set['t']
     print 'Total Tips:', len(sol['matrix_tip'])
     print 'Total Stop Tips:', len(sol['sp_stop'])
-    if not coef['Ro'] == 0:
-        print 'NILAI C, F MAX', sol['c'].max(),',', sol['f'].max()
-        #print 'NILAI C, F MIN', sol['c'].min(),',', sol['f'].min()
+    if not coef['Si'] == 0:
+        print 'NILAI C, b MAX', sol['c'].max(),',', sol['b'].max()
+        print 'NILAI C, b MIN', sol['c'].min(),',', sol['b'].min()
     else:
         print 'NILAI C MAX', sol['c'].max()
         print 'NILAI C MIN', sol['c'].min()
     #print sol['tip_cell']
-
+    '''
     if set['con'] == True:
-        '''SAVING PICTURES'''    
+        SAVING PICTURES   
         if set['k'] % 500 == 0:
             if set['layout'] == '2D':
                 pic_2d_con(coef,set,sol)
 
     else:
-        '''SAVING PICTURES'''    
+        SAVING PICTURES    
         if set['k'] % 50 == 0:
             if set['layout'] == '2D':
                 pic_2d(coef,set,sol)
             if set['layout'] == '3D':
                 pic_3d(coef,set,sol)
+    '''
         
     '''Recording Time'''         
     ttime = time.clock()

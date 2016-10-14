@@ -17,8 +17,7 @@ def movement_dir(coef, set, sol, xb, yb, nom): #2.2.1
     bijx_n = max(0,-bijx)
     bijy_p = max(0,bijy)
     bijy_n = max(0,-bijy)
-    
-    
+
 #     fijx = 1/(2*set['h'])*(sol['f'][xb+1,yb+1]-sol['f'][xb-1,yb+1]+sol['f'][xb+1,yb-1]-sol['f'][xb-1,yb-1])
 #     fijy = 1/(2*set['h'])*(sol['f'][xb+1,yb+1]-sol['f'][xb+1,yb-1]+sol['f'][xb-1,yb+1]-sol['f'][xb-1,yb-1])
 #     fijx_p = max(0,fijx)
@@ -26,10 +25,10 @@ def movement_dir(coef, set, sol, xb, yb, nom): #2.2.1
 #     fijy_p = max(0,fijy)
 #     fijy_n = max(0,-fijy)
     
-    Gijx_p = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijx_p-coef['Si']*bijx_p
-    Gijx_n = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijx_n-coef['Si']*bijx_n
-    Gijy_p = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijy_p-coef['Si']*bijy_p
-    Gijy_n = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijy_n-coef['Si']*bijy_n
+    Gijx_p = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijx_p#-coef['Si']*bijx_p
+    Gijx_n = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijx_n#-coef['Si']*bijx_n
+    Gijy_p = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijy_p#-coef['Si']*bijy_p
+    Gijy_n = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijy_n#-coef['Si']*bijy_n
       
     P_1 = int((set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*Gijx_n)*10000)
     P_2 = int((set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*Gijx_p)*10000)
@@ -69,7 +68,7 @@ def movement_dir(coef, set, sol, xb, yb, nom): #2.2.1
     
     if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
         print 'ADA P yang Negative'
-        print 'probability P', P_0, ',',P_1,',',P_2,',',P_3,',',P_4
+        print 'probability P', P_1,',',P_2,',',P_3,',',P_4
         if P_1 <0:
             P_1 = 0
         elif P_2<0:
