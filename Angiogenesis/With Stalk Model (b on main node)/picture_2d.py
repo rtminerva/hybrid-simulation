@@ -80,18 +80,18 @@ def pic_2d(coef,set,sol):
         plt.ylabel('Y')
         
          
-        x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
-        y_sub_axis = numpy.arange(0, coef['Y']+set['Hh'], set['h'])
-        x_sub_axis, y_sub_axis = numpy.meshgrid(x_sub_axis, y_sub_axis)
+        x_main_axis = numpy.arange(set['h'], coef['X']+set['h'], set['h'])
+        y_main_axis = numpy.arange(set['h'], coef['Y']+set['h'], set['h'])
+        x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
          
-        b_sol = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
-        for j, y in enumerate(range(0,set['Ny']+1,2)):
-            for i, x in enumerate(range(0,set['Nx']+1,2)):
+        b_sol = numpy.zeros((set['Nx']/2, set['Ny']/2))
+        for j, y in enumerate(range(1,set['Ny'],2)):
+            for i, x in enumerate(range(1,set['Nx'],2)):
                 b_sol[i,j] = sol['b'][x,y]
         #surf = ax.plot_surface(x_sub_axis, y_sub_axis, f_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
         #        linewidth=0, antialiased=False)
         #fig1.colorbar(surf, shrink=0.5, aspect=5)
-        plt.pcolormesh(y_sub_axis, x_sub_axis, b_sol)
+        plt.pcolormesh(y_main_axis, x_main_axis, b_sol)
         sol['stStalk'] +=1  
         flag = 'St=%s' % str(sol['stStalk']) 
         plt.savefig("%s.png" % flag)
