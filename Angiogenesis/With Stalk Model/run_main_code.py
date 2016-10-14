@@ -1,7 +1,7 @@
 from coef_setting import declare_coef #1
 import main_code as main #2
 #import main_code_con as main2
-#from picture_2d import pic_2d
+from picture_2d import pic_2d #3
 #from picture_2d_con import pic_2d
 #from picture_3d import pic_3d
 
@@ -36,21 +36,21 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'NILAI C MAX', sol['c'].max()
         print 'NILAI C MIN', sol['c'].min()
     #print sol['tip_cell']
-    '''
+    
     if set['con'] == True:
-        SAVING PICTURES   
+        #SAVING PICTURES   
         if set['k'] % 500 == 0:
             if set['layout'] == '2D':
                 pic_2d_con(coef,set,sol)
 
     else:
-        SAVING PICTURES    
+        #SAVING PICTURES    
         if set['k'] % 50 == 0:
             if set['layout'] == '2D':
-                pic_2d(coef,set,sol)
+                pic_2d(coef,set,sol) #3
             if set['layout'] == '3D':
                 pic_3d(coef,set,sol)
-    '''
+    
         
     '''Recording Time'''         
     ttime = time.clock()

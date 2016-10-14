@@ -29,7 +29,7 @@ def declare_coef():
     #coef['Ro'] = 0.3#0.34
     
     ##Stalk (b)
-    coef['Si'] = 0.3
+    coef['Si'] = 0.0001
     
     ##VEGF (c)
     #coef['D_c'] = 0.00035
@@ -47,7 +47,7 @@ def declare_coef():
     ##set dictionaries tidak pernah berubah
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 1.002
+    set['T'] = 100.002
     set['Nt'] = 100000
     set['theta'] = 0.5
     set['con'] = False
