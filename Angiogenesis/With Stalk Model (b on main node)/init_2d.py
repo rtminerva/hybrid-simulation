@@ -42,8 +42,7 @@ def b_prof(coef,set,sol): #2.1.1.(3)
 def init_2d_(coef,set,sol): #2.1.1
     sol['c'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     #sol['f'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
-    sol['b'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
-    b_prof(coef,set,sol) #2.1.1.(3)
+    #b_prof(coef,set,sol) #2.1.1.(3)
     if set['c_prof'] == 'C2':
         sol = c_prof_2(coef,set,sol) #2.1.1.(2)
     elif set['c_prof'] == 'C1':
