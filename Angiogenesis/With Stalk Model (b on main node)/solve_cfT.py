@@ -62,8 +62,9 @@ def max_min_b(set,sol,x,y): #2.3.(1).(2)
             b_mean_dr = (sol['b'][xb+2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])/4
             b_mean_dl = (sol['b'][xb-2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb-2,yb]+sol['b'][xb,yb])/4
         
-    bijx = 1/(2*set['h'])*(b_mean_ur-b_mean_ul+b_mean_dr-b_mean_dl)
-    bijy = 1/(2*set['h'])*(b_mean_ur-b_mean_dr+b_mean_ul-b_mean_dl)
+    bijx = (b_mean_ur-b_mean_ul+b_mean_dr-b_mean_dl)/(2*set['h'])
+    bijy = (b_mean_ur-b_mean_dr+b_mean_ul-b_mean_dl)/(2*set['h'])
+    #print bijx,bijy
 
     bijx_p = max(0,bijx)
     bijx_n = max(0,-bijx)
@@ -110,7 +111,7 @@ def F_vector_sol(coef,set,sol): #2.3.(1)
                         G_neg_1 = chemo_coef*cijx_n-coef['Si']*bijx_n
                         
                         F_sol_1[x,y] = -coef['D_n']/(set['h'])*(sol['n'][x+1,y-1]-sol['n'][x-1,y-1])+sol['n'][x-1,y-1]*G_plus_1-sol['n'][x+1,y-1]*G_neg_1
-            
+                        
             elif not y == 0:
                 if x == 0:
                     chemo_coef = coef['Ki_n']/(1+coef['Al_n']*(sol['c'][x,y]+sol['c'][x-2,y]+sol['c'][x,y-2]+sol['c'][x-2,y-2])/4)
@@ -141,28 +142,30 @@ def F_vector_sol(coef,set,sol): #2.3.(1)
                     bijx_p, bijx_n, bijy_p, bijy_n = max_min_b(set,sol,x,y+2) #2.3.(1).(2)
                     G_neg_2 = chemo_coef*cijy_n-coef['Si']*bijy_n
                     
-                    F_sol_1[x,y] = -coef['D_n']/(set['h'])*(sol['n'][x+1,y-1]-sol['n'][x-1,y-1])+sol['n'][x-1,y-1]*G_plus_1-sol['n'][x+1,y-1]*G_neg_1
-                    F_sol_2[x,y] = -coef['D_n']/(set['h'])*(sol['n'][x-1,y+1]-sol['n'][x-1,y-1])+sol['n'][x-1,y-1]*G_plus_2-sol['n'][x-1,y+1]*G_neg_2
-                
+                    F_sol_1[x,y] = -coef['D_n']*(sol['n'][x+1,y-1]-sol['n'][x-1,y-1])/(set['h'])+sol['n'][x-1,y-1]*G_plus_1-sol['n'][x+1,y-1]*G_neg_1
+                    F_sol_2[x,y] = -coef['D_n']*(sol['n'][x-1,y+1]-sol['n'][x-1,y-1])/(set['h'])+sol['n'][x-1,y-1]*G_plus_2-sol['n'][x-1,y+1]*G_neg_2
     return F_sol_1, F_sol_2      
 
 def F_mean_vector_sol(F_sol_1, F_sol_2, set):
     F_mean_sol_1 = numpy.zeros((set['Nx']+1,set['Ny']+1))
     F_mean_sol_2 = numpy.zeros((set['Nx']+1,set['Ny']+1))
     for y in range(1,set['Ny'],2):
-        for x in range(0,set['Nx'],2):
+        for x in range(1,set['Nx'],2):
+            #print F_sol_1[x,y]+F_sol_1[x-1,y+1]+F_sol_1[x+1,y-1]+F_sol_1[x-1,y-1]
             F_mean_sol_1[x,y] = (F_sol_1[x+1,y+1]+F_sol_1[x-1,y+1]+F_sol_1[x+1,y-1]+F_sol_1[x-1,y-1])/4
             F_mean_sol_2[x,y] = (F_sol_2[x+1,y+1]+F_sol_2[x-1,y+1]+F_sol_2[x+1,y-1]+F_sol_2[x-1,y-1])/4
+                
     return F_mean_sol_1, F_mean_sol_2
 
 def c_f_T(coef, set, sol): #2.3
-    c_o = sol['c'][:]
+    c_o = numpy.copy(sol['c'])
     #f_o = sol['f'][:]
-    b_o = sol['b'][:]
+    b_o = numpy.copy(sol['b'])
     
     '''Calculate F on each sub lattice'''
     ##2nd method*
     F_sol_1, F_sol_2 = F_vector_sol(coef, set, sol) #2.3.(1)
+    #print F_sol_1, F_sol_2
     F_mean_sol_1, F_mean_sol_2 = F_mean_vector_sol(F_sol_1, F_sol_2, set)
     del F_sol_1, F_sol_2
     
@@ -193,18 +196,17 @@ def c_f_T(coef, set, sol): #2.3
                 if x == 1:
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(Hi,j,1+Hi,j,2-Hi,j-1,2)
                     sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))
-                    if not F_mean_sol_1[x,y]==0:
-                        if not F_mean_sol_2[x,y]==0:
-                            if not F_mean_sol_2[x,y+2]==0:
-                                if not F_mean_sol_2[x,y-2]==0:
-                                    print F_mean_sol_1[x,y], F_mean_sol_2[x,y], F_mean_sol_2[x,y+2], F_mean_sol_2[x,y-2]
                 elif x == set['Nx']-1:
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(-Hi-1,j,1+Hi,j,2-Hi,j-1,2)
                     sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(-(sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))
                 else:
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(Hi,j,1-Hi-1,j,1+Hi,j,2-Hi,j-1,2)
+                    YU = ((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))
+                    
                     sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))
-    
+#                     if YU != 0:
+#                         print b_o[x,y], sol['b'][x,y], b_o[x,y] - set['dt']/set['h']*YU
+                    
     '''Solve c at sub lattice'''
     for y in range(0,set['Ny']+1,2):
         for x in range(0,set['Nx']+1,2):                       
