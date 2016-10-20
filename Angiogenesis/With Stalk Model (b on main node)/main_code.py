@@ -47,7 +47,7 @@ def boolean_1_iter(coef, set, sol, check = 'out'): #2
             '''2. Branching and Movement''' 
             start1 = timer()  
             if set['layout'] == '2D':
-                sol = hybrid_tech_c(coef, set, sol) #2.2
+                sol, n_o = hybrid_tech_c(coef, set, sol) #2.2
             if set['layout'] == '3D':
                 sol = hybrid_tech_c_3d(coef, set, sol)
             start2 = timer()
@@ -56,7 +56,7 @@ def boolean_1_iter(coef, set, sol, check = 'out'): #2
             start3 = timer()
             '''Solving c,f,T'''
             if set['layout'] == '2D':
-                sol = c_f_T(coef, set, sol) #2.3
+                sol = c_f_T(coef, set, sol, n_o) #2.3
             if set['layout'] == '3D':
                 sol = c_f_T_3d(coef, set, sol)
             start4 = timer()            

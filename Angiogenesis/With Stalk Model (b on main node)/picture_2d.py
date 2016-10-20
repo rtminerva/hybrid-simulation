@@ -8,27 +8,42 @@ from mpl_toolkits.mplot3d import Axes3D
 import numpy
 
 def pic_2d(coef,set,sol):
-    '''EC'''
+    '''Tip & Stalk Cells'''
     fig = plt.figure()
-    plt.title('%s%f' % ('EC at t=',set['t']))
+    plt.title('%s%f' % ('Tip and Stalk Cells Movement at t=',set['t']))
     plt.xlim(set['Hh'],coef['X']-set['Hh'])
     plt.ylim(set['Hh'],coef['Y']-set['Hh'])
     ax = fig.add_subplot(111)
-    for i in range(0,len(sol['matrix_tip'])):
-        x_p = []
-        y_p = []
-        for j in range(0,len(sol['matrix_tip'][i])):
-            x_p.append(sol['matrix_tip'][i][j][0]*set['Hh'])
-            y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
-        globals()['plo%s' % i] = ax.plot(x_p, y_p, 'c', color ='r')
+#     for i in range(0,len(sol['matrix_tip'])):
+#         x_p = []
+#         y_p = []
+#         for j in range(0,len(sol['matrix_tip'][i])):
+#             x_p.append(sol['matrix_tip'][i][j][0]*set['Hh'])
+#             y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
+#         globals()['plo%s' % i] = ax.plot(x_p, y_p, 'c', color ='r')
     x_p = []
     y_p = []
     for tip in sol['tip_cell']:
         x_p.append(tip[0]*set['Hh'])
         y_p.append(tip[1]*set['Hh'])
-    ax.scatter(x_p, y_p, marker = 'o', s = 2, color ='b')
+    ax.scatter(x_p, y_p, marker = 'o', s = 4, color ='b')
+    
+    x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
+    y_main_axis = numpy.arange(set['Hh'], coef['Y'], set['h'])
+    x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
+     
+    b_sol = numpy.zeros((set['Nx']/2, set['Ny']/2))
+    for j, y in enumerate(range(1,set['Ny'],2)):
+        for i, x in enumerate(range(1,set['Nx'],2)):
+            b_sol[i,j] = sol['b'][x,y]
+    #surf = ax.plot_surface(x_sub_axis, y_sub_axis, f_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
+    #        linewidth=0, antialiased=False)
+    #fig1.colorbar(surf, shrink=0.5, aspect=5)
+    b_sol = numpy.ma.masked_array(b_sol, b_sol < 0.0001)#-.5)
+    cmap = plt.cm.Reds
+    plt.pcolormesh(y_main_axis, x_main_axis, b_sol, cmap="RdYlBu")
     sol['stEC'] +=1  
-    flag = 'EC=%s' % str(sol['stEC']) 
+    flag = 'TIP & STALK Cells Movement=%s' % str(sol['stEC']) 
     plt.savefig("%s.png" % flag)
     plt.close()
     #plt.draw()
@@ -68,7 +83,7 @@ def pic_2d(coef,set,sol):
         plt.close()
         '''
         
-        '''Continuous Plot b'''
+        '''Continuous Plot b
         fig1 = plt.figure(1)
         plt.title('%s%f' % ('Stalk Cell at t=',set['t']))
         #ax = fig1.gca(projection='3d')
@@ -78,10 +93,9 @@ def pic_2d(coef,set,sol):
         
         plt.xlabel('X')
         plt.ylabel('Y')
-        
-         
-        x_main_axis = numpy.arange(set['h'], coef['X']+set['h'], set['h'])
-        y_main_axis = numpy.arange(set['h'], coef['Y']+set['h'], set['h'])
+    
+        x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
+        y_main_axis = numpy.arange(set['Hh'], coef['Y'], set['h'])
         x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
          
         b_sol = numpy.zeros((set['Nx']/2, set['Ny']/2))
@@ -96,5 +110,6 @@ def pic_2d(coef,set,sol):
         flag = 'St=%s' % str(sol['stStalk']) 
         plt.savefig("%s.png" % flag)
         plt.close()
+        '''
     
     return
