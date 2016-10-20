@@ -36,16 +36,17 @@ def anastomosis_tip_tip(sol,nom): #2.2.(3)
     for e,tep in enumerate(range(0,len(sol['matrix_tip']))):
         if not tep == nom:
             #jj = len(sol['matrix_tip'][tep])-2
-            if sol['matrix_tip'][nom][-1] == sol['matrix_tip'][tep][-1] and [sol['matrix_tip'][tep][-1][0],sol['matrix_tip'][tep][-1][1]] in sol['tip_cell'] and not tep in sol['sp_stop']:
-                sol['sp_stop'].append(nom)
-                if [sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]] in sol['tip_cell']:
-                    sol['tip_cell'].remove([sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]])
-            '''TIP to Branch'''
-            if sol['matrix_tip'][nom][-1] in sol['matrix_tip'][tep]:
-                if not [sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]] == [sol['matrix_tip'][tep][-1][0],sol['matrix_tip'][tep][-1][1]] and not tep in sol['sp_stop']:
+            if sol['matrix_tip'][nom][-1] == sol['matrix_tip'][tep][-1] and [sol['matrix_tip'][tep][-1][0],sol['matrix_tip'][tep][-1][1]] in sol['tip_cell']:
+                if not tep in sol['sp_stop']:
                     sol['sp_stop'].append(nom)
                     if [sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]] in sol['tip_cell']:
                         sol['tip_cell'].remove([sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]])
+#             '''TIP to Branch'''
+#             if sol['matrix_tip'][nom][-1] in sol['matrix_tip'][tep]:
+#                 if not [sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]] == [sol['matrix_tip'][tep][-1][0],sol['matrix_tip'][tep][-1][1]] and not tep in sol['sp_stop']:
+#                     sol['sp_stop'].append(nom)
+#                     if [sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]] in sol['tip_cell']:
+#                         sol['tip_cell'].remove([sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]])
             
     return sol
 
@@ -200,12 +201,16 @@ def movement(sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_
         if tes in list_prob_0:
             tipp = 'stay'
         elif tes in list_prob_1:
+            sol['n'][xb,yb] = 0
             sol, list_prob_0, list_prob_1, tipp = move_left(sol,nom,xb,yb,list_prob_0,list_prob_1,ml,tip_l) #2.2.(2).(1)
         elif tes in list_prob_2:   
+            sol['n'][xb,yb] = 0
             sol, list_prob_0, list_prob_2, tipp = move_right(sol,nom,xb,yb,list_prob_0,list_prob_2,mr,tip_r) #2.2.(2).(2)    
         elif tes in list_prob_3: 
+            sol['n'][xb,yb] = 0
             sol, list_prob_0, list_prob_3, tipp = move_down(sol,nom,xb,yb,list_prob_0,list_prob_3,md,tip_d) #2.2.(2).(3)   
         elif tes in list_prob_4: 
+            sol['n'][xb,yb] = 0
             sol, list_prob_0, list_prob_4, tipp = move_up(sol,nom,xb,yb,list_prob_0,list_prob_4,mu,tip_u) #2.2.(2).(4)
     return sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 
 
@@ -308,7 +313,7 @@ def hybrid_tech_c(coef, set, sol): #2.2
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
             yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
             
-            '''Proliferation'''
+            '''Proliferation
             if sol['life_mit'][nom] >= coef['T_mitosis']:
                 sol['life_mit'][nom] = 0
                 if sol['list_tip_movement'] == 'left':
@@ -343,7 +348,7 @@ def hybrid_tech_c(coef, set, sol): #2.2
                     sol['matrix_tip'][nom].append((xs,ys))
                     sol['n'][xs,ys] = 1
                     sol['tip_cell'].append([xs,ys])
-            '''Proliferation'''
+            Proliferation'''
 
             dirr= movement_dir(coef, set, sol, xb, yb, nom) #2.2.1
             
@@ -355,7 +360,7 @@ def hybrid_tech_c(coef, set, sol): #2.2
                 '''Making list of prob'''
                 list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = set_list_prob(dirr) #2.2.(1)
                 
-                '''Checking Space for n #if meet vessel'''
+                '''Checking Space for n #if meet vessel''' #not used
                 ml = 'f'
                 mr = 'f'
                 md = 'f'
@@ -382,51 +387,53 @@ def hybrid_tech_c(coef, set, sol): #2.2
                 '''The Movement'''
                 sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4,ml,mr,md,mu,tip_l,tip_r,tip_d,tip_u) #2.2.(2)
                 
-                '''Test Anastomosis tip-tip if move'''
-                if not tipp == 'stay':
-                    sol=anastomosis_tip_tip(sol,nom) #2.2.(3)
-                
-                '''2.1 Branching Decision'''
-                if tipp == 'stay': #not able to branch
-                    sol['life_time_tip'][nom] += set['dt']
-                    sol['life_mit'][nom] += set['dt']
-                else: #there is possibility to branch
-                    cek = str(nom)
-                    if dirr.count(0) >= 3: #no space to move
-                        sol['life_time_tip'][nom] += set['dt']
-                        sol['life_mit'][nom] += set['dt']
-                        if cek in sol['pp']:
-                            sol['pp'].pop('cek')
-                    else: #there is possibility to branch
-                        if sol['life_time_tip'][nom] < coef['T_branch']: #not able to branch
-                            sol['life_time_tip'][nom] += set['dt']
-                            sol['life_mit'][nom] += set['dt']
-                            if cek in sol['pp']:
-                                sol['pp'].pop('cek')
-                        else: #there is possibility to branch
-                            '''Probability of Branching using c'''   
-                            list_prob = prob_by_c(sol,xb,yb) #2.2.(4)
-                            tes = randint(1,10)
-                            if not tes in list_prob: #not able to branch
-                                sol['life_time_tip'][nom] += set['dt']
-                                sol['life_mit'][nom] += set['dt']
-                                if cek in sol['pp']:
-                                    sol['pp'].pop('cek')
-                            else: #BRANCHING!
-                                sol['life_time_tip'][nom] = 0
-                                sol['life_mit'][nom] += set['dt']
-                                sol['matrix_tip'].append([(xb,yb)])
-                                sol['life_time_tip'].append(0)
-                                sol['life_mit'].append(0)
-                                sol['list_tip_movement'].append('start')
-                                tipp = 'stay'
-                                if cek in sol['pp']:
-                                    sol['pp'].pop('cek')
-                                '''The Movement from branching'''
-                                while tipp == 'stay':
-                                    sol, tipp = movement_branch(tipp,sol,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4,ml,mr,md,mu,tip_l,tip_r,tip_d,tip_u) #2.2.(5)
-                                
-                                '''Check Anastomosis'''
-                                if not tipp == 'stay':
-                                    sol=anastomosis_tip_tip(sol,len(sol['matrix_tip'])-1) #2.2.(3)
+                '''not using the following code for the moment'''
+#                 '''Test Anastomosis tip-tip if move'''
+#                 if not tipp == 'stay':
+#                     sol=anastomosis_tip_tip(sol,nom) #2.2.(3)
+#                 
+#                 '''2.1 Branching Decision'''
+#                 PP = 'test'
+#                 if tipp == 'stay' and PP == 'test': #not able to branch
+#                     sol['life_time_tip'][nom] += set['dt']
+#                     sol['life_mit'][nom] += set['dt']
+#                 else: #there is possibility to branch
+#                     cek = str(nom)
+#                     if dirr.count(0) >= 3: #no space to move
+#                         sol['life_time_tip'][nom] += set['dt']
+#                         sol['life_mit'][nom] += set['dt']
+#                         if cek in sol['pp']:
+#                             sol['pp'].pop('cek')
+#                     else: #there is possibility to branch
+#                         if sol['life_time_tip'][nom] < coef['T_branch']: #not able to branch
+#                             sol['life_time_tip'][nom] += set['dt']
+#                             sol['life_mit'][nom] += set['dt']
+#                             if cek in sol['pp']:
+#                                 sol['pp'].pop('cek')
+#                         else: #there is possibility to branch
+#                             '''Probability of Branching using c'''   
+#                             list_prob = prob_by_c(sol,xb,yb) #2.2.(4)
+#                             tes = randint(1,10)
+#                             if not tes in list_prob: #not able to branch
+#                                 sol['life_time_tip'][nom] += set['dt']
+#                                 sol['life_mit'][nom] += set['dt']
+#                                 if cek in sol['pp']:
+#                                     sol['pp'].pop('cek')
+#                             else: #BRANCHING!
+#                                 sol['life_time_tip'][nom] = 0
+#                                 sol['life_mit'][nom] += set['dt']
+#                                 sol['matrix_tip'].append([(xb,yb)])
+#                                 sol['life_time_tip'].append(0)
+#                                 sol['life_mit'].append(0)
+#                                 sol['list_tip_movement'].append('start')
+#                                 tipp = 'stay'
+#                                 if cek in sol['pp']:
+#                                     sol['pp'].pop('cek')
+#                                 '''The Movement from branching'''
+#                                 while tipp == 'stay':
+#                                     sol, tipp = movement_branch(tipp,sol,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4,ml,mr,md,mu,tip_l,tip_r,tip_d,tip_u) #2.2.(5)
+#                                 
+#                                 '''Check Anastomosis'''
+#                                 if not tipp == 'stay':
+#                                     sol=anastomosis_tip_tip(sol,len(sol['matrix_tip'])-1) #2.2.(3)
     return sol

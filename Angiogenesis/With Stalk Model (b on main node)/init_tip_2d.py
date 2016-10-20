@@ -5,8 +5,8 @@ def rec_1_tip(coef,set,sol): #2.1.2.(1)
     y = set['Ny']/2 
     if y % 2 == 0:
         y += 1
-    sol['matrix_tip'].append([(33,y)])
-    sol['n'][33,y] = 1
+    sol['matrix_tip'].append([(3,y)])
+    sol['n'][3,y] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     return sol
@@ -16,8 +16,9 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
     y = set['Ny']/6
     if y % 2 == 0:
         y += 1
-    sol['matrix_tip'].append([(33,y-24)])
-    sol['n'][33,y-24] = 1
+    sol['matrix_tip'].append([(3,y-24)])
+    sol['n'][3,y-24] = 1
+    sol['b'][1,y-24] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     sol['life_mit'].append(0)
@@ -26,8 +27,9 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
     y1 = 2*y
     if y1 % 2 == 0:
         y1 += 1
-    sol['matrix_tip'].append([(33,y1-13)])
-    sol['n'][33,y1-13] = 1
+    sol['matrix_tip'].append([(3,y1-13)])
+    sol['n'][3,y1-13] = 1
+    sol['b'][1,y1-13] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     sol['life_mit'].append(0)
@@ -36,8 +38,9 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
     y2 = 3*y
     if y2 % 2 == 0:
         y2 += 1
-    sol['matrix_tip'].append([(33,y2)])
-    sol['n'][33,y2] = 1
+    sol['matrix_tip'].append([(3,y2)])
+    sol['n'][3,y2] = 1
+    sol['b'][1,y2] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     sol['life_mit'].append(0)
@@ -46,8 +49,9 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
     y2 = 4*y
     if y2 % 2 == 0:
         y2 += 1
-    sol['matrix_tip'].append([(33,y2+13)])
-    sol['n'][33,y2+13] = 1
+    sol['matrix_tip'].append([(3,y2+13)])
+    sol['n'][3,y2+13] = 1
+    sol['b'][1,y2+13] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     sol['life_mit'].append(0)
@@ -56,8 +60,9 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
     y2 = 5*y
     if y2 % 2 == 0:
         y2 += 1
-    sol['matrix_tip'].append([(33,y2+24)])
-    sol['n'][33,y2+24] = 1
+    sol['matrix_tip'].append([(3,y2+24)])
+    sol['n'][3,y2+24] = 1
+    sol['b'][1,y2+24] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     sol['life_mit'].append(0)
@@ -71,6 +76,7 @@ def init_b(set,sol,tip):
 
 def init_tip_2d_(coef,set,sol):
     sol['n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
+    sol['b'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['matrix_tip'] = []
     sol['list_tip_movement'] = []
     sol['life_time_tip'] = []
@@ -78,14 +84,12 @@ def init_tip_2d_(coef,set,sol):
     sol['sp_stop'] = []
     sol['tip_cell'] = []
     
-    sol['b'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
-    
     if set['initial_prof'] == 'rectangular_1_tip':
         sol = rec_1_tip(coef,set,sol) #2.1.2.(1)
     elif set['initial_prof'] == 'rectangular_tip':
         sol = rec_5_tip(coef,set,sol) #2.1.2.(2)
         tip = 5
-        sol = init_b(set,sol,tip)
+        #sol = init_b(set,sol,tip)
         
     '''Identifying Tip Cell'''
     for e,ti in enumerate(sol['matrix_tip']):

@@ -36,10 +36,11 @@ def anastomosis_tip_tip(sol,nom):
     for e,tep in enumerate(range(0,len(sol['matrix_tip']))):
         if not tep == nom:
             #jj = len(sol['matrix_tip'][tep])-2
-            if sol['matrix_tip'][nom][-1] == sol['matrix_tip'][tep][-1] and [sol['matrix_tip'][tep][-1][0],sol['matrix_tip'][tep][-1][1]] in sol['tip_cell'] and not tep in sol['sp_stop']:
-                sol['sp_stop'].append(nom)
-                if [sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]] in sol['tip_cell']:
-                    sol['tip_cell'].remove([sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]])
+            if sol['matrix_tip'][nom][-1] == sol['matrix_tip'][tep][-1] and [sol['matrix_tip'][tep][-1][0],sol['matrix_tip'][tep][-1][1]] in sol['tip_cell']:
+                if not tep in sol['sp_stop']:
+                    sol['sp_stop'].append(nom)
+                    if [sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]] in sol['tip_cell']:
+                        sol['tip_cell'].remove([sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]])
             '''TIP to Branch'''
             if sol['matrix_tip'][nom][-1] in sol['matrix_tip'][tep]:
                 if not [sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]] == [sol['matrix_tip'][tep][-1][0],sol['matrix_tip'][tep][-1][1]] and not tep in sol['sp_stop']:

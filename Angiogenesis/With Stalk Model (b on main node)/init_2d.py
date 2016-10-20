@@ -33,10 +33,10 @@ def c_prof_2(coef,set,sol): #2.1.1.(2)
 #                sol = f_prof_1(coef,set,sol,x,y)
     return sol
 
-def b_prof(coef,set,sol): #2.1.1.(3)
-    for y in range(1,set['Ny'],2):
-        sol['b'][1,y] = 1
-    return sol
+# def b_prof(coef,set,sol): #2.1.1.(3)
+#     for y in range(1,set['Ny'],2):
+#         sol['b'][1,y] = 1
+#     return sol
 
 
 def init_2d_(coef,set,sol): #2.1.1
