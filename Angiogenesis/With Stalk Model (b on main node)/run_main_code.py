@@ -45,7 +45,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
 
     else:
         #SAVING PICTURES    
-        if set['k'] % 50 == 0:
+        if set['k'] % 1 == 0:
             if set['layout'] == '2D':
                 pic_2d(coef,set,sol) #3
             if set['layout'] == '3D':

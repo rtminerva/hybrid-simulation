@@ -29,7 +29,7 @@ def declare_coef(): #1
     #coef['Ro'] = 0.3#0.34
     
     ##Stalk (b)
-    coef['Si'] = 0.0001
+    coef['Si'] = 0.01
     
     ##VEGF (c)
     #coef['D_c'] = 0.00035
