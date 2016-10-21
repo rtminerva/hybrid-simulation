@@ -48,6 +48,30 @@ def pic_2d(coef,set,sol):
     plt.close()
     #plt.draw()
     
+    '''Tip Cell Only'''
+    fig = plt.figure()
+    plt.title('%s%f' % ('Tip Cell Movement at t=',set['t']))
+    plt.xlim(set['Hh'],coef['X']-set['Hh'])
+    plt.ylim(set['Hh'],coef['Y']-set['Hh'])
+    ax = fig.add_subplot(111)
+#     for i in range(0,len(sol['matrix_tip'])):
+#         x_p = []
+#         y_p = []
+#         for j in range(0,len(sol['matrix_tip'][i])):
+#             x_p.append(sol['matrix_tip'][i][j][0]*set['Hh'])
+#             y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
+#         globals()['plo%s' % i] = ax.plot(x_p, y_p, 'c', color ='r')
+    x_p = []
+    y_p = []
+    for tip in sol['tip_cell']:
+        x_p.append(tip[0]*set['Hh'])
+        y_p.append(tip[1]*set['Hh'])
+    ax.scatter(x_p, y_p, marker = 'o', s = 4, color ='b')
+    sol['stStalk'] +=1  
+    flag = 'TIP Cell Movement=%s' % str(sol['stEC']) 
+    plt.savefig("%s.png" % flag)
+    plt.close()
+    
 #     if set['k'] % 50 == 0:
 #         ppp = 1
 #         '''Continuous Plot
