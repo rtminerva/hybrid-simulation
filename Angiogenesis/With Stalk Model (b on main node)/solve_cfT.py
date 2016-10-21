@@ -155,7 +155,7 @@ def c_f_T(coef, set, sol, n_o): #2.3
     c_o = numpy.copy(sol['c'])
     #f_o = sol['f'][:]
     b_o = numpy.copy(sol['b'])
-    n_o = numpy.copy(sol['n'])
+    #n_o = numpy.copy(sol['n'])
     
     '''Calculate F on each sub lattice'''
     ##2nd method*
@@ -173,7 +173,7 @@ def c_f_T(coef, set, sol, n_o): #2.3
             if y == 1:
                 if x == 1:
                     #Solving n
-                    sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(F_sol_1[x+1,y+1]+F_sol_2[x+1,y+1])
+                    #sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(F_sol_1[x+1,y+1]+F_sol_2[x+1,y+1])
                     
                     #1# H formula (awal)
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(H(i,j,1)-0+H(i,j,2)-0)
@@ -190,7 +190,7 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     #5# H formula (dengan coef_b)
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((coef_b*max(F_mean_sol_1[x,y],0)-coef_b*max(-F_mean_sol_1[x+2,y],0)) + (coef_b*max(F_mean_sol_2[x,y],0)-coef_b*max(-F_mean_sol_2[x,y+2],0)))
                 elif x == set['Nx']-1:
-                    sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1])
+                    #sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1])
                     
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(0-H(i-1,j,1)+H(i,j,2)-0)
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1])
@@ -198,7 +198,7 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*( - (coef_b*max(F_mean_sol_1[x-2,y],0)-coef_b*max(-F_mean_sol_1[x,y],0)) + (coef_b*max(F_mean_sol_2[x,y],0)-coef_b*max(-F_mean_sol_2[x,y+2],0)))
                 else:
-                    sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(F_sol_1[x+1,y+1]-F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1])
+                    #sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(F_sol_1[x+1,y+1]-F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1])
                     
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(H(i,j,1)-H(i-1,j,1)+H(i,j,2)-0)
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(F_sol_1[x+1,y+1]-F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1])
@@ -207,7 +207,7 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((coef_b*max(F_mean_sol_1[x,y],0)-coef_b*max(-F_mean_sol_1[x+2,y],0)) - (coef_b*max(F_mean_sol_1[x-2,y],0)-coef_b*max(-F_mean_sol_1[x,y],0)) + (coef_b*max(F_mean_sol_2[x,y],0)-coef_b*max(-F_mean_sol_2[x,y+2],0)))
             elif y == set['Ny']-1:
                 if x == 1:
-                    sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(F_sol_1[x+1,y+1]-F_sol_2[x+1,y-1])
+                    #sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(F_sol_1[x+1,y+1]-F_sol_2[x+1,y-1])
                     
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(H(i,j,1)-0+0-H(i,j-1,2))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(F_sol_1[x+1,y+1]-F_sol_2[x+1,y-1])
@@ -215,7 +215,7 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((coef_b*max(F_mean_sol_1[x,y],0)-coef_b*max(-F_mean_sol_1[x+2,y],0)) - (coef_b*max(F_mean_sol_2[x,y-2],0)-coef_b*max(-F_mean_sol_2[x,y],0)))
                 elif x == set['Nx']-1:
-                    sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(-F_sol_1[x-1,y+1]-F_sol_2[x+1,y-1])
+                    #sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(-F_sol_1[x-1,y+1]-F_sol_2[x+1,y-1])
                     
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(0-H(i-1,j,1)+0-H(i,j-1,2))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(-F_sol_1[x-1,y+1]-F_sol_2[x+1,y-1])
@@ -223,7 +223,7 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(-(sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(-(coef_b*max(F_mean_sol_1[x-2,y],0)-coef_b*max(-F_mean_sol_1[x,y],0)) - (coef_b*max(F_mean_sol_2[x,y-2],0)-coef_b*max(-F_mean_sol_2[x,y],0)))
                 else:
-                    sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(F_sol_1[x+1,y+1]-F_sol_1[x-1,y+1]-F_sol_2[x+1,y-1])
+                    #sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(F_sol_1[x+1,y+1]-F_sol_1[x-1,y+1]-F_sol_2[x+1,y-1])
                     
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(H(i,j,1)-H(i-1,j,1)+0-H(i,j-1,2))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(F_sol_1[x+1,y+1]-F_sol_1[x-1,y+1]-F_sol_2[x+1,y-1])
@@ -232,7 +232,7 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((coef_b*max(F_mean_sol_1[x,y],0)-coef_b*max(-F_mean_sol_1[x+2,y],0)) - (coef_b*max(F_mean_sol_1[x-2,y],0)-coef_b*max(-F_mean_sol_1[x,y],0)) - (coef_b*max(F_mean_sol_2[x,y-2],0)-coef_b*max(-F_mean_sol_2[x,y],0)))
             else:
                 if x == 1:
-                    sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(F_sol_1[x+1,y+1]+F_sol_2[x+1,y+1]-F_sol_2[x+1,y-1])
+                    #sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(F_sol_1[x+1,y+1]+F_sol_2[x+1,y+1]-F_sol_2[x+1,y-1])
                     
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(H(i,j,1)-0+H(i,j,2)-H(i,j-1,2))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(F_sol_1[x+1,y+1]+F_sol_2[x+1,y+1]-F_sol_2[x+1,y-1])
@@ -240,7 +240,7 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((coef_b*max(F_mean_sol_1[x,y],0)-coef_b*max(-F_mean_sol_1[x+2,y],0)) + (coef_b*max(F_mean_sol_2[x,y],0)-coef_b*max(-F_mean_sol_2[x,y+2],0)) - (coef_b*max(F_mean_sol_2[x,y-2],0)-coef_b*max(-F_mean_sol_2[x,y],0)))
                 elif x == set['Nx']-1:
-                    sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(-F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1]-F_sol_2[x+1,y-1])
+                    #sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(-F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1]-F_sol_2[x+1,y-1])
                     
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(0-H(i-1,j,1)+H(i,j,2)-H(i,j-1,2))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(-F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1]-F_sol_2[x+1,y-1])
@@ -248,7 +248,7 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(-(sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(-(coef_b*max(F_mean_sol_1[x-2,y],0)-coef_b*max(-F_mean_sol_1[x,y],0)) + (coef_b*max(F_mean_sol_2[x,y],0)-coef_b*max(-F_mean_sol_2[x,y+2],0)) - (coef_b*max(F_mean_sol_2[x,y-2],0)-coef_b*max(-F_mean_sol_2[x,y],0)))
                 else:
-                    sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(F_sol_1[x+1,y+1]-F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1]-F_sol_2[x+1,y-1])
+                    #sol['n'][x,y] = n_o[x,y] - set['dt']/set['h']*(F_sol_1[x+1,y+1]-F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1]-F_sol_2[x+1,y-1])
                     
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(H(i,j,1)-H(i-1,j,1)+H(i,j,2)-H(i,j-1,2))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(F_sol_1[x+1,y+1]-F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1]-F_sol_2[x+1,y-1])

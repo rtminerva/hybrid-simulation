@@ -26,7 +26,7 @@ def pic_2d(coef,set,sol):
     for tip in sol['tip_cell']:
         x_p.append(tip[0]*set['Hh'])
         y_p.append(tip[1]*set['Hh'])
-    ax.scatter(x_p, y_p, marker = 'o', s = 4, color ='b')
+    ax.scatter(x_p, y_p, marker = 'o', s = 4, color ='g')
     
     x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
     y_main_axis = numpy.arange(set['Hh'], coef['Y'], set['h'])
@@ -66,7 +66,7 @@ def pic_2d(coef,set,sol):
     for tip in sol['tip_cell']:
         x_p.append(tip[0]*set['Hh'])
         y_p.append(tip[1]*set['Hh'])
-    ax.scatter(x_p, y_p, marker = 'o', s = 4, color ='b')
+    ax.scatter(x_p, y_p, marker = 'o', s = 4, color ='g')
     sol['stStalk'] +=1  
     flag = 'TIP Cell Movement=%s' % str(sol['stEC']) 
     plt.savefig("%s.png" % flag)

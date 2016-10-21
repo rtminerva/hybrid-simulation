@@ -81,7 +81,7 @@ def move_left(sol,nom,xb,yb,list_prob_0,list_prob_1,ml,tip_l): #2.2.(2).(1)
     xpos_new = sol['matrix_tip'][nom][-1][0] - 2
     ypos_new = sol['matrix_tip'][nom][-1][1]                    
     sol['matrix_tip'][nom].append((xpos_new,ypos_new))
-    #sol['n'][xpos_new,ypos_new] = 1
+    sol['n'][xpos_new,ypos_new] = 1
     sol['list_tip_movement'][nom] = tipp
     for i in list_prob_1:
         list_prob_0.append(i)
@@ -107,7 +107,7 @@ def move_right(sol,nom,xb,yb,list_prob_0,list_prob_2,mr,tip_r): #2.2.(2).(2)
     xpos_new = sol['matrix_tip'][nom][-1][0] + 2
     ypos_new = sol['matrix_tip'][nom][-1][1]
     sol['matrix_tip'][nom].append((xpos_new,ypos_new)) 
-    #sol['n'][xpos_new,ypos_new] = 1
+    sol['n'][xpos_new,ypos_new] = 1
     sol['list_tip_movement'][nom] = tipp
     for i in list_prob_2:
         list_prob_0.append(i)
@@ -133,7 +133,7 @@ def move_down(sol,nom,xb,yb,list_prob_0,list_prob_3,md,tip_d): #2.2.(2).(3)
     xpos_new = sol['matrix_tip'][nom][-1][0]
     ypos_new = sol['matrix_tip'][nom][-1][1] - 2
     sol['matrix_tip'][nom].append((xpos_new,ypos_new)) 
-    #sol['n'][xpos_new,ypos_new] = 1
+    sol['n'][xpos_new,ypos_new] = 1
     sol['list_tip_movement'][nom] = tipp
     for i in list_prob_3:
         list_prob_0.append(i)
@@ -159,7 +159,7 @@ def move_up(sol,nom,xb,yb,list_prob_0,list_prob_4,mu,tip_u): #2.2.(2).(4)
     xpos_new = sol['matrix_tip'][nom][-1][0]
     ypos_new = sol['matrix_tip'][nom][-1][1] + 2
     sol['matrix_tip'][nom].append((xpos_new,ypos_new))
-    #sol['n'][xpos_new,ypos_new] = 1
+    sol['n'][xpos_new,ypos_new] = 1
     sol['list_tip_movement'][nom] = tipp
     for i in list_prob_4:
         list_prob_0.append(i)
@@ -202,16 +202,16 @@ def movement(sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_
         if tes in list_prob_0:
             tipp = 'stay'
         elif tes in list_prob_1:
-            #sol['n'][xb,yb] = 0
+            sol['n'][xb,yb] = 0
             sol, list_prob_0, list_prob_1, tipp = move_left(sol,nom,xb,yb,list_prob_0,list_prob_1,ml,tip_l) #2.2.(2).(1)
         elif tes in list_prob_2:   
-            #sol['n'][xb,yb] = 0
+            sol['n'][xb,yb] = 0
             sol, list_prob_0, list_prob_2, tipp = move_right(sol,nom,xb,yb,list_prob_0,list_prob_2,mr,tip_r) #2.2.(2).(2)    
         elif tes in list_prob_3: 
-            #sol['n'][xb,yb] = 0
+            sol['n'][xb,yb] = 0
             sol, list_prob_0, list_prob_3, tipp = move_down(sol,nom,xb,yb,list_prob_0,list_prob_3,md,tip_d) #2.2.(2).(3)   
         elif tes in list_prob_4: 
-            #sol['n'][xb,yb] = 0
+            sol['n'][xb,yb] = 0
             sol, list_prob_0, list_prob_4, tipp = move_up(sol,nom,xb,yb,list_prob_0,list_prob_4,mu,tip_u) #2.2.(2).(4)
     return sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 
 
@@ -237,7 +237,7 @@ def move_left_branch(sol,xb,yb,list_prob_0,list_prob_1,ml,tip_l): #2.2.(5).(1)
     xpos_new = sol['matrix_tip'][-1][-1][0] - 2
     ypos_new = sol['matrix_tip'][-1][-1][1]                    
     sol['matrix_tip'][-1].append((xpos_new,ypos_new))
-    #sol['n'][xpos_new,ypos_new] = 1
+    sol['n'][xpos_new,ypos_new] = 1
     sol['list_tip_movement'][-1] = tipp
     if ml == 'stop':
         sol['sp_stop'].append(len(sol['matrix_tip'])-1)
@@ -252,7 +252,7 @@ def move_right_branch(sol,xb,yb,list_prob_0,list_prob_2,mr,tip_r): #2.2.(5).(2)
     xpos_new = sol['matrix_tip'][-1][-1][0] + 2
     ypos_new = sol['matrix_tip'][-1][-1][1]
     sol['matrix_tip'][-1].append((xpos_new,ypos_new)) 
-    #sol['n'][xpos_new,ypos_new] = 1
+    sol['n'][xpos_new,ypos_new] = 1
     sol['list_tip_movement'][-1] = tipp
     if mr == 'stop':
         sol['sp_stop'].append(len(sol['matrix_tip'])-1)
@@ -267,7 +267,7 @@ def move_down_branch(sol,xb,yb,list_prob_0,list_prob_3,md,tip_d): #2.2.(5).(3)
     xpos_new = sol['matrix_tip'][-1][-1][0]
     ypos_new = sol['matrix_tip'][-1][-1][1] - 2
     sol['matrix_tip'][-1].append((xpos_new,ypos_new)) 
-    #sol['n'][xpos_new,ypos_new] = 1
+    sol['n'][xpos_new,ypos_new] = 1
     sol['list_tip_movement'][-1] = tipp
     if md == 'stop':
         sol['sp_stop'].append(len(sol['matrix_tip'])-1)
@@ -282,7 +282,7 @@ def move_up_branch(sol,xb,yb,list_prob_0,list_prob_4,mu,tip_u): #2.2.(5).(4)
     xpos_new = sol['matrix_tip'][-1][-1][0]
     ypos_new = sol['matrix_tip'][-1][-1][1] + 2
     sol['matrix_tip'][-1].append((xpos_new,ypos_new))
-    #sol['n'][xpos_new,ypos_new] = 1
+    sol['n'][xpos_new,ypos_new] = 1
     sol['list_tip_movement'][-1] = tipp
     if mu == 'stop':
         sol['sp_stop'].append(len(sol['matrix_tip'])-1)

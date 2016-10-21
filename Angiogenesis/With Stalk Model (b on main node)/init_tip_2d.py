@@ -18,7 +18,7 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
         y += 1
     sol['matrix_tip'].append([(15,y-24)])
     sol['n'][15,y-24] = 1
-    sol['b'][13,y-24] = 1#1
+    sol['b'][15,y-24] = 1#1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     sol['life_mit'].append(0)
@@ -29,7 +29,7 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
         y1 += 1
     sol['matrix_tip'].append([(15,y1-14)])
     sol['n'][15,y1-14] = 1
-    sol['b'][13,y1-14] = 1#1
+    sol['b'][15,y1-14] = 1#1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     sol['life_mit'].append(0)
@@ -40,7 +40,7 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
         y2 += 1
     sol['matrix_tip'].append([(15,y2)])
     sol['n'][15,y2] = 1
-    sol['b'][13,y2] = 1#1
+    sol['b'][15,y2] = 1#1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     sol['life_mit'].append(0)
@@ -51,7 +51,7 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
         y2 += 1
     sol['matrix_tip'].append([(15,y2+14)])
     sol['n'][15,y2+14] = 1
-    sol['b'][13,y2+14] = 1#1
+    sol['b'][15,y2+14] = 1#1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     sol['life_mit'].append(0)
@@ -62,7 +62,7 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
         y2 += 1
     sol['matrix_tip'].append([(15,y2+24)])
     sol['n'][15,y2+24] = 1
-    sol['b'][13,y2+24] = 1#1
+    sol['b'][15,y2+24] = 1#1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     sol['life_mit'].append(0)
