@@ -29,7 +29,7 @@ def declare_coef(): #1
     #coef['Ro'] = 0.3#0.34
     
     ##Stalk (b)
-    coef['Si'] = 0.01
+    coef['Si'] = 0.0001
     
     ##VEGF (c)
     #coef['D_c'] = 0.00035
@@ -53,8 +53,8 @@ def declare_coef(): #1
     set['con'] = False
     set['theta'] = 0.5
     
-    set['h'] = 0.005 #0.01#
-    set['dt'] = 0.001
+    set['h'] = 0.005 #0.005 #0.01#
+    set['dt'] = 0.001 #0.001
     
     set['Hh'] = set['h']/2
     set['Nx'] = int(coef['X']/set['Hh'])
