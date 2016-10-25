@@ -19,7 +19,8 @@ def initial_prof(coef, set, sol):
         sol = init_3d_(coef,set,sol)
         #sol = init_tip_3d_(coef,set,sol)
         sol = init_tip_3d_n_(coef,set,sol)
-    print 'initial tips:', sol['matrix_tip']
-    if set['parent'] == 'two':
-        print 'initial tips2:', sol['matrix_tip_2']
+    if set['con'] == False:
+        print 'initial tips:', sol['matrix_tip']
+        if set['parent'] == 'two':
+            print 'initial tips2:', sol['matrix_tip_2']
     return sol

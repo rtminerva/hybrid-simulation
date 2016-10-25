@@ -1,7 +1,7 @@
 from coef_setting import declare_coef #1
 import main_code as main #2
 #import main_code_con as main2
-from picture_2d import pic_2d #3
+import picture_2d as pic #3
 #from picture_2d_con import pic_2d
 #from picture_3d import pic_3d
 
@@ -19,35 +19,38 @@ plt.ion()
 while set['t'] <= set['T'] and set['k'] < set['Nt']:
     if set['con'] == True:
         sol = main.continuous_iter(coef, set, sol)
+        '''PRINTING RESULT AS CONTROL'''
+        print 'at Time', set['t']
+        if not coef['Si'] == 0:
+            print 'NILAI C, b MAX', sol['c'].max(),',', sol['b'].max()
+            print 'NILAI C, b MIN', sol['c'].min(),',', sol['b'].min()
     else:
         sol = main.boolean_1_iter(coef, set, sol) #2                 
         
         if sol['stop_iter'] >=100000:
             set['k'] = sol['stop_iter']
-    
-    '''PRINTING RESULT AS CONTROL'''  
-    print 'at Time', set['t']
-    print 'Total Tips:', len(sol['matrix_tip'])
-    print 'Total Stop Tips:', len(sol['sp_stop'])
-    if not coef['Si'] == 0:
-        print 'NILAI C, b MAX', sol['c'].max(),',', sol['b'].max()
-        print 'NILAI C, b MIN', sol['c'].min(),',', sol['b'].min()
-    else:
-        print 'NILAI C MAX', sol['c'].max()
-        print 'NILAI C MIN', sol['c'].min()
-    #print sol['tip_cell']
+        '''PRINTING RESULT AS CONTROL'''  
+        print 'at Time', set['t']
+        print 'Total Tips:', len(sol['matrix_tip'])
+        print 'Total Stop Tips:', len(sol['sp_stop'])
+        if not coef['Si'] == 0:
+            print 'NILAI C, b MAX', sol['c'].max(),',', sol['b'].max()
+            print 'NILAI C, b MIN', sol['c'].min(),',', sol['b'].min()
+        else:
+            print 'NILAI C MAX', sol['c'].max()
+            print 'NILAI C MIN', sol['c'].min()
+        #print sol['tip_cell']
     
     if set['con'] == True:
         #SAVING PICTURES   
-        if set['k'] % 500 == 0:
+        if set['k'] % 10 == 0:
             if set['layout'] == '2D':
-                pic_2d_con(coef,set,sol)
-
+                pic.pic_2d_con(coef,set,sol)
     else:
         #SAVING PICTURES    
         if set['k'] % 50 == 0:
             if set['layout'] == '2D':
-                pic_2d(coef,set,sol) #3
+                pic.pic_2d(coef,set,sol) #3
             if set['layout'] == '3D':
                 pic_3d(coef,set,sol)
     

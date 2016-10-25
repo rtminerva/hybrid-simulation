@@ -38,7 +38,14 @@ def continuous_iter(coef, set, sol):
     if set['k'] == 0:
         '''Initial Profile'''
         sol = initial_prof(coef, set, sol) #2.1
-    
+    else:
+        '''Solving c,b,n'''
+        n_o = 0
+        if set['layout'] == '2D':
+            start1 = timer()
+            sol = c_f_T(coef, set, sol, n_o) #2.3
+            start2 = timer()
+        print 'Solve c,f,T time', start2-start1
     return sol
 
 def boolean_1_iter(coef, set, sol, check = 'out'): #2                      

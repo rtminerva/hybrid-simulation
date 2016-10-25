@@ -50,8 +50,9 @@ def declare_coef(): #1
     set['T'] = 100.002
     set['Nt'] = 100000
     
-    set['con'] = False
+    set['con'] = True
     set['theta'] = 0.5
+    set['rad'] = 0.1
     
     set['h'] = 0.005 #0.005 #0.01#
     set['dt'] = 0.001 #0.001

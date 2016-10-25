@@ -7,6 +7,52 @@ from mpl_toolkits.mplot3d import Axes3D
 
 import numpy
 
+def pic_2d_con(coef,set,sol):
+    '''Tip'''
+    plt.figure(1)
+    plt.title('%s%f' % ('Tip Cell Distribution at t=',set['t']))
+    plt.xlabel('X')
+    plt.ylabel('Y')
+         
+    x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
+    y_main_axis = numpy.arange(set['Hh'], coef['Y'], set['h'])
+    x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
+    
+    n_sol = numpy.zeros((set['Nx']/2, set['Ny']/2))
+    for j, y in enumerate(range(1,set['Ny'],2)):
+        for i, x in enumerate(range(1,set['Nx'],2)):
+            n_sol[i,j] = sol['n'][x,y]
+    plt.pcolormesh(y_main_axis, x_main_axis, n_sol, cmap="Reds")
+    plt.colorbar()
+    
+    sol['stEC'] +=1  
+    flag = 'T=%s' % str(sol['stEC']) 
+    plt.savefig("%s.png" % flag)
+    plt.close()
+   
+    '''Stalk'''
+    plt.figure(2)
+    plt.title('%s%f' % ('Stalk Cell Distribution at t=',set['t']))
+    plt.xlabel('X')
+    plt.ylabel('Y')
+         
+    x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
+    y_main_axis = numpy.arange(set['Hh'], coef['Y'], set['h'])
+    x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
+    
+    b_sol = numpy.zeros((set['Nx']/2, set['Ny']/2))
+    for j, y in enumerate(range(1,set['Ny'],2)):
+        for i, x in enumerate(range(1,set['Nx'],2)):
+            b_sol[i,j] = sol['b'][x,y]
+    plt.pcolormesh(y_main_axis, x_main_axis, b_sol, cmap="GnBu")
+    plt.colorbar()
+    
+    sol['stStalk'] +=1  
+    flag = 'S=%s' % str(sol['stStalk']) 
+    plt.savefig("%s.png" % flag)
+    plt.close()
+    return sol
+
 def pic_2d(coef,set,sol):
     '''Tip & Stalk Cells'''
     fig = plt.figure()
