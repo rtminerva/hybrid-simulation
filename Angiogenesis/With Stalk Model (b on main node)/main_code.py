@@ -34,6 +34,13 @@ def check_anastomosis(sol):
                 
     return sol
 
+def continuous_iter(coef, set, sol):
+    if set['k'] == 0:
+        '''Initial Profile'''
+        sol = initial_prof(coef, set, sol) #2.1
+    
+    return sol
+
 def boolean_1_iter(coef, set, sol, check = 'out'): #2                      
     if set['k'] == 0:
         '''Initial Profile'''

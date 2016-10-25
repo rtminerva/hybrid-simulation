@@ -10,8 +10,11 @@ from random import randint
 
 def initial_prof(coef, set, sol):
     if set['layout'] == '2D':
-        sol = init_2d_(coef,set,sol) #2.1.1
-        sol = init_tip_2d_(coef,set,sol) #2.1.2
+        if set['con'] == True:
+            sol = init_2d_(coef,set,sol) #2.1.1
+        else:
+            sol = init_2d_(coef,set,sol) #2.1.1
+            sol = init_tip_2d_(coef,set,sol) #2.1.2
     if set['layout'] == '3D':
         sol = init_3d_(coef,set,sol)
         #sol = init_tip_3d_(coef,set,sol)

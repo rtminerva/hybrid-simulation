@@ -18,7 +18,7 @@ plt.ion()
 
 while set['t'] <= set['T'] and set['k'] < set['Nt']:
     if set['con'] == True:
-        sol = main2.con_(coef, set, sol)
+        sol = main.continuous_iter(coef, set, sol)
     else:
         sol = main.boolean_1_iter(coef, set, sol) #2                 
         
