@@ -22,8 +22,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         '''PRINTING RESULT AS CONTROL'''
         print 'at Time', set['t']
         if not coef['Si'] == 0:
-            print 'NILAI C, b MAX', sol['c'].max(),',', sol['b'].max()
-            print 'NILAI C, b MIN', sol['c'].min(),',', sol['b'].min()
+            print 'NILAI C, b, n MAX', sol['c'].max(),',', sol['b'].max(),',', sol['n'].max()
+            print 'NILAI C, b, n MIN', sol['c'].min(),',', sol['b'].min(),',', sol['n'].min()
     else:
         sol = main.boolean_1_iter(coef, set, sol) #2                 
         
@@ -34,8 +34,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'Total Tips:', len(sol['matrix_tip'])
         print 'Total Stop Tips:', len(sol['sp_stop'])
         if not coef['Si'] == 0:
-            print 'NILAI C, b MAX', sol['c'].max(),',', sol['b'].max()
-            print 'NILAI C, b MIN', sol['c'].min(),',', sol['b'].min()
+            print 'NILAI C, b, n MAX', sol['c'].max(),',', sol['b'].max(),',', sol['n'].max()
+            print 'NILAI C, b, n MIN', sol['c'].min(),',', sol['b'].min(),',', sol['n'].min()
         else:
             print 'NILAI C MAX', sol['c'].max()
             print 'NILAI C MIN', sol['c'].min()
