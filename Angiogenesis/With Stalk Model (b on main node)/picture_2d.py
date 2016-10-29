@@ -72,7 +72,7 @@ def pic_2d(coef,set,sol):
     for tip in sol['tip_cell']:
         x_p.append(tip[0]*set['Hh'])
         y_p.append(tip[1]*set['Hh'])
-    ax.scatter(x_p, y_p, marker = 'o', s = 4, color ='g')
+    ax.scatter(x_p, y_p, marker = 'o', s = 30, color ='g')
     
     x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
     y_main_axis = numpy.arange(set['Hh'], coef['Y'], set['h'])
@@ -89,7 +89,7 @@ def pic_2d(coef,set,sol):
     cmap = plt.cm.Reds
     plt.pcolormesh(y_main_axis, x_main_axis, b_sol, cmap="RdYlBu")
     sol['stEC'] +=1  
-    flag = 'TIP & STALK Cells Movement=%s' % str(sol['stEC']) 
+    flag = 'S=%s' % str(sol['stEC']) 
     plt.savefig("%s.png" % flag)
     plt.close()
     #plt.draw()
@@ -112,9 +112,9 @@ def pic_2d(coef,set,sol):
     for tip in sol['tip_cell']:
         x_p.append(tip[0]*set['Hh'])
         y_p.append(tip[1]*set['Hh'])
-    ax.scatter(x_p, y_p, marker = 'o', s = 4, color ='g')
+    ax.scatter(x_p, y_p, marker = 'o', s = 30, color ='g')
     sol['stStalk'] +=1  
-    flag = 'TIP Cell Movement=%s' % str(sol['stEC']) 
+    flag = 'T=%s' % str(sol['stEC']) 
     plt.savefig("%s.png" % flag)
     plt.close()
     
