@@ -44,7 +44,8 @@ def pic_2d_con(coef,set,sol):
     for j, y in enumerate(range(1,set['Ny'],2)):
         for i, x in enumerate(range(1,set['Nx'],2)):
             b_sol[i,j] = sol['b'][x,y]
-    plt.pcolormesh(y_main_axis, x_main_axis, b_sol, cmap="GnBu")
+    b_sol = numpy.ma.masked_array(b_sol, b_sol < 0.0001)
+    plt.pcolormesh(y_main_axis, x_main_axis, b_sol, cmap="winter")
     plt.colorbar()
     
     sol['stStalk'] +=1  

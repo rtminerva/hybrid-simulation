@@ -47,10 +47,10 @@ def declare_coef(): #1
     ##set dictionaries tidak pernah berubah
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 100.002
+    set['T'] = 10.002
     set['Nt'] = 100000
     
-    set['con'] = False
+    set['con'] = True
     set['theta'] = 0.5
     set['rad'] = 0.1
     
