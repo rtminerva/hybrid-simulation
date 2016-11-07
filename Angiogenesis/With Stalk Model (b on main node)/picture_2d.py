@@ -26,7 +26,7 @@ def pic_2d_con(coef,set,sol):
     plt.colorbar()
     
     sol['stEC'] +=1  
-    flag = 'T=%s' % str(sol['stEC']) 
+    flag = 'Tt=%s' % str(sol['stEC']) 
     plt.savefig("%s.png" % flag)
     plt.close()
    
@@ -45,11 +45,11 @@ def pic_2d_con(coef,set,sol):
         for i, x in enumerate(range(1,set['Nx'],2)):
             b_sol[i,j] = sol['b'][x,y]
     b_sol = numpy.ma.masked_array(b_sol, b_sol < 0.0001)
-    plt.pcolormesh(y_main_axis, x_main_axis, b_sol, cmap="winter")
+    plt.pcolormesh(y_main_axis, x_main_axis, b_sol, cmap="BuGn")
     plt.colorbar()
     
     sol['stStalk'] +=1  
-    flag = 'S=%s' % str(sol['stStalk']) 
+    flag = 'St=%s' % str(sol['stStalk']) 
     plt.savefig("%s.png" % flag)
     plt.close()
     return sol
@@ -73,7 +73,7 @@ def pic_2d(coef,set,sol):
     for tip in sol['tip_cell']:
         x_p.append(tip[0]*set['Hh'])
         y_p.append(tip[1]*set['Hh'])
-    ax.scatter(x_p, y_p, marker = 'o', s = 50, color ='r')
+    ax.scatter(x_p, y_p, marker = 'o', s = 5, color ='r')
     
     x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
     y_main_axis = numpy.arange(set['Hh'], coef['Y'], set['h'])

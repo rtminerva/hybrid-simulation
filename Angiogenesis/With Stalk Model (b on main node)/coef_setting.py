@@ -40,7 +40,7 @@ def declare_coef(): #1
     #coef['Gama'] = 0.1
  
     '''Branching & Mitosis'''
-    coef['T_branch'] = 1000 #0.25
+    coef['T_branch'] = 0.25
     #coef['T_mitosis'] = 1000#0.5
     
     '''Spatial and Temporal Meshes Number'''
@@ -50,7 +50,7 @@ def declare_coef(): #1
     set['T'] = 10.002
     set['Nt'] = 100000
     
-    set['con'] = True
+    set['con'] = False
     set['theta'] = 0.5
     set['rad'] = 0.1
     

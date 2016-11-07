@@ -1,5 +1,6 @@
 import numpy
 import math as m
+from collections import OrderedDict
 
 def rec_1_tip(coef,set,sol): #2.1.2.(1)
     y = set['Ny']/2 
@@ -18,7 +19,7 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
         y += 1
     sol['matrix_tip'].append([(11,y-24)])
     sol['n'][11,y-24] = 1
-    for x in range(1,12,2):
+    for x in range(1,10,2):
         sol['b'][x,y-18] = 0.7
         sol['b'][x,y-20] = 0.8
         sol['b'][x,y-22] = 0.9
@@ -37,7 +38,7 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
         y1 += 1
     sol['matrix_tip'].append([(11,y1-14)])
     sol['n'][11,y1-14] = 1
-    for x in range(1,12,2):
+    for x in range(1,10,2):
         sol['b'][x,y1-8] = 0.7
         sol['b'][x,y1-10] = 0.8
         sol['b'][x,y1-12] = 0.9
@@ -56,7 +57,7 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
         y2 += 1
     sol['matrix_tip'].append([(11,y2)])
     sol['n'][11,y2] = 1
-    for x in range(1,12,2):
+    for x in range(1,10,2):
         sol['b'][x,y2-6] = 0.7
         sol['b'][x,y2-4] = 0.8
         sol['b'][x,y2-2] = 0.9
@@ -75,7 +76,7 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
         y2 += 1
     sol['matrix_tip'].append([(11,y2+14)])
     sol['n'][11,y2+14] = 1
-    for x in range(1,12,2):
+    for x in range(1,10,2):
         sol['b'][x,y2+8] = 0.7
         sol['b'][x,y2+10] = 0.8
         sol['b'][x,y2+12] = 0.9
@@ -94,7 +95,7 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
         y2 += 1
     sol['matrix_tip'].append([(11,y2+24)])
     sol['n'][11,y2+24] = 1
-    for x in range(1,12,2):
+    for x in range(1,10,2):
         sol['b'][x,y2+18] = 0.7
         sol['b'][x,y2+20] = 0.8
         sol['b'][x,y2+22] = 0.9
@@ -118,6 +119,8 @@ def init_tip_2d_(coef,set,sol):
     sol['life_mit'] = []
     sol['sp_stop'] = []
     sol['tip_cell'] = []
+    sol['PP'] =[]
+    sol['pp'] =OrderedDict()
     
     if set['initial_prof'] == 'rectangular_1_tip':
         sol = rec_1_tip(coef,set,sol) #2.1.2.(1)
