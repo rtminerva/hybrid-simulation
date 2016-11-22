@@ -90,7 +90,7 @@ def pic_2d(coef,set,sol):
     cmap = plt.cm.Reds
     plt.pcolormesh(y_main_axis, x_main_axis, b_sol, cmap="winter")
     sol['stEC'] +=1  
-    flag = 'S=%s' % str(sol['stEC']) 
+    flag = 'St=%s' % str(sol['stEC']) 
     plt.colorbar()
     plt.savefig("%s.png" % flag)
     plt.close()

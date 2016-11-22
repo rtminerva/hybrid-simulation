@@ -151,10 +151,11 @@ def F_mean_vector_sol(F_sol_1, F_sol_2, set):
                 
     return F_mean_sol_1, F_mean_sol_2
 
-def c_f_T(coef, set, sol, n_o): #2.3
-    c_o = numpy.copy(sol['c'])
-    #f_o = sol['f'][:]
-    b_o = numpy.copy(sol['b'])
+def c_f_T(coef, set, sol): #2.3
+    X1_o = numpy.copy(sol['X1'])
+    X2_o = numpy.copy(sol['X2'])
+    X3_o = numpy.copy(sol['X3'])
+    
     if set['con'] == True:
         n_o = numpy.copy(sol['n'])
     
