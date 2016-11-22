@@ -22,23 +22,32 @@ def boolean_1_iter(coef, set, sol, check = 'out'): #2
     if set['k'] == 0:
         '''Initial Profile'''
         sol = initial_prof(coef, set, sol) #2.1
-    else:                             
-        if len(sol['sp_stop']) == len(sol['matrix_tip']): #???
+    else: 
+        start1 = timer() 
+#             Solving X1,X2,X3,X4 continuously
+        sol = c_f_T(coef, set, sol) #2.3
+        start2 = timer()      
+        
+#             Movement of X4
+        sol = hybrid_tech_c(coef, set, sol) #2.2
+        start3 = timer()
+        '''                            
+        if len(sol['matrix_tip']) == 0: 
             sol['stop_iter'] = 100000 
             print 'all is absorbed'
             check == 'in'
         else:
             start1 = timer() 
-            '''Solving X1,X2,X3,X4 continuously'''
+#             Solving X1,X2,X3,X4 continuously
             sol = c_f_T(coef, set, sol) #2.3
             start2 = timer()      
             
-            '''Movement of X4''' 
+#             Movement of X4
             sol = hybrid_tech(coef, set, sol) #2.2
             start3 = timer()
-                  
+        '''
         if not check == 'in':
             print 'Hybrid for X4 time', start2-start1
-            print 'Solve X1,X2,X3 time', start4-start3
+            print 'Solve X1,X2,X3 time', start3-start2
                     
     return sol

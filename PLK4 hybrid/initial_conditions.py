@@ -8,5 +8,6 @@ from random import randint
 #from init_tip_3d_n import init_tip_3d_n_
 
 def initial_prof(coef, set, sol):
+    #print sol['matrix_tip']
     sol = init_2d_(coef,set,sol) #2.1.1
     return sol

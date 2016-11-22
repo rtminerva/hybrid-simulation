@@ -29,16 +29,16 @@ def declare_coef(): #1
     coef['l_2'] = 0
     
     ##X4
-    coef['D_4'] = 0.00035
+    coef['D4'] = 0.00035
     
     ##X1
-    coef['D_1'] = 0.00035
+    coef['D1'] = 0.00035
     
     ##X2
-    coef['D_4'] = 0.00035
+    coef['D2'] = 0.00035
     
     ##X3
-    coef['D_4'] = 0.00035
+    coef['D3'] = 0.00035
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah
@@ -73,7 +73,7 @@ def declare_coef(): #1
     sol['tX3'] = 0
     sol['tX4'] = 0
     sol['matrix_tip'] = []
-    sol['matrix_tip_die'] = 0
+    sol['matrix_tip_die'] = []
     #sol['list_tip_movement'] = 0
     #sol['life_time_tip'] = 0
     sol['stop_iter'] = 0
@@ -85,7 +85,7 @@ def declare_coef(): #1
         #sol['sp_stop_2'] = 0
         #sol['tip_cell_2'] = 0
         #sol['pp_2'] = {}
-    sol['tip_cell'] = 0
+    sol['tip_cell'] = []
     sol['pp'] = {}
 
     return coef, set, sol

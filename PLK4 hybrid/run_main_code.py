@@ -15,7 +15,6 @@ coef, set, sol = declare_coef() #1
 
 #to plot interactively
 plt.ion()
-print len(sol['matrix_tip'])
 
 while set['t'] <= set['T'] and set['k'] < set['Nt']:
     sol = main.boolean_1_iter(coef, set, sol) #2                 

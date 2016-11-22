@@ -55,28 +55,28 @@ def pic_2d_con(coef,set,sol):
     return sol
 
 def pic_2d(coef,set,sol):
-    if k == 0:
-        '''Vector Field'''
-        fig = plt.figure()
-        plt.title('Vector Field')
-        plt.xlim(set['Hh'],coef['X']-set['Hh'])
-        plt.ylim(set['Hh'],coef['Y']-set['Hh'])
-        
-        x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
-        y_main_axis = numpy.arange(set['Hh'], coef['Y'], set['h'])
-        x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
-        
-        G_sol_1 = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
-        G_sol_2 = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
-        for j, y in enumerate(range(1,set['Ny'],2)):
-            for i, x in enumerate(range(1,set['Nx'],2)):
-                G_sol_1[i,j] = sol['G_vec_x'][x,y]
-                G_sol_2[i,j] = sol['G_vec_y'][x,y]
-    
-        plt.streamplot(x_main_axis, y_main_axis, G_sol_1, G_sol_2,density=[0.5, 1],color='DarkRed',linewidth=lw)
-        plt.colorbar()
-        plt.savefig("Vector Field.png")
-        plt.close()
+#     if set['k'] == 0:
+#         '''Vector Field'''
+#         fig = plt.figure()
+#         plt.title('Vector Field')
+#         plt.xlim(set['Hh'],coef['X']-set['Hh'])
+#         plt.ylim(set['Hh'],coef['Y']-set['Hh'])
+#         
+#         x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
+#         y_main_axis = numpy.arange(set['Hh'], coef['Y'], set['h'])
+#         x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
+#         
+#         G_sol_1 = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
+#         G_sol_2 = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
+#         for j, y in enumerate(range(1,set['Ny'],2)):
+#             for i, x in enumerate(range(1,set['Nx'],2)):
+#                 G_sol_1[i,j] = sol['G_vec_x'][x,y]
+#                 G_sol_2[i,j] = sol['G_vec_y'][x,y]
+#     
+#         plt.streamplot(x_main_axis, y_main_axis, G_sol_1, G_sol_2,density=[0.5, 1],color='DarkRed',linewidth=2)
+#         plt.colorbar()
+#         plt.savefig("Vector Field.png")
+#         plt.close()
         
     '''X4'''
     fig = plt.figure()
@@ -97,9 +97,8 @@ def pic_2d(coef,set,sol):
         x_p.append(tip[0]*set['Hh'])
         y_p.append(tip[1]*set['Hh'])
     ax.scatter(x_p, y_p, marker = 'o', s = 5, color ='r')
-    sol['stX4'] +=1  
-    flag = 'X4=%s' % str(sol['stX4']) 
-    plt.colorbar()
+    sol['tX4'] +=1  
+    flag = 'X4=%s' % str(sol['tX4']) 
     plt.savefig("%s.png" % flag)
     plt.close()
     
@@ -121,8 +120,8 @@ def pic_2d(coef,set,sol):
     plt.pcolormesh(y_main_axis, x_main_axis, X1_sol, cmap="BuGn")
     plt.colorbar()
     
-    sol['stX1'] +=1  
-    flag = 'X1=%s' % str(sol['stX1']) 
+    sol['tX1'] +=1  
+    flag = 'X1=%s' % str(sol['tX1']) 
     plt.savefig("%s.png" % flag)
     plt.close()
     
