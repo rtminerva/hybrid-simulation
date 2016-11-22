@@ -26,7 +26,7 @@ def declare_coef(): #1
     coef['k_1'] = 0.1
     coef['k_2'] = 0.1
     coef['l_1'] = 0.01
-    coef['l_2'] = 0.01
+    coef['l_2'] = 0
     
     ##X4
     coef['D_4'] = 0.00035
@@ -73,6 +73,7 @@ def declare_coef(): #1
     sol['tX3'] = 0
     sol['tX1'] = 0
     sol['matrix_tip'] = 0
+    sol['matrix_tip_die'] = 0
     #sol['list_tip_movement'] = 0
     #sol['life_time_tip'] = 0
     sol['stop_iter'] = 0

@@ -9,7 +9,6 @@ def X1_prof(coef,set,sol): #2.1.1.(1)
         sol['X1'][idx_m_1[id], idx_m_2[id]] = m.exp(-(idx_m_1[id]*set['Hh'])**2/0.01)*(m.sin(1*m.pi*idx_m_2[id]*set['Hh']))**2
     del idx_m_1
     del idx_m_2
-
     return sol
     
 def X3_prof(coef,set,sol): #2.1.1.(2)
@@ -26,7 +25,10 @@ def init_2d_(coef,set,sol): #2.1.1
     sol['X2'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['X3'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['X4'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
-    sol = X1_prof(coef,set,sol) #2.1.1.(2)
-    sol = X3_prof(coef,set,sol) #2.1.1.(1)
+    sol['G_vec_x'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
+    sol['G_vec_y'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
+    sol = X1_prof(coef,set,sol) #2.1.1.(1)
+    sol = X3_prof(coef,set,sol) #2.1.1.(2)
+    sol['matrix_tip'] = []
     return sol
         
