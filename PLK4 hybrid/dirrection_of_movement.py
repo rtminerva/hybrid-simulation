@@ -1,123 +1,21 @@
 import numpy
 
 def movement_dir(coef, set, sol, xb, yb, nom): #2.2.1
-
-    cijx = (sol['c'][xb+1,yb+1]-sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb-1]-sol['c'][xb-1,yb-1])/(2*set['h'])
-    cijy = (sol['c'][xb+1,yb+1]-sol['c'][xb+1,yb-1]+sol['c'][xb-1,yb+1]-sol['c'][xb-1,yb-1])/(2*set['h'])
+    G_plus_1 = max(0,sol['G_vec_x'][xb,yb])
+    G_plus_2 = max(0,sol['G_vec_y'][xb,yb])
     
-    cijx_p = max(0,cijx)
-    cijx_n = max(0,-cijx)
-    cijy_p = max(0,cijy)
-    cijy_n = max(0,-cijy)
+    G_neg_1 = max(0,-sol['G_vec_x'][xb,yb])
+    G_neg_2 = max(0,-sol['G_vec_y'][xb,yb])
     
-    if yb == 1:
-        if xb == 1:
-            b_mean_ur = (sol['b'][xb+2,yb+2]+sol['b'][xb,yb+2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])/4
-            b_mean_ul = (sol['b'][xb,yb]+sol['b'][xb,yb+2])/2
-            b_mean_dr = (sol['b'][xb,yb]+sol['b'][xb+2,yb])/2
-            b_mean_dl = sol['b'][xb,yb]
-        elif xb == set['Nx']-1:
-            b_mean_ur = (sol['b'][xb,yb]+sol['b'][xb,yb+2])/2
-            b_mean_ul = (sol['b'][xb-2,yb]+sol['b'][xb,yb+2]+sol['b'][xb-2,yb+2]+sol['b'][xb,yb])/4
-            b_mean_dr = sol['b'][xb,yb]
-            b_mean_dl = (sol['b'][xb,yb]+sol['b'][xb-2,yb])/2
-        else:
-            b_mean_ur = (sol['b'][xb+2,yb+2]+sol['b'][xb,yb+2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])/4
-            b_mean_ul = (sol['b'][xb-2,yb-2]+sol['b'][xb,yb+2]+sol['b'][xb-2,yb]+sol['b'][xb,yb])/4
-            b_mean_dr = (sol['b'][xb,yb]+sol['b'][xb+2,yb])/2
-            b_mean_dl = (sol['b'][xb,yb]+sol['b'][xb-2,yb])/2
-    elif yb == set['Ny']-1:
-        if xb == 1:
-            b_mean_ur = (sol['b'][xb,yb]+sol['b'][xb+2,yb])/2
-            b_mean_ul = sol['b'][xb,yb]
-            b_mean_dr = (sol['b'][xb+2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])/4
-            b_mean_dl = (sol['b'][xb,yb]+sol['b'][xb,yb-2])/2
-        elif xb == set['Nx']-1:
-            b_mean_ur = sol['b'][xb,yb]
-            b_mean_ul = (sol['b'][xb,yb]+sol['b'][xb-2,yb])/2
-            b_mean_dr = (sol['b'][xb,yb]+sol['b'][xb,yb-2])/2
-            b_mean_dl = (sol['b'][xb-2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb-2,yb]+sol['b'][xb,yb])/4
-        else:
-            b_mean_ur = (sol['b'][xb,yb]+sol['b'][xb+2,yb])/2
-            b_mean_ul = (sol['b'][xb,yb]+sol['b'][xb-2,yb])/2
-            b_mean_dr = (sol['b'][xb+2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])/4
-            b_mean_dl = (sol['b'][xb-2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb-2,yb]+sol['b'][xb,yb])/4
-    else:
-        if xb == 1:
-            b_mean_ur = (sol['b'][xb+2,yb+2]+sol['b'][xb,yb+2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])/4
-            b_mean_ul = (sol['b'][xb,yb]+sol['b'][xb,yb+2])/2
-            b_mean_dr = (sol['b'][xb+2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])/4
-            b_mean_dl = (sol['b'][xb,yb]+sol['b'][xb,yb-2])/2
-        elif xb == set['Nx']-1:
-            b_mean_ur = (sol['b'][xb,yb]+sol['b'][xb,yb+2])/2
-            b_mean_ul = (sol['b'][xb-2,yb+2]+sol['b'][xb,yb+2]+sol['b'][xb-2,yb]+sol['b'][xb,yb])/4
-            b_mean_dr = (sol['b'][xb,yb]+sol['b'][xb,yb-2])/2
-            b_mean_dl = (sol['b'][xb-2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb-2,yb]+sol['b'][xb,yb])/4
-        else:
-            b_mean_ur = (sol['b'][xb+2,yb+2]+sol['b'][xb,yb+2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])/4
-            b_mean_ul = (sol['b'][xb-2,yb+2]+sol['b'][xb,yb+2]+sol['b'][xb-2,yb]+sol['b'][xb,yb])/4
-            b_mean_dr = (sol['b'][xb+2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb+2,yb]+sol['b'][xb,yb])/4
-            b_mean_dl = (sol['b'][xb-2,yb-2]+sol['b'][xb,yb-2]+sol['b'][xb-2,yb]+sol['b'][xb,yb])/4
-        
-    bijx = (b_mean_ur-b_mean_ul+b_mean_dr-b_mean_dl)/(2*set['h'])
-    bijy = (b_mean_ur-b_mean_dr+b_mean_ul-b_mean_dl)/(2*set['h'])
-    
-    bijx_p = max(0,bijx)
-    bijx_n = max(0,-bijx)
-    bijy_p = max(0,bijy)
-    bijy_n = max(0,-bijy)
-    
-    #print b_mean_ur,b_mean_ul,b_mean_dr,b_mean_dl
-    #print sol['b'][xb,yb]
-    #print 'bijx,dst', bijx, bijy
-
-#     fijx = 1/(2*set['h'])*(sol['f'][xb+1,yb+1]-sol['f'][xb-1,yb+1]+sol['f'][xb+1,yb-1]-sol['f'][xb-1,yb-1])
-#     fijy = 1/(2*set['h'])*(sol['f'][xb+1,yb+1]-sol['f'][xb+1,yb-1]+sol['f'][xb-1,yb+1]-sol['f'][xb-1,yb-1])
-#     fijx_p = max(0,fijx)
-#     fijx_n = max(0,-fijx)
-#     fijy_p = max(0,fijy)
-#     fijy_n = max(0,-fijy)
-    
-    Gijx_p = coef['Ki_n']/(1+coef['Al_n']*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1])/4)*cijx_p-coef['Si']*bijx_p
-    Gijx_n = coef['Ki_n']/(1+coef['Al_n']*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1])/4)*cijx_n-coef['Si']*bijx_n
-    Gijy_p = coef['Ki_n']/(1+coef['Al_n']*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1])/4)*cijy_p-coef['Si']*bijy_p
-    Gijy_n = coef['Ki_n']/(1+coef['Al_n']*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1])/4)*cijy_n-coef['Si']*bijy_n
+    Gijx_p = max(0,sol['G_vec_x'][xb,yb])
+    Gijx_n = max(0,-sol['G_vec_x'][xb,yb])
+    Gijy_p = max(0,sol['G_vec_y'][xb,yb])
+    Gijy_n = max(0,-sol['G_vec_y'][xb,yb])
       
-    P_1 = int((set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*Gijx_n)*10000)
-    P_2 = int((set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*Gijx_p)*10000)
-    P_3 = int((set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*Gijy_n)*10000)
-    P_4 = int((set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*Gijy_p)*10000)
-
-    '''Checking space if other tip meet nom tip
-    lx = xb - 2
-    rx = xb + 2
-    dy = yb - 2
-    uy = yb + 2
-    for e,tep in enumerate(range(0,len(sol['matrix_tip']))):
-        if not tep == nom:
-            if [sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]] == [sol['matrix_tip'][tep][-1][0],sol['matrix_tip'][tep][-1][1]]:
-                if [lx,yb] == [sol['matrix_tip'][tep][-2][0],sol['matrix_tip'][tep][-2][1]]:
-                    P_1 = 0
-                elif [rx,yb] == [sol['matrix_tip'][tep][-2][0],sol['matrix_tip'][tep][-2][1]]:
-                    P_2 = 0
-                elif [xb,dy] == [sol['matrix_tip'][tep][-2][0],sol['matrix_tip'][tep][-2][1]]:
-                    P_3 = 0
-                elif [xb,uy] == [sol['matrix_tip'][tep][-2][0],sol['matrix_tip'][tep][-2][1]]:
-                    P_4 = 0
-    '''
-    
-    '''Checking no back movement
-    no_back = sol['list_tip_movement'][nom]
-    if no_back == 'right':
-        P_1 = 0
-    elif no_back == 'left':
-        P_2 = 0
-    elif no_back == 'up':
-        P_3 = 0
-    elif no_back == 'down':
-        P_4 = 0
-    '''
-    
+    P_1 = int((set['dt']/(set['h']**2)*coef['D_4']+set['dt']/(set['h'])*Gijx_n)*10000)
+    P_2 = int((set['dt']/(set['h']**2)*coef['D_4']+set['dt']/(set['h'])*Gijx_p)*10000)
+    P_3 = int((set['dt']/(set['h']**2)*coef['D_4']+set['dt']/(set['h'])*Gijy_n)*10000)
+    P_4 = int((set['dt']/(set['h']**2)*coef['D_4']+set['dt']/(set['h'])*Gijy_p)*10000)  
     
     if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
         print 'ADA P yang Negative'
