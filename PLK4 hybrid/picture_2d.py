@@ -55,9 +55,32 @@ def pic_2d_con(coef,set,sol):
     return sol
 
 def pic_2d(coef,set,sol):
-    '''Tip & Stalk Cells'''
+    if k == 0:
+        '''Vector Field'''
+        fig = plt.figure()
+        plt.title('Vector Field')
+        plt.xlim(set['Hh'],coef['X']-set['Hh'])
+        plt.ylim(set['Hh'],coef['Y']-set['Hh'])
+        
+        x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
+        y_main_axis = numpy.arange(set['Hh'], coef['Y'], set['h'])
+        x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
+        
+        G_sol_1 = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
+        G_sol_2 = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
+        for j, y in enumerate(range(1,set['Ny'],2)):
+            for i, x in enumerate(range(1,set['Nx'],2)):
+                G_sol_1[i,j] = sol['G_vec_x'][x,y]
+                G_sol_2[i,j] = sol['G_vec_y'][x,y]
+    
+        plt.streamplot(x_main_axis, y_main_axis, G_sol_1, G_sol_2,density=[0.5, 1],color='DarkRed',linewidth=lw)
+        plt.colorbar()
+        plt.savefig("Vector Field.png")
+        plt.close()
+        
+    '''X4'''
     fig = plt.figure()
-    plt.title('%s%f' % ('Tip and Stalk Cells Movement at t=',set['t']))
+    plt.title('%s%f' % ('X4 Movement at t=',set['t']))
     plt.xlim(set['Hh'],coef['X']-set['Hh'])
     plt.ylim(set['Hh'],coef['Y']-set['Hh'])
     ax = fig.add_subplot(111)
@@ -74,115 +97,33 @@ def pic_2d(coef,set,sol):
         x_p.append(tip[0]*set['Hh'])
         y_p.append(tip[1]*set['Hh'])
     ax.scatter(x_p, y_p, marker = 'o', s = 5, color ='r')
-    
-    x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
-    y_main_axis = numpy.arange(set['Hh'], coef['Y'], set['h'])
-    x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
-     
-    b_sol = numpy.zeros((set['Nx']/2, set['Ny']/2))
-    for j, y in enumerate(range(1,set['Ny'],2)):
-        for i, x in enumerate(range(1,set['Nx'],2)):
-            b_sol[i,j] = sol['b'][x,y]
-    #surf = ax.plot_surface(x_sub_axis, y_sub_axis, f_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
-    #        linewidth=0, antialiased=False)
-    #fig1.colorbar(surf, shrink=0.5, aspect=5)
-    b_sol = numpy.ma.masked_array(b_sol, b_sol < 0.0001)#-.5)
-    cmap = plt.cm.Reds
-    plt.pcolormesh(y_main_axis, x_main_axis, b_sol, cmap="winter")
-    sol['stEC'] +=1  
-    flag = 'St=%s' % str(sol['stEC']) 
+    sol['stX4'] +=1  
+    flag = 'X4=%s' % str(sol['stX4']) 
     plt.colorbar()
     plt.savefig("%s.png" % flag)
     plt.close()
-    #plt.draw()
     
-    '''Tip Cell Only
-    fig = plt.figure()
-    plt.title('%s%f' % ('Tip Cell Movement at t=',set['t']))
-    plt.xlim(set['Hh'],coef['X']-set['Hh'])
-    plt.ylim(set['Hh'],coef['Y']-set['Hh'])
-    ax = fig.add_subplot(111)
-#     for i in range(0,len(sol['matrix_tip'])):
-#         x_p = []
-#         y_p = []
-#         for j in range(0,len(sol['matrix_tip'][i])):
-#             x_p.append(sol['matrix_tip'][i][j][0]*set['Hh'])
-#             y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
-#         globals()['plo%s' % i] = ax.plot(x_p, y_p, 'c', color ='r')
-    x_p = []
-    y_p = []
-    for tip in sol['tip_cell']:
-        x_p.append(tip[0]*set['Hh'])
-        y_p.append(tip[1]*set['Hh'])
-    ax.scatter(x_p, y_p, marker = 'o', s = 50, color ='r')
-    sol['stStalk'] +=1  
-    flag = 'T=%s' % str(sol['stEC']) 
+    '''X1'''
+    plt.figure(2)
+    plt.title('%s%f' % ('X1 Distribution at t=',set['t']))
+    plt.xlabel('X')
+    plt.ylabel('Y')
+         
+    x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
+    y_main_axis = numpy.arange(set['Hh'], coef['Y'], set['h'])
+    x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
+    
+    X1_sol = numpy.zeros((set['Nx']/2, set['Ny']/2))
+    for j, y in enumerate(range(1,set['Ny'],2)):
+        for i, x in enumerate(range(1,set['Nx'],2)):
+            X1_sol[i,j] = sol['X1'][x,y]
+    X1_sol = numpy.ma.masked_array(X1_sol, X1_sol < 0.0001)
+    plt.pcolormesh(y_main_axis, x_main_axis, X1_sol, cmap="BuGn")
+    plt.colorbar()
+    
+    sol['stX1'] +=1  
+    flag = 'X1=%s' % str(sol['stX1']) 
     plt.savefig("%s.png" % flag)
     plt.close()
-    '''
-    
-#     if set['k'] % 50 == 0:
-#         ppp = 1
-#         '''Continuous Plot
-#         fig1 = plt.figure(1)
-#         plt.title('%s%f' % ('VEGF at t=',set['t']))
-#         #ax = fig1.gca(projection='3d')
-#         #ax.set_zlim(-0.1, 1)
-#         #ax.zaxis.set_major_locator(LinearLocator(10))
-#         #ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
-# 
-#         #plt.set_xlabel('X')
-#         #plt.set_ylabel('Y')
-#         #plt.set_zlabel('Z')
-#         
-#         plt.xlabel('X')
-#         plt.ylabel('Y')
-#          
-#         x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
-#         y_sub_axis = numpy.arange(0, coef['Y']+set['Hh'], set['h'])
-#         x_sub_axis, y_sub_axis = numpy.meshgrid(x_sub_axis, y_sub_axis)
-#          
-#         c_sol = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
-#         for j, y in enumerate(range(0,set['Ny']+1,2)):
-#             for i, x in enumerate(range(0,set['Nx']+1,2)):
-#                 c_sol[i,j] = sol['c'][x,y]
-#         #surf = ax.plot_surface(x_sub_axis, y_sub_axis, c_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
-#         #        linewidth=0, antialiased=False)
-#         #fig1.colorbar(surf, shrink=0.5, aspect=5)
-#         plt.pcolormesh(y_sub_axis, x_sub_axis, c_sol)
-#         sol['stVEGF'] +=1  
-#         flag = 'VEGF=%s' % str(sol['stVEGF']) 
-#         plt.savefig("%s.png" % flag)
-#         plt.close()
-#         '''
-#         
-#         '''Continuous Plot b
-#         fig1 = plt.figure(1)
-#         plt.title('%s%f' % ('Stalk Cell at t=',set['t']))
-#         #ax = fig1.gca(projection='3d')
-#         #ax.set_zlim(-0.1, 1)
-#         #ax.zaxis.set_major_locator(LinearLocator(10))
-#         #ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
-#         
-#         plt.xlabel('X')
-#         plt.ylabel('Y')
-#     
-#         x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
-#         y_main_axis = numpy.arange(set['Hh'], coef['Y'], set['h'])
-#         x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
-#          
-#         b_sol = numpy.zeros((set['Nx']/2, set['Ny']/2))
-#         for j, y in enumerate(range(1,set['Ny'],2)):
-#             for i, x in enumerate(range(1,set['Nx'],2)):
-#                 b_sol[i,j] = sol['b'][x,y]
-#         #surf = ax.plot_surface(x_sub_axis, y_sub_axis, f_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
-#         #        linewidth=0, antialiased=False)
-#         #fig1.colorbar(surf, shrink=0.5, aspect=5)
-#         plt.pcolormesh(y_main_axis, x_main_axis, b_sol)
-#         sol['stStalk'] +=1  
-#         flag = 'St=%s' % str(sol['stStalk']) 
-#         plt.savefig("%s.png" % flag)
-#         plt.close()
-#         '''
     
     return

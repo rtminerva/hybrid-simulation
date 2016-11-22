@@ -1,5 +1,5 @@
 from initial_conditions import initial_prof #2.1
-from hybrid import hybrid_tech #2.2
+from hybrid import hybrid_tech_c #2.2
 from solve_cfT import c_f_T #2.3
 
 #from solve_cfT_3d import c_f_T_3d

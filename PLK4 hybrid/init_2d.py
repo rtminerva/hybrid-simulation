@@ -30,7 +30,7 @@ def G_vec(coef,set,sol):
         sol['G_vec_x'][325,x] = aa
         sol['G_vec_x'][327,x] = aa
         sol['G_vec_x'][329,x] = aa
-        
+                
         sol['G_vec_x'][119,x] = bb
         sol['G_vec_x'][121,x] = bb
         sol['G_vec_x'][123,x] = bb
@@ -39,6 +39,8 @@ def G_vec(coef,set,sol):
         sol['G_vec_x'][129,x] = bb
         aa -= 0.001
         bb -= 0.001
+    
+
 
 def init_2d_(coef,set,sol): #2.1.1
     sol['X1'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
@@ -47,9 +49,10 @@ def init_2d_(coef,set,sol): #2.1.1
     sol['X4'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['G_vec_x'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['G_vec_y'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
+    
+    #sol['G_vec_'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol = X1_prof(coef,set,sol) #2.1.1.(1)
     sol = X3_prof(coef,set,sol) #2.1.1.(2)
     sol = G_vec(coef,set,sol) #2.1.1.(3)
-    sol['matrix_tip'] = []
     return sol
         

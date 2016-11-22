@@ -15,11 +15,10 @@ coef, set, sol = declare_coef() #1
 
 #to plot interactively
 plt.ion()
+print len(sol['matrix_tip'])
 
 while set['t'] <= set['T'] and set['k'] < set['Nt']:
     sol = main.boolean_1_iter(coef, set, sol) #2                 
-    if sol['stop_iter'] >=100000:
-        set['k'] = sol['stop_iter']
     '''PRINTING RESULT AS CONTROL'''  
     print 'at Time', set['t']
     print 'Total X4:', len(sol['matrix_tip'])

@@ -1,5 +1,4 @@
 from init_2d import init_2d_ #2.1.1
-from init_tip_2d import init_tip_2d_ #2.1.2
 
 import numpy
 import random

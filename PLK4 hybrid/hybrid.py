@@ -88,6 +88,7 @@ def movement(sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_
 
 def hybrid_tech_c(coef, set, sol): #2.2
     n_sp = len(sol['matrix_tip']) #to save original number of tips before branching
+    sol['tip_cell'] = []
     
     for nom in range(0,n_sp): #dicek setiap element
         xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
@@ -100,4 +101,5 @@ def hybrid_tech_c(coef, set, sol): #2.2
                         
         '''The Movement'''
         sol,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4) #2.2.(2)
+        sol['tip_cell'].append(sol['matrix_tip'][nom][-1])
     return sol

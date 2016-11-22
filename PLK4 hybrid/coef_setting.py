@@ -71,21 +71,21 @@ def declare_coef(): #1
     sol['tX1'] = 0
     sol['tX2'] = 0
     sol['tX3'] = 0
-    sol['tX1'] = 0
-    sol['matrix_tip'] = 0
+    sol['tX4'] = 0
+    sol['matrix_tip'] = []
     sol['matrix_tip_die'] = 0
     #sol['list_tip_movement'] = 0
     #sol['life_time_tip'] = 0
     sol['stop_iter'] = 0
     #sol['sp_stop'] = 0
-    if set['parent'] == 'two':
+    #if set['parent'] == 'two':
         #sol['matrix_tip_2'] = 0
         #sol['list_tip_movement_2'] = 0
         #sol['life_time_tip_2'] = 0
         #sol['sp_stop_2'] = 0
         #sol['tip_cell_2'] = 0
-        sol['pp_2'] = {}
-    #sol['tip_cell'] = 0
+        #sol['pp_2'] = {}
+    sol['tip_cell'] = 0
     sol['pp'] = {}
 
     return coef, set, sol
