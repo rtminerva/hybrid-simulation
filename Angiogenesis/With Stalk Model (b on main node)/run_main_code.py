@@ -9,6 +9,7 @@ import numpy
 from timeit import default_timer as timer 
 import time
 import matplotlib.pyplot as plt 
+from mpmath.functions.rszeta import coef
 
 #declare coefficients & initial settings
 coef, set, sol = declare_coef() #1
@@ -33,7 +34,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'at Time', set['t']
         print 'Total Tips:', len(sol['matrix_tip'])
         print 'Total Stop Tips:', len(sol['sp_stop'])
-        if not coef['Si'] == 0:
+        if not coef['C_2'] == 0:
             print 'NILAI C, b, n MAX', sol['c'].max(),',', sol['b'].max(),',', sol['n'].max()
             print 'NILAI C, b, n MIN', sol['c'].min(),',', sol['b'].min(),',', sol['n'].min()
         else:
@@ -48,7 +49,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
                 pic.pic_2d_con(coef,set,sol)
     else:
         #SAVING PICTURES    
-        if set['k'] % 10 == 0:
+        if set['k'] % 1 == 0:
             if set['layout'] == '2D':
                 pic.pic_2d(coef,set,sol) #3
             if set['layout'] == '3D':
@@ -77,7 +78,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'total time of processing:', 0, 'hours', menit, 'minutes', detik, 'seconds'
     else:
         print 'total time of processing:', 0, 'hours', 0, 'minutes', ttime, 'seconds'
-          
+    print set
+    print coef
     #print 'total time of processing:', time.clock()
     print '***************************************************'
     print     

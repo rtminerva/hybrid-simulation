@@ -65,18 +65,14 @@ def boolean_1_iter(coef, set, sol, check = 'out'): #2
             if set['layout'] == '3D':
                 sol = hybrid_tech_c_3d(coef, set, sol)
             start2 = timer()
-            '''1. Anastomosis & Tip Cell'''
-            #sol = check_anastomosis(sol)
-            start3 = timer()
             '''Solving c,f,T'''
             if set['layout'] == '2D':
                 sol = c_f_T(coef, set, sol, n_o) #2.3
             if set['layout'] == '3D':
                 sol = c_f_T_3d(coef, set, sol)
-            start4 = timer()            
+            start3 = timer()            
         if not check == 'in':
-            print 'Check Anastomosis Time', start3-start2
             print 'Hybrid for n time', start2-start1
-            print 'Solve c,f,T time', start4-start3
+            print 'Solve c,f,T time', start3-start2
                     
     return sol

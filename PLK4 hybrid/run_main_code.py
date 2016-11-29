@@ -20,6 +20,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     sol = main.boolean_1_iter(coef, set, sol) #2                 
     '''PRINTING RESULT AS CONTROL'''  
     print 'at Time', set['t']
+    print 'Number of X4 that is absorbed:', sol['num_of_absorbed']
     print 'Total X4:', len(sol['matrix_tip'])
     print 'Total X4 die:', len(sol['matrix_tip_die'])
     print 'NILAI X1, X2, X3, X4 Max', sol['X1'].max(),',', sol['X2'].max(),',', sol['X3'].max(),',', sol['X4'].max()

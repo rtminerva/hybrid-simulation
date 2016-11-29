@@ -77,16 +77,18 @@ def movement_dir(coef, set, sol, xb, yb, nom): #2.2.1
 #     fijx_n = max(0,-fijx)
 #     fijy_p = max(0,fijy)
 #     fijy_n = max(0,-fijy)
+    #/(1+coef['Al_n']*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1])/4)
+    Gijx_p = coef['Ki']*cijx_p-coef['C_2']*bijx_p
+    Gijx_n = coef['Ki']*cijx_n-coef['C_2']*bijx_n
+    Gijy_p = coef['Ki']*cijy_p-coef['C_2']*bijy_p
+    Gijy_n = coef['Ki']*cijy_n-coef['C_2']*bijy_n
     
-    Gijx_p = coef['Ki_n']/(1+coef['Al_n']*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1])/4)*cijx_p-coef['Si']*bijx_p
-    Gijx_n = coef['Ki_n']/(1+coef['Al_n']*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1])/4)*cijx_n-coef['Si']*bijx_n
-    Gijy_p = coef['Ki_n']/(1+coef['Al_n']*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1])/4)*cijy_p-coef['Si']*bijy_p
-    Gijy_n = coef['Ki_n']/(1+coef['Al_n']*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1])/4)*cijy_n-coef['Si']*bijy_n
+    #print Gijx_p, Gijx_n, Gijy_p, Gijy_n
       
-    P_1 = int((set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*Gijx_n)*10000)
-    P_2 = int((set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*Gijx_p)*10000)
-    P_3 = int((set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*Gijy_n)*10000)
-    P_4 = int((set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*Gijy_p)*10000)
+    P_1 = int((set['dt']/(set['h']**2)*coef['C_1']+set['dt']/(set['h'])*Gijx_n)*10000)
+    P_2 = int((set['dt']/(set['h']**2)*coef['C_1']+set['dt']/(set['h'])*Gijx_p)*10000)
+    P_3 = int((set['dt']/(set['h']**2)*coef['C_1']+set['dt']/(set['h'])*Gijy_n)*10000)
+    P_4 = int((set['dt']/(set['h']**2)*coef['C_1']+set['dt']/(set['h'])*Gijy_p)*10000)
 
     '''Checking space if other tip meet nom tip
     lx = xb - 2

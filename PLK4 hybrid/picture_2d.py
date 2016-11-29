@@ -125,4 +125,27 @@ def pic_2d(coef,set,sol):
     plt.savefig("%s.png" % flag)
     plt.close()
     
+    '''X3'''
+    plt.figure(2)
+    plt.title('%s%f' % ('X3 Distribution at t=',set['t']))
+    plt.xlabel('X')
+    plt.ylabel('Y')
+         
+    x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
+    y_main_axis = numpy.arange(set['Hh'], coef['Y'], set['h'])
+    x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
+    
+    X3_sol = numpy.zeros((set['Nx']/2, set['Ny']/2))
+    for j, y in enumerate(range(1,set['Ny'],2)):
+        for i, x in enumerate(range(1,set['Nx'],2)):
+            X3_sol[i,j] = sol['X3'][x,y]
+    X3_sol = numpy.ma.masked_array(X3_sol, X3_sol < 0.0001)
+    plt.pcolormesh(y_main_axis, x_main_axis, X3_sol, cmap="BuPu")
+    plt.colorbar()
+    
+    sol['tX3'] +=1  
+    flag = 'X3=%s' % str(sol['tX3']) 
+    plt.savefig("%s.png" % flag)
+    plt.close()
+    
     return

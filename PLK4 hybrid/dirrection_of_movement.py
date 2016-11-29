@@ -12,10 +12,10 @@ def movement_dir(coef, set, sol, xb, yb, nom): #2.2.1
     Gijy_p = max(0,sol['G_vec_y'][xb,yb])
     Gijy_n = max(0,-sol['G_vec_y'][xb,yb])
       
-    P_1 = int((set['dt']/(set['h']**2)*coef['D_4']+set['dt']/(set['h'])*Gijx_n)*10000)
-    P_2 = int((set['dt']/(set['h']**2)*coef['D_4']+set['dt']/(set['h'])*Gijx_p)*10000)
-    P_3 = int((set['dt']/(set['h']**2)*coef['D_4']+set['dt']/(set['h'])*Gijy_n)*10000)
-    P_4 = int((set['dt']/(set['h']**2)*coef['D_4']+set['dt']/(set['h'])*Gijy_p)*10000)  
+    P_1 = int((set['dt']/(set['h']**2)*coef['D4']+set['dt']/(set['h'])*Gijx_n)*10000)
+    P_2 = int((set['dt']/(set['h']**2)*coef['D4']+set['dt']/(set['h'])*Gijx_p)*10000)
+    P_3 = int((set['dt']/(set['h']**2)*coef['D4']+set['dt']/(set['h'])*Gijy_n)*10000)
+    P_4 = int((set['dt']/(set['h']**2)*coef['D4']+set['dt']/(set['h'])*Gijy_p)*10000)  
     
     if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
         print 'ADA P yang Negative'

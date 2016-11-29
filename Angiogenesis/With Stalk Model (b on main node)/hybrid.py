@@ -101,99 +101,112 @@ def move_left(sol,nom,xb,yb,list_prob_0,list_prob_1): #2.2.(2).(1)
     tipp = 'left'
     xpos_new = xb - 2
     ypos_new = yb                    
-    sol['matrix_tip'][nom].append((xpos_new,ypos_new))
+    sol['matrix_tip'][nom].append([xpos_new,ypos_new])
     sol['list_tip_movement'][nom] = tipp
     for i in list_prob_1:
         list_prob_0.append(i)
-    list_prob_1 =[]    
-    sol['tip_cell'].remove([xb,yb])
-    if sol['n'][xb-2,yb] == 1: #ANASTOMOSIS TIP TO TIP
-        print 'HERELeft', xb-2,yb
+    list_prob_1 =[]   
+    if sol['n'][xb-2,yb] == 1: #ANASTOMOSIS TO TIP
+        #print 'HERELeft', xb-2,yb
         sol['sp_stop'].append(nom)
         sol['loc_anas_tt'].append([xb-2,yb])
         if not [xb-2,yb] in sol['PP']:
             sol['pp'][(xb-2,yb)] = 'left'
-#     elif sol['b'][xb-2,yb] == 1: #ANASTOMOSIS TIP TO BRANCH   
-#         sol['sp_stop'].append(nom)
-#         sol['loc_anas_tb'].append([xb-2,yb])
+    
+    elif sol['b'][xpos_new,ypos_new] == 1: #ANASTOMOSIS TIP TO BRANCH 
+        for e, i in enumerate(sol['matrix_tip']):
+            if e != nom:
+                for k in range(len(i)):
+                    if [xpos_new,ypos_new] != i[-1] and [xpos_new,ypos_new] == i[k]:
+                        sol['sp_stop'].append(nom)
+                        sol['loc_anas_tb'].append([xpos_new,ypos_new])        
     else: 
         sol['tip_cell'].append([xpos_new,ypos_new])
-    sol['n'][xpos_new,ypos_new] = 1
+        sol['n'][xpos_new,ypos_new] = 1
     return sol, list_prob_0, list_prob_1, tipp
 
 def move_right(sol,nom,xb,yb,list_prob_0,list_prob_2): #2.2.(2).(2) 
     tipp = 'right'
     xpos_new = xb + 2
     ypos_new = yb
-    sol['matrix_tip'][nom].append((xpos_new,ypos_new)) 
+    sol['matrix_tip'][nom].append([xpos_new,ypos_new]) 
     sol['list_tip_movement'][nom] = tipp
     for i in list_prob_2:
         list_prob_0.append(i)
     list_prob_2 =[]
-    sol['tip_cell'].remove([xb,yb])
     if sol['n'][xb+2,yb] == 1: #ANASTOMOSIS TIP TO TIP
-        print 'HEREright', xb+2,yb
+        #print 'HEREright', xb+2,yb
         sol['sp_stop'].append(nom)
         sol['loc_anas_tt'].append([xb+2,yb])
         if not [xb+2,yb] in sol['PP']:
             sol['pp'][(xb+2,yb)] = 'right'
             sol['PP'].append([xb+2,yb])
-#     elif sol['b'][xb+2,yb] == 1: #ANASTOMOSIS TIP TO BRANCH   
-#         sol['sp_stop'].append(nom)
-#         sol['loc_anas_tb'].append([xb+2,yb])
+    elif sol['b'][xpos_new,ypos_new] == 1: #ANASTOMOSIS TIP TO BRANCH 
+        for e, i in enumerate(sol['matrix_tip']):
+            if e != nom:
+                for k, pos in enumerate(i):
+                    if [xpos_new,ypos_new] != pos[-1] and [xpos_new,ypos_new] == pos[k]:
+                        sol['sp_stop'].append(nom)
+                        sol['loc_anas_tb'].append([xpos_new,ypos_new])  
     else: 
         sol['tip_cell'].append([xpos_new,ypos_new])
-    sol['n'][xpos_new,ypos_new] = 1
+        sol['n'][xpos_new,ypos_new] = 1
     return sol, list_prob_0, list_prob_2, tipp
 
 def move_down(sol,nom,xb,yb,list_prob_0,list_prob_3): #2.2.(2).(3)
     tipp = 'down'
     xpos_new = xb
     ypos_new = yb - 2
-    sol['matrix_tip'][nom].append((xpos_new,ypos_new)) 
+    sol['matrix_tip'][nom].append([xpos_new,ypos_new]) 
     sol['list_tip_movement'][nom] = tipp
     for i in list_prob_3:
         list_prob_0.append(i)
     list_prob_3 =[]
-    sol['tip_cell'].remove([xb,yb])
     if sol['n'][xb,yb-2] == 1: #ANASTOMOSIS TIP TO TIP
-        print 'HEREdown', xb,yb-2
+        #print 'HEREdown', xb,yb-2
         sol['sp_stop'].append(nom)
         sol['loc_anas_tt'].append([xb,yb-2])
         if not [xb,yb-2] in sol['PP']:
             sol['pp'][(xb,yb-2)] = 'down'
             sol['PP'].append([xb,yb-2])
-#     elif sol['b'][xb,yb-2] == 1: #ANASTOMOSIS TIP TO BRANCH   
-#         sol['sp_stop'].append(nom)
-#         sol['loc_anas_tb'].append([xb,yb-2])
+    elif sol['b'][xpos_new,ypos_new] == 1: #ANASTOMOSIS TIP TO BRANCH 
+        for e, i in enumerate(sol['matrix_tip']):
+            if e != nom:
+                for k, pos in enumerate(i):
+                    if [xpos_new,ypos_new] != pos[-1] and [xpos_new,ypos_new] == pos[k]:
+                        sol['sp_stop'].append(nom)
+                        sol['loc_anas_tb'].append([xpos_new,ypos_new]) 
     else: 
         sol['tip_cell'].append([xpos_new,ypos_new])
-    sol['n'][xpos_new,ypos_new] = 1
+        sol['n'][xpos_new,ypos_new] = 1
     return sol, list_prob_0, list_prob_3, tipp
 
 def move_up(sol,nom,xb,yb,list_prob_0,list_prob_4): #2.2.(2).(4)
     tipp = 'up'
     xpos_new = xb
     ypos_new = yb + 2
-    sol['matrix_tip'][nom].append((xpos_new,ypos_new))
+    sol['matrix_tip'][nom].append([xpos_new,ypos_new])
     sol['list_tip_movement'][nom] = tipp
     for i in list_prob_4:
         list_prob_0.append(i)
     list_prob_4 =[]
-    sol['tip_cell'].remove([xb,yb])
     if sol['n'][xb,yb+2] == 1: #ANASTOMOSIS TIP TO TIP
-        print 'HEREup',xb,yb+2
+        #print 'HEREup',xb,yb+2
         sol['sp_stop'].append(nom)
         sol['loc_anas_tt'].append([xb,yb+2])
         if not [xb,yb+2] in sol['PP']:
             sol['pp'][(xb,yb+2)] = 'up'
             sol['PP'].append([xb,yb+2])
-#     elif sol['b'][xb,yb+2] == 1: #ANASTOMOSIS TIP TO BRANCH  
-#         sol['sp_stop'].append(nom)
-#         sol['loc_anas_tb'].append([xb,yb+2])
+    elif sol['b'][xpos_new,ypos_new] == 1: #ANASTOMOSIS TIP TO BRANCH 
+        for e, i in enumerate(sol['matrix_tip']):
+            if e != nom:
+                for k, pos in enumerate(i):
+                    if [xpos_new,ypos_new] != pos[-1] and [xpos_new,ypos_new] == pos[k]:
+                        sol['sp_stop'].append(nom)
+                        sol['loc_anas_tb'].append([xpos_new,ypos_new])   
     else: 
         sol['tip_cell'].append([xpos_new,ypos_new])
-    sol['n'][xpos_new,ypos_new] = 1
+        sol['n'][xpos_new,ypos_new] = 1
     return sol, list_prob_0, list_prob_4, tipp
 
 def movement(sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4): #2.2.(2)
@@ -201,15 +214,23 @@ def movement(sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_
     if tes in list_prob_0:
         tipp = 'stay'
     elif tes in list_prob_1:
+        if [xb,yb] in sol['tip_cell']: 
+            sol['tip_cell'].remove([xb,yb])
         sol['n'][xb,yb] = 0
         sol, list_prob_0, list_prob_1, tipp = move_left(sol,nom,xb,yb,list_prob_0,list_prob_1) #2.2.(2).(1)
     elif tes in list_prob_2:   
+        if [xb,yb] in sol['tip_cell']: 
+            sol['tip_cell'].remove([xb,yb])
         sol['n'][xb,yb] = 0
         sol, list_prob_0, list_prob_2, tipp = move_right(sol,nom,xb,yb,list_prob_0,list_prob_2) #2.2.(2).(2)    
     elif tes in list_prob_3: 
+        if [xb,yb] in sol['tip_cell']: 
+            sol['tip_cell'].remove([xb,yb])
         sol['n'][xb,yb] = 0
         sol, list_prob_0, list_prob_3, tipp = move_down(sol,nom,xb,yb,list_prob_0,list_prob_3) #2.2.(2).(3)   
     elif tes in list_prob_4: 
+        if [xb,yb] in sol['tip_cell']: 
+            sol['tip_cell'].remove([xb,yb])
         sol['n'][xb,yb] = 0
         sol, list_prob_0, list_prob_4, tipp = move_up(sol,nom,xb,yb,list_prob_0,list_prob_4) #2.2.(2).(4)
     return sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 
@@ -231,11 +252,11 @@ def prob_by_c(sol,xb,yb): #2.2.(4)
         list_prob = line
     return list_prob
 
-def move_left_branch(sol,xb,yb,list_prob_0,list_prob_1): #2.2.(5).(1)
+def move_left_branch(sol,nom,xb,yb,list_prob_0,list_prob_1): #2.2.(5).(1)
     tipp = 'left'
     xpos_new = xb - 2
     ypos_new = yb                    
-    sol['matrix_tip'][-1].append((xpos_new,ypos_new))
+    sol['matrix_tip'][-1].append([xpos_new,ypos_new])
     sol['list_tip_movement'][-1] = tipp   
     if sol['n'][xb-2,yb] == 1: #ANASTOMOSIS TIP TO TIP
         sol['sp_stop'].append(len(sol['matrix_tip'])-1)
@@ -243,19 +264,23 @@ def move_left_branch(sol,xb,yb,list_prob_0,list_prob_1): #2.2.(5).(1)
         if not [xb-2,yb] in sol['PP']:
             sol['pp'][(xb-2,yb)] = 'left'
             sol['PP'].append([xb-2,yb])
-#     elif sol['b'][xb-2,yb] == 1: #ANASTOMOSIS TIP TO BRANCH   
-#         sol['sp_stop'].append(len(sol['matrix_tip'])-1)
-#         sol['loc_anas_tb'].append([xb-2,yb])
+    elif sol['b'][xpos_new,ypos_new] == 1: #ANASTOMOSIS TIP TO BRANCH 
+        for e, i in enumerate(sol['matrix_tip']):
+            if e != nom:
+                for k, pos in enumerate(i):
+                    if [xpos_new,ypos_new] != pos[-1] and [xpos_new,ypos_new] == pos[k]:
+                        sol['sp_stop'].append(nom)
+                        sol['loc_anas_tb'].append([xpos_new,ypos_new]) 
     else: 
         sol['tip_cell'].append([xpos_new,ypos_new])
-    sol['n'][xpos_new,ypos_new] = 1
+        sol['n'][xpos_new,ypos_new] = 1
     return sol, tipp
     
-def move_right_branch(sol,xb,yb,list_prob_0,list_prob_2): #2.2.(5).(2)
+def move_right_branch(sol,nom,xb,yb,list_prob_0,list_prob_2): #2.2.(5).(2)
     tipp = 'right'
     xpos_new = xb + 2
     ypos_new = yb                    
-    sol['matrix_tip'][-1].append((xpos_new,ypos_new))
+    sol['matrix_tip'][-1].append([xpos_new,ypos_new])
     sol['list_tip_movement'][-1] = tipp   
     if sol['n'][xb+2,yb] == 1: #ANASTOMOSIS TIP TO TIP
         sol['sp_stop'].append(len(sol['matrix_tip'])-1)
@@ -263,19 +288,23 @@ def move_right_branch(sol,xb,yb,list_prob_0,list_prob_2): #2.2.(5).(2)
         if not [xb+2,yb] in sol['PP']:
             sol['pp'][(xb+2,yb)] = 'right'
             sol['PP'].append([xb+2,yb])
-#     elif sol['b'][xb+2,yb] == 1: #ANASTOMOSIS TIP TO BRANCH   
-#         sol['sp_stop'].append(len(sol['matrix_tip'])-1)
-#         sol['loc_anas_tb'].append([xb+2,yb])
+    elif sol['b'][xpos_new,ypos_new] == 1: #ANASTOMOSIS TIP TO BRANCH 
+        for e, i in enumerate(sol['matrix_tip']):
+            if e != nom:
+                for k, pos in enumerate(i):
+                    if [xpos_new,ypos_new] != pos[-1] and [xpos_new,ypos_new] == pos[k]:
+                        sol['sp_stop'].append(nom)
+                        sol['loc_anas_tb'].append([xpos_new,ypos_new]) 
     else: 
         sol['tip_cell'].append([xpos_new,ypos_new])
-    sol['n'][xpos_new,ypos_new] = 1
+        sol['n'][xpos_new,ypos_new] = 1
     return sol, tipp
 
-def move_down_branch(sol,xb,yb,list_prob_0,list_prob_3): #2.2.(5).(3)
+def move_down_branch(sol,nom,xb,yb,list_prob_0,list_prob_3): #2.2.(5).(3)
     tipp = 'down'
     xpos_new = xb
     ypos_new = yb - 2                    
-    sol['matrix_tip'][-1].append((xpos_new,ypos_new))
+    sol['matrix_tip'][-1].append([xpos_new,ypos_new])
     sol['list_tip_movement'][-1] = tipp   
     if sol['n'][xb,yb-2] == 1: #ANASTOMOSIS TIP TO TIP
         sol['sp_stop'].append(len(sol['matrix_tip'])-1)
@@ -283,19 +312,23 @@ def move_down_branch(sol,xb,yb,list_prob_0,list_prob_3): #2.2.(5).(3)
         if not [xb,yb-2] in sol['PP']:
             sol['pp'][(xb,yb-2)] = 'down'
             sol['PP'].append([xb,yb-2])
-#     elif sol['b'][xb,yb-2] == 1: #ANASTOMOSIS TIP TO BRANCH   
-#         sol['sp_stop'].append(len(sol['matrix_tip'])-1)
-#         sol['loc_anas_tb'].append([xb,yb-2])
+    elif sol['b'][xpos_new,ypos_new] == 1: #ANASTOMOSIS TIP TO BRANCH 
+        for e, i in enumerate(sol['matrix_tip']):
+            if e != nom:
+                for k, pos in enumerate(i):
+                    if [xpos_new,ypos_new] != pos[-1] and [xpos_new,ypos_new] == pos[k]:
+                        sol['sp_stop'].append(nom)
+                        sol['loc_anas_tb'].append([xpos_new,ypos_new])  
     else: 
         sol['tip_cell'].append([xpos_new,ypos_new])
-    sol['n'][xpos_new,ypos_new] = 1
+        sol['n'][xpos_new,ypos_new] = 1
     return sol, tipp
 
-def move_up_branch(sol,xb,yb,list_prob_0,list_prob_4): #2.2.(5).(4)
+def move_up_branch(sol,nom,xb,yb,list_prob_0,list_prob_4): #2.2.(5).(4)
     tipp = 'up'
     xpos_new = xb
     ypos_new = yb + 2                    
-    sol['matrix_tip'][-1].append((xpos_new,ypos_new))
+    sol['matrix_tip'][-1].append([xpos_new,ypos_new])
     sol['list_tip_movement'][-1] = tipp   
     if sol['n'][xb,yb+2] == 1: #ANASTOMOSIS TIP TO TIP
         sol['sp_stop'].append(len(sol['matrix_tip'])-1)
@@ -303,26 +336,30 @@ def move_up_branch(sol,xb,yb,list_prob_0,list_prob_4): #2.2.(5).(4)
         if not [xb,yb+2] in sol['PP']:
             sol['pp'][(xb,yb+2)] = 'up'
             sol['PP'].append([xb,yb+2])
-#     elif sol['b'][xb,yb+2] == 1: #ANASTOMOSIS TIP TO BRANCH   
-#         sol['sp_stop'].append(len(sol['matrix_tip'])-1)
-#         sol['loc_anas_tb'].append([xb,yb+2])
+    elif sol['b'][xpos_new,ypos_new] == 1: #ANASTOMOSIS TIP TO BRANCH 
+        for e, i in enumerate(sol['matrix_tip']):
+            if e != nom:
+                for k, pos in enumerate(i):
+                    if [xpos_new,ypos_new] != pos[-1] and [xpos_new,ypos_new] == pos[k]:
+                        sol['sp_stop'].append(nom)
+                        sol['loc_anas_tb'].append([xpos_new,ypos_new])  
     else: 
         sol['tip_cell'].append([xpos_new,ypos_new])
-    sol['n'][xpos_new,ypos_new] = 1
+        sol['n'][xpos_new,ypos_new] = 1
     return sol, tipp
 
-def movement_branch(tipp,sol,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4): #2.2.(5)
+def movement_branch(tipp,sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4): #2.2.(5)
     tes = randint(1,10000)
     if tes in list_prob_0:
         tipp = 'stay'
     elif tes in list_prob_1:
-        sol, tipp = move_left_branch(sol,xb,yb,list_prob_0,list_prob_1) #2.2.(5).(1)
+        sol, tipp = move_left_branch(sol,nom,xb,yb,list_prob_0,list_prob_1) #2.2.(5).(1)
     elif tes in list_prob_2:   
-        sol, tipp = move_right_branch(sol,xb,yb,list_prob_0,list_prob_2) #2.2.(5).(2)
+        sol, tipp = move_right_branch(sol,nom,xb,yb,list_prob_0,list_prob_2) #2.2.(5).(2)
     elif tes in list_prob_3:
-        sol, tipp = move_down_branch(sol,xb,yb,list_prob_0,list_prob_3) #2.2.(5).(3)
+        sol, tipp = move_down_branch(sol,nom,xb,yb,list_prob_0,list_prob_3) #2.2.(5).(3)
     elif tes in list_prob_4: 
-        sol, tipp = move_up_branch(sol,xb,yb,list_prob_0,list_prob_4) #2.2.(5).(4)
+        sol, tipp = move_up_branch(sol,nom,xb,yb,list_prob_0,list_prob_4) #2.2.(5).(4)
     return sol, tipp
 
 def hybrid_tech_c(coef, set, sol): #2.2
@@ -375,10 +412,19 @@ def hybrid_tech_c(coef, set, sol): #2.2
             
             dirr= movement_dir(coef, set, sol, xb, yb, nom) #2.2.1 ok
             
-            '''Checking Space if tip to tip'''
+            '''Checking The movement if another tip meet nom'''
             movi = False
             if [xb,yb] in sol['PP']:
                 movi = True
+                if sol['pp'][(xb,yb)] == 'left':
+                    dirr[2] == 0
+                elif sol['pp'][(xb,yb)] == 'right':
+                    dirr[1] == 0
+                elif sol['pp'][(xb,yb)] == 'up':
+                    dirr[3] == 0
+                elif sol['pp'][(xb,yb)] == 'down':
+                    dirr[4] == 0
+                ''' With No backward movement
                 if sol['list_tip_movement'][nom] == 'left':
                     dirr[2] == 0
                     if sol['pp'][(xb,yb)] == 'right':
@@ -410,9 +456,9 @@ def hybrid_tech_c(coef, set, sol): #2.2
                     elif sol['pp'][(xb,yb)] == 'down':
                         dirr[4] == 0
                     elif sol['pp'][(xb,yb)] == 'right':
-                        dirr[1] == 0 
+                        dirr[1] == 0
+                '''
             if dirr[1] == 0 and dirr[2] == 0 and dirr[3] == 0 and dirr[4] == 0: #if no space
-                print 'HAiyaaa'
                 sol['sp_stop'].append(nom)
                 sol['tip_cell'].remove([xb,yb])
             else:
@@ -427,6 +473,7 @@ def hybrid_tech_c(coef, set, sol): #2.2
                     sol['life_time_tip'][nom] += set['dt']
                     sol['life_mit'][nom] += set['dt']
                 else: #there is possibility to branch
+                    #print 'YAYAYA1'
                     if movi == True:
                         sol['PP'].remove([xb,yb])
                         sol['pp'].pop((xb,yb))
@@ -434,17 +481,21 @@ def hybrid_tech_c(coef, set, sol): #2.2
                         sol['life_time_tip'][nom] += set['dt']
                         sol['life_mit'][nom] += set['dt']
                     else: #there is possibility to branch
+                        #print 'YAYAYA2'
+                        #print sol['life_time_tip'][nom]
                         if sol['life_time_tip'][nom] < coef['T_branch']: #not able to branch
                             sol['life_time_tip'][nom] += set['dt']
                             sol['life_mit'][nom] += set['dt']
                         else: #there is possibility to branch
+                            #print 'YAYAYA3'
                             '''Probability of Branching using c'''   
-                            list_prob = prob_by_c(sol,xb,yb) #2.2.(4)
+                            list_prob = range(1,11)#prob_by_c(sol,xb,yb) #2.2.(4)
                             tes = randint(1,10)
                             if not tes in list_prob: #not able to branch
                                 sol['life_time_tip'][nom] += set['dt']
                                 sol['life_mit'][nom] += set['dt']
                             else: #BRANCHING!
+                                #print 'YAYAYA4'
                                 sol['life_time_tip'][nom] = 0
                                 sol['life_mit'][nom] += set['dt']
                                 sol['matrix_tip'].append([(xb,yb)])
@@ -454,5 +505,5 @@ def hybrid_tech_c(coef, set, sol): #2.2
                                 tipp = 'stay'
                                 '''The Movement from branching'''
                                 while tipp == 'stay':
-                                    sol, tipp = movement_branch(tipp,sol,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4) #2.2.(5)
+                                    sol, tipp = movement_branch(tipp,sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4) #2.2.(5)
     return sol, n_o

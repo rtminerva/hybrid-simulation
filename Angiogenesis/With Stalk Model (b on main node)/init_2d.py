@@ -13,6 +13,7 @@ def c_prof_1(coef,set,sol): #2.1.1.(1)
     for y in range(0,set['Ny']+1,2):
         for x in range(0,set['Nx']+1,2):
             sol['c'][x,y] = numpy.exp(-(1-x*set['Hh'])**2/0.45)
+            sol['c1'][x,y] = numpy.exp(-(1-x*set['Hh'])**2/0.45)
 #            if set['f_prof'] == 'F2':
 #                sol = f_prof_2(coef,set,sol,x,y)
 #            elif set['f_prof'] == 'F1':
@@ -51,6 +52,7 @@ def n_b_con_prof(coef,set,sol):
 
 def init_2d_(coef,set,sol): #2.1.1
     sol['c'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
+    sol['c1'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     #sol['f'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     if set['c_prof'] == 'C2':
         sol = c_prof_2(coef,set,sol) #2.1.1.(2)

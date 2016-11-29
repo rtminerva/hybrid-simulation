@@ -25,20 +25,20 @@ def declare_coef(): #1
     ##Reaction rate coef
     coef['k_1'] = 0.1
     coef['k_2'] = 0.1
-    coef['l_1'] = 0.01
+    coef['l_1'] = 0.1
     coef['l_2'] = 0
     
     ##X4
-    coef['D4'] = 0.00035
+    coef['D4'] = 0.0035
     
     ##X1
-    coef['D1'] = 0.00035
+    coef['D1'] = 0.0035
     
     ##X2
-    coef['D2'] = 0.00035
+    coef['D2'] = 0.0035
     
     ##X3
-    coef['D3'] = 0.00035
+    coef['D3'] = 0.0035
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah
@@ -68,6 +68,7 @@ def declare_coef(): #1
        
     '''To store solutions'''
     ##sol dictionaries dapat berubah
+    sol['num_of_absorbed'] = 0
     sol['tX1'] = 0
     sol['tX2'] = 0
     sol['tX3'] = 0
