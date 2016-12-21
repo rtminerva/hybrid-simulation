@@ -10,6 +10,8 @@ def declare_coef(): #1
     set['layout'] = '2D'
     set['initial_prof'] = 'rectangular_tip'
     
+    set['con_sep'] = True
+    
     set['c_prof'] = 'C1'
     set['parent'] = 'one'   
     
