@@ -15,7 +15,7 @@ def boolean_1_iter(coef, set, sol, check = 'out'): #2
         else:
             '''2. Branching and Movement''' 
             start1 = timer()  
-            sol, n_o = hybrid_tech_c(coef, set, sol) #2.2
+            sol, n_o, vn_o = hybrid_tech_c(coef, set, sol) #2.2
             start2 = timer()
             '''Solving c,f,T'''
             sol = c_f_T(coef, set, sol, n_o) #2.3
