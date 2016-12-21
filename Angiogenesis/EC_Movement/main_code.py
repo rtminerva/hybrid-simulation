@@ -18,7 +18,7 @@ def boolean_1_iter(coef, set, sol, check = 'out'): #2
             sol, n_o, vn_o = hybrid_tech_c(coef, set, sol) #2.2
             start2 = timer()
             '''Solving c,f,T'''
-            sol = c_f_T(coef, set, sol, n_o) #2.3
+            sol = c_f_T(coef, set, sol, n_o, vn_o) #2.3
             start3 = timer()            
         if not check == 'in':
             print 'Hybrid for n time', start2-start1

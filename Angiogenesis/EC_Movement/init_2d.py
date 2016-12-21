@@ -17,6 +17,16 @@ def c_prof_2(coef,set,sol): #2.1.1.(2)
             elif r_c>= 0 and r_c < 0.1:
                 sol['c'][x,y] = 1
     return sol
+
+def h_func(set):
+    m1 = (0.5-1)/(25-1)
+    m2 = (2-0.5)/(65-25)
+    m3 = (0-2)/(100-60)
+    
+    
+    
+    return set
+
 '''
 def b_prof(coef,set,sol):
     tip = 5
@@ -31,5 +41,8 @@ def b_prof(coef,set,sol):
 def init_2d_(coef,set,sol): #2.1.1
     sol['c'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol = c_prof_1(coef,set,sol) #2.1.1.(1)
+    set = h_func(set)
+    
+    
     return sol
         

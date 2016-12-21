@@ -226,74 +226,29 @@ def F_mean_vector_sol_con(F_sol_1_con, F_sol_2_con, set):
     return F_mean_sol_1_con, F_mean_sol_2_con
 For Continuous Method:end'''
 
-def c_f_T(coef, set, sol, n_o): #2.3
+def h_funct(norm,x):
+    if norm < 1:
+        hs = 0
+    elif norm < 25:
+        hs = 1+(0.5-1)*()/(25-1)
+
+def c_f_T(coef, set, sol, n_o, vn_o): #2.3
     c_o = numpy.copy(sol['c'])
     b_o = numpy.copy(sol['b'])
     c1_o = numpy.copy(sol['c'])
-    b1_o = numpy.copy(sol['b1'])
-    
-    '''Vector position of tip and stalk cell'''
+    b1_o = numpy.copy(sol['b1'])  
     
     '''Solve b at main lattice'''
     coef_b = 1
     for y in range(1,set['Ny'],2):
         for x in range(1,set['Nx'],2):
-            #b_mean = b_mean_function(set,sol,x,y)
-            if set['con'] == False:
-                tt = 0
-                ttn = 0
-                tb = 0
-                tbn = 0
-                if [x,y] in sol['loc_anas_tt']:
-                    tt = (n_o[x,y])**2
-                    ttn = (n1_o[x,y])**2
-                elif [x,y] in sol['loc_anas_tb']:
-                    tb = n_o[x,y]*b_o[x,y]
-                    tbn = n1_o[x,y]*b_o[x,y]
-            ##kinetics
-            kin = set['dt']*coef['prod']*n_o[x,y] + set['dt']*coef['vi']*b_o[x,y]*(1-b_o[x,y]) + set['dt']*coef['mu']*n_o[x,y]*b_o[x,y]*(1-(b_o[x,y]/(coef['beta1']))) + set['dt']*coef['anas_tt']*tt + set['dt']*coef['anas_tb']*tb
-            kin_n = set['dt']*coef['k_2']*n1_o[x,y] - set['dt']*coef['k_3']*ttn - set['dt']*coef['k_4']*tbn
+            ##Vector position of stalk cell
+            norm = sqrt((x-vn_o[0])**2+(y-vn_o[1])**2)
+            v_dir = [(x-vn_o[0])/norm, (y-vn_o[1])/norm]
+            
             if y == 1:
                 if x == 1:
-                    #Solving n
-                    sol['n1'][x,y] = n1_o[x,y] + kin_n - set['dt']*(F_sol_1[x+1,y+1]+F_sol_2[x+1,y+1])/set['h']
-                    if set['con'] == True:
-                        sol['n'][x,y] = n_o[x,y] - set['dt']*(F_sol_1[x+1,y+1]+F_sol_2[x+1,y+1])/set['h']
-                    # + set['dt']*n_o[x,y]*c_o[x,y] - set['dt']*(n_o[x,y])**2 - set['dt']*n_o[x,y]*b_o[x,y]
-                    
-                    
-                    #1# H formula (awal)
-                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(H(i,j,1)-0+H(i,j,2)-0)
-                    
-                    #2# F formula with coef_b
-                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(F_sol_1[x+1,y+1]+F_sol_2[x+1,y+1])
-                    
-                    #3# F formula (lengkap dengan b)
-                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(b_mean[0]*F_sol_1[x+1,y+1]+b_mean[0]*F_sol_2[x+1,y+1])
-                    
-                    #4# H formula (lengkap dengan b)
-                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)))
-                    
-                    #4# H formula (lengkap dengan b) with growth rate                    
-                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)))/set['h']
-                    sol['b1'][x,y] = b1_o[x,y] + kin - set['dt']*coef['k_5']*((sol['b1'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b1'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (sol['b1'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b1'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)))/set['h']
-                    #*1 T4_Con
-                    #*(1+n_o[x,y]*set['dt']*(1-b_o[x,y])) T5 _Con
-                    #*(1+3*set['dt']*(1-b_o[x,y])+5*set['dt']*n_o[x,y]*(1-b_o[x,y]))+0.2*(n_o[x,y])**2 T6_Con
-                    ##+set['dt']*0.5*n_o[x,y] failed (eventually neg b) (*1 also failed)
-                    #*(1+3*set['dt']*(1-b_o[x,y])+5*set['dt']*n_o[x,y]*(1-b_o[x,y]))+set['dt']*0.2*(n_o[x,y])**2 T7_Con (with and without constant)
-                    ##*(1+3*set['dt']*(1-b_o[x,y])+5*set['dt']*n_o[x,y]*(1-b_o[x,y]))+set['dt']*n_o[x,y] failed (eventually neg b) (*5 also failed)
-                    #*(1+set['dt']*(1-b_o[x,y])+set['dt']*n_o[x,y]*(1-b_o[x,y])+set['dt']*n_o[x,y]) T8_Con
-                    #*(1+set['dt']*(1-b_o[x,y])+set['dt']*n_o[x,y]*(1-b_o[x,y])+set['dt']*n_o[x,y])+set['dt']*(n_o[x,y])**2 T9_Con
-                    #*(1+set['dt']*(1-b_o[x,y]) T10_Con
-                    #+set['dt']*(n_o[x,y])**2 T11_Con
-                    #*(1+set['dt']*(1-b_o[x,y])+set['dt']*n_o[x,y]*(1-b_o[x,y]))+set['dt']*0.2*(n_o[x,y])**2 N1 hybrid
-                    #+set['dt']*(n_o[x,y])**2 N2 hybrid with init diff
-                    
-                    #*(1+set['dt']*(1-b_o[x,y])+set['dt']*n_o[x,y]*(1-b_o[x,y])+tb)+tt
-                    
-                    #5# H formula (dengan coef_b)
-                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((coef_b*max(F_mean_sol_1[x,y],0)-coef_b*max(-F_mean_sol_1[x+2,y],0)) + (coef_b*max(F_mean_sol_2[x,y],0)-coef_b*max(-F_mean_sol_2[x,y+2],0)))
+                    sol['b'][x,y] = b_o[x,y] +
                 elif x == set['Nx']-1:
                     sol['n1'][x,y] = n1_o[x,y] + kin_n - set['dt']*(-F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1])/set['h']
                     if set['con'] == True:
