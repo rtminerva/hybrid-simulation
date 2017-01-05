@@ -303,7 +303,6 @@ def hybrid_tech(coef, set, sol): #2.2
     n_sp = len(sol['matrix_tip']) #to save original number of tips before branching
     n_o = numpy.copy(sol['n'])
     vn_o = []
-    print 'Number of tip cell:', n_sp
     for nom in range(0,n_sp): #dicek setiap tip
         if not nom in sol['sp_stop']: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
@@ -369,19 +368,22 @@ def hybrid_tech(coef, set, sol): #2.2
             vb_x = 0
             vb_y = 0
             for ind, vec in enumerate(vn_o):
-                if vec[0] != x and vec[1] != y:
+                if x == vec[0] and y == vec[1]:
+                    leave = 22
+                else:
                     s = m.sqrt((x-vec[0])**2+(y-vec[1])**2)
                     if s <= 50:
-                        h_s = 1 + coef['m1']*(s-2)
+                        h_s = 0.5 + coef['m1']*(s-2)
                     elif s <= 100:
-                        h_s = 0.5 + coef['m1']*(s-50)
+                        h_s = 0.2 + coef['m2']*(s-50)
                     elif s <= 200:
-                        h_s = 2 + coef['m1']*(s-100)
+                        h_s = 1 + coef['m3']*(s-100)
                     else:
                         h_s = 0
-                    vb_x += (x-vec[0])*h_s/s
-                    vb_y += (y-vec[1])*h_s/s
+                    vb_x += (vec[0]-x)*h_s/s
+                    vb_y += (vec[1]-y)*h_s/s
             sol['Vb_x'][x,y] = vb_x
             sol['Vb_y'][x,y] = vb_y
-    
+    print 'Tip cell position:', vn_o
+    print 'Velocity Vector stalk on [3,201]: [',sol['Vb_x'][3,201],',',sol['Vb_y'][3,201],']'
     return sol, n_o
