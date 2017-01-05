@@ -18,17 +18,7 @@ def c_prof_2(coef,set,sol): #2.1.1.(2)
                 sol['c'][x,y] = 1
     return sol
 
-def h_func(set):
-    m1 = (0.5-1)/(25-1)
-    m2 = (2-0.5)/(65-25)
-    m3 = (0-2)/(100-60)
-    
-    
-    
-    return set
-
-'''
-def b_prof(coef,set,sol):
+def nb_prof(coef,set,sol):
     tip = 5
     for y in range(1,set['Ny'],2):
         for x in range(1,set['Nx'],2):
@@ -36,13 +26,14 @@ def b_prof(coef,set,sol):
             if x*set['Hh'] <= set['rad']:
                 sol['b'][x,y] = (m.sin(tip*m.pi*y*set['Hh']))**2             
     return sol
-'''
 
 def init_2d_(coef,set,sol): #2.1.1
     sol['c'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol = c_prof_1(coef,set,sol) #2.1.1.(1)
-    set = h_func(set)
-    
+    if set['con'] == True:
+        sol['n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
+        sol['b'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
+        sol = nb_prof(coef,set,sol)    
     
     return sol
         

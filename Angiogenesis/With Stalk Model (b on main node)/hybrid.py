@@ -488,7 +488,7 @@ def hybrid_tech_c(coef, set, sol): #2.2
                             sol['life_mit'][nom] += set['dt']
                         else: #there is possibility to branch
                             #print 'YAYAYA3'
-                            '''Probability of Branching using c'''   
+                            '''Probability of Branching using life time'''   
                             list_prob = range(1,11)#prob_by_c(sol,xb,yb) #2.2.(4)
                             tes = randint(1,10)
                             if not tes in list_prob: #not able to branch

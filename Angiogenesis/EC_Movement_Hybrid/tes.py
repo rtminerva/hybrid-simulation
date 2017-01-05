@@ -1,4 +1,6 @@
 import numpy
+import scipy
 
-x = numpy.linspace(0,1,100)
+x = numpy.random.random((5,5))
 print x
+print scipy.version.version

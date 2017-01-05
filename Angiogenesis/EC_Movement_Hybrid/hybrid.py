@@ -362,21 +362,22 @@ def movement_branch(tipp,sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_
         sol, tipp = move_up_branch(sol,nom,xb,yb,list_prob_0,list_prob_4) #2.2.(5).(4)
     return sol, tipp
 
-def hybrid_tech_c(coef, set, sol): #2.2
+def hybrid_tech(coef, set, sol): #2.2
     n_sp = len(sol['matrix_tip']) #to save original number of tips before branching
-    n_o = numpy.copy(sol['n'])
+    vn_o = []
 
     for nom in range(0,n_sp): #dicek setiap tip
         if not nom in sol['sp_stop']: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
             yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
-            vn_o = [xb,yb]
+            vn_o.append([xb,yb])
             
             dirr= movement_dir(coef, set, sol, xb, yb, nom) #2.2.1 ok
             
             if dirr[1] == 0 and dirr[2] == 0 and dirr[3] == 0 and dirr[4] == 0: #if no space
                 sol['sp_stop'].append(nom)
                 sol['tip_cell'].remove([xb,yb])
+                sol['n'][xb,yb] = 0
             else:
                 '''Making list of prob'''
                 list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = set_list_prob(dirr) #2.2.(1)
@@ -424,4 +425,25 @@ def hybrid_tech_c(coef, set, sol): #2.2
                                 while tipp == 'stay':
                                     sol, tipp = movement_branch(tipp,sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4) #2.2.(5)
                     '''
-    return sol, n_o, vn_o
+    '''Vector Velocity of stalk (Vb)'''
+    for y in range(1,set['Ny'],2):
+        for x in range(1,set['Nx'],2):
+            vb_x = 0
+            vb_y = 0
+            for ind, vec in enumerate(vn_o):
+                if vec[0] != x and vec[1] != y:
+                    s = sqrt((x-vec[0])**2+(y-vec[1])**2)
+                    if s <= 50:
+                        h_s = 1 + coef['m1']*(s-2)
+                    elif s <= 100:
+                        h_s = 0.5 + coef['m1']*(s-50)
+                    elif s <= 200:
+                        h_s = 2 + coef['m1']*(s-100)
+                    else:
+                        h_s = 0
+                    vb_x += (x-vec[0])*h_s/s
+                    vb_y += (y-vec[1])*h_s/s
+            sol['Vb_x'][x,y] = vb_x
+            sol['Vb_y'][x,y] = vb_y
+    
+    return sol
