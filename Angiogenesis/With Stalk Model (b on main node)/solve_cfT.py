@@ -228,7 +228,7 @@ For Continuous Method:end'''
 
 def c_f_T(coef, set, sol, n_o): #2.3
     c_o = numpy.copy(sol['c'])
-    b_o = numpy.copy(sol['b'])
+    b_o = numpy.copy(b_o)
     c1_o = numpy.copy(sol['c'])
     b1_o = numpy.copy(sol['b1'])
     n1_o = numpy.copy(sol['n1'])
@@ -284,10 +284,10 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(b_mean[0]*F_sol_1[x+1,y+1]+b_mean[0]*F_sol_2[x+1,y+1])
                     
                     #4# H formula (lengkap dengan b)
-                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)))
+                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((b_o[x,y]*max(F_mean_sol_1[x,y],0)-b_o[x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (b_o[x,y]*max(F_mean_sol_2[x,y],0)-b_o[x,y+2]*max(-F_mean_sol_2[x,y+2],0)))
                     
                     #4# H formula (lengkap dengan b) with growth rate                    
-                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)))/set['h']
+                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*((b_o[x,y]*max(F_mean_sol_1[x,y],0)-b_o[x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (b_o[x,y]*max(F_mean_sol_2[x,y],0)-b_o[x,y+2]*max(-F_mean_sol_2[x,y+2],0)))/set['h']
                     sol['b1'][x,y] = b1_o[x,y] + kin - set['dt']*coef['k_5']*((sol['b1'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b1'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (sol['b1'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b1'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)))/set['h']
                     #*1 T4_Con
                     #*(1+n_o[x,y]*set['dt']*(1-b_o[x,y])) T5 _Con
@@ -314,8 +314,8 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(0-H(i-1,j,1)+H(i,j,2)-0)
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1])
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(b_mean[1]*F_sol_1[x-1,y+1]+b_mean[0]*F_sol_2[x+1,y+1])
-                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)))
-                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*((sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)))/set['h']
+                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((b_o[x,y]*max(F_mean_sol_2[x,y],0)-b_o[x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (b_o[x-2,y]*max(F_mean_sol_1[x-2,y],0)-b_o[x,y]*max(-F_mean_sol_1[x,y],0)))
+                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*((b_o[x,y]*max(F_mean_sol_2[x,y],0)-b_o[x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (b_o[x-2,y]*max(F_mean_sol_1[x-2,y],0)-b_o[x,y]*max(-F_mean_sol_1[x,y],0)))/set['h']
                     sol['b1'][x,y] = b1_o[x,y] + kin - set['dt']*coef['k_5']*((sol['b1'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b1'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b1'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b1'][x,y]*max(-F_mean_sol_1[x,y],0)))/set['h']
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*( - (coef_b*max(F_mean_sol_1[x-2,y],0)-coef_b*max(-F_mean_sol_1[x,y],0)) + (coef_b*max(F_mean_sol_2[x,y],0)-coef_b*max(-F_mean_sol_2[x,y+2],0)))
                 else:
@@ -326,8 +326,8 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(H(i,j,1)-H(i-1,j,1)+H(i,j,2)-0)
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(F_sol_1[x+1,y+1]-F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1])
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(b_mean[0]*F_sol_1[x+1,y+1]-b_mean[1]*F_sol_1[x-1,y+1]+b_mean[0]*F_sol_2[x+1,y+1])
-                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)))
-                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)))/set['h']
+                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((b_o[x,y]*max(F_mean_sol_1[x,y],0)-b_o[x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (b_o[x,y]*max(F_mean_sol_2[x,y],0)-b_o[x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (b_o[x-2,y]*max(F_mean_sol_1[x-2,y],0)-b_o[x,y]*max(-F_mean_sol_1[x,y],0)))
+                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*((b_o[x,y]*max(F_mean_sol_1[x,y],0)-b_o[x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (b_o[x,y]*max(F_mean_sol_2[x,y],0)-b_o[x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (b_o[x-2,y]*max(F_mean_sol_1[x-2,y],0)-b_o[x,y]*max(-F_mean_sol_1[x,y],0)))/set['h']
                     sol['b1'][x,y] = b1_o[x,y] + kin - set['dt']*coef['k_5']*((sol['b1'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b1'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (sol['b1'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b1'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b1'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b1'][x,y]*max(-F_mean_sol_1[x,y],0)))/set['h']
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((coef_b*max(F_mean_sol_1[x,y],0)-coef_b*max(-F_mean_sol_1[x+2,y],0)) - (coef_b*max(F_mean_sol_1[x-2,y],0)-coef_b*max(-F_mean_sol_1[x,y],0)) + (coef_b*max(F_mean_sol_2[x,y],0)-coef_b*max(-F_mean_sol_2[x,y+2],0)))
             elif y == set['Ny']-1:
@@ -339,8 +339,8 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(H(i,j,1)-0+0-H(i,j-1,2))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(F_sol_1[x+1,y+1]-F_sol_2[x+1,y-1])
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(b_mean[0]*F_sol_1[x+1,y+1]-b_mean[2]*F_sol_2[x+1,y-1])
-                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))
-                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
+                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((b_o[x,y]*max(F_mean_sol_1[x,y],0)-b_o[x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (b_o[x,y-2]*max(F_mean_sol_2[x,y-2],0)-b_o[x,y]*max(-F_mean_sol_2[x,y],0)))
+                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*((b_o[x,y]*max(F_mean_sol_1[x,y],0)-b_o[x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (b_o[x,y-2]*max(F_mean_sol_2[x,y-2],0)-b_o[x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
                     sol['b1'][x,y] = b1_o[x,y] + kin - set['dt']*coef['k_5']*((sol['b1'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b1'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (sol['b1'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b1'][x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((coef_b*max(F_mean_sol_1[x,y],0)-coef_b*max(-F_mean_sol_1[x+2,y],0)) - (coef_b*max(F_mean_sol_2[x,y-2],0)-coef_b*max(-F_mean_sol_2[x,y],0)))
                 elif x == set['Nx']-1:
@@ -351,8 +351,8 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(0-H(i-1,j,1)+0-H(i,j-1,2))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(-F_sol_1[x-1,y+1]-F_sol_2[x+1,y-1])
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(-b_mean[1]*F_sol_1[x-1,y+1]-b_mean[2]*F_sol_2[x+1,y-1])
-                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(-(sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))
-                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*(-(sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
+                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(-(b_o[x-2,y]*max(F_mean_sol_1[x-2,y],0)-b_o[x,y]*max(-F_mean_sol_1[x,y],0)) - (b_o[x,y-2]*max(F_mean_sol_2[x,y-2],0)-b_o[x,y]*max(-F_mean_sol_2[x,y],0)))
+                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*(-(b_o[x-2,y]*max(F_mean_sol_1[x-2,y],0)-b_o[x,y]*max(-F_mean_sol_1[x,y],0)) - (b_o[x,y-2]*max(F_mean_sol_2[x,y-2],0)-b_o[x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
                     sol['b1'][x,y] = b1_o[x,y] + kin - set['dt']*coef['k_5']*(-(sol['b1'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b1'][x,y]*max(-F_mean_sol_1[x,y],0)) - (sol['b1'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b1'][x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(-(coef_b*max(F_mean_sol_1[x-2,y],0)-coef_b*max(-F_mean_sol_1[x,y],0)) - (coef_b*max(F_mean_sol_2[x,y-2],0)-coef_b*max(-F_mean_sol_2[x,y],0)))
                 else:
@@ -363,8 +363,8 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(H(i,j,1)-H(i-1,j,1)+0-H(i,j-1,2))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(F_sol_1[x+1,y+1]-F_sol_1[x-1,y+1]-F_sol_2[x+1,y-1])
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(b_mean[0]*F_sol_1[x+1,y+1]-b_mean[1]*F_sol_1[x-1,y+1]-b_mean[2]*F_sol_2[x+1,y-1])
-                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))
-                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
+                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((b_o[x,y]*max(F_mean_sol_1[x,y],0)-b_o[x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (b_o[x-2,y]*max(F_mean_sol_1[x-2,y],0)-b_o[x,y]*max(-F_mean_sol_1[x,y],0)) - (b_o[x,y-2]*max(F_mean_sol_2[x,y-2],0)-b_o[x,y]*max(-F_mean_sol_2[x,y],0)))
+                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*((b_o[x,y]*max(F_mean_sol_1[x,y],0)-b_o[x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (b_o[x-2,y]*max(F_mean_sol_1[x-2,y],0)-b_o[x,y]*max(-F_mean_sol_1[x,y],0)) - (b_o[x,y-2]*max(F_mean_sol_2[x,y-2],0)-b_o[x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
                     sol['b1'][x,y] = b1_o[x,y] + kin - set['dt']*coef['k_5']*((sol['b1'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b1'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (sol['b1'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b1'][x,y]*max(-F_mean_sol_1[x,y],0)) - (sol['b1'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b1'][x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((coef_b*max(F_mean_sol_1[x,y],0)-coef_b*max(-F_mean_sol_1[x+2,y],0)) - (coef_b*max(F_mean_sol_1[x-2,y],0)-coef_b*max(-F_mean_sol_1[x,y],0)) - (coef_b*max(F_mean_sol_2[x,y-2],0)-coef_b*max(-F_mean_sol_2[x,y],0)))
             else:
@@ -376,8 +376,8 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(H(i,j,1)-0+H(i,j,2)-H(i,j-1,2))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(F_sol_1[x+1,y+1]+F_sol_2[x+1,y+1]-F_sol_2[x+1,y-1])
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(b_mean[0]*F_sol_1[x+1,y+1]+b_mean[0]*F_sol_2[x+1,y+1]-b_mean[2]*F_sol_2[x+1,y-1])
-                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))
-                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
+                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((b_o[x,y]*max(F_mean_sol_1[x,y],0)-b_o[x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (b_o[x,y]*max(F_mean_sol_2[x,y],0)-b_o[x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (b_o[x,y-2]*max(F_mean_sol_2[x,y-2],0)-b_o[x,y]*max(-F_mean_sol_2[x,y],0)))
+                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*((b_o[x,y]*max(F_mean_sol_1[x,y],0)-b_o[x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (b_o[x,y]*max(F_mean_sol_2[x,y],0)-b_o[x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (b_o[x,y-2]*max(F_mean_sol_2[x,y-2],0)-b_o[x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
                     sol['b1'][x,y] = b1_o[x,y] + kin - set['dt']*coef['k_5']*((sol['b1'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b1'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) + (sol['b1'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b1'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b1'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b1'][x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((coef_b*max(F_mean_sol_1[x,y],0)-coef_b*max(-F_mean_sol_1[x+2,y],0)) + (coef_b*max(F_mean_sol_2[x,y],0)-coef_b*max(-F_mean_sol_2[x,y+2],0)) - (coef_b*max(F_mean_sol_2[x,y-2],0)-coef_b*max(-F_mean_sol_2[x,y],0)))
                 elif x == set['Nx']-1:
@@ -388,8 +388,8 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(0-H(i-1,j,1)+H(i,j,2)-H(i,j-1,2))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(-F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1]-F_sol_2[x+1,y-1])
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(-b_mean[1]*F_sol_1[x-1,y+1]+b_mean[0]*F_sol_2[x+1,y+1]-b_mean[2]*F_sol_2[x+1,y-1])
-                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(-(sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))
-                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*(-(sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
+                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(-(b_o[x-2,y]*max(F_mean_sol_1[x-2,y],0)-b_o[x,y]*max(-F_mean_sol_1[x,y],0)) + (b_o[x,y]*max(F_mean_sol_2[x,y],0)-b_o[x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (b_o[x,y-2]*max(F_mean_sol_2[x,y-2],0)-b_o[x,y]*max(-F_mean_sol_2[x,y],0)))
+                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*(-(b_o[x-2,y]*max(F_mean_sol_1[x-2,y],0)-b_o[x,y]*max(-F_mean_sol_1[x,y],0)) + (b_o[x,y]*max(F_mean_sol_2[x,y],0)-b_o[x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (b_o[x,y-2]*max(F_mean_sol_2[x,y-2],0)-b_o[x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
                     sol['b1'][x,y] = b1_o[x,y] + kin - set['dt']*coef['k_5']*(-(sol['b1'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b1'][x,y]*max(-F_mean_sol_1[x,y],0)) + (sol['b1'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b1'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b1'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b1'][x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(-(coef_b*max(F_mean_sol_1[x-2,y],0)-coef_b*max(-F_mean_sol_1[x,y],0)) + (coef_b*max(F_mean_sol_2[x,y],0)-coef_b*max(-F_mean_sol_2[x,y+2],0)) - (coef_b*max(F_mean_sol_2[x,y-2],0)-coef_b*max(-F_mean_sol_2[x,y],0)))
                 else:
@@ -400,8 +400,8 @@ def c_f_T(coef, set, sol, n_o): #2.3
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(H(i,j,1)-H(i-1,j,1)+H(i,j,2)-H(i,j-1,2))
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*coef_b*(F_sol_1[x+1,y+1]-F_sol_1[x-1,y+1]+F_sol_2[x+1,y+1]-F_sol_2[x+1,y-1])
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*(b_mean[0]*F_sol_1[x+1,y+1]-b_mean[1]*F_sol_1[x-1,y+1]+b_mean[0]*F_sol_2[x+1,y+1]-b_mean[2]*F_sol_2[x+1,y-1])
-                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))
-                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*((sol['b'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (sol['b'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b'][x,y]*max(-F_mean_sol_1[x,y],0)) + (sol['b'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b'][x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
+                    #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((b_o[x,y]*max(F_mean_sol_1[x,y],0)-b_o[x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (b_o[x-2,y]*max(F_mean_sol_1[x-2,y],0)-b_o[x,y]*max(-F_mean_sol_1[x,y],0)) + (b_o[x,y]*max(F_mean_sol_2[x,y],0)-b_o[x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (b_o[x,y-2]*max(F_mean_sol_2[x,y-2],0)-b_o[x,y]*max(-F_mean_sol_2[x,y],0)))
+                    sol['b'][x,y] = b_o[x,y] + kin - set['dt']*coef['k_5']*((b_o[x,y]*max(F_mean_sol_1[x,y],0)-b_o[x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (b_o[x-2,y]*max(F_mean_sol_1[x-2,y],0)-b_o[x,y]*max(-F_mean_sol_1[x,y],0)) + (b_o[x,y]*max(F_mean_sol_2[x,y],0)-b_o[x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (b_o[x,y-2]*max(F_mean_sol_2[x,y-2],0)-b_o[x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
                     sol['b1'][x,y] = b1_o[x,y] + kin - set['dt']*coef['k_5']*((sol['b1'][x,y]*max(F_mean_sol_1[x,y],0)-sol['b1'][x+2,y]*max(-F_mean_sol_1[x+2,y],0)) - (sol['b1'][x-2,y]*max(F_mean_sol_1[x-2,y],0)-sol['b1'][x,y]*max(-F_mean_sol_1[x,y],0)) + (sol['b1'][x,y]*max(F_mean_sol_2[x,y],0)-sol['b1'][x,y+2]*max(-F_mean_sol_2[x,y+2],0)) - (sol['b1'][x,y-2]*max(F_mean_sol_2[x,y-2],0)-sol['b1'][x,y]*max(-F_mean_sol_2[x,y],0)))/set['h']
                     #sol['b'][x,y] = b_o[x,y] - set['dt']/set['h']*((coef_b*max(F_mean_sol_1[x,y],0)-coef_b*max(-F_mean_sol_1[x+2,y],0)) - (coef_b*max(F_mean_sol_1[x-2,y],0)-coef_b*max(-F_mean_sol_1[x,y],0)) + (coef_b*max(F_mean_sol_2[x,y],0)-coef_b*max(-F_mean_sol_2[x,y+2],0)) - (coef_b*max(F_mean_sol_2[x,y-2],0)-coef_b*max(-F_mean_sol_2[x,y],0)))
                                      
