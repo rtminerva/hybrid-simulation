@@ -3,6 +3,7 @@ import random
 import numpy
 from random import randint
 from collections import OrderedDict
+import math as m
 
 def set_list_prob(dirr): #2.2.(1)
     line_1 = range(1,10001)
@@ -300,8 +301,9 @@ def movement_branch(tipp,sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_
 
 def hybrid_tech(coef, set, sol): #2.2
     n_sp = len(sol['matrix_tip']) #to save original number of tips before branching
+    n_o = numpy.copy(sol['n'])
     vn_o = []
-
+    print 'Number of tip cell:', n_sp
     for nom in range(0,n_sp): #dicek setiap tip
         if not nom in sol['sp_stop']: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
@@ -368,7 +370,7 @@ def hybrid_tech(coef, set, sol): #2.2
             vb_y = 0
             for ind, vec in enumerate(vn_o):
                 if vec[0] != x and vec[1] != y:
-                    s = sqrt((x-vec[0])**2+(y-vec[1])**2)
+                    s = m.sqrt((x-vec[0])**2+(y-vec[1])**2)
                     if s <= 50:
                         h_s = 1 + coef['m1']*(s-2)
                     elif s <= 100:
@@ -382,4 +384,4 @@ def hybrid_tech(coef, set, sol): #2.2
             sol['Vb_x'][x,y] = vb_x
             sol['Vb_y'][x,y] = vb_y
     
-    return sol
+    return sol, n_o

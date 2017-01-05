@@ -6,7 +6,7 @@ import numpy
 from timeit import default_timer as timer 
 import time
 import matplotlib.pyplot as plt 
-from mpmath.functions.rszeta import coef
+# from mpmath.functions.rszeta import coef
 
 #declare coefficients & initial settings
 coef, set, sol = declare_coef() #1
@@ -29,7 +29,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'Value C MAX', sol['c'].max()
         print 'NILAI C MIN', sol['c'].min()
       
-    if set['k'] % 1 == 0:
+    if set['k'] % 50 == 0:
         pic.pic_2d(coef,set,sol) #3
 
     '''Recording Time'''         
@@ -54,8 +54,9 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'total time of processing:', 0, 'hours', menit, 'minutes', detik, 'seconds'
     else:
         print 'total time of processing:', 0, 'hours', 0, 'minutes', ttime, 'seconds'
-    print set
-    print coef
+    if set['k'] % 100 == 0:
+        print set
+        print coef
     #print 'total time of processing:', time.clock()
     print '***************************************************'
     print     

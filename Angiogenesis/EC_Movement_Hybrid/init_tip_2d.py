@@ -16,6 +16,8 @@ def rec_1_tip(coef,set,sol): #2.1.2.(1)
 def init_tip_2d_(coef,set,sol):
     sol['n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['b'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
+    sol['Vb_x'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
+    sol['Vb_y'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     
     sol['matrix_tip'] = []
     sol['list_tip_movement'] = []

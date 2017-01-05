@@ -7,7 +7,7 @@ from mpl_toolkits.mplot3d import Axes3D
 def pic_2d(coef,set,sol):
     '''Blood Vessel Growth (TIP and STALK)'''
     fig = plt.figure()
-    plt.title('%s%f' % ('Blood Vessel Growth at t=',set['t']))
+    plt.title('%s%f' % ('Stalk Cell (Blue) and Tip Cell Movement (Red) at t=',set['t']))
     plt.xlim(set['Hh'],coef['X']-set['Hh'])
     plt.ylim(set['Hh'],coef['Y']-set['Hh'])
     ax = fig.add_subplot(111)

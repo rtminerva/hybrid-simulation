@@ -1,7 +1,7 @@
 from random import randint, sample, uniform
 import numpy
 
-def c_f_T(coef, set, sol): #2.3
+def c_f_T(coef, set, sol, n_o): #2.3
     c_o = numpy.copy(sol['c'])
     b_o = numpy.copy(sol['b'])
     
