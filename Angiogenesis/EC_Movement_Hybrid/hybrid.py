@@ -384,6 +384,6 @@ def hybrid_tech(coef, set, sol): #2.2
                     vb_y += (vec[1]-y)*h_s/s
             sol['Vb_x'][x,y] = vb_x
             sol['Vb_y'][x,y] = vb_y
-    print 'Tip cell position:', vn_o
-    print 'Velocity Vector stalk on [3,201]: [',sol['Vb_x'][3,201],',',sol['Vb_y'][3,201],']'
+#     print 'Tip cell position:', vn_o
+#     print 'Velocity Vector stalk on [3,201]: [',sol['Vb_x'][3,201],',',sol['Vb_y'][3,201],']'
     return sol, n_o

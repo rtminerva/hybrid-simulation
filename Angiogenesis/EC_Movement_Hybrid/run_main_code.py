@@ -29,7 +29,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'Value C MAX', sol['c'].max()
         print 'NILAI C MIN', sol['c'].min()
       
-    if set['k'] % 50 == 0:
+    if set['k'] % 10 == 0:
         pic.pic_2d(coef,set,sol) #3
 
     '''Recording Time'''         
