@@ -13,7 +13,7 @@ def declare_coef(): #1
     coef['m3'] = (0-1)/(200-100)#(0-2)/(200-100)
        
     ''''Kinetic Coef'''
-    coef['k_1'] = 0.1#0#.1
+    coef['k_1'] = 0#0.1
     #coef['k_2'] = 0.83#0.25
     #coef['k_3'] = 0.83#.83
     #coef['k_4'] = 0.85#.85
@@ -35,9 +35,9 @@ def declare_coef(): #1
     #coef['anas_tb'] = coef['k_5']*coef['k_4']
     
     '''VEGF (c)'''
-    coef['C_3'] = 0.00018#0.01#0#0.00018
+    coef['C_3'] = 0#0.00018
     coef['Nu'] = 0.1
-    coef['gama'] = 0.5#0#0.5
+    coef['gama'] = 0#0.5
 
     '''Branching & Mitosis'''
     
