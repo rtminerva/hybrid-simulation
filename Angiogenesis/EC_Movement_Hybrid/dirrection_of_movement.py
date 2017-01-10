@@ -4,7 +4,7 @@ def movement_dir(coef, set, sol, xb, yb, nom): #2.2.1
 
     cijx = (sol['c'][xb+1,yb+1]-sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb-1]-sol['c'][xb-1,yb-1])/(2*set['h'])
     cijy = (sol['c'][xb+1,yb+1]-sol['c'][xb+1,yb-1]+sol['c'][xb-1,yb+1]-sol['c'][xb-1,yb-1])/(2*set['h'])
-    
+
     cijx_p = max(0,cijx)
     cijx_n = max(0,-cijx)
     cijy_p = max(0,cijy)
@@ -76,7 +76,9 @@ def movement_dir(coef, set, sol, xb, yb, nom): #2.2.1
     Gijy_p = coef['Ki']*cijy_p-coef['C_2']*bijy_p
     Gijy_n = coef['Ki']*cijy_n-coef['C_2']*bijy_n
     
-    #print Gijx_p, Gijx_n, Gijy_p, Gijy_n
+#     print cijx_p, cijx_n, cijy_p, cijy_n
+#     print Gijx_p, Gijx_n, Gijy_p, Gijy_n
+
       
     P_1 = int((set['dt']/(set['h']**2)*coef['C_1']+set['dt']/(set['h'])*Gijx_n)*10000)
     P_2 = int((set['dt']/(set['h']**2)*coef['C_1']+set['dt']/(set['h'])*Gijx_p)*10000)

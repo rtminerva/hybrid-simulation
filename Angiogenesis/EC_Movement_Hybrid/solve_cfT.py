@@ -21,7 +21,7 @@ def c_f_T(coef, set, sol, n_o): #2.3
                 elif x == set['Nx']-1:
                     sol['b'][x,y] = b_o[x,y] -set['dt']*(-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(-sol['Vb_x'][x,y],0))-(b_o[x,y-2]*max(sol['Vb_y'][x,y-2],0)-b_o[x,y]*max(-sol['Vb_y'][x,y],0)))/set['h']
                 else:
-                    sol['b'][x,y] = b_o[x,y] -set['dt']*((b_o[x,y]*max(sol['Vb_x'][x,y],0)-b_o[x+2,y]*max(-sol['Vb_x'][x+2,y],0))-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(sol['Vb_x'][x,y],0))-(b_o[x,y-2]*max(sol['Vb_y'][x,y-2],0)-b_o[x,y]*max(-sol['Vb_y'][x,y],0)))/set['h']
+                    sol['b'][x,y] = b_o[x,y] -set['dt']*((b_o[x,y]*max(sol['Vb_x'][x,y],0)-b_o[x+2,y]*max(-sol['Vb_x'][x+2,y],0))-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(-sol['Vb_x'][x,y],0))-(b_o[x,y-2]*max(sol['Vb_y'][x,y-2],0)-b_o[x,y]*max(-sol['Vb_y'][x,y],0)))/set['h']
             else:
                 if x == 1:
                     sol['b'][x,y] = b_o[x,y] -set['dt']*((b_o[x,y]*max(sol['Vb_x'][x,y],0)-b_o[x+2,y]*max(-sol['Vb_x'][x+2,y],0))+(b_o[x,y]*max(sol['Vb_y'][x,y],0)-b_o[x,y+2]*max(-sol['Vb_y'][x,y+2],0))-(b_o[x,y-2]*max(sol['Vb_y'][x,y-2],0)-b_o[x,y]*max(-sol['Vb_y'][x,y],0)))/set['h']

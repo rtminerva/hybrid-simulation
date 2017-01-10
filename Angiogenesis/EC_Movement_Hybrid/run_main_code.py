@@ -54,6 +54,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'total time of processing:', 0, 'hours', menit, 'minutes', detik, 'seconds'
     else:
         print 'total time of processing:', 0, 'hours', 0, 'minutes', ttime, 'seconds'
+    print sol['matrix_tip'][-1][-1], sol['tip_cell']
     if set['k'] % 100 == 0:
         print set
         print coef
