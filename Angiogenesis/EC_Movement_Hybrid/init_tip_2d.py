@@ -6,9 +6,9 @@ def rec_1_tip(coef,set,sol): #2.1.2.(1)
     y = set['Ny']/2 
     if y % 2 == 0:
         y += 1
-    sol['matrix_tip'].append([(11,y)])
-    sol['n'][11,y] = 1
-    sol['b'][3,y] = 1
+    sol['matrix_tip'].append([(3,y)])
+    sol['n'][3,y] = 1
+    sol['b'][1,y] = 1
     #sol['b'][5,y] = 1
     #sol['b'][7,y] = 1
     sol['list_tip_movement'].append('start') #movement tip

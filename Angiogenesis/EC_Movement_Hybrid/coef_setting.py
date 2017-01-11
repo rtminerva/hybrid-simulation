@@ -13,13 +13,13 @@ def declare_coef(): #1
     coef['m3'] = (0-1)/(200-100)#(0-2)/(200-100)
        
     ''''Kinetic Coef'''
-    coef['k_1'] = 0.1
+    coef['k_1'] = 0#.1
     #coef['k_2'] = 0.83#0.25
     #coef['k_3'] = 0.83#.83
     #coef['k_4'] = 0.85#.85
     #coef['k_5'] = 0.25#1#.25
     #coef['beta1'] = 9.29#1
-    coef['beta2'] = 0.3
+    coef['beta2'] = 0#.3
     
     ''''Tip (n)'''
     coef['C_1'] = 0.00018#0.00035#0.00018 
@@ -35,9 +35,9 @@ def declare_coef(): #1
     #coef['anas_tb'] = coef['k_5']*coef['k_4']
     
     '''VEGF (c)'''
-    coef['C_3'] = 0.00018
+    coef['C_3'] = 0#.00018#0.00035
     coef['Nu'] = 0.1
-    coef['gama'] = 0.5
+    coef['gama'] = 0#.5
 
     '''Branching & Mitosis'''
     
@@ -45,7 +45,7 @@ def declare_coef(): #1
     ##set dictionaries (fixed: never change)
     coef['X'] = 1
     coef['Y'] = 1#
-    set['T'] = 5.002
+    set['T'] = 10.002
     set['Nt'] = 100000
     
     set['con'] = False
