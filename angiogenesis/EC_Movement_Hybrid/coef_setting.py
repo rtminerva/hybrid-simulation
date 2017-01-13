@@ -5,7 +5,7 @@ def declare_coef(): #1
     #to store coefficients
     coef = {}
     set = {}
-    sol = {}#
+    sol = {}
     
     '''Grad h function'''
     coef['m1'] = (0-1)/(10-2)#(0.5-1)/(50-2)
