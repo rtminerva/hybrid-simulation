@@ -8,28 +8,41 @@ def c_f_T(coef, set, sol, n_o): #2.3
     '''Solve b at main lattice'''
     for y in range(1,set['Ny'],2):
         for x in range(1,set['Nx'],2):
+            prolifer_1 = set['dt']*coef['vi']*b_o[x,y]*(1-b_o[x,y])
             if y == 1:
                 if x == 1:
-                    sol['b'][x,y] = b_o[x,y] -set['dt']*((b_o[x,y]*max(sol['Vb_x'][x,y],0)-b_o[x+2,y]*max(-sol['Vb_x'][x+2,y],0))+(b_o[x,y]*max(sol['Vb_y'][x,y],0)-b_o[x,y+2]*max(-sol['Vb_y'][x,y+2],0)))/set['h']
+                    move = set['dt']*coef['C_4']*((b_o[x,y]*max(sol['Vb_x'][x,y],0)-b_o[x+2,y]*max(-sol['Vb_x'][x+2,y],0))+(b_o[x,y]*max(sol['Vb_y'][x,y],0)-b_o[x,y+2]*max(-sol['Vb_y'][x,y+2],0)))/set['h']
+                    sol['b'][x,y] = b_o[x,y] + prolifer_1 - move
                 elif x == set['Nx']-1:
-                    sol['b'][x,y] = b_o[x,y] -set['dt']*(-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(-sol['Vb_x'][x,y],0))+(b_o[x,y]*max(sol['Vb_y'][x,y],0)-b_o[x,y+2]*max(-sol['Vb_y'][x,y+2],0)))/set['h']
+                    move = set['dt']*coef['C_4']*(-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(-sol['Vb_x'][x,y],0))+(b_o[x,y]*max(sol['Vb_y'][x,y],0)-b_o[x,y+2]*max(-sol['Vb_y'][x,y+2],0)))/set['h']
+                    sol['b'][x,y] = b_o[x,y] + prolifer_1 - move
                 else:
-                    sol['b'][x,y] = b_o[x,y] -set['dt']*((b_o[x,y]*max(sol['Vb_x'][x,y],0)-b_o[x+2,y]*max(-sol['Vb_x'][x+2,y],0))-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(-sol['Vb_x'][x,y],0))+(b_o[x,y]*max(sol['Vb_y'][x,y],0)-b_o[x,y+2]*max(-sol['Vb_y'][x,y+2],0)))/set['h']
+                    move = set['dt']*coef['C_4']*((b_o[x,y]*max(sol['Vb_x'][x,y],0)-b_o[x+2,y]*max(-sol['Vb_x'][x+2,y],0))-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(-sol['Vb_x'][x,y],0))+(b_o[x,y]*max(sol['Vb_y'][x,y],0)-b_o[x,y+2]*max(-sol['Vb_y'][x,y+2],0)))/set['h']
+                    sol['b'][x,y] = b_o[x,y] + prolifer_1 - move
             elif y == set['Ny']-1:
                 if x == 1:
-                    sol['b'][x,y] = b_o[x,y] -set['dt']*((b_o[x,y]*max(sol['Vb_x'][x,y],0)-b_o[x+2,y]*max(-sol['Vb_x'][x+2,y],0))-(b_o[x,y-2]*max(sol['Vb_y'][x,y-2],0)-b_o[x,y]*max(-sol['Vb_y'][x,y],0)))/set['h']
+                    move = set['dt']*coef['C_4']*((b_o[x,y]*max(sol['Vb_x'][x,y],0)-b_o[x+2,y]*max(-sol['Vb_x'][x+2,y],0))-(b_o[x,y-2]*max(sol['Vb_y'][x,y-2],0)-b_o[x,y]*max(-sol['Vb_y'][x,y],0)))/set['h']
+                    sol['b'][x,y] = b_o[x,y] + prolifer_1 - move
                 elif x == set['Nx']-1:
-                    sol['b'][x,y] = b_o[x,y] -set['dt']*(-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(-sol['Vb_x'][x,y],0))-(b_o[x,y-2]*max(sol['Vb_y'][x,y-2],0)-b_o[x,y]*max(-sol['Vb_y'][x,y],0)))/set['h']
+                    move = set['dt']*coef['C_4']*(-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(-sol['Vb_x'][x,y],0))-(b_o[x,y-2]*max(sol['Vb_y'][x,y-2],0)-b_o[x,y]*max(-sol['Vb_y'][x,y],0)))/set['h']
+                    sol['b'][x,y] = b_o[x,y] + prolifer_1 - move 
                 else:
-                    sol['b'][x,y] = b_o[x,y] -set['dt']*((b_o[x,y]*max(sol['Vb_x'][x,y],0)-b_o[x+2,y]*max(-sol['Vb_x'][x+2,y],0))-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(-sol['Vb_x'][x,y],0))-(b_o[x,y-2]*max(sol['Vb_y'][x,y-2],0)-b_o[x,y]*max(-sol['Vb_y'][x,y],0)))/set['h']
+                    move = set['dt']*coef['C_4']*((b_o[x,y]*max(sol['Vb_x'][x,y],0)-b_o[x+2,y]*max(-sol['Vb_x'][x+2,y],0))-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(-sol['Vb_x'][x,y],0))-(b_o[x,y-2]*max(sol['Vb_y'][x,y-2],0)-b_o[x,y]*max(-sol['Vb_y'][x,y],0)))/set['h']
+                    sol['b'][x,y] = b_o[x,y] + prolifer_1 - move
             else:
                 if x == 1:
-                    sol['b'][x,y] = b_o[x,y] -set['dt']*((b_o[x,y]*max(sol['Vb_x'][x,y],0)-b_o[x+2,y]*max(-sol['Vb_x'][x+2,y],0))+(b_o[x,y]*max(sol['Vb_y'][x,y],0)-b_o[x,y+2]*max(-sol['Vb_y'][x,y+2],0))-(b_o[x,y-2]*max(sol['Vb_y'][x,y-2],0)-b_o[x,y]*max(-sol['Vb_y'][x,y],0)))/set['h']
+                    move = set['dt']*coef['C_4']*((b_o[x,y]*max(sol['Vb_x'][x,y],0)-b_o[x+2,y]*max(-sol['Vb_x'][x+2,y],0))+(b_o[x,y]*max(sol['Vb_y'][x,y],0)-b_o[x,y+2]*max(-sol['Vb_y'][x,y+2],0))-(b_o[x,y-2]*max(sol['Vb_y'][x,y-2],0)-b_o[x,y]*max(-sol['Vb_y'][x,y],0)))/set['h']
+                    sol['b'][x,y] = b_o[x,y] + prolifer_1 - move
                 elif x == set['Nx']-1:
-                    sol['b'][x,y] = b_o[x,y] -set['dt']*(-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(-sol['Vb_x'][x,y],0))+(b_o[x,y]*max(sol['Vb_y'][x,y],0)-b_o[x,y+2]*max(-sol['Vb_y'][x,y+2],0))-(b_o[x,y-2]*max(sol['Vb_y'][x,y-2],0)-b_o[x,y]*max(-sol['Vb_y'][x,y],0)))/set['h']  
+                    set['dt']*coef['C_4']*(-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(-sol['Vb_x'][x,y],0))+(b_o[x,y]*max(sol['Vb_y'][x,y],0)-b_o[x,y+2]*max(-sol['Vb_y'][x,y+2],0))-(b_o[x,y-2]*max(sol['Vb_y'][x,y-2],0)-b_o[x,y]*max(-sol['Vb_y'][x,y],0)))/set['h']  
+                    sol['b'][x,y] = b_o[x,y] + prolifer_1 - move
                 else:
-                    sol['b'][x,y] = b_o[x,y] -set['dt']*((b_o[x,y]*max(sol['Vb_x'][x,y],0)-b_o[x+2,y]*max(-sol['Vb_x'][x+2,y],0))-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(-sol['Vb_x'][x,y],0))+(b_o[x,y]*max(sol['Vb_y'][x,y],0)-b_o[x,y+2]*max(-sol['Vb_y'][x,y+2],0))-(b_o[x,y-2]*max(sol['Vb_y'][x,y-2],0)-b_o[x,y]*max(-sol['Vb_y'][x,y],0)))/set['h']
-                                     
+                    move = set['dt']*coef['C_4']*((b_o[x,y]*max(sol['Vb_x'][x,y],0)-b_o[x+2,y]*max(-sol['Vb_x'][x+2,y],0))-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(-sol['Vb_x'][x,y],0))+(b_o[x,y]*max(sol['Vb_y'][x,y],0)-b_o[x,y+2]*max(-sol['Vb_y'][x,y+2],0))-(b_o[x,y-2]*max(sol['Vb_y'][x,y-2],0)-b_o[x,y]*max(-sol['Vb_y'][x,y],0)))/set['h']
+                    sol['b'][x,y] = b_o[x,y] + prolifer_1 - move 
+            sol['b'][1,set['Ny']/2+1] = 1
+#             if b_o[x,y] != 0:
+#                 print 'Value of proliferation:', prolifer_1
+#                 print 'Value of degradation by movement:', move                         
     '''Solve c at sub lattice'''
     for y in range(0,set['Ny']+1,2):
         for x in range(0,set['Nx']+1,2):

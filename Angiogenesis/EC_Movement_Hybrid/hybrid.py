@@ -368,18 +368,19 @@ def hybrid_tech(coef, set, sol): #2.2
             vb_x = 0
             vb_y = 0
             for ind, vec in enumerate(vn_o):
-                if x == vec[0] and y == vec[1]:
-                    leave = 22
+                s = m.sqrt((x-vec[0])**2+(y-vec[1])**2)
+                if s <= 2:
+                    h_s = 0
+                elif s <= 10:
+                    #h_s = 0.5 + coef['m1']*(s-2)
+                    h_s = 0 + coef['m1']*(s-10)
+                elif s <= 20:
+                    h_s = 0#0.2 + coef['m2']*(s-10)
+                elif s <= 40:
+                    h_s = 0#1 + coef['m3']*(s-20)
                 else:
-                    s = m.sqrt((x-vec[0])**2+(y-vec[1])**2)
-                    if s <= 50:
-                        h_s = 0.5 + coef['m1']*(s-2)
-                    elif s <= 100:
-                        h_s = 0.2 + coef['m2']*(s-50)
-                    elif s <= 200:
-                        h_s = 1 + coef['m3']*(s-100)
-                    else:
-                        h_s = 0
+                    h_s = 0
+                if s != 0:
                     vb_x += (vec[0]-x)*h_s/s
                     vb_y += (vec[1]-y)*h_s/s
             sol['Vb_x'][x,y] = vb_x

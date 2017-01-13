@@ -55,11 +55,11 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     else:
         print 'total time of processing:', 0, 'hours', 0, 'minutes', ttime, 'seconds'
     print sol['matrix_tip'][-1][-1], sol['tip_cell']
-    print 'b sol not zero'
-    for y in range(1,set['Ny'],2):
-        for x in range(1,set['Nx'],2):
-            if sol['b'][x,y] != 0:
-                print 'pos:[',x,',',y,']',',value:',sol['b'][x,y]
+#     print 'b sol not zero'
+#     for y in range(1,set['Ny'],2):
+#         for x in range(1,set['Nx'],2):
+#             if sol['b'][x,y] != 0:
+#                 print 'pos:[',x,',',y,']',',value:',sol['b'][x,y]
     if set['k'] % 100 == 0:
         print set
         print coef
