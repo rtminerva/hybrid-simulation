@@ -301,17 +301,17 @@ def movement_branch(tipp,sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_
 
 def hybrid_tech(coef, set, sol): #2.2
     n_sp = len(sol['matrix_tip']) #to save original number of tips before branching
-    n_o = numpy.copy(sol['n'])
-    vn_o = []
+    n_o = numpy.copy(sol['n']) #to save the value of 'n' at time step k (we are calculating at time step k+1)
+    vn_o = [] #to record tip cell position
     for nom in range(0,n_sp): #dicek setiap tip
         if not nom in sol['sp_stop']: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
             yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
             vn_o.append([xb,yb])
             
-            dirr= movement_dir(coef, set, sol, xb, yb, nom) #2.2.1 ok
+            dirr= movement_dir(coef, set, sol, xb, yb, nom) #2.2.1 => go to direction_of_movement.py
             
-            if dirr[1] == 0 and dirr[2] == 0 and dirr[3] == 0 and dirr[4] == 0: #if no space
+            if dirr[1] == 0 and dirr[2] == 0 and dirr[3] == 0 and dirr[4] == 0: #checking if there is space for tip cell to move
                 sol['sp_stop'].append(nom)
                 sol['tip_cell'].remove([xb,yb])
                 sol['n'][xb,yb] = 0
@@ -362,7 +362,7 @@ def hybrid_tech(coef, set, sol): #2.2
                                 while tipp == 'stay':
                                     sol, tipp = movement_branch(tipp,sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4) #2.2.(5)
                     '''
-    '''Vector Velocity of stalk (Vb)'''
+    '''Vector Velocity of stalk (Vb) Method 1:all towards tip cell'''
     for y in range(1,set['Ny'],2):
         for x in range(1,set['Nx'],2):
             vb_x = 0
@@ -372,17 +372,16 @@ def hybrid_tech(coef, set, sol): #2.2
                 if s <= 2:
                     h_s = 0
                 elif s <= 10:
-                    #h_s = 0.5 + coef['m1']*(s-2)
-                    h_s = 0 + coef['m1']*(s-10)
+                    h_s = 0.5 + coef['m1']*(s-10)
                 elif s <= 20:
-                    h_s = 0#0.2 + coef['m2']*(s-10)
+                    h_s = 2 + coef['m2']*(s-20)
                 elif s <= 40:
-                    h_s = 0#1 + coef['m3']*(s-20)
+                    h_s = 0 + coef['m3']*(s-40)
                 else:
                     h_s = 0
                 if s != 0:
-                    vb_x += (vec[0]-x)*h_s/s
-                    vb_y += (vec[1]-y)*h_s/s
+                    vb_x += (vec[0]-x)*h_s/s #unit vector
+                    vb_y += (vec[1]-y)*h_s/s #unit vector
             sol['Vb_x'][x,y] = vb_x
             sol['Vb_y'][x,y] = vb_y
 #     print 'Tip cell position:', vn_o
