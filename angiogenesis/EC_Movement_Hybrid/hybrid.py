@@ -3,7 +3,7 @@ import random
 import numpy
 from random import randint
 from collections import OrderedDict
-import math as m
+import math as m #r
 
 def set_list_prob(dirr): #2.2.(1)
     line_1 = range(1,10001)
