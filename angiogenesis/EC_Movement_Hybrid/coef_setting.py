@@ -8,9 +8,13 @@ def declare_coef(): #1
     sol = {}
     
     '''Gradient of h function'''
+    #profile 1:\/\
     coef['m1'] = (0.5-1)/(10-2)
     coef['m2'] = (2-0.5)/(20-10)
     coef['m3'] = (0-2)/(40-20)
+    
+    #profile 2: /
+    coef['M'] = (1-0)/(50-2)
        
     ''''Kinetic Coef'''
     coef['k_1'] = 0#.1
@@ -24,7 +28,7 @@ def declare_coef(): #1
     ''''Tip (n)'''
     coef['C_1'] = 0.00018#0.00035#0.00018 
     coef['C_2'] = 0.00018#0.0001#0.00018
-    coef['Ki'] = 0.133#0.38#0.133 
+    coef['Ki'] = 0.133#0.38#0.133
     #coef['Al_n'] = 0
     
     ''''Stalk (b)'''
