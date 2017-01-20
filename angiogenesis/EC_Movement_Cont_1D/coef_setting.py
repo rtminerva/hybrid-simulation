@@ -11,9 +11,6 @@ def declare_coef(): #1
     coef['m1'] = (0.5-1)/(10-2)
     coef['m2'] = (2-0.5)/(20-10)
     coef['m3'] = (0-2)/(40-20)
-    
-    #profile 2: /
-    coef['M'] = (1-0)/(50-2)
        
     ''''Kinetic Coef'''
     coef['k_1'] = 0#.1
@@ -31,8 +28,8 @@ def declare_coef(): #1
     #coef['Al_n'] = 0
     
     ''''Stalk (b)'''
-    coef['vi'] = 10
-    coef['C_4'] = 0.01
+    coef['vi'] = 10 #rate of proliferation
+    coef['C_4'] = 0.01 #rate of movement
     #coef['mu'] = 5
     #coef['prod'] = 0
     #coef['anas_tt'] = coef['k_5']*coef['k_3']

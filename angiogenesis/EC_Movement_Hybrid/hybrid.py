@@ -363,6 +363,7 @@ def hybrid_tech(coef, set, sol): #2.2
                                     sol, tipp = movement_branch(tipp,sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4) #2.2.(5)
                     '''
     '''Vector Velocity of stalk (Vb) Method 1:all towards tip cell'''
+    #profile 1: \/\
     for y in range(1,set['Ny'],2):
         for x in range(1,set['Nx'],2):
             vb_x = 0
@@ -384,6 +385,26 @@ def hybrid_tech(coef, set, sol): #2.2
                     vb_y += (vec[1]-y)*h_s/s #unit vector
             sol['Vb_x'][x,y] = vb_x
             sol['Vb_y'][x,y] = vb_y
+    
+    #profile 2: /
+    for y in range(1,set['Ny'],2):
+        for x in range(1,set['Nx'],2):
+            vb_x = 0
+            vb_y = 0
+            for ind, vec in enumerate(vn_o):
+                s = m.sqrt((x-vec[0])**2+(y-vec[1])**2)
+                if s <= 2:
+                    h_s = 0
+                elif s <= 50:
+                    h_s = 1 + coef['m1']*(s-50)
+                else:
+                    h_s = 1
+                if s != 0:
+                    vb_x += (vec[0]-x)*h_s/s #unit vector
+                    vb_y += (vec[1]-y)*h_s/s #unit vector
+            sol['Vb_x'][x,y] = vb_x
+            sol['Vb_y'][x,y] = vb_y
+    
 #     print 'Tip cell position:', vn_o
 #     print 'Velocity Vector stalk on [3,201]: [',sol['Vb_x'][3,201],',',sol['Vb_y'][3,201],']'
     return sol, n_o
