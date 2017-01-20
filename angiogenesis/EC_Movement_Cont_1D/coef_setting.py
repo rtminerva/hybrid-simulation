@@ -8,36 +8,28 @@ def declare_coef(): #1
     sol = {}
     
     '''Gradient of h function'''
-<<<<<<< HEAD
-    #profile 1:\/\
-=======
-    #profile 1: \/\
->>>>>>> branch 'master' of https://github.com/rtminerva/hybrid-simulation.git
     coef['m1'] = (0.5-1)/(10-2)
     coef['m2'] = (2-0.5)/(20-10)
     coef['m3'] = (0-2)/(40-20)
-    
-    #profile 2: /
-    coef['M'] = (1-0)/(50-2)
        
     ''''Kinetic Coef'''
     coef['k_1'] = 0#.1
     #coef['k_2'] = 0.83#0.25
     #coef['k_3'] = 0.83#.83
     #coef['k_4'] = 0.85#.85
-    #coef['k_5'] = 0.25#1#.25 #F
+    #coef['k_5'] = 0.25#1#.25
     #coef['beta1'] = 9.29#1
     coef['beta2'] = 0#.3
     
     ''''Tip (n)'''
     coef['C_1'] = 0.00018#0.00035#0.00018 
     coef['C_2'] = 0.00018#0.0001#0.00018
-    coef['Ki'] = 0.133#0.38#0.133
+    coef['Ki'] = 0.133#0.38#0.133 
     #coef['Al_n'] = 0
     
     ''''Stalk (b)'''
-    coef['vi'] = 10
-    coef['C_4'] = 0.01
+    coef['vi'] = 10 #rate of proliferation
+    coef['C_4'] = 0.01 #rate of movement
     #coef['mu'] = 5
     #coef['prod'] = 0
     #coef['anas_tt'] = coef['k_5']*coef['k_3']
