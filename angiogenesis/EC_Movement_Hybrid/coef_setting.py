@@ -8,6 +8,7 @@ def declare_coef(): #1
     sol = {}
     
     '''Gradient of h function'''
+    #profile 1: \/\
     coef['m1'] = (0.5-1)/(10-2)
     coef['m2'] = (2-0.5)/(20-10)
     coef['m3'] = (0-2)/(40-20)
