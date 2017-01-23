@@ -1,6 +1,58 @@
 from random import randint, sample, uniform
 import numpy
 
+def b_mean_function(set,sol,xb,b_o):
+    if xb == 1:
+        b_mean_r = (b_o[xb+2]+b_o[xb])/2
+        b_mean_l = b_o[xb]
+    elif xb == set['Nx']-1:
+        b_mean_r = b_o[xb]
+        b_mean_l = (b_o[xb-2]+b_o[xb])/2
+    else:
+        b_mean_r = (b_o[xb+2]+b_o[xb])/2
+        b_mean_l = (b_o[xb-2]+b_o[xb])/2
+    b_mean = [b_mean_r, b_mean_l]
+    return b_mean
+
+def max_min_c(set,sol,x,c_o): #2.3.(1).(1)
+    cijx = (c_o[x]-c_o[x-2])/(set['h'])
+    cijx_p = max(0,cijx)
+    cijx_n = max(0,-cijx)
+    return cijx_p, cijx_n
+
+def max_min_b(set,sol,x,y,b_o): #2.3.(1).(2)
+    xb = x-1
+    yb = y-1
+    
+    b_mean = b_mean_function(set,sol,xb,b_o)
+    
+    bijx = (b_mean[0]-b_mean[1])/(set['h'])
+
+    bijx_p = max(0,bijx)
+    bijx_n = max(0,-bijx)
+    return bijx_p, bijx_n
+
+def F_vector_sol(coef,set,sol,n_o,b_o,c_o): #2.3.(1)
+    F_sol_1 = numpy.zeros((set['Nx']+1,set['Ny']+1))
+    G_plus_1 = 0
+    G_neg_1 = 0
+    for x in range(0,set['Nx']+1,2):
+        if not x == 0:
+            if not x == set['Nx']:
+                #chemo_coef = coef['Ki']/(1+coef['Al_n']*(c_o[x,y]+c_o[x-2,y]+c_o[x,y-2]+c_o[x-2,y-2])/4)
+                cijx_p, cijx_n = max_min_c(set,sol,x,c_o) #2.3.(1).(1)
+                bijx_p, bijx_n = max_min_b(set,sol,x,b_o) #2.3.(1).(2)
+                G_plus_1 = coef['Ki']*cijx_p-coef['C_2']*bijx_p
+                
+                #chemo_coef = coef['Ki_n']/(1+coef['Al_n']*(c_o[x,y]+c_o[x+2,y]+c_o[x,y-2]+c_o[x+2,y-2])/4)
+                cijx_p, cijx_n = max_min_c(set,sol,x+2,c_o) #2.3.(1).(1)
+                bijx_p, bijx_n = max_min_b(set,sol,x+2,b_o) #2.3.(1).(2)
+                G_neg_1 = coef['Ki']*cijx_n-coef['C_2']*bijx_n
+                
+                F_sol_1[x] = -coef['C_1']/(set['h'])*(n_o[x+1]-n_o[x-1])+n_o[x-1]*G_plus_1-n_o[x+1]*G_neg_1
+                
+    return F_sol_1     
+
 def system(coef, set, sol, n_o): #2.3
     c_o = numpy.copy(sol['c']) #to save values at time step k (we are calculating at time step k+1)
     n_o = numpy.copy(sol['n']) #to save values at time step k (we are calculating at time step k+1)
@@ -24,110 +76,53 @@ def system(coef, set, sol, n_o): #2.3
 
     '''Solve b, n at main lattice'''
     for x in range(1,set['Nx'],2):
-        prolifer_1 = set['dt']*coef['vi']*b_o[x]*(1-b_o[x]) #proliferation term
+        prolifer_b = set['dt']*coef['vi']*b_o[x]*(1-b_o[x]) #proliferation term
         #we put the convection term as move variable
         if x == 1:
-            move = set['dt']*coef['C_4']*((b_o[x]*max(sol['Vb_x'][x],0)-b_o[x+2]*max(-sol['Vb_x'][x+2],0)))/set['h']
+            move_n = set['dt']*(F_sol_1[x+1])/set['h']
+            move_b = set['dt']*coef['C_4']*((b_o[x]*max(sol['Vb_x'][x],0)-b_o[x+2]*max(-sol['Vb_x'][x+2],0)))/set['h']
         elif x == set['Nx']-1:
-            move = set['dt']*coef['C_4']*(-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(-sol['Vb_x'][x,y],0))+(b_o[x,y]*max(sol['Vb_y'][x,y],0)-b_o[x,y+2]*max(-sol['Vb_y'][x,y+2],0)))/set['h']
+            move_n = set['dt']*(-F_sol_1[x-1])/set['h']
+            move_b = set['dt']*coef['C_4']*(-(b_o[x-2]*max(sol['Vb_x'][x-2],0)-b_o[x]*max(-sol['Vb_x'][x],0)))/set['h']
         else:
-            move = set['dt']*coef['C_4']*((b_o[x,y]*max(sol['Vb_x'][x,y],0)-b_o[x+2,y]*max(-sol['Vb_x'][x+2,y],0))-(b_o[x-2,y]*max(sol['Vb_x'][x-2,y],0)-b_o[x,y]*max(-sol['Vb_x'][x,y],0))+(b_o[x,y]*max(sol['Vb_y'][x,y],0)-b_o[x,y+2]*max(-sol['Vb_y'][x,y+2],0)))/set['h']
-        sol['b'][x] = b_o[x,y] + prolifer_1 - move
-        sol['b'][1,set['Ny']/2+1] = 1 #the supply of stalk from pre-existing vessel
+            move_n = set['dt']*(F_sol_1[x+1]-F_sol_1[x-1])/set['h']
+            move_b = set['dt']*coef['C_4']*((b_o[x]*max(sol['Vb_x'][x],0)-b_o[x+2]*max(-sol['Vb_x'][x+2],0))-(b_o[x-2]*max(sol['Vb_x'][x-2],0)-b_o[x]*max(-sol['Vb_x'][x],0)))/set['h']
+        sol['n'][x] = n_o[x] -move_n
+        sol['b'][x] = b_o[x] + prolifer_1 - move_b
+        sol['b'][1] = 1 #the supply of stalk from pre-existing vessel
 #             if b_o[x,y] != 0:
 #                 print 'Value of proliferation:', prolifer_1
 #                 print 'Value of degradation by movement:', move                         
     '''Solve c at sub lattice'''
-    for y in range(0,set['Ny']+1,2):
-        for x in range(0,set['Nx']+1,2):
-            degradation_c = set['dt']*coef['gama']*c_o[x,y]
-            if y == 0: 
-                if x == 0:
-                    mean_b = b_o[x+1,y+1]
-                    mean_n = n_o[x+1,y+1]
-                    if mean_b < coef['beta2']:
-                        S = 1- (mean_b/coef['beta2'])
-                    else:
-                        S = 0
-                    move_c = coef['C_3']*set['dt']*(c_o[x+2,y]+c_o[x,y+2]-2*c_o[x,y])/(set['h']**2) 
-                                     
-                elif x == set['Nx']:
-                    mean_b = b_o[x-1,y+1]
-                    mean_n = n_o[x-1,y+1]
-                    if mean_b < coef['beta2']:
-                        S = 1- (mean_b/coef['beta2'])
-                    else:
-                        S = 0
-                    move_c = coef['C_3']*set['dt']*(c_o[x-2,y]+c_o[x,y+2]-2*c_o[x,y])/(set['h']**2)
-                   
-                else:
-                    mean_b = (b_o[x-1,y+1] + b_o[x+1,y+1])/2
-                    mean_n = (n_o[x-1,y+1] + n_o[x+1,y+1])/2
-                    if mean_b < coef['beta2']:
-                        S = 1- (mean_b/coef['beta2'])
-                    else:
-                        S = 0   
-                    move_c = coef['C_3']*set['dt']*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y+2]-3*c_o[x,y])/(set['h']**2)               
-                    
-            elif y == set['Ny']:
-                if x == 0:
-                    mean_b = b_o[x+1,y-1]
-                    mean_n = n_o[x+1,y-1]
-                    if mean_b < coef['beta2']:
-                        S = 1- (mean_b/coef['beta2'])
-                    else:
-                        S = 0
-                    move_c = coef['C_3']*set['dt']*(c_o[x+2,y]+c_o[x,y-2]-2*c_o[x,y])/(set['h']**2)
-                    
-                elif x == set['Nx']:
-                    mean_b = b_o[x-1,y-1]
-                    mean_n = n_o[x-1,y-1]
-                    if mean_b < coef['beta2']:
-                        S = 1- (mean_b/coef['beta2'])
-                    else:
-                        S = 0
-                    move_c = coef['C_3']*set['dt']*(c_o[x-2,y]+c_o[x,y-2]-2*c_o[x,y])/(set['h']**2)
-                         
-                else:
-                    mean_b = (b_o[x-1,y-1] + b_o[x+1,y-1])/2
-                    mean_n = (n_o[x-1,y-1] + n_o[x+1,y-1])/2
-                    if mean_b < coef['beta2']:
-                        S = 1- (mean_b/coef['beta2'])
-                    else:
-                        S = 0                               
-                    move_c = coef['C_3']*set['dt']*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y-2]-3*c_o[x,y])/(set['h']**2)
-                        
+    for x in range(0,set['Nx']+1,2):
+        degradation_c = set['dt']*coef['gama']*c_o[x] 
+        if x == 0:
+            mean_b = b_o[x+1]
+            mean_n = n_o[x+1]
+            if mean_b < coef['beta2']:
+                S = 1- (mean_b/coef['beta2'])
             else:
-                if x == 0:
-                    mean_b = (b_o[x+1,y-1] + b_o[x+1,y+1])/2
-                    mean_n = (n_o[x+1,y-1] + n_o[x+1,y+1])/2
-                    if mean_b < coef['beta2']:
-                        S = 1- (mean_b/coef['beta2'])
-                    else:
-                        S = 0
-                    move_c = coef['C_3']*set['dt']*(c_o[x+2,y]+c_o[x,y+2]+c_o[x,y-2]-3*c_o[x,y])/(set['h']**2)
-                    
-                elif x == set['Nx']:
-                    mean_b = (b_o[x-1,y-1] + b_o[x-1,y+1])/2
-                    mean_n = (n_o[x-1,y-1] + n_o[x-1,y+1])/2                    
-                    if mean_b < coef['beta2']:
-                        S = 1- (mean_b/coef['beta2'])
-                    else:
-                        S = 0
-                    move_c = coef['C_3']*set['dt']*(c_o[x-2,y]+c_o[x,y+2]+c_o[x,y-2]-3*c_o[x,y])/(set['h']**2)
-                    
-                else:
-                    mean_b = (b_o[x+1,y+1] + b_o[x-1,y+1] + b_o[x+1,y-1] + b_o[x-1,y-1])/4
-                    mean_n = (n_o[x+1,y+1] + n_o[x-1,y+1] + n_o[x+1,y-1] + n_o[x-1,y-1])/4
-                    if mean_b < coef['beta2']:
-                        S = 1- (mean_b/coef['beta2'])
-                    else:
-                        S = 0
-                    move_c = coef['C_3']*set['dt']*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y+2]+c_o[x,y-2]-4*c_o[x,y])/(set['h']**2)
-                        
-            prolifer_c = set['dt']*coef['k_1']*S
-            digestion_c = set['dt']*coef['Nu']*c_o[x,y]*mean_n
-            sol['c'][x,y] = c_o[x,y] + prolifer_c - digestion_c - degradation_c + move_c
+                S = 0
+            move_c = coef['C_3']*set['dt']*(c_o[x+2]+c_o[x]-2*c_o[x])/(set['h']**2)                 
+        elif x == set['Nx']:
+            mean_b = b_o[x-1]
+            mean_n = n_o[x-1]
+            if mean_b < coef['beta2']:
+                S = 1- (mean_b/coef['beta2'])
+            else:
+                S = 0
+            move_c = coef['C_3']*set['dt']*(c_o[x-2]+c_o[x]-2*c_o[x])/(set['h']**2)
+        else:
+            mean_b = (b_o[x-1] + b_o[x+1])/2
+            mean_n = (n_o[x-1] + n_o[x+1])/2
+            if mean_b < coef['beta2']:
+                S = 1- (mean_b/coef['beta2'])
+            else:
+                S = 0   
+            move_c = coef['C_3']*set['dt']*(c_o[x+2]+c_o[x-2]+c_o[x]-3*c_o[x])/(set['h']**2)               
+        prolifer_c = set['dt']*coef['k_1']*S
+        digestion_c = set['dt']*coef['Nu']*c_o[x]*mean_n
+        sol['c'][x] = c_o[x] + prolifer_c - digestion_c - degradation_c + move_c
         
 #     for y in range(1,set['Ny'],2):
 #         for x in range(1,set['Nx'],2):
