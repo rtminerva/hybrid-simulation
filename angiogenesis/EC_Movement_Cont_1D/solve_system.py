@@ -74,10 +74,13 @@ def system(coef, set, sol): #2.3
             sol['Vb_x'][x] = (Ind_max_n-x)*h_s/s #unit vector
 
     F_sol_1 = F_vector_sol(coef, set, sol, n_o, b_o, c_o)
+    
+    '''Pettet Method'''
      
     '''Solve b, n at main lattice'''
     for x in range(1,set['Nx'],2):
-        prolifer_b = set['dt']*coef['vi']*b_o[x]*(1-b_o[x]) #proliferation term
+        kinetic_b = set['dt']*coef['vi']*b_o[x]*(1-b_o[x]) + set['dt']*coef['k_5']*(coef['k_3']*(n_o[x])**2+coef['k_4']*n_o[x]*b_o[x])
+        kinetic_n = set['dt']*coef['k_2']*n_o[x] - set['dt']*coef['k_3']*(n_o[x])**2-set['dt']*coef['k_4']*n_o[x]*b_o[x]
         #we put the convection term as move variable
         if x == 1:
             move_n = set['dt']*(F_sol_1[x+1])/set['h']
@@ -88,12 +91,13 @@ def system(coef, set, sol): #2.3
         else:
             move_n = set['dt']*(F_sol_1[x+1]-F_sol_1[x-1])/set['h']
             move_b = set['dt']*coef['C_4']*((b_o[x]*max(sol['Vb_x'][x],0)-b_o[x+2]*max(-sol['Vb_x'][x+2],0))-(b_o[x-2]*max(sol['Vb_x'][x-2],0)-b_o[x]*max(-sol['Vb_x'][x],0)))/set['h']
-        sol['n'][x] = n_o[x] -move_n
-        sol['b'][x] = b_o[x] + prolifer_b - move_b
-        sol['b'][1] = 1 #the supply of stalk from pre-existing vessel
+        sol['n'][x] = n_o[x] - move_n + kinetic_n
+        sol['b'][x] = b_o[x] - move_b + kinetic_b
+#         sol['b'][1] = 1 #the supply of stalk from pre-existing vessel
 #             if b_o[x,y] != 0:
 #                 print 'Value of proliferation:', prolifer_1
-#                 print 'Value of degradation by movement:', move                         
+#                 print 'Value of degradation by movement:', move    
+                     
     '''Solve c at sub lattice'''
     for x in range(0,set['Nx']+1,2):
         degradation_c = set['dt']*coef['gama']*c_o[x] 

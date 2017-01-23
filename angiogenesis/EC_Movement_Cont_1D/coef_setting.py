@@ -18,10 +18,10 @@ def declare_coef(): #1
        
     ''''Kinetic Coef'''
     coef['k_1'] = 0#.1
-    #coef['k_2'] = 0.83#0.25
-    #coef['k_3'] = 0.83#.83
-    #coef['k_4'] = 0.85#.85
-    #coef['k_5'] = 0.25#1#.25 #F
+    coef['k_2'] = 0.83#0.25
+    coef['k_3'] = 0.83#.83
+    coef['k_4'] = 0.85#.85
+    coef['k_5'] = 0.25#1#.25 #F
     #coef['beta1'] = 9.29#1
     coef['beta2'] = 0#.3
     
@@ -32,8 +32,8 @@ def declare_coef(): #1
     #coef['Al_n'] = 0
     
     ''''Stalk (b)'''
-    coef['vi'] = 0#10
-    coef['C_4'] = 0.01
+    coef['vi'] = 1#10
+    coef['C_4'] = 0.1
     #coef['mu'] = 5
     #coef['prod'] = 0
     
