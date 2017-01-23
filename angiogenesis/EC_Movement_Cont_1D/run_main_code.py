@@ -29,7 +29,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'Value C MAX', sol['c'].max()
         print 'NILAI C MIN', sol['c'].min()
       
-    if set['k'] % 10 == 0:
+    if set['k'] % 1000 == 0:
         pic.pic_1d(coef,set,sol) #3
 
     '''Recording Time'''         
@@ -54,7 +54,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'total time of processing:', 0, 'hours', menit, 'minutes', detik, 'seconds'
     else:
         print 'total time of processing:', 0, 'hours', 0, 'minutes', ttime, 'seconds'
-    print sol['matrix_tip'][-1][-1], sol['tip_cell']
+#     print sol['matrix_tip'][-1][-1], sol['tip_cell']
 #     print 'b sol not zero'
 #     for y in range(1,set['Ny'],2):
 #         for x in range(1,set['Nx'],2):

@@ -47,7 +47,7 @@ def declare_coef(): #1
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries (fixed: never change)
     coef['X'] = 1
-    set['T'] = 10.002
+    set['T'] = 5.002
     set['Nt'] = 100000
     
     set['rad'] = 0.12

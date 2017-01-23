@@ -20,9 +20,8 @@ def max_min_c(set,sol,x,c_o): #2.3.(1).(1)
     cijx_n = max(0,-cijx)
     return cijx_p, cijx_n
 
-def max_min_b(set,sol,x,y,b_o): #2.3.(1).(2)
+def max_min_b(set,sol,x,b_o): #2.3.(1).(2)
     xb = x-1
-    yb = y-1
     
     b_mean = b_mean_function(set,sol,xb,b_o)
     
@@ -33,7 +32,7 @@ def max_min_b(set,sol,x,y,b_o): #2.3.(1).(2)
     return bijx_p, bijx_n
 
 def F_vector_sol(coef,set,sol,n_o,b_o,c_o): #2.3.(1)
-    F_sol_1 = numpy.zeros((set['Nx']+1,set['Ny']+1))
+    F_sol_1 = numpy.zeros(set['Nx']+1)
     G_plus_1 = 0
     G_neg_1 = 0
     for x in range(0,set['Nx']+1,2):
@@ -53,7 +52,7 @@ def F_vector_sol(coef,set,sol,n_o,b_o,c_o): #2.3.(1)
                 
     return F_sol_1     
 
-def system(coef, set, sol, n_o): #2.3
+def system(coef, set, sol): #2.3
     c_o = numpy.copy(sol['c']) #to save values at time step k (we are calculating at time step k+1)
     n_o = numpy.copy(sol['n']) #to save values at time step k (we are calculating at time step k+1)
     b_o = numpy.copy(sol['b']) #to save values at time step k (we are calculating at time step k+1)
@@ -74,6 +73,8 @@ def system(coef, set, sol, n_o): #2.3
         if s != 0:
             sol['Vb_x'][x] = (Ind_max_n-x)*h_s/s #unit vector
 
+    F_sol_1 = F_vector_sol(coef, set, sol, n_o, b_o, c_o)
+     
     '''Solve b, n at main lattice'''
     for x in range(1,set['Nx'],2):
         prolifer_b = set['dt']*coef['vi']*b_o[x]*(1-b_o[x]) #proliferation term
@@ -88,7 +89,7 @@ def system(coef, set, sol, n_o): #2.3
             move_n = set['dt']*(F_sol_1[x+1]-F_sol_1[x-1])/set['h']
             move_b = set['dt']*coef['C_4']*((b_o[x]*max(sol['Vb_x'][x],0)-b_o[x+2]*max(-sol['Vb_x'][x+2],0))-(b_o[x-2]*max(sol['Vb_x'][x-2],0)-b_o[x]*max(-sol['Vb_x'][x],0)))/set['h']
         sol['n'][x] = n_o[x] -move_n
-        sol['b'][x] = b_o[x] + prolifer_1 - move_b
+        sol['b'][x] = b_o[x] + prolifer_b - move_b
         sol['b'][1] = 1 #the supply of stalk from pre-existing vessel
 #             if b_o[x,y] != 0:
 #                 print 'Value of proliferation:', prolifer_1
