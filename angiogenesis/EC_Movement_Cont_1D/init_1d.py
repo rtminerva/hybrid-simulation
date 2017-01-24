@@ -8,7 +8,7 @@ def c_prof_1(coef,set,sol): #2.1.1.(1)
 
 def n_prof(coef,set,sol):
     for x in range(1,set['Nx'],2):
-        sol['n'][x] = 0.25*m.exp(-(x*set['Hh']-set['rad'])**2/0.001)         
+        sol['n'][x] = 1*m.exp(-(x*set['Hh']-set['rad'])**2/0.001) #0.25      
     return sol
 
 def b_prof(coef,set,sol):

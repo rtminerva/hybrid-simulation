@@ -33,7 +33,7 @@ def declare_coef(): #1
     
     ''''Stalk (b)'''
     coef['vi'] = 1#10
-    coef['C_4'] = 0.1
+    coef['C_4'] = 0.1#1
     #coef['mu'] = 5
     #coef['prod'] = 0
     
