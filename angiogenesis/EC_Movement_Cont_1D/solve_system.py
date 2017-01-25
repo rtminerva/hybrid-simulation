@@ -79,10 +79,10 @@ def system(coef, set, sol): #2.3
         s = Ind_max_n-x
         if s <= 2:
             h_s = 0
-        elif s <= 50:
-            h_s = 2 + coef['M']*(s-50)
+        elif s <= 100:
+            h_s = 1 + coef['M']*(s-100)
         else:
-            h_s = 2
+            h_s = 1
         if s != 0:
             sol['Vb_x'][x] = (Ind_max_n-x)*h_s/s #unit vector
 

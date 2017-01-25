@@ -14,7 +14,7 @@ def declare_coef(): #1
     coef['m3'] = (0-2)/(40-20)
     
     #profile 2: /
-    coef['M'] = (2-4)/(50-2)
+    coef['M'] = (1-1.5)/(100-2)
        
     ''''Kinetic Coef'''
     coef['k_1'] = 0#.1
