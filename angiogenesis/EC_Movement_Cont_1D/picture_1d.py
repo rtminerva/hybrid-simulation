@@ -27,10 +27,13 @@ def pic_1d(coef,set,sol):
 
     '''Blood Vessel Growth (TIP and STALK)'''
     plt.figure(1)
+    axes = plt.gca()
+    axes.set_xlim([0,1])
+    axes.set_ylim([0,2.5])
     plt.title('%s%f' % ('Tip Cell, Stalk Cell density at t=',set['t']))
     x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
     x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
-    plt.plot(x_main_axis, n_sol, x_main_axis, b_sol)
+    plt.plot(x_main_axis, n_sol, x_main_axis, b_sol, x_sub_axis, c_sol)
     sol['stEC'] +=1  
     flag = 'N&S=%s' % str(sol['stEC']) 
     plt.savefig("%s.png" % flag)

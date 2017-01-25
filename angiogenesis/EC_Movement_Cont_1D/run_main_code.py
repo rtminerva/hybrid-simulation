@@ -22,14 +22,14 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'at Time', set['t']
 #     print 'Total Tips:', len(sol['matrix_tip'])
 #     print 'Total Stop Tips:', len(sol['sp_stop'])
-    if not coef['C_2'] == 0:
+    if not coef['C_2'] == 2:
         print 'Max Value of c, b, n', sol['c'].max(),',', sol['b'].max(),',', sol['n'].max()
         print 'Min Value of c, b, n', sol['c'].min(),',', sol['b'].min(),',', sol['n'].min()
     else:
         print 'Value C MAX', sol['c'].max()
         print 'NILAI C MIN', sol['c'].min()
       
-    if set['k'] % 10 == 0:
+    if set['k'] % 1000 == 0:
         pic.pic_1d(coef,set,sol) #3
 
     '''Recording Time'''         
