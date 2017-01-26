@@ -9,20 +9,20 @@ def declare_coef(): #1
     
     '''Gradient of h function'''
     #profile 1: \/\
-    coef['m1'] = (0.5-1)/(10-2)
-    coef['m2'] = (2-0.5)/(20-10)
-    coef['m3'] = (0-2)/(40-20)
+    coef['m1'] = (1.2-1.5)/(50-2)
+    coef['m2'] = (1.5-1.2)/(75-50)
+    coef['m3'] = (1-1.5)/(100-75)
     
     #profile 2: /
     coef['M'] = (1-1.5)/(100-2)
        
     ''''Kinetic Coef'''
     coef['k_1'] = 0#.1
-    coef['k_2'] = 0.83#0.25
+    coef['k_2'] = 0.2#0.83#0.25
     coef['k_3'] = 0.83#.83
     coef['k_4'] = 0.85#.85
     coef['k_5'] = 0.25#1#.25 #F
-    #coef['beta1'] = 9.29#1
+    coef['beta1'] = 9.29#1
     coef['beta2'] = 0#.3
     
     ''''Tip (n)'''
@@ -32,10 +32,10 @@ def declare_coef(): #1
     #coef['Al_n'] = 0
     
     ''''Stalk (b)'''
-    coef['vi'] = 1#10
-    coef['C_4'] = 0.1
-    #coef['mu'] = 5
-    #coef['prod'] = 0
+    coef['vi'] = 10#10
+    coef['C_4'] = 0.02#0.1
+    coef['D_b'] = 0#.0001
+    coef['mu'] = 5
     
     '''VEGF (c)'''
     coef['C_3'] = 0#.00018#0.00035

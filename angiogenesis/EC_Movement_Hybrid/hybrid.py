@@ -362,12 +362,8 @@ def hybrid_tech(coef, set, sol): #2.2
                                 while tipp == 'stay':
                                     sol, tipp = movement_branch(tipp,sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4) #2.2.(5)
                     '''
-<<<<<<< HEAD
-    '''Vector Velocity of stalk (Vb) Method 1:all towards tip cell'''#d
-=======
     '''Vector Velocity of stalk (Vb) Method 1:all towards tip cell'''
     #profile 1: \/\
->>>>>>> branch 'master' of https://github.com/rtminerva/hybrid-simulation.git
     for y in range(1,set['Ny'],2):
         for x in range(1,set['Nx'],2):
             vb_x = 0

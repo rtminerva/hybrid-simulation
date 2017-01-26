@@ -24,7 +24,7 @@ def n_mean_function(set,sol,xb,n_o):
     else:
         n_mean_r = (n_o[xb+2]+n_o[xb])/2
         n_mean_l = (n_o[xb-2]+n_o[xb])/2
-    n_mean = [n_mean_r, n_mean_l]
+    n_mean = [n_mean_l, n_mean_r]
     return n_mean
 
 def max_min_c(set,sol,x,c_o): #2.3.(1).(1)
@@ -74,6 +74,22 @@ def system(coef, set, sol): #2.3
     ##Finding index of n max
     Ind_max_n = numpy.argmax(n_o)
         
+    #profile 1: \/\
+#     for x in range(1,set['Nx'],2):
+#         s = Ind_max_n-x
+#         if s <= 2:
+#             h_s = 0
+#         elif s <= 50:
+#             h_s = 1.2 + coef['m1']*(s-50)
+#         elif s <= 75:
+#             h_s = 1.5 + coef['m2']*(s-75)
+#         elif s <= 100:
+#             h_s = 1 + coef['m3']*(s-100)
+#         else:
+#             h_s = 1
+#         if s != 0:
+#             sol['Vb_x'][x] = (Ind_max_n-x)*h_s/s #unit vector
+        
     #profile 2: /
     for x in range(1,set['Nx'],2):
         s = Ind_max_n-x
@@ -90,8 +106,8 @@ def system(coef, set, sol): #2.3
      
     '''Solve b, n at main lattice'''
     for x in range(1,set['Nx'],2):
-        kinetic_b = 0#set['dt']*coef['vi']*b_o[x]*(1-b_o[x]) + set['dt']*coef['k_5']*(coef['k_3']*(n_o[x])**2+coef['k_4']*n_o[x]*b_o[x])
-        kinetic_n = 0#set['dt']*coef['k_2']*n_o[x] - set['dt']*coef['k_3']*(n_o[x])**2-set['dt']*coef['k_4']*n_o[x]*b_o[x]
+        kinetic_b = set['dt']*coef['vi']*b_o[x]*(1-b_o[x])# + set['dt']*coef['mu']*n_o[x]*b_o[x]*(1-(b_o[x])/(coef['beta1'])) # + set['dt']*coef['k_5']*(coef['k_3']*(n_o[x])**2+coef['k_4']*n_o[x]*b_o[x])
+        kinetic_n = set['dt']*coef['k_2']*n_o[x] #- set['dt']*coef['k_3']*(n_o[x])**2-set['dt']*coef['k_4']*n_o[x]*b_o[x]
         ##Pettet & Balding
 #         kinetic_b = - 0.1*set['dt']*coef['C_1']*(n_mean[0]-n_mean[1])/(set['h']) #+ set['dt']*coef['Ki']*(c_o[x+1]-c_o[x-1])/(set['h'])
         #we put the convection term as move variable
@@ -100,12 +116,10 @@ def system(coef, set, sol): #2.3
             n_mean_ip1 = n_mean_function(set,sol,x+2,n_o)
             move_n = set['dt']*(F_sol_1[x+1])/set['h']
             ##New Model
-            move_b = set['dt']*coef['C_4']*((b_o[x]*max(sol['Vb_x'][x],0)-b_o[x+2]*max(-sol['Vb_x'][x+2],0)))/set['h']
+#             move_b = set['dt']*coef['C_4']*((b_o[x]*max(sol['Vb_x'][x],0)-b_o[x+2]*max(-sol['Vb_x'][x+2],0)))/set['h']
 
-            ##Stalk Vel positive grad n
-#             move_b = set['dt']*coef['C_4']*((b_o[x]*max((n_mean_i[1]-n_mean_i[0])/set['h'],0)-b_o[x+2]*max(-(n_mean_ip1[1]-n_mean_ip1[0])/set['h'],0)))/set['h']
             ##Stalk Vel grad n
-#             move_b = set['dt']*coef['C_4']*((b_o[x]*max(-(n_mean_i[1]-n_mean_i[0])/set['h'],0)-b_o[x+2]*max((n_mean_ip1[1]-n_mean_ip1[0])/set['h'],0)))/set['h']
+            move_b = set['dt']*coef['C_4']*((b_o[x]*max((n_mean_i[1]-n_mean_i[0])/set['h'],0)-b_o[x+2]*max(-(n_mean_ip1[1]-n_mean_ip1[0])/set['h'],0)))/set['h'] + coef['D_b']*set['dt']*(b_o[x+2]-b_o[x])/(set['h'])**2
             ##Stalk Vel positive grad c
 #             move_b = set['dt']*coef['C_4']*((b_o[x]*max((c_o[x+1]-c_o[x-1])/set['h'],0)-b_o[x+2]*max(-(c_o[x+3]-c_o[x+1])/set['h'],0)))/set['h']
         elif x == set['Nx']-1:
@@ -113,10 +127,10 @@ def system(coef, set, sol): #2.3
             n_mean_in1 = n_mean_function(set,sol,x-2,n_o)
             move_n = set['dt']*(-F_sol_1[x-1])/set['h']
             ##New Model
-            move_b = set['dt']*coef['C_4']*(-(b_o[x-2]*max(sol['Vb_x'][x-2],0)-b_o[x]*max(-sol['Vb_x'][x],0)))/set['h']
+#             move_b = set['dt']*coef['C_4']*(-(b_o[x-2]*max(sol['Vb_x'][x-2],0)-b_o[x]*max(-sol['Vb_x'][x],0)))/set['h']
 
             ##Stalk Vel grad n
-#             move_b = set['dt']*coef['C_4']*(-(b_o[x-2]*max((n_mean_in1[1]-n_mean_in1[0])/set['h'],0)-b_o[x]*max(-(n_mean_i[1]-n_mean_i[0])/set['h'],0)))/set['h']
+            move_b = set['dt']*coef['C_4']*(-(b_o[x-2]*max((n_mean_in1[1]-n_mean_in1[0])/set['h'],0)-b_o[x]*max(-(n_mean_i[1]-n_mean_i[0])/set['h'],0)))/set['h'] + coef['D_b']*set['dt']*(b_o[x-2]-b_o[x])/(set['h'])**2
             ##Stalk Vel positive grad c
 #             move_b = set['dt']*coef['C_4']*(-(b_o[x-2]*max((c_o[x-1]-c_o[x-3])/set['h'],0)-b_o[x]*max(-(c_o[x+1]-c_o[x-1])/set['h'],0)))/set['h']
         else:
@@ -125,20 +139,24 @@ def system(coef, set, sol): #2.3
             n_mean_in1 = n_mean_function(set,sol,x-2,n_o)
             move_n = set['dt']*(F_sol_1[x+1]-F_sol_1[x-1])/set['h']
             ##New Model
-            move_b = set['dt']*coef['C_4']*((b_o[x]*max(sol['Vb_x'][x],0)-b_o[x+2]*max(-sol['Vb_x'][x+2],0))-(b_o[x-2]*max(sol['Vb_x'][x-2],0)-b_o[x]*max(-sol['Vb_x'][x],0)))/set['h']
+#             move_b = set['dt']*coef['C_4']*((b_o[x]*max(sol['Vb_x'][x],0)-b_o[x+2]*max(-sol['Vb_x'][x+2],0))-(b_o[x-2]*max(sol['Vb_x'][x-2],0)-b_o[x]*max(-sol['Vb_x'][x],0)))/set['h']
             
             ##Stalk Vel grad n
-#             move_b = set['dt']*coef['C_4']*((b_o[x]*max((n_mean_i[1]-n_mean_i[0])/set['h'],0)-b_o[x+2]*max(-(n_mean_ip1[1]-n_mean_ip1[0])/set['h'],0))-(b_o[x-2]*max((n_mean_in1[1]-n_mean_in1[0])/set['h'],0)-b_o[x]*max(-(n_mean_i[1]-n_mean_i[0])/set['h'],0)))/set['h']
+            move_b = set['dt']*coef['C_4']*((b_o[x]*max((n_mean_i[1]-n_mean_i[0])/set['h'],0)-b_o[x+2]*max(-(n_mean_ip1[1]-n_mean_ip1[0])/set['h'],0))-(b_o[x-2]*max((n_mean_in1[1]-n_mean_in1[0])/set['h'],0)-b_o[x]*max(-(n_mean_i[1]-n_mean_i[0])/set['h'],0)))/set['h'] + coef['D_b']*set['dt']*(b_o[x-2]+b_o[x+2]-2*b_o[x])/(set['h'])**2
             ##Stalk Vel positive grad c
 #             move_b = set['dt']*coef['C_4']*((b_o[x]*max((c_o[x+1]-c_o[x-1])/set['h'],0)-b_o[x+2]*max(-(c_o[x+3]-c_o[x+1])/set['h'],0))-(b_o[x-2]*max((c_o[x-1]-c_o[x-3])/set['h'],0)-b_o[x]*max(-(c_o[x+1]-c_o[x-1])/set['h'],0)))/set['h']
         sol['n'][x] = n_o[x] - move_n + kinetic_n
         sol['b'][x] = b_o[x] - move_b + kinetic_b
-        if x*set['Hh'] < set['rad']:
+        
+#         sol['b'][1] =1
+        #Keeping Source of Stalk
+        if x*set['Hh'] < set['rad']-0.06:
             sol['b'][x] =1
-#         sol['b'][1] = 1 #the supply of stalk from pre-existing vessel
-#             if b_o[x,y] != 0:
-#                 print 'Value of proliferation:', prolifer_1
-#                 print 'Value of degradation by movement:', move    
+#             sol['b'][x] = 0.5 + 0.5*m.tanh(((set['rad'])-x*set['Hh'])/0.01)
+
+#         if b_o[x] != 0:
+#             print 'Value of proliferation:', kinetic_b
+#             print 'Value of degradation by movement:', move_b    
                      
     '''Solve c at sub lattice'''
     for x in range(0,set['Nx']+1,2):

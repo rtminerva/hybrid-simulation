@@ -9,13 +9,16 @@ def c_prof_1(coef,set,sol): #2.1.1.(1)
 
 def n_prof(coef,set,sol):
     for x in range(1,set['Nx'],2):
-        sol['n'][x] = 1*m.exp(-(x*set['Hh']-set['rad'])**2/0.001) #0.25      
+        sol['n'][x] = 0.75*m.exp(-(x*set['Hh']-set['rad'])**2/0.005) #0.25      
     return sol
 
 def b_prof(coef,set,sol):
     for x in range(1,set['Nx'],2):
-        if x*set['Hh'] < set['rad']:
-            sol['b'][x] = 1            
+        sol['b'][x] = 0.5 + 0.5*m.tanh(((set['rad']-0.02)-x*set['Hh'])/0.01)
+#         if x*set['Hh'] < set['rad']:
+            
+            #sol['b'][x] = m.exp(-(x*set['Hh']-(set['rad']-0.05))**2/0.001) #0.25
+            #sol['b'][x] = 1            
     return sol
 
 def init_1d_(coef,set,sol): #2.1.1
