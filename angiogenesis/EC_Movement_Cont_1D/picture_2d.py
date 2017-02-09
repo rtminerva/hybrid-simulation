@@ -22,7 +22,8 @@ def pic_2d(coef,set,sol):
     for j, y in enumerate(range(1,set['Ny'],2)):
         for i, x in enumerate(range(1,set['Nx'],2)):
             n_sol[i,j] = sol['n'][x,y]
-    plt.pcolormesh(y_main_axis, x_main_axis, n_sol, cmap="Reds", vmin=0, vmax=1)
+    n_sol = numpy.ma.masked_array(n_sol, n_sol < 0.00001)
+    plt.pcolormesh(y_main_axis, x_main_axis, n_sol, cmap="gist_ncar", vmin=0, vmax=1)
     plt.colorbar()
     
     sol['stEC'] +=1  
@@ -44,8 +45,8 @@ def pic_2d(coef,set,sol):
     for j, y in enumerate(range(1,set['Ny'],2)):
         for i, x in enumerate(range(1,set['Nx'],2)):
             b_sol[i,j] = sol['b'][x,y]
-    b_sol = numpy.ma.masked_array(b_sol, b_sol < 0.0001)
-    plt.pcolormesh(y_main_axis, x_main_axis, b_sol, cmap="BuGn", vmin=0, vmax=1)
+    b_sol = numpy.ma.masked_array(b_sol, b_sol < 0.00001)
+    plt.pcolormesh(y_main_axis, x_main_axis, b_sol, cmap='gist_ncar', vmin=0, vmax=1)
     plt.colorbar()
     
     sol['stEC_1'] +=1  
