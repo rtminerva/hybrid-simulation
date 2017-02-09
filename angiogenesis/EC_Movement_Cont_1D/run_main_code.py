@@ -1,6 +1,7 @@
 from coef_setting import declare_coef #1
 import main_code as main #2
-import picture_1d as pic #3
+import picture_1d as pic_1d #3
+import picture_2d as pic_2d
 
 import numpy
 from timeit import default_timer as timer 
@@ -22,15 +23,14 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'at Time', set['t']
 #     print 'Total Tips:', len(sol['matrix_tip'])
 #     print 'Total Stop Tips:', len(sol['sp_stop'])
-    if not coef['C_2'] == 2:
-        print 'Max Value of c, b, n', sol['c'].max(),',', sol['b'].max(),',', sol['n'].max()
-        print 'Min Value of c, b, n', sol['c'].min(),',', sol['b'].min(),',', sol['n'].min()
-    else:
-        print 'Value C MAX', sol['c'].max()
-        print 'NILAI C MIN', sol['c'].min()
+    print 'Max Value of c, b, n', sol['c'].max(),',', sol['b'].max(),',', sol['n'].max()
+    print 'Min Value of c, b, n', sol['c'].min(),',', sol['b'].min(),',', sol['n'].min()
       
     if set['k'] % 100 == 0:
-        pic.pic_1d(coef,set,sol) #3
+        if set['Dimension'] == '1D':
+            pic_1d.pic_1d(coef,set,sol) #3
+        elif set['Dimension'] == '2D':
+            pic_2d.pic_2d(coef,set,sol) #3
 
     '''Recording Time'''         
     ttime = time.clock()
