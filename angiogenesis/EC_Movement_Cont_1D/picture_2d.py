@@ -22,7 +22,7 @@ def pic_2d(coef,set,sol):
     for j, y in enumerate(range(1,set['Ny'],2)):
         for i, x in enumerate(range(1,set['Nx'],2)):
             n_sol[i,j] = sol['n'][x,y]
-    plt.pcolormesh(y_main_axis, x_main_axis, n_sol, cmap="Reds", vmin=0, vmax=1.5)
+    plt.pcolormesh(y_main_axis, x_main_axis, n_sol, cmap="Reds", vmin=0, vmax=1)
     plt.colorbar()
     
     sol['stEC'] +=1  
@@ -45,7 +45,7 @@ def pic_2d(coef,set,sol):
         for i, x in enumerate(range(1,set['Nx'],2)):
             b_sol[i,j] = sol['b'][x,y]
     b_sol = numpy.ma.masked_array(b_sol, b_sol < 0.0001)
-    plt.pcolormesh(y_main_axis, x_main_axis, b_sol, cmap="BuGn", vmin=0, vmax=1.5)
+    plt.pcolormesh(y_main_axis, x_main_axis, b_sol, cmap="BuGn", vmin=0, vmax=1)
     plt.colorbar()
     
     sol['stEC_1'] +=1  
@@ -80,7 +80,7 @@ def pic_2d(coef,set,sol):
     #surf = ax.plot_surface(x_sub_axis, y_sub_axis, c_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
     #        linewidth=0, antialiased=False)
     #fig1.colorbar(surf, shrink=0.5, aspect=5)
-    plt.pcolormesh(y_sub_axis, x_sub_axis, c_sol, vmin=0, vmax=1.5)
+    plt.pcolormesh(y_sub_axis, x_sub_axis, c_sol, vmin=0, vmax=1)
     sol['stVEGF'] +=1  
     flag = 'zVEGF=%s' % str(sol['stVEGF']) 
     plt.colorbar()
