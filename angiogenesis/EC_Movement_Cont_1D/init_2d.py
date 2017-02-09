@@ -31,13 +31,13 @@ def n_b_prof(coef,set,sol):
             range_6 = step*6+1
             
             if y > range_1 and y < range_2: 
-                sol['n'][x,y] = 0.7*m.exp(-(x*set['Hh']-set['rad'])**2/0.0005)*(m.sin(tip*m.pi*y*set['Hh']))**2 
+                sol['n'][x,y] = 0.4*m.exp(-(x*set['Hh']-set['rad'])**2/0.0005)*(m.sin(tip*m.pi*y*set['Hh']))**2 
                 sol['b'][x,y] = (0.5 + 0.5*m.tanh(((set['rad']-0.05)-x*set['Hh'])/0.01))*(m.sin(tip*m.pi*y*set['Hh']))**2 
             if y > range_3 and y < range_4:
-                sol['n'][x,y] = 0.7*m.exp(-(x*set['Hh']-set['rad'])**2/0.0005)*(m.sin(tip*m.pi*y*set['Hh']))**2 
+                sol['n'][x,y] = 0.4*m.exp(-(x*set['Hh']-set['rad'])**2/0.0005)*(m.sin(tip*m.pi*y*set['Hh']))**2 
                 sol['b'][x,y] = (0.5 + 0.5*m.tanh(((set['rad']-0.05)-x*set['Hh'])/0.01))*(m.sin(tip*m.pi*y*set['Hh']))**2
             if y > range_5 and y < range_6:
-                sol['n'][x,y] = 0.7*m.exp(-(x*set['Hh']-set['rad'])**2/0.0005)*(m.sin(tip*m.pi*y*set['Hh']))**2 
+                sol['n'][x,y] = 0.4*m.exp(-(x*set['Hh']-set['rad'])**2/0.0005)*(m.sin(tip*m.pi*y*set['Hh']))**2 
                 sol['b'][x,y] = (0.5 + 0.5*m.tanh(((set['rad']-0.05)-x*set['Hh'])/0.01))*(m.sin(tip*m.pi*y*set['Hh']))**2
             
 #             sol['n'][x,y] = 0.4*m.exp(-(x*set['Hh']-set['rad'])**2/0.01)*(m.sin(tip*m.pi*y*set['Hh']))**2 
