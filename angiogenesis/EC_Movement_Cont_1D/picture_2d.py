@@ -23,7 +23,7 @@ def pic_2d(coef,set,sol):
         for i, x in enumerate(range(1,set['Nx'],2)):
             n_sol[i,j] = sol['n'][x,y]
     n_sol = numpy.ma.masked_array(n_sol, n_sol < 0.00001)
-    plt.pcolormesh(y_main_axis, x_main_axis, n_sol, cmap="gist_ncar", vmin=0, vmax=1)
+    plt.pcolormesh(y_main_axis, x_main_axis, n_sol, cmap='Reds', vmin=0, vmax=1)
     plt.colorbar()
     
     sol['stEC'] +=1  

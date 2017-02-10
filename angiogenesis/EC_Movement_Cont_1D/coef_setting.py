@@ -32,7 +32,7 @@ def declare_coef(): #1
     coef['Lam_2'] = 0.001 # tip-stalk anastomosis
     
     ''''Stalk (b)'''
-    coef['D_b'] = 3*10**(-3) #NODATA Stalk diffusion
+    coef['D_b'] = 0#3*10**(-3) #NODATA Stalk diffusion
     coef['Ki_b'] = 0.02 #NODATA tip-taxis
     ##Kinetics
     coef['mu2'] = 1 #stalk proliferation 1
