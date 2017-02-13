@@ -106,8 +106,8 @@ def system_1d(coef, set, sol): #2.3
      
     '''Solve b, n at main lattice'''
     for x in range(1,set['Nx'],2):
-        kinetic_b =0#  set['dt']*coef['mu2']*b_o[x]*(1-b_o[x]) + set['dt']*coef['mu3']*n_o[x]*b_o[x]*(1-(b_o[x])/(coef['beta1'])) + set['dt']*coef['Lam_3']*(coef['Lam_1']*(n_o[x])**2+coef['Lam_2']*n_o[x]*b_o[x])
-        kinetic_n =0#  set['dt']*coef['mu1']*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
+        kinetic_b = set['dt']*coef['mu2']*b_o[x]*(1-b_o[x]) + set['dt']*coef['mu3']*n_o[x]*b_o[x]*(1-(b_o[x])/(coef['beta1'])) + set['dt']*coef['Lam_3']*(coef['Lam_1']*(n_o[x])**2+coef['Lam_2']*n_o[x]*b_o[x])
+        kinetic_n = set['dt']*coef['mu1']*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
         ##Pettet & Balding
 #         kinetic_b = - 0.1*set['dt']*coef['C_1']*(n_mean[0]-n_mean[1])/(set['h']) #+ set['dt']*coef['Ki']*(c_o[x+1]-c_o[x-1])/(set['h'])
         #we put the convection term as move variable

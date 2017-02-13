@@ -33,10 +33,10 @@ def pic_1d(coef,set,sol):
     plt.title('%s%f' % ('t=',set['t']))
     x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
     x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
-    plt.plot(x_main_axis, n_sol, x_main_axis, b_sol, x_sub_axis, c_sol)
-    sol['stEC'] +=1  
+    plt.plot(x_main_axis, n_sol, x_main_axis, b_sol, x_sub_axis, c_sol) 
     flag = 'N&S=%s' % str(sol['stEC']) 
     plt.savefig("%s.png" % flag)
     plt.close()
+    sol['stEC'] +=1 
     
     return

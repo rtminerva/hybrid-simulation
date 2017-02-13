@@ -16,35 +16,35 @@ def declare_coef(): #1
 #     #profile 2: /
 #     coef['M'] = (1-1.5)/(100-2)
     
-#     set['Dimension'] = '1D'
-    set['Dimension'] = '2D'
+    set['Dimension'] = '1D'
+#     set['Dimension'] = '2D'
     
-    set['c_prof'] = 'C1'
+#     set['c_prof'] = 'C1'
 #     set['c_prof'] = 'C2'
     
     ''''Tip (n)'''
     coef['D_n'] = 0.00018 #AUBERT tip Diffusion
-    coef['Ki_n'] = 0.133 #AUBERT Chemotaxis coef (range)
+    coef['Ki_n'] = 0.135 #AUBERT Chemotaxis coef (range max)
     coef['Ro_n'] = 0.00018 #AUBERT tip away from stalk
     ##Kinetics
-    coef['mu1'] = 0.2 # tip branching
-    coef['Lam_1'] = 0.001 # tip-tip anastomosis 
-    coef['Lam_2'] = 0.001 # tip-stalk anastomosis
+    coef['mu1'] = 0.9#7 #AUBERT max tip branching
+    coef['Lam_1'] = 0.83#5 #AUBERT in range tip-tip anastomosis 
+    coef['Lam_2'] = 0.85#5 #AUBERT in range tip-stalk anastomosis
     
     ''''Stalk (b)'''
-    coef['D_b'] = 0#3*10**(-3) #NODATA Stalk diffusion
-    coef['Ki_b'] = 0.02 #NODATA tip-taxis
+    coef['D_b'] = 3*10**(-3) #NODATA Stalk diffusion ###
+    coef['Ki_b'] = 0.015 #NODATA tip-taxis
     ##Kinetics
-    coef['mu2'] = 1 #stalk proliferation 1
-    coef['mu3'] = 1 #stalk-tip proliferation
-    coef['beta1'] = 1 #stalk-tip saturation point
+    coef['mu2'] = 0.8 #0.5 #stalk proliferation 1 #####
+    coef['mu3'] = 0.3 #0.2 #stalk-tip proliferation #####
+    coef['beta1'] = 1 #stalk-tip saturation point #####
     coef['Lam_3'] = 0.001 #Anastomosis should be small enough
     
     '''VEGF (c)''' ##DONE
-    coef['D_c'] = 0.005 #vegf diffusion (range)
+    coef['D_c'] = 0.01 #AUBERT diffusion
     coef['Lam_4'] = 0.1 #AUBERT digestion
-    coef['mu4'] = 0.05 #proliferation
-    coef['mu5'] = 0.2 #decay
+    coef['mu4'] = 0.08 #AUBERT proliferation
+    coef['mu5'] = 0.5 #AUBERT decay
     coef['beta2'] = 0.3 #AUBERT stalk critical point
 
     '''Spatial and Temporal Meshes Number'''
