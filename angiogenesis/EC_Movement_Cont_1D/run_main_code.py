@@ -23,10 +23,18 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'at Time', set['t']
 #     print 'Total Tips:', len(sol['matrix_tip'])
 #     print 'Total Stop Tips:', len(sol['sp_stop'])
-    print 'Max Value of c, b, n', sol['c'].max(),',', sol['b'].max(),',', sol['n'].max()
-    print 'Min Value of c, b, n', sol['c'].min(),',', sol['b'].min(),',', sol['n'].min()
+    '''Model extension'''
+    if set['Model'] == 'extension':
+        print 'Max Value of c, b, n', sol['c'].max(),',', sol['b'].max(),',', sol['n'].max()
+        print 'Min Value of c, b, n', sol['c'].min(),',', sol['b'].min(),',', sol['n'].min()
+        print '******======******'
+        print 'Max Value of p, e, a1, a2, r1, r2, m, ma', sol['p'].max(),',', sol['e'].max(),',', sol['a1'].max(),',', sol['a2'].max(),',', sol['r1'].max(),',', sol['r2'].max(),',', sol['m'].max(),',', sol['ma'].max()
+        print 'Min Value of p, e, a1, a2, r1, r2, m, ma', sol['p'].min(),',', sol['e'].min(),',', sol['a1'].min(),',', sol['a2'].min(),',', sol['r1'].min(),',', sol['r2'].min(),',', sol['m'].min(),',', sol['ma'].min()
+    else:
+        print 'Max Value of c, b, n', sol['c'].max(),',', sol['b'].max(),',', sol['n'].max()
+        print 'Min Value of c, b, n', sol['c'].min(),',', sol['b'].min(),',', sol['n'].min()
       
-    if set['k'] % 1000 == 0:
+    if set['k'] % 100 == 0:
         if set['Dimension'] == '1D':
             pic_1d.pic_1d(coef,set,sol) #3
         elif set['Dimension'] == '2D':
