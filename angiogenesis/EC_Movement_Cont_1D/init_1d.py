@@ -24,7 +24,10 @@ def b_prof(coef,set,sol):
 
 def m_prof(coef,set,sol):
     for x in range(1,set['Nx'],2):
-        sol['m'][x] = 0.5 + 0.5*m.tanh(((set['rad']-0.05)-x*set['Hh'])/0.01)
+        sol['m'][x] = 0.4 + 0.4*m.tanh(((set['rad']-0.05)-x*set['Hh'])/0.01)
+#         sol['e'][x] = 0.1 + 0.1*m.tanh(((set['rad']-0.05)-x*set['Hh'])/0.01)
+#         sol['a1'][x] = 0.2 + 0.2*m.tanh(((set['rad']-0.05)-x*set['Hh'])/0.01)
+#         sol['a2'][x] = 0.1 + 0.1*m.tanh(((set['rad']-0.05)-x*set['Hh'])/0.01)
     return sol
 
 def init_1d_(coef,set,sol): #2.1.1

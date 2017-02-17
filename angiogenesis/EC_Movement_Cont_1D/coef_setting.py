@@ -34,7 +34,7 @@ def declare_coef(): #1
     
     ''''Stalk (b)'''
     coef['D_b'] = 3*10**(-3) #NODATA Stalk diffusion #STALK DIFFUSION PARAMETER ANALYSIS# DATA find!! 3*10**(-3)
-    coef['Ki_b'] = 0.00001 #NODATA tip-taxis #TIP TAXIS PARAMETER ANALYSIS# 0.015 ##IN ANALYSIS
+    coef['Ki_b'] = 0.015 #NODATA tip-taxis #TIP TAXIS PARAMETER ANALYSIS# 0.015 ##IN ANALYSIS
     ##Kinetics
     coef['mu2'] = 0.8 #0.5 #stalk proliferation 1 #####
     coef['mu3'] = 0.3 #0.2 #stalk-tip proliferation #####
@@ -52,8 +52,8 @@ def declare_coef(): #1
     ##set dictionaries (fixed: never change)
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 10.002
-    set['Nt'] = 100000
+    set['T'] = 200.001
+    set['Nt'] = 1000000
     set['rad'] = 0.12
     set['h'] = 0.005 #0.005 #0.01#
     set['dt'] = 0.001 #0.001
@@ -77,14 +77,14 @@ def declare_coef(): #1
         '''Coefficients'''
         '''PDGF-B (p)'''
         coef['D_p'] = 0.008 #Xue diffusion
-        coef['mu6'] = 5 #NODATA di Xue ngaco? Prolif
-        coef['mu7'] = 2.4 #Xue decay
+        coef['mu6'] = 0.5 #NODATA di Xue ngaco? Prolif
+        coef['mu7'] = 0.1 #2.4 #Xue decay
         coef['Lam_5'] = 0.1 #NODATAuptake
         
         '''Tie2 (e)'''
-        coef['D_e'] = 0.82*10**(-2) #NODATA diffusion
-        coef['mu8'] = 3 #NODATA prolif
-        coef['mu9'] = 1 #NODATA decay
+        coef['D_e'] = 0.82*10**(-4) #0.82*10**(-2) #NODATA diffusion
+        coef['mu8'] = 0.05 #NODATA prolif
+        coef['mu9'] = 0.3 #NODATA decay
     
         '''Ang1 (a1)'''
         coef['D_a1'] = 0.82*10**(-4) #Xue diffusion
@@ -92,26 +92,27 @@ def declare_coef(): #1
         coef['mu11'] = 0.48 #Xue decay
         
         '''Ang2 (a2)'''
-        coef['D_a2'] = 0.82*10**(-2) #Xue16 diffusion
-        coef['mu12'] = 3.744 #Xue43 prolif
-        coef['mu13'] = 0.96 #Xue43 decay
+        coef['D_a2'] = 0.82*10**(-4) #0.82*10**(-2) #Xue16 diffusion
+        coef['mu12'] = 0.07#3.744 #Xue43 prolif
+        coef['mu13'] = 0.5#0.96 #Xue43 decay
+        coef['beta3'] = 0.2 #VEGF critical
         
         '''Kinetic Rate of Tie2, Ang1, Ang2'''
-        coef['k1'] = 1 #Xue57
-        coef['k_1'] = 1.5 #modif #30 Xue57
-        coef['k2'] = 1 #Xue57
-        coef['k_2'] = 1.5 #modif #30 Xue57
+        coef['k1'] = 1 #Xue57/10
+        coef['k_1'] = 1.2 #modif #3#Xue57/10
+        coef['k2'] = 0.7 #Xue57/10
+        coef['k_2'] = 1.2 #Xue57/10
         
         '''Mural (m)'''
         coef['D_m'] = 0.82*10**(-4) #0.008 #Xue
-        coef['Ki_m'] = 0.0048 #Xue
-        coef['mu14'] = 3 #Xue prolif
-        coef['mu15'] = 1.13 #Xue decay
+        coef['Ki_m'] = 0.048 #0.0048 #Xue
+        coef['mu14'] = 0.3#3 #Xue prolif
+        coef['mu15'] = 0.01#1.13 #Xue decay
         
         '''Attached Mural (ma)'''
-        coef['Gam'] = 2.5 #Xue94,115
-        coef['mu16'] = 0.1 #Xue
-        coef['mu17'] = 0.3 #Xue
+        coef['Gam'] = 3.5#2.5 #Xue94,115
+        coef['mu16'] = 0.5 #0.1 #Xue
+        coef['mu17'] = 0.7 #0.3 #Xue
 
         '''To store Images need???'''
           
