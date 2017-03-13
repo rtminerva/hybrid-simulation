@@ -8,11 +8,10 @@ def declare_coef(): #1
     sol = {}
     
     '''Gradient of h function'''
-<<<<<<< HEAD
+
     #profile 1:\/\
-=======
+
     #profile 1: \/\
->>>>>>> branch 'master' of https://github.com/rtminerva/hybrid-simulation.git
     coef['m1'] = (0.5-1)/(10-2)
     coef['m2'] = (2-0.5)/(20-10)
     coef['m3'] = (0-2)/(40-20)
