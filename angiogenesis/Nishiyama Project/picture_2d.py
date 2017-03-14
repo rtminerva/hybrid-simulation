@@ -8,9 +8,8 @@ def pic_2d(coef,set,sol):
     '''EC'''
     fig = plt.figure()
     plt.title('%s%f' % ('t=',set['t']))
-    plt.xlim((set['Hh'],coef['X']-set['Hh']))
-    plt.ylim((set['Hh'],coef['Y']-set['Hh']))
     ax = fig.add_subplot(111)
+#     ax.set_xbound(lower=0, upper=1000)
     for i in range(0,len(sol['matrix_tip'])):
         x_p = []
         y_p = []
@@ -24,6 +23,8 @@ def pic_2d(coef,set,sol):
         x_p.append(tip[0]*set['Hh'])
         y_p.append(tip[1]*set['Hh'])
     ax.scatter(x_p, y_p, marker = 'o', s = 2, color ='b')
+    plt.xlim((set['Hh'],coef['X']-set['Hh']))
+    plt.ylim((set['Hh'],coef['Y']-set['Hh']))
     sol['stEC'] +=1  
     flag = 'EC=%s' % str(sol['stEC']) 
     plt.savefig("%s.png" % flag)
