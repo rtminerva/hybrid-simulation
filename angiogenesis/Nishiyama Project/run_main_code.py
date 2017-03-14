@@ -25,7 +25,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'Max Value of c, n', sol['c'].max(),',', sol['n'].max()
     print 'Min Value of c, n', sol['c'].min(),',', sol['n'].min()
       
-    if set['k'] % 10 == 0:
+    if set['k'] % 100 == 0:
         pic.pic_2d(coef,set,sol) #3
 
     '''Recording Time'''         
