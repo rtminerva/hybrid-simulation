@@ -25,10 +25,12 @@ def declare_coef():
     ##VEGF (c)
     coef['D_c'] = 0.00035
     coef['Nu'] = 0.1
+    coef['Alp_c'] = 1
     
     ##ECM Fibronectin (f)
     coef['Beta'] = 0.05#7
     coef['Gama'] = 0.1
+    coef['Alp_f'] = 1
  
     '''Branching & Mitosis'''
     coef['T_branch'] = 0.25
@@ -49,10 +51,6 @@ def declare_coef():
     set['Nx'] = int(coef['X']/set['Hh'])
     set['Ny'] = int(coef['Y']/set['Hh'])
     
-    if set['layout'] == '3D':
-        coef['Z'] = 1
-        set['Nz'] = int(coef['Z']/set['Hh'])
-    
     '''Initial Setting'''
     set['t'] = 0
     set['k'] = 0
@@ -61,13 +59,7 @@ def declare_coef():
     ##sol dictionaries dapat berubah
     sol['stEC'] = 0
     sol['stVEGF'] = 0
-    sol['stFb'] = 0
-    #sol['matrix_tip'] = 0
-    #sol['list_tip_movement'] = 0
-    #sol['life_time_tip'] = 0
     sol['stop_iter'] = 0
-    #sol['sp_stop'] = 0
-    #sol['tip_cell'] = 0
     sol['pp'] = {}
 
     return coef, set, sol

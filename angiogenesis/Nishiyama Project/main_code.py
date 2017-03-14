@@ -1,6 +1,6 @@
 from initial_conditions import initial_prof #2.1
 from hybrid import hybrid_tech #2.2
-from cont_system import euler_meth #2.3
+from solve_con import system_2d #2.3
 from timeit import default_timer as timer
 
 def boolean_1_iter(coef, set, sol): #2                      
@@ -10,10 +10,10 @@ def boolean_1_iter(coef, set, sol): #2
     else:                             
         '''2. Branching and Movement''' 
         start1 = timer()  
-        sol = hybrid_tech(coef, set, sol) #2.2
+        sol, n_o= hybrid_tech(coef, set, sol) #2.2
         start2 = timer()
         '''Solving c,f,T'''
-        sol = euler_meth(coef, set, sol) #2.3
+        sol = system_2d(coef, set, sol, n_o) #2.3
         start3 = timer()            
         print 'Hybrid for n time', start2-start1
         print 'Solve c,f,T time', start3-start2
