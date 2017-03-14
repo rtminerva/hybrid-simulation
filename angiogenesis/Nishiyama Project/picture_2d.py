@@ -8,8 +8,8 @@ def pic_2d(coef,set,sol):
     '''EC'''
     fig = plt.figure()
     plt.title('%s%f' % ('t=',set['t']))
-    plt.xlim(set['Hh'],coef['X']-set['Hh'])
-    plt.ylim(set['Hh'],coef['Y']-set['Hh'])
+    plt.xlim((set['Hh'],coef['X']-set['Hh']))
+    plt.ylim((set['Hh'],coef['Y']-set['Hh']))
     ax = fig.add_subplot(111)
     for i in range(0,len(sol['matrix_tip'])):
         x_p = []
