@@ -31,7 +31,7 @@ def pic_2d(coef,set,sol):
     #plt.draw()
     
     '''Continuous Plot VEGF'''
-    if set['k'] % 1000 == 0:
+    if set['k'] % 100 == 0:
         fig1 = plt.figure(1)
         plt.title('%s%f' % ('VEGF Distribution at t=',set['t']))
         plt.xlabel('X')
