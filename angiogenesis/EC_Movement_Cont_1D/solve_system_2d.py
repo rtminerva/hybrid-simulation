@@ -264,8 +264,8 @@ def system_2d(coef, set, sol): #2.3
     for y in range(1,set['Ny'],2):
         for x in range(1,set['Nx'],2):
             #b_mean = b_mean_function(set,sol,x,y)
-            kinetic_b =0# set['dt']*coef['mu2']*b_o[x,y]*(1-b_o[x,y]) + set['dt']*coef['mu3']*n_o[x,y]*b_o[x,y]*(1-(b_o[x,y])/(coef['beta1'])) + set['dt']*coef['Lam_3']*(coef['Lam_1']*(n_o[x,y])**2+coef['Lam_2']*n_o[x,y]*b_o[x,y])
-            kinetic_n =0# set['dt']*coef['mu1']*n_o[x,y] - set['dt']*coef['Lam_1']*(n_o[x,y])**2-set['dt']*coef['Lam_2']*n_o[x,y]*b_o[x,y]
+            kinetic_b = set['dt']*coef['mu2']*b_o[x,y]*(1-b_o[x,y]) + set['dt']*coef['mu3']*n_o[x,y]*b_o[x,y]*(1-(b_o[x,y])/(coef['beta1'])) + set['dt']*coef['Lam_3']*(coef['Lam_1']*(n_o[x,y])**2+coef['Lam_2']*n_o[x,y]*b_o[x,y])
+            kinetic_n = set['dt']*coef['mu1']*n_o[x,y] - set['dt']*coef['Lam_1']*(n_o[x,y])**2-set['dt']*coef['Lam_2']*n_o[x,y]*b_o[x,y]
             if y == 1:
                 if x == 1:                 
                     move_n = set['dt']*(F_sol_1[x+1,y+1]+F_sol_2[x+1,y+1])/set['h']
