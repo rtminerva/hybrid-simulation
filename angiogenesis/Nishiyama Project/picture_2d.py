@@ -29,18 +29,18 @@ def pic_2d(coef,set,sol):
     plt.savefig("%s.png" % flag)
     plt.close()
     #plt.draw()
-    
+     
     '''Continuous Plot VEGF'''
     if set['k'] % 100 == 0:
         fig1 = plt.figure(1)
         plt.title('%s%f' % ('VEGF Distribution at t=',set['t']))
         plt.xlabel('X')
         plt.ylabel('Y')
-         
+           
         x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
         y_sub_axis = numpy.arange(0, coef['Y']+set['Hh'], set['h'])
         x_sub_axis, y_sub_axis = numpy.meshgrid(x_sub_axis, y_sub_axis)
-         
+           
         c_sol = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
         for j, y in enumerate(range(0,set['Ny']+1,2)):
             for i, x in enumerate(range(0,set['Nx']+1,2)):
