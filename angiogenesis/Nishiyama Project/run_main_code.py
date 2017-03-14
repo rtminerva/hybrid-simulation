@@ -1,7 +1,6 @@
 from coef_setting import declare_coef #1
 import main_code as main #2
-import picture_1d as pic_1d #3
-import picture_2d as pic_2d
+import picture_2d as pic #3
 
 import numpy
 from timeit import default_timer as timer 
@@ -10,7 +9,7 @@ import matplotlib.pyplot as plt
 # from mpmath.functions.rszeta import coef
 
 #declare coefficients & initial settings
-coef, set, sol = declare_coef() #1 
+coef, set, sol = declare_coef() #1
 
 #to plot interactively
 plt.ion()
@@ -21,24 +20,13 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         set['k'] = sol['stop_iter']
     '''PRINTING RESULT AS CONTROL'''  
     print 'at Time', set['t']
-#     print 'Total Tips:', len(sol['matrix_tip'])
-#     print 'Total Stop Tips:', len(sol['sp_stop'])
-    '''Model extension'''
-    if set['Model'] == 'extension':
-        print 'Max Value of c, b, n', sol['c'].max(),',', sol['b'].max(),',', sol['n'].max()
-        print 'Min Value of c, b, n', sol['c'].min(),',', sol['b'].min(),',', sol['n'].min()
-        print '******======******'
-        print 'Max Value of p, e, a1, a2, r1, r2, m, ma', sol['p'].max(),',', sol['e'].max(),',', sol['a1'].max(),',', sol['a2'].max(),',', sol['r1'].max(),',', sol['r2'].max(),',', sol['m'].max(),',', sol['ma'].max()
-        print 'Min Value of p, e, a1, a2, r1, r2, m, ma', sol['p'].min(),',', sol['e'].min(),',', sol['a1'].min(),',', sol['a2'].min(),',', sol['r1'].min(),',', sol['r2'].min(),',', sol['m'].min(),',', sol['ma'].min()
-    else:
-        print 'Max Value of c, b, n', sol['c'].max(),',', sol['b'].max(),',', sol['n'].max()
-        print 'Min Value of c, b, n', sol['c'].min(),',', sol['b'].min(),',', sol['n'].min()
+    print 'Total Tips:', len(sol['matrix_tip'])
+    print 'Total Stop Tips:', len(sol['sp_stop'])
+    print 'Max Value of c, n', sol['c'].max(),',', sol['n'].max()
+    print 'Min Value of c, n', sol['c'].min(),',', sol['n'].min()
       
-    if set['k'] % 1000 == 0:
-        if set['Dimension'] == '1D':
-            pic_1d.pic_1d(coef,set,sol) #3
-        elif set['Dimension'] == '2D':
-            pic_2d.pic_2d(coef,set,sol) #3
+    if set['k'] % 10 == 0:
+        pic.pic_2d(coef,set,sol) #3
 
     '''Recording Time'''         
     ttime = time.clock()
@@ -62,16 +50,12 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'total time of processing:', 0, 'hours', menit, 'minutes', detik, 'seconds'
     else:
         print 'total time of processing:', 0, 'hours', 0, 'minutes', ttime, 'seconds'
-#     print sol['matrix_tip'][-1][-1], sol['tip_cell']
-#     print 'b sol not zero'
-#     for y in range(1,set['Ny'],2):
-#         for x in range(1,set['Nx'],2):
-#             if sol['b'][x,y] != 0:
-#                 print 'pos:[',x,',',y,']',',value:',sol['b'][x,y]
-    if set['k'] % 1000 == 0:
+    print sol['matrix_tip'][-1][-1], sol['tip_cell']
+    
+    if set['k'] % 100 == 0:
         print set
         print coef
-    #print 'total time of processing:', time.clock()
+    print 'total time of processing:', time.clock()
     print '***************************************************'
     print     
         

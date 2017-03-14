@@ -7,9 +7,6 @@ def declare_coef():
     set = {}
     sol = {}
     
-    set['layout'] = '2D'
-    #set['layout'] = '3D'
-    
     set['initial_prof'] = 'rectangular_1_tip'
     #set['initial_prof'] = 'rectangular_tip'
     
@@ -18,9 +15,6 @@ def declare_coef():
     
     set['f_prof'] = 'F1'
     #set['f_prof'] = 'F2'
-    
-    set['parent'] = 'one'   
-    #set['parent'] = 'two' 
     
     ##Tip (n)
     coef['D_n'] = 0.00035
@@ -31,10 +25,12 @@ def declare_coef():
     ##VEGF (c)
     coef['D_c'] = 0.00035
     coef['Nu'] = 0.1
+    coef['Alp_c'] = 1
     
     ##ECM Fibronectin (f)
-    coef['Beta'] = 0#.05#7
+    coef['Beta'] = 0.05#7
     coef['Gama'] = 0.1
+    coef['Alp_f'] = 1
  
     '''Branching & Mitosis'''
     coef['T_branch'] = 0.25
@@ -47,7 +43,6 @@ def declare_coef():
     set['T'] = 10.002
     set['Nt'] = 100000
     set['theta'] = 0.5
-    set['con'] = False
     
     set['h'] = 0.005 #0.01#
     set['dt'] = 0.001
@@ -55,10 +50,6 @@ def declare_coef():
     set['Hh'] = set['h']/2
     set['Nx'] = int(coef['X']/set['Hh'])
     set['Ny'] = int(coef['Y']/set['Hh'])
-    
-    if set['layout'] == '3D':
-        coef['Z'] = 1
-        set['Nz'] = int(coef['Z']/set['Hh'])
     
     '''Initial Setting'''
     set['t'] = 0
@@ -68,20 +59,7 @@ def declare_coef():
     ##sol dictionaries dapat berubah
     sol['stEC'] = 0
     sol['stVEGF'] = 0
-    sol['stFb'] = 0
-    #sol['matrix_tip'] = 0
-    #sol['list_tip_movement'] = 0
-    #sol['life_time_tip'] = 0
     sol['stop_iter'] = 0
-    #sol['sp_stop'] = 0
-    if set['parent'] == 'two':
-        #sol['matrix_tip_2'] = 0
-        #sol['list_tip_movement_2'] = 0
-        #sol['life_time_tip_2'] = 0
-        #sol['sp_stop_2'] = 0
-        #sol['tip_cell_2'] = 0
-        sol['pp_2'] = {}
-    #sol['tip_cell'] = 0
     sol['pp'] = {}
 
     return coef, set, sol

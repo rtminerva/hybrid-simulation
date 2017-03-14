@@ -1,58 +1,6 @@
 from random import randint, sample, uniform
 import numpy
 
-def b_mean_function(set,sol,xb,yb,b_o):
-    if yb == 1:
-        if xb == 1:
-            b_mean_ur = (b_o[xb+2,yb+2]+b_o[xb,yb+2]+b_o[xb+2,yb]+b_o[xb,yb])/4
-            b_mean_ul = (b_o[xb,yb]+b_o[xb,yb+2])/4
-            b_mean_dr = (b_o[xb,yb]+b_o[xb+2,yb])/4
-            b_mean_dl = b_o[xb,yb]/4
-        elif xb == set['Nx']-1:
-            b_mean_ur = (b_o[xb,yb]+b_o[xb,yb+2])//4
-            b_mean_ul = (b_o[xb-2,yb]+b_o[xb,yb+2]+b_o[xb-2,yb+2]+b_o[xb,yb])/4
-            b_mean_dr = b_o[xb,yb]/4
-            b_mean_dl = (b_o[xb,yb]+b_o[xb-2,yb])/4
-        else:
-            b_mean_ur = (b_o[xb+2,yb+2]+b_o[xb,yb+2]+b_o[xb+2,yb]+b_o[xb,yb])/4
-            b_mean_ul = (b_o[xb-2,yb-2]+b_o[xb,yb+2]+b_o[xb-2,yb]+b_o[xb,yb])/4
-            b_mean_dr = (b_o[xb,yb]+b_o[xb+2,yb])/4
-            b_mean_dl = (b_o[xb,yb]+b_o[xb-2,yb])/4
-    elif yb == set['Ny']-1:
-        if xb == 1:
-            b_mean_ur = (b_o[xb,yb]+b_o[xb+2,yb])/4
-            b_mean_ul = b_o[xb,yb]/4
-            b_mean_dr = (b_o[xb+2,yb-2]+b_o[xb,yb-2]+b_o[xb+2,yb]+b_o[xb,yb])/4
-            b_mean_dl = (b_o[xb,yb]+b_o[xb,yb-2])/4
-        elif xb == set['Nx']-1:
-            b_mean_ur = b_o[xb,yb]/4
-            b_mean_ul = (b_o[xb,yb]+b_o[xb-2,yb])/4
-            b_mean_dr = (b_o[xb,yb]+b_o[xb,yb-2])/4
-            b_mean_dl = (b_o[xb-2,yb-2]+b_o[xb,yb-2]+b_o[xb-2,yb]+b_o[xb,yb])/4
-        else:
-            b_mean_ur = (b_o[xb,yb]+b_o[xb+2,yb])/4
-            b_mean_ul = (b_o[xb,yb]+b_o[xb-2,yb])/4
-            b_mean_dr = (b_o[xb+2,yb-2]+b_o[xb,yb-2]+b_o[xb+2,yb]+b_o[xb,yb])/4
-            b_mean_dl = (b_o[xb-2,yb-2]+b_o[xb,yb-2]+b_o[xb-2,yb]+b_o[xb,yb])/4
-    else:
-        if xb == 1:
-            b_mean_ur = (b_o[xb+2,yb+2]+b_o[xb,yb+2]+b_o[xb+2,yb]+b_o[xb,yb])/4
-            b_mean_ul = (b_o[xb,yb]+b_o[xb,yb+2])/4
-            b_mean_dr = (b_o[xb+2,yb-2]+b_o[xb,yb-2]+b_o[xb+2,yb]+b_o[xb,yb])/4
-            b_mean_dl = (b_o[xb,yb]+b_o[xb,yb-2])/4
-        elif xb == set['Nx']-1:
-            b_mean_ur = (b_o[xb,yb]+b_o[xb,yb+2])/4
-            b_mean_ul = (b_o[xb-2,yb+2]+b_o[xb,yb+2]+b_o[xb-2,yb]+b_o[xb,yb])/4
-            b_mean_dr = (b_o[xb,yb]+b_o[xb,yb-2])/4
-            b_mean_dl = (b_o[xb-2,yb-2]+b_o[xb,yb-2]+b_o[xb-2,yb]+b_o[xb,yb])/4
-        else:
-            b_mean_ur = (b_o[xb+2,yb+2]+b_o[xb,yb+2]+b_o[xb+2,yb]+b_o[xb,yb])/4
-            b_mean_ul = (b_o[xb-2,yb+2]+b_o[xb,yb+2]+b_o[xb-2,yb]+b_o[xb,yb])/4
-            b_mean_dr = (b_o[xb+2,yb-2]+b_o[xb,yb-2]+b_o[xb+2,yb]+b_o[xb,yb])/4
-            b_mean_dl = (b_o[xb-2,yb-2]+b_o[xb,yb-2]+b_o[xb-2,yb]+b_o[xb,yb])/4
-    b_mean = [b_mean_ur, b_mean_ul, b_mean_dr, b_mean_dl]
-    return b_mean
-
 def n_mean_function(set,sol,xb,yb,n_o):
     if yb == 1:
         if xb == 1:
@@ -114,21 +62,14 @@ def max_min_c(set,sol,x,y,c_o): #2.3.(1).(1)
     cijy_n = max(0,-cijy)
     return cijx_p, cijx_n, cijy_p, cijy_n
 
-def max_min_b(set,sol,x,y,b_o): #2.3.(1).(2)
-    xb = x-1
-    yb = y-1
-    
-    b_mean = b_mean_function(set,sol,xb,yb,b_o)
-    
-    bijx = (b_mean[0]-b_mean[1]+b_mean[2]-b_mean[3])/(2*set['h'])
-    bijy = (b_mean[0]-b_mean[2]+b_mean[1]-b_mean[3])/(2*set['h'])
-    #print bijx,bijy
-
-    bijx_p = max(0,bijx)
-    bijx_n = max(0,-bijx)
-    bijy_p = max(0,bijy)
-    bijy_n = max(0,-bijy)
-    return bijx_p, bijx_n, bijy_p, bijy_n
+def max_min_c(set,sol,x,y,c_o): #2.3.(1).(1)
+    cijx = (c_o[x,y]-c_o[x-2,y]+c_o[x,y-2]-c_o[x-2,y-2])/(2*set['h'])
+    cijy = (c_o[x,y]-c_o[x,y-2]+c_o[x-2,y]-c_o[x-2,y-2])/(2*set['h'])
+    cijx_p = max(0,cijx)
+    cijx_n = max(0,-cijx)
+    cijy_p = max(0,cijy)
+    cijy_n = max(0,-cijy)
+    return cijx_p, cijx_n, cijy_p, cijy_n
 
 def F_vector_sol(coef,set,sol,n_o,b_o,c_o): #2.3.(1)
     F_sol_1 = numpy.zeros((set['Nx']+1,set['Ny']+1))
