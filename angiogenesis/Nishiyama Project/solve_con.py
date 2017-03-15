@@ -4,9 +4,11 @@ import numpy
 def velocity_max(coef,set,sol,n_o,c_o,f_o,xb,yb):
     c_mean = c_mean_function(set,xb,yb,c_o)
     f_mean = f_mean_function(set,xb,yb,f_o)
-#     '''Diffusion term'''
-#     dijx = (n_o[xb+1,yb+1]-n_o[xb-1,yb+1]+n_o[xb+1,yb-1]-n_o[xb-1,yb-1])/(2*set['h'])
-#     dijy = (n_o[xb+1,yb+1]-n_o[xb+1,yb-1]+n_o[xb-1,yb+1]-n_o[xb-1,yb-1])/(2*set['h'])
+    '''Diffusion term'''
+#     if xb > 0 and xb < set['Nx']:
+#         if yb > 0 and yb < set['Ny']:
+    dijx = (n_o[xb+1,yb+1]-n_o[xb-1,yb+1]+n_o[xb+1,yb-1]-n_o[xb-1,yb-1])/(2*set['h'])
+    dijy = (n_o[xb+1,yb+1]-n_o[xb+1,yb-1]+n_o[xb-1,yb+1]-n_o[xb-1,yb-1])/(2*set['h'])
     
     '''Chemotaxis term'''
     cijx = (c_mean[0]-c_mean[1]+c_mean[2]-c_mean[3])/(2*set['h'])
@@ -209,7 +211,6 @@ def system_2d(coef, set, sol, n_o): #2.3
     '''Solve c & f at sub lattice'''
     for y in range(0,set['Ny']+1,2):
         for x in range(0,set['Nx']+1,2):
-            vijx_p, vijx_n, vijy_p, vijy_n = velocity_max(coef,set,sol,n_o,c_o,f_o,x,y)
             c_star = sol['c_o'][x,y] - c_o[x,y]
             gam_f = coef['Beta']*c_star/((1/(coef['Gama']))+c_star)
             move_f = 0
@@ -250,6 +251,7 @@ def system_2d(coef, set, sol, n_o): #2.3
                     move_c = 0#coef['Alp_c']*set['dt']*(vijx_p*(c_o[x,y]-c_o[x-2,y])-vijx_n*(0)+vijy_p*(c_o[x,y]-c_o[x,y-2])-vijy_n*(c_o[x,y+2]-c_o[x,y]))/(set['h']**2)
                     
                 else:
+                    vijx_p, vijx_n, vijy_p, vijy_n = velocity_max(coef,set,sol,n_o,c_o,f_o,x,y)
                     mean_n = (n_o[x+1,y+1] + n_o[x-1,y+1] + n_o[x+1,y-1] + n_o[x-1,y-1])/4
                     move_c = coef['Alp_c']*set['dt']*(vijx_p*(c_o[x,y]-c_o[x-2,y])-vijx_n*(c_o[x+2,y]-c_o[x,y])+vijy_p*(c_o[x,y]-c_o[x,y-2])-vijy_n*(c_o[x,y+2]-c_o[x,y]))/(set['h'])
                     move_f = coef['Alp_f']*set['dt']*(vijx_p*(f_o[x,y]-f_o[x-2,y])-vijx_n*(f_o[x+2,y]-f_o[x,y])+vijy_p*(f_o[x,y]-f_o[x,y-2])-vijy_n*(f_o[x,y+2]-f_o[x,y]))/(set['h'])
