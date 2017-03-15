@@ -19,8 +19,10 @@ def c_prof_2(coef,set,sol): #2.1.1.(2)
                 sol['c'][x,y] = 1
     return sol
 
-def f_prof_1(coef,set,sol,x,y):
-    sol['f'][x,y] = 0.5
+def f_prof_1(coef,set,sol):
+    for y in range(0,set['Ny']+1,2):
+        for x in range(0,set['Nx']+1,2):
+            sol['f'][x,y] = 0.5
     return sol
 
 def init_2d_(coef,set,sol): #2.1.1

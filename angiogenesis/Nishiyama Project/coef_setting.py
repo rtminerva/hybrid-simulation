@@ -59,6 +59,7 @@ def declare_coef():
     ##sol dictionaries dapat berubah
     sol['stEC'] = 0
     sol['stVEGF'] = 0
+    sol['stECM'] = 0
     sol['stop_iter'] = 0
     sol['pp'] = {}
 

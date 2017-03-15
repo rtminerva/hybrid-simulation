@@ -22,8 +22,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'at Time', set['t']
     print 'Total Tips:', len(sol['matrix_tip'])
     print 'Total Stop Tips:', len(sol['sp_stop'])
-    print 'Max Value of c, n', sol['c'].max(),',', sol['n'].max()
-    print 'Min Value of c, n', sol['c'].min(),',', sol['n'].min()
+    print 'Max Value of c, n', sol['c'].max(),',', sol['n'].max(),',', sol['f'].max()
+    print 'Min Value of c, n', sol['c'].min(),',', sol['n'].min(),',', sol['f'].min()
       
     if set['k'] % 100 == 0:
         pic.pic_2d(coef,set,sol) #3
