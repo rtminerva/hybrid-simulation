@@ -210,6 +210,9 @@ def system_2d(coef, set, sol, n_o): #2.3
     for y in range(0,set['Ny']+1,2):
         for x in range(0,set['Nx']+1,2):
             vijx_p, vijx_n, vijy_p, vijy_n = velocity_max(coef,set,sol,n_o,c_o,f_o,x,y)
+            c_star = sol['c_o'][x,y] - c_o[x,y]
+            gam_f = coef['Beta']*c_star/((1/(coef['Gama']))+c_star)
+            move_f = 0
             if y == 0: 
                 if x == 0:
                     mean_n = n_o[x+1,y+1]/4
@@ -249,8 +252,13 @@ def system_2d(coef, set, sol, n_o): #2.3
                 else:
                     mean_n = (n_o[x+1,y+1] + n_o[x-1,y+1] + n_o[x+1,y-1] + n_o[x-1,y-1])/4
                     move_c = coef['Alp_c']*set['dt']*(vijx_p*(c_o[x,y]-c_o[x-2,y])-vijx_n*(c_o[x+2,y]-c_o[x,y])+vijy_p*(c_o[x,y]-c_o[x,y-2])-vijy_n*(c_o[x,y+2]-c_o[x,y]))/(set['h'])
-            prolifer_c = 0#set['dt']*coef['mu4']*S
+                    move_f = coef['Alp_f']*set['dt']*(vijx_p*(f_o[x,y]-f_o[x-2,y])-vijx_n*(f_o[x+2,y]-f_o[x,y])+vijy_p*(f_o[x,y]-f_o[x,y-2])-vijy_n*(f_o[x,y+2]-f_o[x,y]))/(set['h'])
+                    
             digestion_c = set['dt']*coef['Nu']*c_o[x,y]*mean_n
-            degradation_c = 0#set['dt']*coef['mu5']*c_o[x,y] 
-            sol['c'][x,y] = c_o[x,y] + prolifer_c - digestion_c - degradation_c - move_c     
+            
+            digestion_f = set['dt']*gam_f*f_o[x,y]*mean_n
+            prolifer_f = set['dt']*coef['Beta']*mean_n
+            
+            sol['c'][x,y] = c_o[x,y] - digestion_c - move_c 
+            sol['f'][x,y] = f_o[x,y] + prolifer_f - digestion_f - move_f     
     return sol
