@@ -19,8 +19,8 @@ def velocity_max(coef,set,sol,n_o,c_o,f_o,xb,yb):
     fijy = (f_mean[0]-f_mean[2]+f_mean[1]-f_mean[3])/(2*set['h'])
     
     '''Total velocity''' #first trial without
-    vijx = -coef['D_n']*dijx + coef['Ki_n']/(1+coef['Al_n']*(c_o[xb,yb]))*cijx+coef['Ro']*fijx
-    vijy = -coef['D_n']*dijy + coef['Ki_n']/(1+coef['Al_n']*(c_o[xb,yb]))*cijy+coef['Ro']*fijy
+    vijx = -coef['D_n']*dijx #+ coef['Ki_n']/(1+coef['Al_n']*(c_o[xb,yb]))*cijx+coef['Ro']*fijx
+    vijy = -coef['D_n']*dijy #+ coef['Ki_n']/(1+coef['Al_n']*(c_o[xb,yb]))*cijy+coef['Ro']*fijy
     
     vijx_p = max(0,vijx)
     vijx_n = max(0,-vijx)
