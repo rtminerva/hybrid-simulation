@@ -195,7 +195,8 @@ def system_2d(coef, set, sol, n_o): #2.3
                     vijx_n = max(0,-vel_x_mean)
                     vijy_p = max(0,vel_y_mean)
                     vijy_n = max(0,-vel_y_mean)
-#                     print vel_x_mean, vel_y_mean
+#                     if vel_x_mean != 0 or vel_y_mean != 0:
+#                         print vel_x_mean, vel_y_mean
                                      
                     #Method: not from P1,P2,P3,...
 #                     vijx_p, vijx_n, vijy_p, vijy_n = velocity_max(coef,set,sol,n_o,c_o,f_o,x,y)
@@ -209,5 +210,7 @@ def system_2d(coef, set, sol, n_o): #2.3
             prolifer_f = set['dt']*coef['Beta']*mean_n
             
             sol['c'][x,y] = c_o[x,y] - digestion_c - move_c 
-            sol['f'][x,y] = f_o[x,y] + prolifer_f - digestion_f - move_f     
+            sol['f'][x,y] = f_o[x,y] + prolifer_f - digestion_f - move_f
+            if sol['c'][x,y] > sol['c_o'][x, set['Ny']-1] or sol['c'][x,y] < sol['c_o'][x, set['Ny']-1]:
+                sol['c_n'][x,y] = sol['c'][x,y]
     return sol

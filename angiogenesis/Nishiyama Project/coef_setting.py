@@ -25,12 +25,12 @@ def declare_coef():
     ##VEGF (c)
     coef['D_c'] = 0.00035
     coef['Nu'] = 0.1
-    coef['Alp_c'] = 1
+    coef['Alp_c'] = 5#1
     
     ##ECM Fibronectin (f)
     coef['Beta'] = 0.05#7
     coef['Gama'] = 0.1
-    coef['Alp_f'] = 1
+    coef['Alp_f'] = 5#1
  
     '''Branching & Mitosis'''
     coef['T_branch'] = 0.25
@@ -59,6 +59,7 @@ def declare_coef():
     ##sol dictionaries dapat berubah
     sol['stEC'] = 0
     sol['stVEGF'] = 0
+    sol['stVEGF1'] = 0
     sol['stECM'] = 0
     sol['stop_iter'] = 0
     sol['pp'] = {}

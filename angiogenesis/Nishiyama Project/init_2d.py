@@ -29,6 +29,7 @@ def f_prof_1(coef,set,sol):
     return sol
 
 def init_2d_(coef,set,sol): #2.1.1
+    sol['c_n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['c'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['c_o'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['f'] = numpy.zeros((set['Nx']+1,set['Ny']+1))

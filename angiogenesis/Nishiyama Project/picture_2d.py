@@ -68,6 +68,26 @@ def pic_2d(coef,set,sol):
         plt.savefig("%s.png" % flag)
         plt.close()
         
+        fig11 = plt.figure(11)
+        plt.title('%s%f' % ('VEGF Distribution at t=',set['t']))
+        plt.xlabel('X')
+        plt.ylabel('Y')
+           
+        x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
+        y_sub_axis = numpy.arange(0, coef['Y']+set['Hh'], set['h'])
+        x_sub_axis, y_sub_axis = numpy.meshgrid(x_sub_axis, y_sub_axis)
+           
+        c_sol = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
+        for j, y in enumerate(range(0,set['Ny']+1,2)):
+            for i, x in enumerate(range(0,set['Nx']+1,2)):
+                c_sol[i,j] = sol['c_n'][x,y]
+        plt.pcolormesh(y_sub_axis, x_sub_axis, c_sol, vmin = 0.9, vmax = 1)
+        sol['stVEGF1'] +=1  
+        flag = 'zVEGF1=%s' % str(sol['stVEGF1']) 
+        plt.colorbar()
+        plt.savefig("%s.png" % flag)
+        plt.close()
+        
         fig2 = plt.figure(2)
         plt.title('%s%f' % ('ECM Distribution at t=',set['t']))
         plt.xlabel('X')
