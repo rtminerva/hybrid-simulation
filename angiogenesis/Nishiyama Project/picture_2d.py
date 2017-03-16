@@ -81,7 +81,7 @@ def pic_2d(coef,set,sol):
         for j, y in enumerate(range(0,set['Ny']+1,2)):
             for i, x in enumerate(range(0,set['Nx']+1,2)):
                 f_sol[i,j] = sol['f'][x,y]
-        plt.pcolormesh(y_sub_axis, x_sub_axis, f_sol, vmin = 0, vmax = 1)
+        plt.pcolormesh(y_sub_axis, x_sub_axis, f_sol, vmin = 0.5, vmax = 0.51)
         '''Add EC'''
         for i in range(0,len(sol['matrix_tip'])):
             x_p = []

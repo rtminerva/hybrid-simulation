@@ -143,15 +143,16 @@ def system_2d(coef, set, sol, n_o): #2.3
     sol['Vel_y'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     for y in range(1,set['Ny'],2):
         for x in range(1,set['Nx'],2):
-            dirr, probb = movement_dir(coef, set, sol, x, y)
-            sol['Vel_x'][x,y] = -probb[1]+probb[2]
-            sol['Vel_y'][x,y] = -probb[3]+probb[4]    
+            if n_o[x,y] == 1:
+                dirr, probb = movement_dir(coef, set, sol, x, y)
+                sol['Vel_x'][x,y] = -probb[1]+probb[2]
+                sol['Vel_y'][x,y] = -probb[3]+probb[4]    
                   
     '''Solve c & f at sub lattice'''
     for y in range(0,set['Ny']+1,2):
         for x in range(0,set['Nx']+1,2):
             c_star = sol['c_o'][x,y] - c_o[x,y]
-            gam_f = coef['Beta']*c_star/((1/(coef['Gama']))+c_star)
+            gam_f = coef['Beta']*sol['c_o'][x,y]*c_star/((1/(coef['Gama']))+c_star)
             move_c = 0
             move_f = 0
             if y == 0: 

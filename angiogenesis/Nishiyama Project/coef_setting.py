@@ -24,7 +24,7 @@ def declare_coef():
     
     ##VEGF (c)
     coef['D_c'] = 0.00035
-    coef['Nu'] = 0.2#1
+    coef['Nu'] = 0.1
     coef['Alp_c'] = 1
     
     ##ECM Fibronectin (f)
