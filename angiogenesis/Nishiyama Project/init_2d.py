@@ -1,6 +1,7 @@
 import numpy
 import math as m
 
+
 def c_prof_1(coef,set,sol): #2.1.1.(1)
     for y in range(0,set['Ny']+1,2):
         for x in range(0,set['Nx']+1,2):

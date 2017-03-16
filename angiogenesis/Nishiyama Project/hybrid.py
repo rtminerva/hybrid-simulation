@@ -309,7 +309,7 @@ def hybrid_tech(coef, set, sol): #2.2
             yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
             vn_o.append([xb,yb])
             
-            dirr= movement_dir(coef, set, sol, xb, yb, nom) #2.2.1 => go to direction_of_movement.py
+            dirr, probb = movement_dir(coef, set, sol, xb, yb) #2.2.1 => go to direction_of_movement.py
             
             if dirr[1] == 0 and dirr[2] == 0 and dirr[3] == 0 and dirr[4] == 0: #checking if there is space for tip cell to move
                 sol['sp_stop'].append(nom)
