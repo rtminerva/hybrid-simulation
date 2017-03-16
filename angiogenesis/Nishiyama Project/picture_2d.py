@@ -46,7 +46,22 @@ def pic_2d(coef,set,sol):
         for j, y in enumerate(range(0,set['Ny']+1,2)):
             for i, x in enumerate(range(0,set['Nx']+1,2)):
                 c_sol[i,j] = sol['c'][x,y]
-        plt.pcolormesh(y_sub_axis, x_sub_axis, c_sol)
+        plt.pcolormesh(y_sub_axis, x_sub_axis, c_sol, vmin = 0, vmax = 1)
+        '''Add EC'''
+        for i in range(0,len(sol['matrix_tip'])):
+            x_p = []
+            y_p = []
+            for j in range(0,len(sol['matrix_tip'][i])):
+                x_p.append(sol['matrix_tip'][i][j][0]*set['Hh'])
+                y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
+            globals()['plo%s' % i] = ax.plot(x_p, y_p, 'c', color ='r')
+        x_p = []
+        y_p = []
+        for tip in sol['tip_cell']:
+            x_p.append(tip[0]*set['Hh'])
+            y_p.append(tip[1]*set['Hh'])
+        ax.scatter(x_p, y_p, marker = 'o', s = 2, color ='b')
+        '''Add EC'''
         sol['stVEGF'] +=1  
         flag = 'zVEGF=%s' % str(sol['stVEGF']) 
         plt.colorbar()
@@ -66,7 +81,22 @@ def pic_2d(coef,set,sol):
         for j, y in enumerate(range(0,set['Ny']+1,2)):
             for i, x in enumerate(range(0,set['Nx']+1,2)):
                 f_sol[i,j] = sol['f'][x,y]
-        plt.pcolormesh(y_sub_axis, x_sub_axis, f_sol)
+        plt.pcolormesh(y_sub_axis, x_sub_axis, f_sol, vmin = 0, vmax = 1)
+        '''Add EC'''
+        for i in range(0,len(sol['matrix_tip'])):
+            x_p = []
+            y_p = []
+            for j in range(0,len(sol['matrix_tip'][i])):
+                x_p.append(sol['matrix_tip'][i][j][0]*set['Hh'])
+                y_p.append(sol['matrix_tip'][i][j][1]*set['Hh'])
+            globals()['plo%s' % i] = ax.plot(x_p, y_p, 'c', color ='r')
+        x_p = []
+        y_p = []
+        for tip in sol['tip_cell']:
+            x_p.append(tip[0]*set['Hh'])
+            y_p.append(tip[1]*set['Hh'])
+        ax.scatter(x_p, y_p, marker = 'o', s = 2, color ='b')
+        '''Add EC'''
         sol['stECM'] +=1  
         flag = 'zECM=%s' % str(sol['stECM']) 
         plt.colorbar()
