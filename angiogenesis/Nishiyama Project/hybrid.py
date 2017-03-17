@@ -324,10 +324,11 @@ def hybrid_tech(coef, set, sol): #2.2
                 
                 '''2.1 Branching Decision
                 PP = 'test'
+                aa = True
                 if tipp == 'stay' and PP == 'test': #not able to branch, PP untuk pertama kali 
                     sol['life_time_tip'][nom] += set['dt']
-                    sol['life_mit'][nom] += set['dt']
-                else: #there is possibility to branch
+#                     sol['life_mit'][nom] += set['dt']
+                elif aa == true: #there is possibility to branch
                     #print 'YAYAYA1'
                     if movi == True:
                         sol['PP'].remove([xb,yb])
@@ -335,13 +336,13 @@ def hybrid_tech(coef, set, sol): #2.2
                     if dirr.count(0) >= 3: #no space to move
                         sol['life_time_tip'][nom] += set['dt']
                         sol['life_mit'][nom] += set['dt']
-                    else: #there is possibility to branch
+                    elif aa == True: #there is possibility to branch
                         #print 'YAYAYA2'
                         #print sol['life_time_tip'][nom]
                         if sol['life_time_tip'][nom] < coef['T_branch']: #not able to branch
                             sol['life_time_tip'][nom] += set['dt']
                             sol['life_mit'][nom] += set['dt']
-                        else: #there is possibility to branch
+                        elif aa == True: #there is possibility to branch
                             #print 'YAYAYA3'
 #                             Probability of Branching using c  
                             list_prob = range(1,11)#prob_by_c(sol,xb,yb) #2.2.(4)
@@ -349,8 +350,8 @@ def hybrid_tech(coef, set, sol): #2.2
                             if not tes in list_prob: #not able to branch
                                 sol['life_time_tip'][nom] += set['dt']
                                 sol['life_mit'][nom] += set['dt']
-                            else: #BRANCHING!
-                                #print 'YAYAYA4'
+                            elif aa == True: #BRANCHING!
+                                print 'YAYAYA4'
                                 sol['life_time_tip'][nom] = 0
                                 sol['life_mit'][nom] += set['dt']
                                 sol['matrix_tip'].append([(xb,yb)])
@@ -361,7 +362,7 @@ def hybrid_tech(coef, set, sol): #2.2
 #                                 The Movement from branching
                                 while tipp == 'stay':
                                     sol, tipp = movement_branch(tipp,sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4) #2.2.(5)
-                    '''
+                '''
     
 #     print 'Tip cell position:', vn_o
 #     print 'Velocity Vector stalk on [3,201]: [',sol['Vb_x'][3,201],',',sol['Vb_y'][3,201],']'

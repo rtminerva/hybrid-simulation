@@ -58,9 +58,12 @@ def declare_coef():
     '''To store solutions'''
     ##sol dictionaries dapat berubah
     sol['stEC'] = 0
-    sol['stVEGF'] = 0
-    sol['stVEGF1'] = 0
-    sol['stECM'] = 0
+    sol['Merge_cn'] = 0
+    sol['Merge_cnd'] = 0
+    sol['Merge_fn'] = 0
+    sol['VEGF'] = 0
+    sol['VEGF1'] = 0
+    sol['ECM'] = 0
     sol['stop_iter'] = 0
     sol['pp'] = {}
 
