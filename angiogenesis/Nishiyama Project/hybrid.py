@@ -324,25 +324,24 @@ def hybrid_tech(coef, set, sol): #2.2
                 
                 '''2.1 Branching Decision
                 PP = 'test'
-                aa = True
                 if tipp == 'stay' and PP == 'test': #not able to branch, PP untuk pertama kali 
                     sol['life_time_tip'][nom] += set['dt']
 #                     sol['life_mit'][nom] += set['dt']
-                elif aa == true: #there is possibility to branch
+                else: #there is possibility to branch
                     #print 'YAYAYA1'
-                    if movi == True:
-                        sol['PP'].remove([xb,yb])
-                        sol['pp'].pop((xb,yb))
+#                     if movi == True:
+#                         sol['PP'].remove([xb,yb])
+#                         sol['pp'].pop((xb,yb))
                     if dirr.count(0) >= 3: #no space to move
                         sol['life_time_tip'][nom] += set['dt']
                         sol['life_mit'][nom] += set['dt']
-                    elif aa == True: #there is possibility to branch
+                    else: #there is possibility to branch
                         #print 'YAYAYA2'
                         #print sol['life_time_tip'][nom]
                         if sol['life_time_tip'][nom] < coef['T_branch']: #not able to branch
                             sol['life_time_tip'][nom] += set['dt']
-                            sol['life_mit'][nom] += set['dt']
-                        elif aa == True: #there is possibility to branch
+#                             sol['life_mit'][nom] += set['dt']
+                        else: #there is possibility to branch
                             #print 'YAYAYA3'
 #                             Probability of Branching using c  
                             list_prob = range(1,11)#prob_by_c(sol,xb,yb) #2.2.(4)
@@ -350,13 +349,13 @@ def hybrid_tech(coef, set, sol): #2.2
                             if not tes in list_prob: #not able to branch
                                 sol['life_time_tip'][nom] += set['dt']
                                 sol['life_mit'][nom] += set['dt']
-                            elif aa == True: #BRANCHING!
+                            else: #BRANCHING!
                                 print 'YAYAYA4'
                                 sol['life_time_tip'][nom] = 0
-                                sol['life_mit'][nom] += set['dt']
+#                                 sol['life_mit'][nom] += set['dt']
                                 sol['matrix_tip'].append([(xb,yb)])
                                 sol['life_time_tip'].append(0)
-                                sol['life_mit'].append(0)
+#                                 sol['life_mit'].append(0)
                                 sol['list_tip_movement'].append('start')
                                 tipp = 'stay'
 #                                 The Movement from branching

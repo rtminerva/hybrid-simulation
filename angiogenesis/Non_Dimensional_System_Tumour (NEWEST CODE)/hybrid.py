@@ -309,42 +309,42 @@ def hybrid_tech_c(coef, set, sol):
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
             yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
             
-            '''Proliferation'''
-            if sol['life_mit'][nom] >= coef['T_mitosis']:
-                sol['life_mit'][nom] = 0
-                if sol['list_tip_movement'] == 'left':
-                    if [xb,yb] in sol['tip_cell']:
-                        sol['tip_cell'].remove([xb,yb])
-                    xs = sol['matrix_tip'][nom][-1][0] - 2
-                    ys = sol['matrix_tip'][nom][-1][1]
-                    sol['matrix_tip'][nom].append((xs,ys))
-                    sol['n'][xs,ys] = 1
-                    sol['tip_cell'].append([xs,ys])
-                elif sol['list_tip_movement'] == 'right':
-                    if [xb,yb] in sol['tip_cell']:
-                        sol['tip_cell'].remove([xb,yb])
-                    xs = sol['matrix_tip'][nom][-1][0] + 2
-                    ys = sol['matrix_tip'][nom][-1][1]
-                    sol['matrix_tip'][nom].append((xs,ys))
-                    sol['n'][xs,ys] = 1
-                    sol['tip_cell'].append([xs,ys])
-                elif sol['list_tip_movement'] == 'down':
-                    if [xb,yb] in sol['tip_cell']:
-                        sol['tip_cell'].remove([xb,yb])
-                    xs = sol['matrix_tip'][nom][-1][0]
-                    ys = sol['matrix_tip'][nom][-1][1] -2
-                    sol['matrix_tip'][nom].append((xs,ys))
-                    sol['n'][xs,ys] = 1
-                    sol['tip_cell'].append([xs,ys])
-                elif sol['list_tip_movement'] == 'up':
-                    if [xb,yb] in sol['tip_cell']:
-                        sol['tip_cell'].remove([xb,yb])
-                    xs = sol['matrix_tip'][nom][-1][0]
-                    ys = sol['matrix_tip'][nom][-1][1] + 2
-                    sol['matrix_tip'][nom].append((xs,ys))
-                    sol['n'][xs,ys] = 1
-                    sol['tip_cell'].append([xs,ys])
-            '''Proliferation'''
+#             '''Proliferation'''
+#             if sol['life_mit'][nom] >= coef['T_mitosis']:
+#                 sol['life_mit'][nom] = 0
+#                 if sol['list_tip_movement'] == 'left':
+#                     if [xb,yb] in sol['tip_cell']:
+#                         sol['tip_cell'].remove([xb,yb])
+#                     xs = sol['matrix_tip'][nom][-1][0] - 2
+#                     ys = sol['matrix_tip'][nom][-1][1]
+#                     sol['matrix_tip'][nom].append((xs,ys))
+#                     sol['n'][xs,ys] = 1
+#                     sol['tip_cell'].append([xs,ys])
+#                 elif sol['list_tip_movement'] == 'right':
+#                     if [xb,yb] in sol['tip_cell']:
+#                         sol['tip_cell'].remove([xb,yb])
+#                     xs = sol['matrix_tip'][nom][-1][0] + 2
+#                     ys = sol['matrix_tip'][nom][-1][1]
+#                     sol['matrix_tip'][nom].append((xs,ys))
+#                     sol['n'][xs,ys] = 1
+#                     sol['tip_cell'].append([xs,ys])
+#                 elif sol['list_tip_movement'] == 'down':
+#                     if [xb,yb] in sol['tip_cell']:
+#                         sol['tip_cell'].remove([xb,yb])
+#                     xs = sol['matrix_tip'][nom][-1][0]
+#                     ys = sol['matrix_tip'][nom][-1][1] -2
+#                     sol['matrix_tip'][nom].append((xs,ys))
+#                     sol['n'][xs,ys] = 1
+#                     sol['tip_cell'].append([xs,ys])
+#                 elif sol['list_tip_movement'] == 'up':
+#                     if [xb,yb] in sol['tip_cell']:
+#                         sol['tip_cell'].remove([xb,yb])
+#                     xs = sol['matrix_tip'][nom][-1][0]
+#                     ys = sol['matrix_tip'][nom][-1][1] + 2
+#                     sol['matrix_tip'][nom].append((xs,ys))
+#                     sol['n'][xs,ys] = 1
+#                     sol['tip_cell'].append([xs,ys])
+#             '''Proliferation'''
 
             dirr= movement_dir(coef, set, sol, xb, yb, nom)
             

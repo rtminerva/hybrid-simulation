@@ -24,7 +24,7 @@ def declare_coef():
     
     ##VEGF (c)
     coef['D_c'] = 0.00035
-    coef['Nu'] = 0.1
+    coef['Nu'] = 0.5#1
     coef['Alp_c'] = 5#1
     
     ##ECM Fibronectin (f)
@@ -33,7 +33,7 @@ def declare_coef():
     coef['Alp_f'] = 5#1
  
     '''Branching & Mitosis'''
-    coef['T_branch'] = 0.25
+    coef['T_branch'] = 0#.25
     coef['T_mitosis'] = 1000#0.5
     
     '''Spatial and Temporal Meshes Number'''
