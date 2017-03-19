@@ -333,7 +333,8 @@ def hybrid_tech(coef, set, sol): #2.2
                                 branch = True
                                 nom = len(sol['matrix_tip'])-1
                                 sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(5)
-    
+    if len(sol['backward_list']) > 0:
+        sol['backward_count'].append(set['k'])
 #     print 'Tip cell position:', vn_o
 #     print 'Velocity Vector stalk on [3,201]: [',sol['Vb_x'][3,201],',',sol['Vb_y'][3,201],']'
     return sol, n_o

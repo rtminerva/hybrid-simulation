@@ -23,8 +23,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'Total Tips:', len(sol['matrix_tip'])
     print 'Total Stop Tips:', len(sol['sp_stop'])
 #     print 'Sol n:', sol['matrix_tip']
-    print 'Backward Movement:', sol['backward']
-    print 'Tip to Tip:', sol['tip_tip_anas']
+    print 'Backward at time step:', sol['backward_count']
+#     print 'Tip to Tip:', sol['tip_tip_anas']
     print 'Max Value of c, n, f', sol['c'].max(),',', sol['n'].max(),',', sol['f'].max()
     print 'Min Value of c, n, f', sol['c'].min(),',', sol['n'].min(),',', sol['f'].min()
       
@@ -53,7 +53,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'total time of processing:', 0, 'hours', menit, 'minutes', detik, 'seconds'
     else:
         print 'total time of processing:', 0, 'hours', 0, 'minutes', ttime, 'seconds'
-    print 'tip cell:', sol['tip_cell']
+#     print 'tip cell:', sol['tip_cell']
     
     if set['k'] % 100 == 0: #here
         print set

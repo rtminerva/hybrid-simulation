@@ -69,6 +69,7 @@ def declare_coef():
 #     sol['pp'] = {}
 #     sol['PP'] = [] 
     sol['backward'] = {}
+    sol['backward_count'] = []
     sol['backward_list'] = []
     sol['tip_tip_anas'] = []
 
