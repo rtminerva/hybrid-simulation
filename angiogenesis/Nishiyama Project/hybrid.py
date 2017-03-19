@@ -111,6 +111,7 @@ def movement(sol,set,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,l
     else:
         tipp = 'stay'
         while tipp == 'stay':
+#             print 'haiyaaa'
             tes = randint(1,10000)
             if tes in list_prob_0:
                 tipp = 'stay'
@@ -126,33 +127,55 @@ def movement(sol,set,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,l
                 
     return sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 
 
-def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, backward = False):
-    if sol['n'][xpos_new,ypos_new] == 1: #ANASTOMOSIS TIP TO TIP
+def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, backward = False, sellooping = False):
+    if [xpos_new,ypos_new] in sol['tip_cell']: #ANASTOMOSIS TIP TO TIP
+#         print 'YEYYYYYY'
         sol['sp_stop'].append(nom)
         sol['n'][xb,yb] = 0
         sol['stalk'][xb,yb] = 1
-        sol['tip_cell'].remove([xb,yb])
+        if [xb,yb] in sol['tip_cell']:
+            sol['tip_cell'].remove([xb,yb])
     
     elif sol['stalk'][xpos_new,ypos_new] == 1: #Check ANASTOMOSIS TIP TO BRANCH
         '''Check if it is backward movement on its track'''
-        for i in range(0,len(sol['matrix_tip'][nom])):
+        if [xpos_new,ypos_new] == sol['matrix_tip'][nom][len(sol['matrix_tip'][nom])-2]:
+#             print 'anasback1'
+#             print set['k']
+#             print sol['backward']
+            if sol['bw'] == 0:
+                sol['backward'][set['k']] = [[xpos_new,ypos_new]]
+            else:
+                sol['backward'][set['k']].append([xpos_new,ypos_new])
+            sol['bw'] += 1
+            backward = True
+            sol['n'][xb,yb] = 1
+            sol['matrix_tip'][nom].pop()
+            if not [xb,yb] in sol['tip_cell']:
+                    sol['tip_cell'].append([xb,yb])
+        '''Check if self looping'''
+        i = 0
+        while i < len(sol['matrix_tip'][nom])-1:
+#             print 'hmmmm'
             if [xpos_new,ypos_new] == sol['matrix_tip'][nom][i]:
-                print set['k']
-                print sol['backward']
-                if sol['bw'] == 0:
-                    sol['backward'][set['k']] = [[xpos_new,ypos_new]]
-                else:
-                    sol['backward'][set['k']].append([xpos_new,ypos_new])
-                sol['bw'] += 1
-                backward = True
-                sol['n'][xb,yb] = 1
-                sol['matrix_tip'][nom].remove(-1)
-                if not [xb,yb] in sol['tip_cell']:
-                        sol['tip_cell'].append([xb,yb])
+#                 print 'self looping'
+                sellooping = True
+                if [xb,yb] in sol['tip_cell']: #kalo branching, xb yb sudah diremove dr sprout branch sblmny. jadi gak perlu remove lagi
+                    sol['tip_cell'].remove([xb,yb])
+                sol['tip_cell'].append([xpos_new,ypos_new])
+                sol['n'][xpos_new,ypos_new] = 1
+                sol['n'][xb,yb] = 0
+                sol['stalk'][xb,yb] = 1
+            i += 1
+                
         '''Check if it is backward movement on tip-tip anastomosis track'''
         for i in sol['sp_stop']:
-            for j in range(0,len(sol['matrix_tip'][i])):
+            nol = 0
+            j = 0
+            while j< len(sol['matrix_tip'][i])-1 and nol == 0:
+#                 print 'uuuuu'
                 if [xpos_new,ypos_new] == sol['matrix_tip'][i][j]:
+#                     print 'anasback2'
+                    nol = 1
                     if sol['bw'] == 0:
                         sol['backward'][set['k']] = [[xpos_new,ypos_new]]
                     else:
@@ -160,17 +183,22 @@ def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, backward = False):
                     sol['bw'] += 1
                     backward = True
                     sol['n'][xb,yb] = 1
-                    sol['matrix_tip'][i].remove(-1)
+                    sol['matrix_tip'][i].pop()
                     if not [xb,yb] in sol['tip_cell']:
                         sol['tip_cell'].append([xb,yb])
-        if backward == False: #Anastomosis to sprout!
+                elif j == len(sol['matrix_tip'][i])-2:
+                    nol = 5
+                j += 1
+        if backward == False and sellooping == False: #Anastomosis to sprout!
             sol['sp_stop'].append(nom)
             sol['stalk'][xpos_new,ypos_new] = 1
             sol['stalk'][xb,yb] = 1
             sol['n'][xb,yb] = 0
-            sol['tip_cell'].remove([xb,yb])
+            if [xb,yb] in sol['tip_cell']:
+                sol['tip_cell'].remove([xb,yb])
     else:
-        if [xb,yb] in sol['tip_cell']: #kalo branching, xb yb sudah diremove dr sprout branch sblmny. ajdi gak perlu remove lagi
+#         print 'elsee'
+        if [xb,yb] in sol['tip_cell']: #kalo branching, xb yb sudah diremove dr sprout branch sblmny. jadi gak perlu remove lagi
             sol['tip_cell'].remove([xb,yb])
         sol['tip_cell'].append([xpos_new,ypos_new])
         sol['n'][xpos_new,ypos_new] = 1
@@ -233,17 +261,18 @@ def hybrid_tech(coef, set, sol): #2.2
 #                             sol['life_mit'][nom] += set['dt']
                         else: #there is possibility to branch
 #                             Probability of Branching using c 
-                            list_prob = prob_by_c(sol,xb,yb) #range(1,11) #2.2.(4)TESSSSS
+                            list_prob = range(1,11) #prob_by_c(sol,xb,yb) #2.2.(4)TESSSSS
                             tes = randint(1,10)
                             if not tes in list_prob: #not able to branch
                                 sol['life_time_tip'][nom] += set['dt']
                             else: #BRANCHING!
                                 sol['life_time_tip'][nom] = 0
-                                sol['matrix_tip'].append([(xb,yb)])
+                                sol['matrix_tip'].append([[xb,yb]])
                                 sol['life_time_tip'].append(0)
                                 sol['list_tip_movement'].append('start')
                                 '''The Movement from branching'''
                                 branch = True
+                                nom = len(sol['matrix_tip'])-1
                                 sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(5)
     
 #     print 'Tip cell position:', vn_o

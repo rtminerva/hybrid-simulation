@@ -22,6 +22,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'at Time', set['t']
     print 'Total Tips:', len(sol['matrix_tip'])
     print 'Total Stop Tips:', len(sol['sp_stop'])
+#     print 'Sol n:', sol['matrix_tip']
+    print 'Backward Movement:', sol['backward']
     print 'Max Value of c, n, f', sol['c'].max(),',', sol['n'].max(),',', sol['f'].max()
     print 'Min Value of c, n, f', sol['c'].min(),',', sol['n'].min(),',', sol['f'].min()
       

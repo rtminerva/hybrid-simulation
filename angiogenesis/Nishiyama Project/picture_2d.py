@@ -53,41 +53,41 @@ def pic_2d(coef,set,sol):
 #     f, (ax1,ax2,ax3) = plt.subplots(4,sharex=True,sharey=True)
      
     '''Continuous Plot VEGF & ECM'''
-
-    '''Only VEGF'''
-    fig1 = plt.figure(1)
-    plt.title('%s%f' % ('VEGF Distribution at t=',set['t']))
-    plt.pcolormesh(y_sub_axis, x_sub_axis, c_sol, vmin = 0, vmax = 1, cmap="Blues")
-    sol['VEGF'] +=1  
-    flag = 'VEGF=%s' % str(sol['VEGF']) 
-    plt.colorbar()
-    plt.savefig("%s.png" % flag)
-    plt.close()
-    
-    '''Only ECM'''
-    fig2 = plt.figure(2)
-    plt.title('%s%f' % ('ECM Distribution at t=',set['t']))
-    plt.xlabel('X')
-    plt.ylabel('Y')
-    plt.pcolormesh(y_sub_axis, x_sub_axis, f_sol, vmin = 0.499, vmax = 0.504, cmap="BuPu")
-    sol['ECM'] +=1  
-    flag = 'ECM=%s' % str(sol['ECM']) 
-    plt.colorbar()
-    plt.savefig("%s.png" % flag)
-    plt.close()
-    
-    '''Different VEGF'''
-    fig3 = plt.figure(11)
-    plt.title('%s%f' % ('VEGF at t=',set['t']))
-    plt.xlabel('X')
-    plt.ylabel('Y')           
-    cn_sol = numpy.ma.masked_array(cn_sol, cn_sol < 0.0001)
-    plt.pcolormesh(y_sub_axis, x_sub_axis, cn_sol, cmap = 'winter')
-    sol['VEGF1'] +=1  
-    flag = 'VEGF1=%s' % str(sol['VEGF1']) 
-    plt.colorbar()
-    plt.savefig("%s.png" % flag)
-    plt.close()
+    if set['k'] % 100 == 0:
+        '''Only VEGF'''
+        fig1 = plt.figure(1)
+        plt.title('%s%f' % ('VEGF Distribution at t=',set['t']))
+        plt.pcolormesh(y_sub_axis, x_sub_axis, c_sol, vmin = 0, vmax = 1, cmap="Blues")
+        sol['VEGF'] +=1  
+        flag = 'VEGF=%s' % str(sol['VEGF']) 
+        plt.colorbar()
+        plt.savefig("%s.png" % flag)
+        plt.close()
+        
+        '''Only ECM'''
+        fig2 = plt.figure(2)
+        plt.title('%s%f' % ('ECM Distribution at t=',set['t']))
+        plt.xlabel('X')
+        plt.ylabel('Y')
+        plt.pcolormesh(y_sub_axis, x_sub_axis, f_sol, vmin = 0.499, vmax = 0.504, cmap="BuPu")
+        sol['ECM'] +=1  
+        flag = 'ECM=%s' % str(sol['ECM']) 
+        plt.colorbar()
+        plt.savefig("%s.png" % flag)
+        plt.close()
+        
+        '''Different VEGF'''
+        fig3 = plt.figure(11)
+        plt.title('%s%f' % ('VEGF at t=',set['t']))
+        plt.xlabel('X')
+        plt.ylabel('Y')           
+        cn_sol = numpy.ma.masked_array(cn_sol, cn_sol < 0.0001)
+        plt.pcolormesh(y_sub_axis, x_sub_axis, cn_sol, cmap = 'winter')
+        sol['VEGF1'] +=1  
+        flag = 'VEGF1=%s' % str(sol['VEGF1']) 
+        plt.colorbar()
+        plt.savefig("%s.png" % flag)
+        plt.close()
 #     
 #     '''Merge_fn'''
 #     fig12 = plt.figure()
