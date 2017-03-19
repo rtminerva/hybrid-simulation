@@ -24,10 +24,11 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'Total Stop Tips:', len(sol['sp_stop'])
 #     print 'Sol n:', sol['matrix_tip']
     print 'Backward Movement:', sol['backward']
+    print 'Tip to Tip:', sol['tip_tip_anas']
     print 'Max Value of c, n, f', sol['c'].max(),',', sol['n'].max(),',', sol['f'].max()
     print 'Min Value of c, n, f', sol['c'].min(),',', sol['n'].min(),',', sol['f'].min()
       
-    if set['k'] % 100 == 0:
+    if set['k'] % 1 == 0:
         pic.pic_2d(coef,set,sol) #3
 
     '''Recording Time'''         

@@ -4,7 +4,7 @@ from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 from mpl_toolkits.mplot3d import Axes3D
 
-def pic_2d(coef,set,sol):
+def pic_2d(coef,set,sol):           
     '''EC'''
     fig = plt.figure()
     plt.title('%s%f' % ('t=',set['t']))
@@ -22,6 +22,15 @@ def pic_2d(coef,set,sol):
         x_pp.append(tip[0]*set['Hh'])
         y_pp.append(tip[1]*set['Hh'])
     ax.scatter(x_pp, y_pp, marker = 'o', s = 5, color ='r')
+    '''Backward Marker'''
+    if len(sol['backward_list']) > 0:
+        x_pp = []
+        y_pp = []
+        for tip in sol['backward_list']:
+            x_pp.append(tip[0]*set['Hh'])
+            y_pp.append(tip[1]*set['Hh'])
+        ax.scatter(x_pp, y_pp, marker = 'X', s = 5, color ='c')
+    
     plt.xlim((set['Hh'],coef['X']-set['Hh']))
     plt.ylim((set['Hh'],coef['Y']-set['Hh']))
     sol['stEC'] +=1  
