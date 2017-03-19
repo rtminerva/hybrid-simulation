@@ -34,7 +34,7 @@ def set_list_prob(dirr): #2.2.(1)
     list_prob_0 = line_1
     return list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4
 
-def move_left(sol,nom,xb,yb,list_prob_0,list_prob_1): #2.2.(2).(1)
+def move_left(sol,set,nom,xb,yb,list_prob_0,list_prob_1): #2.2.(2).(1)
     tipp = 'left'
     xpos_new = xb - 2
     ypos_new = yb                    
@@ -45,11 +45,11 @@ def move_left(sol,nom,xb,yb,list_prob_0,list_prob_1): #2.2.(2).(1)
     list_prob_1 =[]   
     
     '''Checking Anastomosis'''
-    sol = anastomosis(sol,xpos_new,ypos_new,nom, xb, yb)
+    sol = anastomosis(sol,set,xpos_new,ypos_new,nom, xb, yb)
 
     return sol, list_prob_0, list_prob_1, tipp
 
-def move_right(sol,nom,xb,yb,list_prob_0,list_prob_2): #2.2.(2).(2) 
+def move_right(sol,set,nom,xb,yb,list_prob_0,list_prob_2): #2.2.(2).(2) 
     tipp = 'right'
     xpos_new = xb + 2
     ypos_new = yb
@@ -60,11 +60,11 @@ def move_right(sol,nom,xb,yb,list_prob_0,list_prob_2): #2.2.(2).(2)
     list_prob_2 =[]
     
     '''Checking Anastomosis'''
-    sol = anastomosis(sol,xpos_new,ypos_new,nom, xb, yb)
+    sol = anastomosis(sol,set,xpos_new,ypos_new,nom, xb, yb)
     
     return sol, list_prob_0, list_prob_2, tipp
 
-def move_down(sol,nom,xb,yb,list_prob_0,list_prob_3): #2.2.(2).(3)
+def move_down(sol,set,nom,xb,yb,list_prob_0,list_prob_3): #2.2.(2).(3)
     tipp = 'down'
     xpos_new = xb
     ypos_new = yb - 2
@@ -75,11 +75,11 @@ def move_down(sol,nom,xb,yb,list_prob_0,list_prob_3): #2.2.(2).(3)
     list_prob_3 =[]
     
     '''Checking Anastomosis'''
-    sol = anastomosis(sol,xpos_new,ypos_new,nom, xb, yb)
+    sol = anastomosis(sol,set,xpos_new,ypos_new,nom, xb, yb)
 
     return sol, list_prob_0, list_prob_3, tipp
 
-def move_up(sol,nom,xb,yb,list_prob_0,list_prob_4): #2.2.(2).(4)
+def move_up(sol,set,nom,xb,yb,list_prob_0,list_prob_4): #2.2.(2).(4)
     tipp = 'up'
     xpos_new = xb
     ypos_new = yb + 2
@@ -90,24 +90,24 @@ def move_up(sol,nom,xb,yb,list_prob_0,list_prob_4): #2.2.(2).(4)
     list_prob_4 =[]
     
     '''Checking Anastomosis'''
-    sol = anastomosis(sol,xpos_new,ypos_new,nom, xb, yb)
+    sol = anastomosis(sol,set,xpos_new,ypos_new,nom, xb, yb)
     
     return sol, list_prob_0, list_prob_4, tipp
 
-def movement(sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch): #2.2.(2)
+def movement(sol,set,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch): #2.2.(2)
     tes = randint(1,10000)
     if branch == False:
         if tes in list_prob_0:
             tipp = 'stay'
         else:
             if tes in list_prob_1:                
-                sol, list_prob_0, list_prob_1, tipp = move_left(sol,nom,xb,yb,list_prob_0,list_prob_1) #2.2.(2).(1)
+                sol, list_prob_0, list_prob_1, tipp = move_left(sol,set,nom,xb,yb,list_prob_0,list_prob_1) #2.2.(2).(1)
             elif tes in list_prob_2:   
-                sol, list_prob_0, list_prob_2, tipp = move_right(sol,nom,xb,yb,list_prob_0,list_prob_2) #2.2.(2).(2)    
+                sol, list_prob_0, list_prob_2, tipp = move_right(sol,set,nom,xb,yb,list_prob_0,list_prob_2) #2.2.(2).(2)    
             elif tes in list_prob_3: 
-                sol, list_prob_0, list_prob_3, tipp = move_down(sol,nom,xb,yb,list_prob_0,list_prob_3) #2.2.(2).(3)   
+                sol, list_prob_0, list_prob_3, tipp = move_down(sol,set,nom,xb,yb,list_prob_0,list_prob_3) #2.2.(2).(3)   
             elif tes in list_prob_4:
-                sol, list_prob_0, list_prob_4, tipp = move_up(sol,nom,xb,yb,list_prob_0,list_prob_4) #2.2.(2).(4)
+                sol, list_prob_0, list_prob_4, tipp = move_up(sol,set,nom,xb,yb,list_prob_0,list_prob_4) #2.2.(2).(4)
     else:
         tipp = 'stay'
         while tipp == 'stay':
@@ -116,17 +116,17 @@ def movement(sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_
                 tipp = 'stay'
             else:
                 if tes in list_prob_1:                
-                    sol, list_prob_0, list_prob_1, tipp = move_left(sol,nom,xb,yb,list_prob_0,list_prob_1) #2.2.(2).(1)
+                    sol, list_prob_0, list_prob_1, tipp = move_left(sol,set,nom,xb,yb,list_prob_0,list_prob_1) #2.2.(2).(1)
                 elif tes in list_prob_2:   
-                    sol, list_prob_0, list_prob_2, tipp = move_right(sol,nom,xb,yb,list_prob_0,list_prob_2) #2.2.(2).(2)    
+                    sol, list_prob_0, list_prob_2, tipp = move_right(sol,set,nom,xb,yb,list_prob_0,list_prob_2) #2.2.(2).(2)    
                 elif tes in list_prob_3: 
-                    sol, list_prob_0, list_prob_3, tipp = move_down(sol,nom,xb,yb,list_prob_0,list_prob_3) #2.2.(2).(3)   
+                    sol, list_prob_0, list_prob_3, tipp = move_down(sol,set,nom,xb,yb,list_prob_0,list_prob_3) #2.2.(2).(3)   
                 elif tes in list_prob_4:
-                    sol, list_prob_0, list_prob_4, tipp = move_up(sol,nom,xb,yb,list_prob_0,list_prob_4) #2.2.(2).(4)
+                    sol, list_prob_0, list_prob_4, tipp = move_up(sol,set,nom,xb,yb,list_prob_0,list_prob_4) #2.2.(2).(4)
                 
     return sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 
 
-def anastomosis(sol,xpos_new,ypos_new, nom, xb, yb, backward = False):
+def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, backward = False):
     if sol['n'][xpos_new,ypos_new] == 1: #ANASTOMOSIS TIP TO TIP
         sol['sp_stop'].append(nom)
         sol['n'][xb,yb] = 0
@@ -137,7 +137,13 @@ def anastomosis(sol,xpos_new,ypos_new, nom, xb, yb, backward = False):
         '''Check if it is backward movement on its track'''
         for i in range(0,len(sol['matrix_tip'][nom])):
             if [xpos_new,ypos_new] == sol['matrix_tip'][nom][i]:
-                sol['backward'][set['k']].append([xpos_new,ypos_new])
+                print set['k']
+                print sol['backward']
+                if sol['bw'] == 0:
+                    sol['backward'][set['k']] = [[xpos_new,ypos_new]]
+                else:
+                    sol['backward'][set['k']].append([xpos_new,ypos_new])
+                sol['bw'] += 1
                 backward = True
                 sol['n'][xb,yb] = 1
                 sol['matrix_tip'][nom].remove(-1)
@@ -147,7 +153,11 @@ def anastomosis(sol,xpos_new,ypos_new, nom, xb, yb, backward = False):
         for i in sol['sp_stop']:
             for j in range(0,len(sol['matrix_tip'][i])):
                 if [xpos_new,ypos_new] == sol['matrix_tip'][i][j]:
-                    sol['backward'][set['k']].append([xpos_new,ypos_new])
+                    if sol['bw'] == 0:
+                        sol['backward'][set['k']] = [[xpos_new,ypos_new]]
+                    else:
+                        sol['backward'][set['k']].append([xpos_new,ypos_new])
+                    sol['bw'] += 1
                     backward = True
                     sol['n'][xb,yb] = 1
                     sol['matrix_tip'][i].remove(-1)
@@ -160,7 +170,7 @@ def anastomosis(sol,xpos_new,ypos_new, nom, xb, yb, backward = False):
             sol['n'][xb,yb] = 0
             sol['tip_cell'].remove([xb,yb])
     else:
-        if not [xb,yb] in sol['tip_cell']: #kalo branching, xb yb sudah diremove dr sprout branch sblmny. ajdi gak perlu remove lagi
+        if [xb,yb] in sol['tip_cell']: #kalo branching, xb yb sudah diremove dr sprout branch sblmny. ajdi gak perlu remove lagi
             sol['tip_cell'].remove([xb,yb])
         sol['tip_cell'].append([xpos_new,ypos_new])
         sol['n'][xpos_new,ypos_new] = 1
@@ -189,7 +199,7 @@ def hybrid_tech(coef, set, sol): #2.2
     n_sp = len(sol['matrix_tip']) #to save original number of tips before branching
     n_o = numpy.copy(sol['n']) #to save the value of 'n' at time step k (we are calculating at time step k+1)
     vn_o = [] #to record tip cell position
-    sol['backward'].append([])
+    sol['bw'] = 0
     for nom in range(0,n_sp): #dicek setiap tip
         if not nom in sol['sp_stop']: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
@@ -208,7 +218,7 @@ def hybrid_tech(coef, set, sol): #2.2
                                            
                 '''The Movement And Tip-Tip Anastomosis Checking'''
                 branch = False
-                sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(2)
+                sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(2)
                 
                 '''2.1 Branching Decision'''
                 PP = 'test'
@@ -234,7 +244,7 @@ def hybrid_tech(coef, set, sol): #2.2
                                 sol['list_tip_movement'].append('start')
                                 '''The Movement from branching'''
                                 branch = True
-                                sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(5)
+                                sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(5)
     
 #     print 'Tip cell position:', vn_o
 #     print 'Velocity Vector stalk on [3,201]: [',sol['Vb_x'][3,201],',',sol['Vb_y'][3,201],']'

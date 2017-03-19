@@ -68,6 +68,6 @@ def declare_coef():
     '''For Anastomosis'''
 #     sol['pp'] = {}
 #     sol['PP'] = [] 
-    sol['backward'] = []
+    sol['backward'] = {}
 
     return coef, set, sol
