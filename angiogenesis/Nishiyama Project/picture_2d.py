@@ -29,7 +29,7 @@ def pic_2d(coef,set,sol):
         for tip in sol['backward_list']:
             x_pp.append(tip[0]*set['Hh'])
             y_pp.append(tip[1]*set['Hh'])
-        ax.scatter(x_pp, y_pp, marker = 'X', s = 5, color ='c')
+        ax.scatter(x_pp, y_pp, marker = '^', s = 8, color ='c')
     
     plt.xlim((set['Hh'],coef['X']-set['Hh']))
     plt.ylim((set['Hh'],coef['Y']-set['Hh']))

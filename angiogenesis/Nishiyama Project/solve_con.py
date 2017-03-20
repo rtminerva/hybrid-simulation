@@ -138,7 +138,7 @@ def system_2d(coef, set, sol, n_o): #2.3
     c_o = numpy.copy(sol['c']) #to save values at time step k (we are calculating at time step k+1)
     f_o = numpy.copy(sol['f']) #to save values at time step k (we are calculating at time step k+1)
     
-    '''Calculate Vel'''
+    '''Calculate Velocity from tip cell's Vel'''
     sol['Vel_x'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['Vel_y'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     for y in range(1,set['Ny'],2):
