@@ -182,7 +182,7 @@ def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, backward = False, selloo
     else: #No anastomosis and backward movement
         for k in sol['tip_tip_anas']:
             if nom == k[0] or nom == k[1]:
-                sol['tip_tip_anas'].remove([nom, i]) #karena sudah move
+                sol['tip_tip_anas'].remove(k) #karena sudah move
         sol['matrix_tip'][nom].append([xpos_new,ypos_new])
         sol['n'][xpos_new,ypos_new] = 1
         sol['n'][xb,yb] = 0
