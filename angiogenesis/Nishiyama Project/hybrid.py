@@ -132,7 +132,7 @@ def anas_tip(sol,xpos_new,ypos_new, nom, xb, yb):
         sol['tip_tip_anas'].append([i, nom])
         if not i in sol['sp_stop']:
             sol['sp_stop'].append(i)
-    else:
+    elif nom > i:
         sol['tip_tip_anas'].append([nom, i])
         if not nom in sol['sp_stop']:
             sol['sp_stop'].append(nom)
