@@ -22,6 +22,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'at Time', set['t']
     print 'Total Tips:', len(sol['matrix_tip'])
     print 'Total Stop Tips:', len(sol['sp_stop'])
+    print 'tip stop:', sol['sp_stop']
 #     print 'Sol n:', sol['matrix_tip']
     print 'Backward at time step:', sol['backward_count']
 #     print 'Tip to Tip:', sol['tip_tip_anas']

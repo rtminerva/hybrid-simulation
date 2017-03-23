@@ -91,7 +91,7 @@ def pic_2d(coef,set,sol):
         plt.xlabel('X')
         plt.ylabel('Y')           
         cn_sol = numpy.ma.masked_array(cn_sol, cn_sol < 0.0001)
-        plt.pcolormesh(y_sub_axis, x_sub_axis, cn_sol, cmap = 'winter')
+        plt.pcolormesh(y_sub_axis, x_sub_axis, cn_sol, vmin = 0, vmax = 1, cmap = 'winter')
         sol['VEGF1'] +=1  
         flag = 'VEGF1=%s' % str(sol['VEGF1']) 
         plt.colorbar()

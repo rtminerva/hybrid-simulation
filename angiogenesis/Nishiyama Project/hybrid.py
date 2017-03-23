@@ -124,7 +124,7 @@ def anas_tip(sol,xpos_new,ypos_new, nom, xb, yb):
     i = 0
     found = False
     while i < len(sol['matrix_tip']) and found == False:
-        if [xpos_new,ypos_new] == sol['matrix_tip'][i][-1]:
+        if [xpos_new,ypos_new] == sol['matrix_tip'][i][-1] and i != nom:
             found = True
         i +=1
 #     print found
@@ -140,7 +140,7 @@ def anas_tip(sol,xpos_new,ypos_new, nom, xb, yb):
     return sol
 
 def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False):    
-    if [xpos_new,ypos_new] in sol['tip_cell']: #ANASTOMOSIS TIP TO TIP
+    if sol['n'][xpos_new,ypos_new] == 1: # in sol['tip_cell']: #ANASTOMOSIS TIP TO TIP
 #         print 'anas tip to tip'
         sol['matrix_tip'][nom].append([xpos_new,ypos_new])
         if [xb,yb] in sol['tip_cell']:
@@ -164,7 +164,8 @@ def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False):
                 sol['matrix_tip'][nom].append([xpos_new,ypos_new])
                 if [xb,yb] in sol['tip_cell']:
                     sol['tip_cell'].remove([xb,yb])
-                sol['tip_cell'].append([xpos_new,ypos_new])
+                if not [xpos_new,ypos_new] in sol['tip_cell']:
+                    sol['tip_cell'].append([xpos_new,ypos_new])
                 back_and_loop = True
                 sol['n'][xb,yb] = 0
                 sol['stalk'][xb,yb] = 1
@@ -195,7 +196,8 @@ def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False):
 #         print [xb,yb]
         if [xb,yb] in sol['tip_cell']:
             sol['tip_cell'].remove([xb,yb])
-        sol['tip_cell'].append([xpos_new,ypos_new])
+        if not [xpos_new,ypos_new] in sol['tip_cell']:
+            sol['tip_cell'].append([xpos_new,ypos_new])
         sol['n'][xpos_new,ypos_new] = 1
         sol['n'][xb,yb] = 0
         sol['stalk'][xb,yb] = 1
