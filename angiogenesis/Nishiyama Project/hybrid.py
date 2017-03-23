@@ -127,6 +127,7 @@ def anas_tip(sol,xpos_new,ypos_new, nom, xb, yb):
         if [xpos_new,ypos_new] == sol['matrix_tip'][i][-1]:
             found = True
         i +=1
+    print found
     '''Stop moving for tip i or nom'''
     if nom < i:
         sol['tip_tip_anas'].append([i, nom])
@@ -138,10 +139,12 @@ def anas_tip(sol,xpos_new,ypos_new, nom, xb, yb):
             sol['sp_stop'].append(nom)
     return sol
 
-def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, backward = False, sellooping = False):    
+def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False):    
     if [xpos_new,ypos_new] in sol['tip_cell']: #ANASTOMOSIS TIP TO TIP
         print 'anas tip to tip'
         sol['matrix_tip'][nom].append([xpos_new,ypos_new])
+        if [xb,yb] in sol['tip_cell']:
+            sol['tip_cell'].remove([xb,yb])
         sol['n'][xb,yb] = 0
         sol['stalk'][xb,yb] = 1
         sol = anas_tip(sol,xpos_new,ypos_new, nom, xb, yb)
@@ -152,14 +155,17 @@ def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, backward = False, selloo
             '''no record new position on matrix sol'''
             '''Record Backward List'''
             sol['backward_list'].append([xpos_new,ypos_new])
-            backward = True
-            
+            back_and_loop = True
+           
         '''Check if self looping'''
         i = 0
-        while i < len(sol['matrix_tip'][nom])-3 and sellooping == False:
+        while i < len(sol['matrix_tip'][nom])-3 and back_and_loop == False:
             if [xpos_new,ypos_new] == sol['matrix_tip'][nom][i]:
                 sol['matrix_tip'][nom].append([xpos_new,ypos_new])
-                sellooping = True
+                if [xb,yb] in sol['tip_cell']:
+                    sol['tip_cell'].remove([xb,yb])
+                sol['tip_cell'].append([xpos_new,ypos_new])
+                back_and_loop = True
                 sol['n'][xb,yb] = 0
                 sol['stalk'][xb,yb] = 1
                 sol['n'][xpos_new,ypos_new] = 1
@@ -170,10 +176,12 @@ def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, backward = False, selloo
             if nom == k[0]:
                 if [xpos_new,ypos_new] == sol['matrix_tip'][k[1]][len(sol['matrix_tip'][k[1]])-2]:
                     sol['backward_list'].append([xpos_new,ypos_new])
-                    backward = True
+                    back_and_loop = True
         
-        if backward == False and sellooping == False: #Anastomosis to sprout!
+        if back_and_loop == False: #Anastomosis to sprout!
             sol['matrix_tip'][nom].append([xpos_new,ypos_new])
+            if [xb,yb] in sol['tip_cell']:
+                sol['tip_cell'].remove([xb,yb])
             if not nom in sol['sp_stop']:
                 sol['sp_stop'].append(nom)
             sol['stalk'][xpos_new,ypos_new] = 1
@@ -184,6 +192,10 @@ def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, backward = False, selloo
             if nom == k[0] or nom == k[1]:
                 sol['tip_tip_anas'].remove(k) #karena sudah move
         sol['matrix_tip'][nom].append([xpos_new,ypos_new])
+        print [xb,yb]
+        if [xb,yb] in sol['tip_cell']:
+            sol['tip_cell'].remove([xb,yb])
+        sol['tip_cell'].append([xpos_new,ypos_new])
         sol['n'][xpos_new,ypos_new] = 1
         sol['n'][xb,yb] = 0
         sol['stalk'][xb,yb] = 1
@@ -215,6 +227,7 @@ def hybrid_tech(coef, set, sol): #2.2
        
     for nom in range(0,n_sp): #dicek setiap tip
         if not nom in sol['sp_stop']: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
+            print sol['tip_cell']
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
             yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
             
@@ -223,6 +236,7 @@ def hybrid_tech(coef, set, sol): #2.2
             if dirr[1] == 0 and dirr[2] == 0 and dirr[3] == 0 and dirr[4] == 0: #checking if there is space for tip cell to move
                 sol['sp_stop'].append(nom)
                 sol['n'][xb,yb] = 0
+                sol['stalk'][xb,yb] = 1
             else:
                 '''Making list of prob'''
                 list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = set_list_prob(dirr) #2.2.(1)
@@ -259,8 +273,8 @@ def hybrid_tech(coef, set, sol): #2.2
         sol['backward_count'].append(set['k'])
 
     '''Record New Tip Cell'''
-    sol['tip_cell'] = []
-    for nom in range(0,len(sol['matrix_tip'])): #dicek setiap tip
-        if not nom in sol['sp_stop']: #record only active sprout
-            sol['tip_cell'].append([sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]])
+#     sol['tip_cell'] = []
+#     for nom in range(0,len(sol['matrix_tip'])): #dicek setiap tip
+#         if not nom in sol['sp_stop']: #record only active sprout
+#             sol['tip_cell'].append([sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]])
     return sol, n_o
