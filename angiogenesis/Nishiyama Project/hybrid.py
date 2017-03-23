@@ -127,7 +127,7 @@ def anas_tip(sol,xpos_new,ypos_new, nom, xb, yb):
         if [xpos_new,ypos_new] == sol['matrix_tip'][i][-1]:
             found = True
         i +=1
-    print found
+#     print found
     '''Stop moving for tip i or nom'''
     if nom < i:
         sol['tip_tip_anas'].append([i, nom])
@@ -141,7 +141,7 @@ def anas_tip(sol,xpos_new,ypos_new, nom, xb, yb):
 
 def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False):    
     if [xpos_new,ypos_new] in sol['tip_cell']: #ANASTOMOSIS TIP TO TIP
-        print 'anas tip to tip'
+#         print 'anas tip to tip'
         sol['matrix_tip'][nom].append([xpos_new,ypos_new])
         if [xb,yb] in sol['tip_cell']:
             sol['tip_cell'].remove([xb,yb])
@@ -192,7 +192,7 @@ def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False):
             if nom == k[0] or nom == k[1]:
                 sol['tip_tip_anas'].remove(k) #karena sudah move
         sol['matrix_tip'][nom].append([xpos_new,ypos_new])
-        print [xb,yb]
+#         print [xb,yb]
         if [xb,yb] in sol['tip_cell']:
             sol['tip_cell'].remove([xb,yb])
         sol['tip_cell'].append([xpos_new,ypos_new])
@@ -227,7 +227,7 @@ def hybrid_tech(coef, set, sol): #2.2
        
     for nom in range(0,n_sp): #dicek setiap tip
         if not nom in sol['sp_stop']: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
-            print sol['tip_cell']
+#             print sol['tip_cell']
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
             yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
             
