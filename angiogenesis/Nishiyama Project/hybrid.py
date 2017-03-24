@@ -149,45 +149,45 @@ def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False):
         sol['stalk'][xb,yb] = 1
         sol = anas_tip(sol,xpos_new,ypos_new, nom, xb, yb)
                 
-#     elif sol['stalk'][xpos_new,ypos_new] == 1: #Check ANASTOMOSIS TIP TO BRANCH
-#         '''Check if it is backward movement on its track'''
-#         if [xpos_new,ypos_new] == sol['matrix_tip'][nom][len(sol['matrix_tip'][nom])-2]:
-#             '''no record new position on matrix sol'''
-#             '''Record Backward List'''
-#             sol['backward_list'].append([xpos_new,ypos_new])
-#             back_and_loop = True
-#             
-#         '''Check if self looping'''
-#         i = 0
-#         while i < len(sol['matrix_tip'][nom])-3 and back_and_loop == False:
-#             if [xpos_new,ypos_new] == sol['matrix_tip'][nom][i]:
-#                 sol['matrix_tip'][nom].append([xpos_new,ypos_new])
-#                 if [xb,yb] in sol['tip_cell']:
-#                     sol['tip_cell'].remove([xb,yb])
-#                 if not [xpos_new,ypos_new] in sol['tip_cell']:
-#                     sol['tip_cell'].append([xpos_new,ypos_new])
-#                 back_and_loop = True
-#                 sol['n'][xb,yb] = 0
-#                 sol['stalk'][xb,yb] = 1
-#                 sol['n'][xpos_new,ypos_new] = 1
-#             i += 1
-#                  
-#         '''Check if it is backward movement on tip-tip anastomosis track'''
-#         for k in sol['tip_tip_anas']:
-#             if nom == k[0]:
-#                 if [xpos_new,ypos_new] == sol['matrix_tip'][k[1]][len(sol['matrix_tip'][k[1]])-2]:
-#                     sol['backward_list'].append([xpos_new,ypos_new])
-#                     back_and_loop = True
-#          
-#         if back_and_loop == False: #Anastomosis to sprout!
-#             sol['matrix_tip'][nom].append([xpos_new,ypos_new])
-#             if [xb,yb] in sol['tip_cell']:
-#                 sol['tip_cell'].remove([xb,yb])
-#             if not nom in sol['sp_stop']:
-#                 sol['sp_stop'].append(nom)
-#             sol['stalk'][xpos_new,ypos_new] = 1
-#             sol['stalk'][xb,yb] = 1
-#             sol['n'][xb,yb] = 0
+    elif sol['stalk'][xpos_new,ypos_new] == 1: #Check ANASTOMOSIS TIP TO BRANCH
+        '''Check if it is backward movement on its track'''
+        if [xpos_new,ypos_new] == sol['matrix_tip'][nom][len(sol['matrix_tip'][nom])-2]:
+            '''no record new position on matrix sol'''
+            '''Record Backward List'''
+            sol['backward_list'].append([xpos_new,ypos_new])
+            back_and_loop = True
+             
+        '''Check if self looping'''
+        i = 0
+        while i < len(sol['matrix_tip'][nom])-3 and back_and_loop == False:
+            if [xpos_new,ypos_new] == sol['matrix_tip'][nom][i]:
+                sol['matrix_tip'][nom].append([xpos_new,ypos_new])
+                if [xb,yb] in sol['tip_cell']:
+                    sol['tip_cell'].remove([xb,yb])
+                if not [xpos_new,ypos_new] in sol['tip_cell']:
+                    sol['tip_cell'].append([xpos_new,ypos_new])
+                back_and_loop = True
+                sol['n'][xb,yb] = 0
+                sol['stalk'][xb,yb] = 1
+                sol['n'][xpos_new,ypos_new] = 1
+            i += 1
+                  
+        '''Check if it is backward movement on tip-tip anastomosis track'''
+        for k in sol['tip_tip_anas']:
+            if nom == k[0]:
+                if [xpos_new,ypos_new] == sol['matrix_tip'][k[1]][len(sol['matrix_tip'][k[1]])-2]:
+                    sol['backward_list'].append([xpos_new,ypos_new])
+                    back_and_loop = True
+          
+        if back_and_loop == False: #Anastomosis to sprout!
+            sol['matrix_tip'][nom].append([xpos_new,ypos_new])
+            if [xb,yb] in sol['tip_cell']:
+                sol['tip_cell'].remove([xb,yb])
+            if not nom in sol['sp_stop']:
+                sol['sp_stop'].append(nom)
+            sol['stalk'][xpos_new,ypos_new] = 1
+            sol['stalk'][xb,yb] = 1
+            sol['n'][xb,yb] = 0
     else: #No anastomosis and backward movement
         for k in sol['tip_tip_anas']:
             if nom == k[0] or nom == k[1]:
