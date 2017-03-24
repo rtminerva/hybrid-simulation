@@ -156,7 +156,7 @@ def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False):
 #             '''Record Backward List'''
 #             sol['backward_list'].append([xpos_new,ypos_new])
 #             back_and_loop = True
-#            
+#             
 #         '''Check if self looping'''
 #         i = 0
 #         while i < len(sol['matrix_tip'][nom])-3 and back_and_loop == False:
@@ -171,14 +171,14 @@ def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False):
 #                 sol['stalk'][xb,yb] = 1
 #                 sol['n'][xpos_new,ypos_new] = 1
 #             i += 1
-#                 
+#                  
 #         '''Check if it is backward movement on tip-tip anastomosis track'''
 #         for k in sol['tip_tip_anas']:
 #             if nom == k[0]:
 #                 if [xpos_new,ypos_new] == sol['matrix_tip'][k[1]][len(sol['matrix_tip'][k[1]])-2]:
 #                     sol['backward_list'].append([xpos_new,ypos_new])
 #                     back_and_loop = True
-#         
+#          
 #         if back_and_loop == False: #Anastomosis to sprout!
 #             sol['matrix_tip'][nom].append([xpos_new,ypos_new])
 #             if [xb,yb] in sol['tip_cell']:
