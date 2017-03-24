@@ -10,8 +10,8 @@ def declare_coef():
     set['layout'] = '2D'
     #set['layout'] = '3D'
     
-    set['initial_prof'] = 'rectangular_1_tip'
-    #set['initial_prof'] = 'rectangular_tip'
+#     set['initial_prof'] = 'rectangular_1_tip'
+    set['initial_prof'] = 'rectangular_tip'
     
     set['c_prof'] = 'C1'
     #set['c_prof'] = 'C2'
@@ -33,11 +33,11 @@ def declare_coef():
     coef['Nu'] = 0.1
     
     ##ECM Fibronectin (f)
-    coef['Beta'] = 0#.05#7
+    coef['Beta'] = 0.05#7
     coef['Gama'] = 0.1
  
     '''Branching & Mitosis'''
-    coef['T_branch'] = 0#.25
+    coef['T_branch'] = 0.25
     coef['T_mitosis'] = 1000#0.5
     
     '''Spatial and Temporal Meshes Number'''
@@ -67,8 +67,15 @@ def declare_coef():
     '''To store solutions'''
     ##sol dictionaries dapat berubah
     sol['stEC'] = 0
-    sol['stVEGF'] = 0
-    sol['stFb'] = 0
+    sol['Merge_cn'] = 0
+    sol['Merge_cnd'] = 0
+    sol['Merge_fn'] = 0
+    sol['VEGF'] = 0
+    sol['VEGF1'] = 0
+    sol['ECM'] = 0
+#     sol['stEC'] = 0
+#     sol['stVEGF'] = 0
+#     sol['stFb'] = 0
     #sol['matrix_tip'] = 0
     #sol['list_tip_movement'] = 0
     #sol['life_time_tip'] = 0

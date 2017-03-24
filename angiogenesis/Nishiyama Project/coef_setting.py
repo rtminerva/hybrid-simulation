@@ -10,8 +10,8 @@ def declare_coef():
     set['initial_prof'] = 'rectangular_1_tip'
     #set['initial_prof'] = 'rectangular_tip'
     
-    set['c_prof'] = 'C1'
-    #set['c_prof'] = 'C2'
+#     set['c_prof'] = 'C1'
+    set['c_prof'] = 'C2'
     
     set['f_prof'] = 'F1'
     #set['f_prof'] = 'F2'

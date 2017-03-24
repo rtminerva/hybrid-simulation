@@ -1,4 +1,5 @@
 import random
+import numpy
 from random import randint
 from dirrection_of_movement import movement_dir
 
@@ -303,6 +304,7 @@ def movement_branch(tipp,sol,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob
 
 def hybrid_tech_c(coef, set, sol):
     n_sp = len(sol['matrix_tip']) #to save original number of tips before branching
+    n_o = numpy.copy(sol['n']) #to save the value of 'n' at time step k (we are calculating at time step k+1)
     
     for nom in range(0,n_sp): #dicek setiap tip
         if not nom in sol['sp_stop']: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
@@ -430,4 +432,4 @@ def hybrid_tech_c(coef, set, sol):
                                 '''Check Anastomosis'''
                                 if not tipp == 'stay':
                                     sol=anastomosis_tip_tip(sol,len(sol['matrix_tip'])-1)
-    return sol
+    return sol, n_o

@@ -35,6 +35,7 @@ def c_prof_2(coef,set,sol):
 
 def init_2d_(coef,set,sol):
     sol['c'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
+    sol['c_n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['f'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     if set['c_prof'] == 'C2':
         sol = c_prof_2(coef,set,sol)
