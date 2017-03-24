@@ -260,7 +260,7 @@ def hybrid_tech(coef, set, sol): #2.23
 #                         if sol['life_time_tip'][nom] < coef['T_branch']: #not able to branch
 #                             sol['life_time_tip'][nom] += set['dt']
 #                         else: #there is possibility to branch
-# #                             Probability of Branching using c 
+# #                             Probability of Branching using c
 #                             list_prob = prob_by_c(sol,xb,yb) #range(1,11) #2.2.(4)
 #                             tes = randint(1,10)
 #                             if not tes in list_prob: #not able to branch
