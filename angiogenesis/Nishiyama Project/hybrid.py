@@ -126,19 +126,21 @@ def anas_tip(sol,xpos_new,ypos_new, nom, xb, yb):
     while i < len(sol['matrix_tip']) and found == False:
         if [xpos_new,ypos_new] == sol['matrix_tip'][i][-1] and i != nom:
             found = True
-        i +=1
+        else:
+            i +=1
 #     print found
     '''Stop moving for tip i or nom'''
-    if nom < i:
-        sol['tip_tip_anas'].append([i, nom])
-        if not i in sol['sp_stop']:
-            sol['sp_stop'].append(i)
-            sol['cause'][i] = 'tip to tip'
-    elif nom > i:
-        sol['tip_tip_anas'].append([nom, i])
-        if not nom in sol['sp_stop']:
-            sol['sp_stop'].append(nom)
-            sol['cause'][nom] = 'tip to tip'
+    if found == True:
+        if nom < i:
+            sol['tip_tip_anas'].append([i, nom])
+            if not i in sol['sp_stop']:
+                sol['sp_stop'].append(i)
+                sol['cause'][i] = 'tip to tip'
+        elif nom > i:
+            sol['tip_tip_anas'].append([nom, i])
+            if not nom in sol['sp_stop']:
+                sol['sp_stop'].append(nom)
+                sol['cause'][nom] = 'tip to tip'
     return sol
 
 def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False):    
@@ -172,7 +174,8 @@ def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False):
                 sol['n'][xb,yb] = 0
                 sol['stalk'][xb,yb] = 1
                 sol['n'][xpos_new,ypos_new] = 1
-            i += 1
+            else:
+                i += 1
                   
         '''Check if it is backward movement on tip-tip anastomosis track'''
         for k in sol['tip_tip_anas']:
