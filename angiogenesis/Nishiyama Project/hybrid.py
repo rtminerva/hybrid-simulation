@@ -133,10 +133,12 @@ def anas_tip(sol,xpos_new,ypos_new, nom, xb, yb):
         sol['tip_tip_anas'].append([i, nom])
         if not i in sol['sp_stop']:
             sol['sp_stop'].append(i)
+            sol['cause'][i] = 'tip to tip'
     elif nom > i:
         sol['tip_tip_anas'].append([nom, i])
         if not nom in sol['sp_stop']:
             sol['sp_stop'].append(nom)
+            sol['cause'][nom] = 'tip to tip'
     return sol
 
 def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False):    
@@ -185,6 +187,7 @@ def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False):
                 sol['tip_cell'].remove([xb,yb])
             if not nom in sol['sp_stop']:
                 sol['sp_stop'].append(nom)
+                sol['cause'][nom] = 'tip to sprout'
             sol['stalk'][xpos_new,ypos_new] = 1
             sol['stalk'][xb,yb] = 1
             sol['n'][xb,yb] = 0
@@ -237,6 +240,7 @@ def hybrid_tech(coef, set, sol): #2.23
             if dirr[1] == 0 and dirr[2] == 0 and dirr[3] == 0 and dirr[4] == 0: #checking if there is space for tip cell to move
                 if not nom in sol['sp_stop']:
                     sol['sp_stop'].append(nom)
+                    sol['cause'][nom] = 'no space'
                 if [xb,yb] in sol['tip_cell']:
                     sol['tip_cell'].remove([xb,yb])
                 sol['n'][xb,yb] = 0

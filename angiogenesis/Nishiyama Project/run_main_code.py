@@ -26,9 +26,9 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'Tip Cell Pos:', sol['tip_cell']
     for e, i in enumerate(sol['matrix_tip']):
         if e in sol['sp_stop']:
-            print 'stop', e, ':', i[-1]
+            print 'stop', e, ':', i[-1], ',', sol['cause'][e], ',', 'Length of sprout:', len(i)
         else:
-            print 'RUN', e, ':', i[-1]
+            print 'RUN', e, ':', i[-1], ',', 'Length of sprout:', len(i)
 #     print 'Backward at time step:', sol['backward_count']
     print 'Max Value of c, n, f', sol['c'].max(),',', sol['n'].max(),',', sol['f'].max()
     print 'Min Value of c, n, f', sol['c'].min(),',', sol['n'].min(),',', sol['f'].min()

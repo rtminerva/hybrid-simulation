@@ -72,5 +72,6 @@ def declare_coef():
     sol['backward_count'] = []
     sol['backward_list'] = []
     sol['tip_tip_anas'] = []
+    sol['cause'] = {}
 
     return coef, set, sol
