@@ -209,8 +209,8 @@ def system_2d(coef, set, sol, n_o): #2.3
             digestion_f = set['dt']*gam_f*f_o[x,y]*mean_n
             prolifer_f = set['dt']*coef['Beta']*mean_n
             
-            sol['c'][x,y] = c_o[x,y] - digestion_c - move_c 
-            sol['f'][x,y] = f_o[x,y] + prolifer_f - digestion_f - move_f
+            sol['c'][x,y] = c_o[x,y] - digestion_c# - move_c
+            sol['f'][x,y] = f_o[x,y] + prolifer_f - digestion_f# - move_f
 #             if move_c != 0 or move_f != 0:
 #                 print move_c, move_f, digestion_c, digestion_f
             if sol['c'][x,y] != sol['c_o'][x, set['Ny']]:
