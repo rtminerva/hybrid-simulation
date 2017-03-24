@@ -23,9 +23,13 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'Total Tips:', len(sol['matrix_tip'])
     print 'Total Stop Tips:', len(sol['sp_stop'])
     print 'tip stop:', sol['sp_stop']
-#     print 'Sol n:', sol['matrix_tip']
-    print 'Backward at time step:', sol['backward_count']
-#     print 'Tip to Tip:', sol['tip_tip_anas']
+    print 'Tip Cell Pos:', sol['tip_cell']
+    for e, i in enumerate(sol['matrix_tip']):
+        if e in sol['sp_stop']:
+            print 'stop', e, ':', i[-1]
+        else:
+            print 'RUN', e, ':', i[-1]
+#     print 'Backward at time step:', sol['backward_count']
     print 'Max Value of c, n, f', sol['c'].max(),',', sol['n'].max(),',', sol['f'].max()
     print 'Min Value of c, n, f', sol['c'].min(),',', sol['n'].min(),',', sol['f'].min()
     
