@@ -66,7 +66,7 @@ def pic_2d(coef,set,sol):
         '''Only VEGF'''
         fig1 = plt.figure(1)
         plt.title('%s%f' % ('VEGF Distribution at t=',set['t']))
-        plt.pcolormesh(y_sub_axis, x_sub_axis, c_sol, vmin = 0, vmax = 1, cmap="Blues")
+        plt.pcolormesh(y_sub_axis, x_sub_axis, c_sol, vmin = 0, vmax = 1, cmap="Blues", shading = 'gouraud')
         sol['VEGF'] +=1  
         flag = 'VEGF=%s' % str(sol['VEGF']) 
         plt.colorbar()
@@ -78,7 +78,7 @@ def pic_2d(coef,set,sol):
         plt.title('%s%f' % ('ECM Distribution at t=',set['t']))
         plt.xlabel('X')
         plt.ylabel('Y')
-        plt.pcolormesh(y_sub_axis, x_sub_axis, f_sol, vmin = 0.499, vmax = 0.504, cmap="BuPu")
+        plt.pcolormesh(y_sub_axis, x_sub_axis, f_sol, vmin = 0.499, vmax = 0.504, cmap="BuPu", shading = 'gouraud')
         sol['ECM'] +=1  
         flag = 'ECM=%s' % str(sol['ECM']) 
         plt.colorbar()
@@ -91,7 +91,7 @@ def pic_2d(coef,set,sol):
         plt.xlabel('X')
         plt.ylabel('Y')           
         cn_sol = numpy.ma.masked_array(cn_sol, cn_sol < 0.0001)
-        plt.pcolormesh(y_sub_axis, x_sub_axis, cn_sol, vmin = 0, vmax = 1, cmap = 'winter')
+        plt.pcolormesh(y_sub_axis, x_sub_axis, cn_sol, vmin = 0, vmax = 1, cmap = 'winter', shading = 'gouraud')
         sol['VEGF1'] +=1  
         flag = 'VEGF1=%s' % str(sol['VEGF1']) 
         plt.colorbar()

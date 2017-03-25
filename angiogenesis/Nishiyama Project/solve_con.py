@@ -175,7 +175,7 @@ def system_2d(coef, set, sol, n_o): #2.3
                            
                 else:
                     mean_n = (n_o[x-1,y-1] + n_o[x+1,y-1])/4
-                    move_c = 0#coef['Alp_c']*set['dt']*(vijx_p*(c_o[x,y]-c_o[x-2,y])-vijx_n*(c_o[x+2,y]-c_o[x,y])+vijy_p*(c_o[x,y]-c_o[x,y-2])-vijy_n*(0))/(set['h']**2)
+                    move_c = 0#coef['Alp_c']*set['dt']*(vijx_p*(c_o[x,y]-c_o[x-2,y]coef['Gama'])-vijx_n*(c_o[x+2,y]-c_o[x,y])+vijy_p*(c_o[x,y]-c_o[x,y-2])-vijy_n*(0))/(set['h']**2)
                        
             else:
                 if x == 0:
@@ -206,11 +206,11 @@ def system_2d(coef, set, sol, n_o): #2.3
                     
             digestion_c = set['dt']*coef['Nu']*c_o[x,y]*mean_n
             
-            digestion_f = set['dt']*gam_f*f_o[x,y]*mean_n #coef['Gama']
+            digestion_f = set['dt']*coef['Gama']*f_o[x,y]*mean_n #gam_f
             prolifer_f = set['dt']*coef['Beta']*mean_n
             
-            sol['c'][x,y] = c_o[x,y] - digestion_c - move_c
-            sol['f'][x,y] = f_o[x,y] + prolifer_f - digestion_f - move_f
+            sol['c'][x,y] = c_o[x,y] - digestion_c# - move_c
+            sol['f'][x,y] = f_o[x,y] + prolifer_f - digestion_f# - move_f
 #             if move_c != 0 or move_f != 0:
 #                 print move_c, move_f, digestion_c, digestion_f
             if sol['c'][x,y] != sol['c_o'][x, set['Ny']]:
