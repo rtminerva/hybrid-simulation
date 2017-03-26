@@ -78,25 +78,37 @@ def pic_2d(coef,set,sol):
         plt.title('%s%f' % ('ECM Distribution at t=',set['t']))
         plt.xlabel('X')
         plt.ylabel('Y')
-        plt.pcolormesh(y_sub_axis, x_sub_axis, f_sol, vmin = 0.499, vmax = 0.504, cmap="BuPu", shading = 'gouraud')
+        plt.pcolormesh(y_sub_axis, x_sub_axis, f_sol, vmin = 0.499, vmax = 0.504, cmap="BuPu", shading = 'gouraud')#
+        x_p = []
+        y_p = []
+        for tip in sol['tip_cell']:
+            x_p.append(tip[0]*set['Hh'])
+            y_p.append(tip[1]*set['Hh'])
+        ax.scatter(x_p, y_p, marker = 'o', s = 10, color ='r')
         sol['ECM'] +=1  
         flag = 'ECM=%s' % str(sol['ECM']) 
         plt.colorbar()
         plt.savefig("%s.png" % flag)
         plt.close()
          
-        '''Different VEGF'''
-        fig3 = plt.figure(11)
-        plt.title('%s%f' % ('VEGF at t=',set['t']))
-        plt.xlabel('X')
-        plt.ylabel('Y')           
-        cn_sol = numpy.ma.masked_array(cn_sol, cn_sol < 0.0001)
-        plt.pcolormesh(y_sub_axis, x_sub_axis, cn_sol, vmin = 0, vmax = 1, cmap = 'winter', shading = 'gouraud')
-        sol['VEGF1'] +=1  
-        flag = 'VEGF1=%s' % str(sol['VEGF1']) 
-        plt.colorbar()
-        plt.savefig("%s.png" % flag)
-        plt.close()
+#         '''Different VEGF'''
+#         fig3 = plt.figure(11)
+#         plt.title('%s%f' % ('VEGF at t=',set['t']))
+#         plt.xlabel('X')
+#         plt.ylabel('Y')           
+#         cn_sol = numpy.ma.masked_array(cn_sol, cn_sol < 0.0001)
+#         plt.pcolormesh(y_sub_axis, x_sub_axis, cn_sol, vmin = 0, vmax = 1, cmap = 'winter', shading = 'gouraud')
+#         x_p = []
+#         y_p = []
+#         for tip in sol['tip_cell']:
+#             x_p.append(tip[0]*set['Hh'])
+#             y_p.append(tip[1]*set['Hh'])
+#         ax.scatter(x_p, y_p, marker = 'o', s = 10, color ='r')
+#         sol['VEGF1'] +=1  
+#         flag = 'VEGF1=%s' % str(sol['VEGF1']) 
+#         plt.colorbar()
+#         plt.savefig("%s.png" % flag)
+#         plt.close()
         
         
         
