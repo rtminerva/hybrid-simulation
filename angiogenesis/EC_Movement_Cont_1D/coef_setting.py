@@ -38,7 +38,7 @@ def declare_coef(): #1
     coef['Ki_b'] = 0.015 #NODATA tip-taxis #TIP TAXIS PARAMETER ANALYSIS# 0.015 ##IN ANALYSIS
     ##Kinetics
     coef['mu2'] = 0.8 #0.5 #stalk proliferation 1 #####
-    coef['mu3'] = 0.3 #0.2 #stalk-tip proliferation #####
+    coef['mu3'] = 0.1#3 #stalk-tip proliferation #####
     coef['beta1'] = 1 #stalk-tip saturation point #####
     coef['Lam_3'] = 0.001 #Anastomosis should be small enough
     
