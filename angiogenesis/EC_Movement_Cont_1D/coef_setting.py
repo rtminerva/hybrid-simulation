@@ -15,8 +15,8 @@ def declare_coef(): #1
 #     
 #     #profile 2: /
 #     coef['M'] = (1-1.5)/(100-2)
-#     set['Model'] = 'normal'
-    set['Model'] = 'extension'
+    set['Model'] = 'normal'
+#     set['Model'] = 'extension'
     set['Dimension'] = '1D'
 #     set['Dimension'] = '2D'
     
@@ -28,7 +28,8 @@ def declare_coef(): #1
     coef['Ki_n'] = 0.115#133 #AUBERT Chemotaxis coef (range max)
     coef['Ro_n'] = 0.0001#8 #AUBERT tip away from stalk
     ##Kinetics
-    coef['mu1'] = 0.9#7 #AUBERT max tip branching
+    coef['mu1'] = 0#.9#7 #AUBERT max tip branching
+    sol['age'] = 0
     coef['Lam_1'] = 0.83#5 #AUBERT in range tip-tip anastomosis 
     coef['Lam_2'] = 0.85#5 #AUBERT in range tip-stalk anastomosis
     
@@ -52,7 +53,7 @@ def declare_coef(): #1
     ##set dictionaries (fixed: never change)
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 200.001
+    set['T'] = 10.001
     set['Nt'] = 1000000
     set['rad'] = 0.12
     set['h'] = 0.005 #0.005 #0.01#

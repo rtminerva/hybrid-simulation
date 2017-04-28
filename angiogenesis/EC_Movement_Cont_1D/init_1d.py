@@ -39,6 +39,8 @@ def init_1d_(coef,set,sol): #2.1.1
     sol = b_prof(coef,set,sol)
     sol['Vb_x'] = numpy.zeros(set['Nx']+1)
     
+    sol['ma'] = numpy.zeros(set['Nx']+1)
+    
     
     '''Model extension'''
     if set['Model'] == 'extension':
