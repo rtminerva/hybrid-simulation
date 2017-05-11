@@ -90,14 +90,15 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
     F_sol_1 = F_vector_sol(coef, set, sol, n_o, b_o, c_o)
     
     #check branching age
-    if sol['age'] > 0.001:
+    if sol['age'] > 0.005:
         branching = True
          
     if branching == True:
-        #branching due to cell density
+        #branching due to cell density and VEGF
         tip_cell_pos = numpy.argmax(n_o)
-        if b_o[tip_cell_pos] > 1/4*n_o[tip_cell_pos]:
-            branching_par = 2
+        branch_dec = (b_o[tip_cell_pos] - 1/4*n_o[tip_cell_pos]) * (1 - 0.2/c_o[x])
+        if branch_dec > 0:
+            branching_par = coef['mu1']
             print 'branching'
             sol['age'] = 0
         #cell_density = n_o[tip_cell_pos] + b_o[tip_cell_pos]
@@ -105,13 +106,10 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
      
     '''Solve b, n at main lattice'''
     for x in range(1,set['Nx'],2):
-        kinetic_n = set['dt']*coef['mu1']*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
-        #branching is obtained by cell density
-#         print branching_par
-#         kinetic_n = set['dt']*branching_par*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
-        
+#         kinetic_n = set['dt']*coef['mu1']*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
+       
         #branching is obtained by cell density and vegf level
-        kinetic_n = set['dt']*branching_par*c_o[x]*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
+        kinetic_n = set['dt']*branching_par*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
         
         
         '''Model Extension''' 

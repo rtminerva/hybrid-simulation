@@ -28,7 +28,7 @@ def declare_coef(): #1
     coef['Ki_n'] = 0.115#133 #AUBERT Chemotaxis coef (range max)
     coef['Ro_n'] = 0.0001#8 #AUBERT tip away from stalk
     ##Kinetics
-    coef['mu1'] = 0#.9#7 #AUBERT max tip branching
+    coef['mu1'] = 0.9#7 #AUBERT max tip branching
     sol['age'] = 0
     coef['Lam_1'] = 0.83#5 #AUBERT in range tip-tip anastomosis 
     coef['Lam_2'] = 0.85#5 #AUBERT in range tip-stalk anastomosis
