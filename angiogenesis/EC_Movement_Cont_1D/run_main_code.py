@@ -34,7 +34,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         print 'Max Value of c, b, n', sol['c'].max(),',', sol['b'].max(),',', sol['n'].max()
         print 'Min Value of c, b, n', sol['c'].min(),',', sol['b'].min(),',', sol['n'].min()
       
-    if set['k'] % 1000 == 0:
+    if set['k'] % 100 == 0:
         if set['Dimension'] == '1D':
             pic_1d.pic_1d(coef,set,sol) #3
         elif set['Dimension'] == '2D':

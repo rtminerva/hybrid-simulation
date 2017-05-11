@@ -90,25 +90,25 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
     F_sol_1 = F_vector_sol(coef, set, sol, n_o, b_o, c_o)
     
     #check branching age
-    if sol['age'] > 0.005:
+    if sol['age'] > 0.001:
         branching = True
-         
-    if branching == True:
-        #branching due to cell density and VEGF
-        tip_cell_pos = numpy.argmax(n_o)
-        branch_dec = (b_o[tip_cell_pos] - 1/4*n_o[tip_cell_pos]) * (1 - 0.2/c_o[x])
-        if branch_dec > 0:
-            branching_par = coef['mu1']
-            print 'branching'
-            sol['age'] = 0
-        #cell_density = n_o[tip_cell_pos] + b_o[tip_cell_pos]
-    
+   
      
     '''Solve b, n at main lattice'''
     for x in range(1,set['Nx'],2):
 #         kinetic_n = set['dt']*coef['mu1']*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
        
         #branching is obtained by cell density and vegf level
+        if branching == True:
+            #branching due to cell density and VEGF
+            tip_cell_pos = numpy.argmax(n_o)
+            branch_dec = (b_o[tip_cell_pos] - 1/4*n_o[tip_cell_pos])# * (c_o[x]/0.01 - 1)
+#             print branch_dec
+            if branch_dec > 0:
+                branching_par = coef['mu1']
+#                 print 'branching'
+                sol['age'] = 0
+        
         kinetic_n = set['dt']*branching_par*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
         
         
@@ -157,6 +157,7 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
 #             move_b = set['dt']*coef['Ki_b']*((b_o[x]*max((c_o[x+1]-c_o[x-1])/set['h'],0)-b_o[x+2]*max(-(c_o[x+3]-c_o[x+1])/set['h'],0))-(b_o[x-2]*max((c_o[x-1]-c_o[x-3])/set['h'],0)-b_o[x]*max(-(c_o[x+1]-c_o[x-1])/set['h'],0)))/set['h']
         sol['n'][x] = n_o[x] - move_n + kinetic_n
         sol['b'][x] = b_o[x] - move_b + kinetic_b
+        print kinetic_b
         
 #         sol['b'][1] =1
 #         #Keeping Source of Stalk
