@@ -86,12 +86,31 @@ def G_vector_sol(coef,set,sol,m_o,p_o): #2.3.(1)
                 
     return G_sol_1     
 
-def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o):
+def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = False):
     F_sol_1 = F_vector_sol(coef, set, sol, n_o, b_o, c_o)
+    
+    #check branching age
+    if sol['age'] > 0.005:
+        branching = True
+         
+    if branching == True:
+        #branching due to cell density and VEGF
+        tip_cell_pos = numpy.argmax(n_o)
+        branch_dec = (b_o[tip_cell_pos] - 1/4*n_o[tip_cell_pos]) * (1 - 0.2/c_o[x])
+        if branch_dec > 0:
+            branching_par = coef['mu1']
+            print 'branching'
+            sol['age'] = 0
+        #cell_density = n_o[tip_cell_pos] + b_o[tip_cell_pos]
+    
      
     '''Solve b, n at main lattice'''
     for x in range(1,set['Nx'],2):
-        kinetic_n = set['dt']*coef['mu1']*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
+#         kinetic_n = set['dt']*coef['mu1']*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
+       
+        #branching is obtained by cell density and vegf level
+        kinetic_n = set['dt']*branching_par*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
+        
         
         '''Model Extension''' 
         if set['Model'] == 'extensions':  #SSSSSSS
@@ -198,7 +217,8 @@ def n_b_c_stop(coef, set, sol, n_o, b_o, c_o, ma_o):
 def system_1d(coef, set, sol): #2.3
     c_o = numpy.copy(sol['c']) #to save values at time step k (we are calculating at time step k+1)
     n_o = numpy.copy(sol['n']) 
-    b_o = numpy.copy(sol['b']) 
+    b_o = numpy.copy(sol['b'])
+    ma_o = numpy.copy(sol['ma']) 
     
     '''Model Extension'''    
     if set['Model'] == 'extension':

@@ -10,6 +10,7 @@ def boolean_1_iter(coef, set, sol): #2
     else:                             
         '''2. Solvng System''' 
         start1 = timer()  
+        sol['age'] += set['dt']
         if set['Dimension'] == '1D':
             sol = system_1d(coef, set, sol) #2.3
         elif set['Dimension'] == '2D':
