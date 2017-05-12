@@ -92,6 +92,7 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
     #check branching age
     if sol['age'] > 0.001:
         branching = True
+    tip_cell_pos = numpy.argmax(n_o)
    
      
     '''Solve b, n at main lattice'''
@@ -99,11 +100,9 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
 #         kinetic_n = set['dt']*coef['mu1']*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
        
         #branching is obtained by cell density and vegf level
-        if branching == True:
+        if branching == True and x == tip_cell_pos:
             #branching due to cell density and VEGF
-            tip_cell_pos = numpy.argmax(n_o)
-            branch_dec = (b_o[tip_cell_pos] - 1/4*n_o[tip_cell_pos])# * (c_o[x]/0.01 - 1)
-#             print branch_dec
+            branch_dec = (b_o[tip_cell_pos] - 1/4*n_o[tip_cell_pos]) * ((c_o[x+1]+c_o[x-1])/(2*0.1) - 1)
             if branch_dec > 0:
                 branching_par = coef['mu1']
 #                 print 'branching'
@@ -157,7 +156,6 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
 #             move_b = set['dt']*coef['Ki_b']*((b_o[x]*max((c_o[x+1]-c_o[x-1])/set['h'],0)-b_o[x+2]*max(-(c_o[x+3]-c_o[x+1])/set['h'],0))-(b_o[x-2]*max((c_o[x-1]-c_o[x-3])/set['h'],0)-b_o[x]*max(-(c_o[x+1]-c_o[x-1])/set['h'],0)))/set['h']
         sol['n'][x] = n_o[x] - move_n + kinetic_n
         sol['b'][x] = b_o[x] - move_b + kinetic_b
-        print kinetic_b
         
 #         sol['b'][1] =1
 #         #Keeping Source of Stalk
