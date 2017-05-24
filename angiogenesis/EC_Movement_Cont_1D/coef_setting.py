@@ -15,8 +15,8 @@ def declare_coef(): #1
 #     
 #     #profile 2: /
 #     coef['M'] = (1-1.5)/(100-2)
-    set['Model'] = 'normal'
-#     set['Model'] = 'extension'
+#     set['Model'] = 'normal'
+    set['Model'] = 'extension'
     set['Dimension'] = '1D'
 #     set['Dimension'] = '2D'
     
@@ -25,20 +25,20 @@ def declare_coef(): #1
     
     ''''Tip (n)'''
     coef['D_n'] = 0.00018 #AUBERT tip Diffusion
-    coef['Ki_n'] = 0.115#133 #AUBERT Chemotaxis coef (range max)
-    coef['Ro_n'] = 0.0001#0.0001#8 #AUBERT tip away from stalk
+    coef['Ki_n'] = 0.133#115 #AUBERT Chemotaxis coef (range max)
+    coef['Ro_n'] = 0.00018#0.0001#8 #AUBERT tip away from stalk
     ##Kinetics
-    coef['mu1'] = 5#0.9#7 #AUBERT max tip branching
+    coef['mu1'] = 1.5#0.9#7 #AUBERT max tip branching
     sol['age'] = 0
     coef['Lam_1'] = 0.83#5 #AUBERT in range tip-tip anastomosis 
     coef['Lam_2'] = 0.85#5 #AUBERT in range tip-stalk anastomosis
     
     ''''Stalk (b)'''
-    coef['D_b'] = 3*10**(-3)#3*10**(-3) #NODATA Stalk diffusion #STALK DIFFUSION PARAMETER ANALYSIS# DATA find!! 3*10**(-3)
+    coef['D_b'] = 1*10**(-3)#3*10**(-3) #NODATA Stalk diffusion #STALK DIFFUSION PARAMETER ANALYSIS# DATA find!! 3*10**(-3)
     coef['Ki_b'] = 0.015#0.015 #NODATA tip-taxis #TIP TAXIS PARAMETER ANALYSIS# 0.015 ##IN ANALYSIS
     ##Kinetics
-    coef['mu2'] = 0.5#0.8 #0.5 #stalk proliferation 1 #####
-    coef['mu3'] = 0.2#3 #stalk-tip proliferation #####
+    coef['mu2'] = 0.4#0.8 #0.5 #stalk proliferation 1 #####
+    coef['mu3'] = 0.1#3 #stalk-tip proliferation #####
     coef['beta1'] = 1 #stalk-tip saturation point #####
     coef['Lam_3'] = 0.001 #Anastomosis should be small enough
     
@@ -53,7 +53,7 @@ def declare_coef(): #1
     ##set dictionaries (fixed: never change)
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 10.001
+    set['T'] = 50.001
     set['Nt'] = 1000000
     set['rad'] = 0.12
     set['h'] = 0.005 #0.005 #0.01#

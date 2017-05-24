@@ -100,12 +100,15 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
 #         kinetic_n = set['dt']*coef['mu1']*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
        
         #branching is obtained by cell density and vegf level
-        if branching == True and x == tip_cell_pos:
+        if branching == True:# and x == tip_cell_pos:
             #branching due to cell density and VEGF
-            branch_dec = (b_o[tip_cell_pos] - 1/4*n_o[tip_cell_pos]) * ((c_o[x+1]+c_o[x-1])/(2*0.1) - 1)
+            branch_dec = (b_o[x] - 1/2*n_o[x]) * ((c_o[x+1]+c_o[x-1])/(2*0.1) - 1)
+            
             if branch_dec > 0:
                 branching_par = coef['mu1']
 #                 print 'branching'
+#                 print x
+#                 print branch_dec
                 sol['age'] = 0
         
         kinetic_n = set['dt']*branching_par*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
