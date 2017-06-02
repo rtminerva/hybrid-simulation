@@ -157,8 +157,8 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
             move_b = set['dt']*coef['Ki_b']*((b_o[x]*max((n_mean_i[1]-n_mean_i[0])/set['h'],0)-b_o[x+2]*max(-(n_mean_ip1[1]-n_mean_ip1[0])/set['h'],0))-(b_o[x-2]*max((n_mean_in1[1]-n_mean_in1[0])/set['h'],0)-b_o[x]*max(-(n_mean_i[1]-n_mean_i[0])/set['h'],0)))/set['h'] - coef['D_b']*set['dt']*(b_o[x-2]+b_o[x+2]-2*b_o[x])/(set['h']**2)
             ##Stalk Vel positive grad c
 #             move_b = set['dt']*coef['Ki_b']*((b_o[x]*max((c_o[x+1]-c_o[x-1])/set['h'],0)-b_o[x+2]*max(-(c_o[x+3]-c_o[x+1])/set['h'],0))-(b_o[x-2]*max((c_o[x-1]-c_o[x-3])/set['h'],0)-b_o[x]*max(-(c_o[x+1]-c_o[x-1])/set['h'],0)))/set['h']
-        sol['n'][x] = n_o[x] - move_n + kinetic_n
-        sol['b'][x] = b_o[x] - move_b + kinetic_b
+        sol['n'][x] = n_o[x] - move_n# + kinetic_n
+        sol['b'][x] = b_o[x] - move_b# + kinetic_b
         
 #         sol['b'][1] =1
 #         #Keeping Source of Stalk
@@ -200,7 +200,7 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
         digestion_c = set['dt']*coef['Lam_4']*c_o[x]*mean_n
         degradation_c = set['dt']*coef['mu5']*c_o[x] 
         
-        sol['c'][x] = c_o[x] + prolifer_c - digestion_c - degradation_c + move_c
+        sol['c'][x] = c_o[x] + move_c + prolifer_c - digestion_c - degradation_c
         
 #     for y in range(1,set['Ny'],2):
 #         for x in range(1,set['Nx'],2):

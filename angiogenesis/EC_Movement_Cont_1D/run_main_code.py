@@ -68,7 +68,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
 #         for x in range(1,set['Nx'],2):
 #             if sol['b'][x,y] != 0:
 #                 print 'pos:[',x,',',y,']',',value:',sol['b'][x,y]
-    if set['k'] % 1000 == 0:
+    if set['k'] % 100 == 0:
         print set
         print coef
     #print 'total time of processing:', time.clock()
