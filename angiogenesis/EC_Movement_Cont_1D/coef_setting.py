@@ -35,7 +35,7 @@ def declare_coef(): #1
     
     ''''Stalk (b)'''
     coef['D_b'] = 0.00018#0.001 #1*10**(-3)#3*10**(-3) #NODATA Stalk diffusion
-    coef['Ki_b'] = 0.03#0.01 #NODATA tip-taxis
+    coef['Ki_b'] = 0.01#0.03#0.01 #NODATA tip-taxis
     ##Kinetics
     coef['mu2'] = 1#0.4 #stalk proliferation 1 self
     coef['mu3'] = 3#0.2 #stalk-tip proliferation self
@@ -71,6 +71,9 @@ def declare_coef(): #1
     sol['stEC'] = 0
     sol['stEC_1'] = 0
     sol['stEC_2'] = 0
+    sol['stEC_3'] = 0
+    sol['stEC_4'] = 0
+    sol['stEC_5'] = 0
     sol['stop_iter'] = 0
 
     '''For Model Extension'''
