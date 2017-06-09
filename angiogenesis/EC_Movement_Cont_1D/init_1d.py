@@ -5,7 +5,7 @@ def c_prof(coef,set,sol): #2.1.1.(1)
     for x in range(0,set['Nx']+1,2):
 #         sol['c'][x] = numpy.exp(-(1-x*set['Hh'])**2/0.45)
 #         sol['c'][x] = 1*m.exp(-(x*set['Hh']-set['rad'])**2/0.001) #0.25 
-        sol['c'][x] = 0.5
+        sol['c'][x] = set['c_init']
     return sol
 
 def n_prof(coef,set,sol):
@@ -50,6 +50,13 @@ def init_1d_(coef,set,sol): #2.1.1
     sol['n_7'] = numpy.zeros(set['Nx']/2)
     sol['n_8'] = numpy.zeros(set['Nx']/2)
     
+    sol['n_00'] = numpy.zeros(set['Nx']/2)
+    sol['n_22'] = numpy.zeros(set['Nx']/2)
+    sol['n_44'] = numpy.zeros(set['Nx']/2)
+    sol['n_66'] = numpy.zeros(set['Nx']/2)
+    sol['n_88'] = numpy.zeros(set['Nx']/2)
+    sol['n_1010'] = numpy.zeros(set['Nx']/2)
+    
     sol['b_0'] = numpy.zeros(set['Nx']/2)
     sol['b_1'] = numpy.zeros(set['Nx']/2)
     sol['b_2'] = numpy.zeros(set['Nx']/2)
@@ -59,6 +66,13 @@ def init_1d_(coef,set,sol): #2.1.1
     sol['b_6'] = numpy.zeros(set['Nx']/2)
     sol['b_7'] = numpy.zeros(set['Nx']/2)
     sol['b_8'] = numpy.zeros(set['Nx']/2)
+    
+    sol['b_00'] = numpy.zeros(set['Nx']/2)
+    sol['b_22'] = numpy.zeros(set['Nx']/2)
+    sol['b_44'] = numpy.zeros(set['Nx']/2)
+    sol['b_66'] = numpy.zeros(set['Nx']/2)
+    sol['b_88'] = numpy.zeros(set['Nx']/2)
+    sol['b_1010'] = numpy.zeros(set['Nx']/2)
     
     sol['c_0'] = numpy.zeros(set['Nx']/2+1)
     sol['c_1'] = numpy.zeros(set['Nx']/2+1)

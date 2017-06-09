@@ -118,7 +118,7 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
         if set['Model'] == 'extensions':  #SSSSSSS
             kinetic_b = set['dt']*coef['mu2']*(1/(1+ma_o[x]))*b_o[x]*(1-b_o[x]) + set['dt']*coef['mu3']*(1/(1+ma_o[x]))*n_o[x]*b_o[x]*(1-(b_o[x])/(coef['beta1'])) + set['dt']*coef['Lam_3']*(coef['Lam_1']*(n_o[x])**2+coef['Lam_2']*n_o[x]*b_o[x])
         else:
-            kinetic_b = set['dt']*coef['mu2']*b_o[x]*(1-b_o[x]) + set['dt']*coef['mu3']*n_o[x]*b_o[x]*(1-(b_o[x])/(coef['beta1'])) + set['dt']*coef['Lam_3']*(coef['Lam_1']*(n_o[x])**2+coef['Lam_2']*n_o[x]*b_o[x])
+            kinetic_b = set['dt']*coef['mu2']*b_o[x]*(1-b_o[x])*(c_o[x-1]+c_o[x+1])/2 + (c_o[x-1]+c_o[x+1])/2*set['dt']*coef['mu3']*n_o[x]*b_o[x]*(1-(b_o[x])/(coef['beta1'])) + set['dt']*coef['Lam_3']*(coef['Lam_1']*(n_o[x])**2+coef['Lam_2']*n_o[x]*b_o[x])
             
         ##Pettet & Balding
 #         kinetic_b = - 0.1*set['dt']*coef['C_1']*(n_mean[0]-n_mean[1])/(set['h']) #+ set['dt']*coef['Ki']*(c_o[x+1]-c_o[x-1])/(set['h'])
@@ -157,8 +157,8 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
             move_b = set['dt']*coef['Ki_b']*((b_o[x]*max((n_mean_i[1]-n_mean_i[0])/set['h'],0)-b_o[x+2]*max(-(n_mean_ip1[1]-n_mean_ip1[0])/set['h'],0))-(b_o[x-2]*max((n_mean_in1[1]-n_mean_in1[0])/set['h'],0)-b_o[x]*max(-(n_mean_i[1]-n_mean_i[0])/set['h'],0)))/set['h'] - coef['D_b']*set['dt']*(b_o[x-2]+b_o[x+2]-2*b_o[x])/(set['h']**2)
             ##Stalk Vel positive grad c
 #             move_b = set['dt']*coef['Ki_b']*((b_o[x]*max((c_o[x+1]-c_o[x-1])/set['h'],0)-b_o[x+2]*max(-(c_o[x+3]-c_o[x+1])/set['h'],0))-(b_o[x-2]*max((c_o[x-1]-c_o[x-3])/set['h'],0)-b_o[x]*max(-(c_o[x+1]-c_o[x-1])/set['h'],0)))/set['h']
-        sol['n'][x] = n_o[x] - move_n# + kinetic_n
-        sol['b'][x] = b_o[x] - move_b# + kinetic_b
+        sol['n'][x] = n_o[x] - move_n + kinetic_n
+        sol['b'][x] = b_o[x] - move_b + kinetic_b
         
 #         sol['b'][1] =1
 #         #Keeping Source of Stalk
