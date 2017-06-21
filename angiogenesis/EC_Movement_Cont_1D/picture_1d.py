@@ -71,41 +71,41 @@ def pic_1d(coef,set,sol):
         sol['b_2'] = b_sol
         sol['c_2'] = c_sol
     
-    if set['k'] == 4000:
-        sol['n_4'] = n_sol
-        sol['b_4'] = b_sol
-        sol['c_4'] = c_sol
+#     if set['k'] == 4000:
+#         sol['n_4'] = n_sol
+#         sol['b_4'] = b_sol
+#         sol['c_4'] = c_sol
         
-    if set['k'] == 6000:
+    if set['k'] == 4000:
         sol['n_6'] = n_sol
         sol['b_6'] = b_sol
         sol['c_6'] = c_sol
-        if set['vegf_dep'] == 6:
+        if set['ki_dep'] == 6:
             sol['n_00'] = numpy.zeros(set['Nx']/2)
             sol['b_00'] = numpy.zeros(set['Nx']/2)
             sol['n_00'] = n_sol
             sol['b_00'] = b_sol
-        elif set['vegf_dep'] == 5:
+        elif set['ki_dep'] == 5:
             sol['n_22'] = numpy.zeros(set['Nx']/2)
             sol['b_22'] = numpy.zeros(set['Nx']/2)
             sol['n_22'] = n_sol
             sol['b_22'] = b_sol
-        elif set['vegf_dep'] == 4:
+        elif set['ki_dep'] == 4:
             sol['n_44'] = numpy.zeros(set['Nx']/2)
             sol['b_44'] = numpy.zeros(set['Nx']/2)
             sol['n_44'] = n_sol
             sol['b_44'] = b_sol
-        elif set['vegf_dep'] == 3:
+        if set['ki_dep'] == 3:
             sol['n_66'] = numpy.zeros(set['Nx']/2)
             sol['b_66'] = numpy.zeros(set['Nx']/2)
             sol['n_66'] = n_sol
             sol['b_66'] = b_sol
-        elif set['vegf_dep'] == 2:
+        elif set['ki_dep'] == 2:
             sol['n_88'] = numpy.zeros(set['Nx']/2)
             sol['b_88'] = numpy.zeros(set['Nx']/2)
             sol['n_88'] = n_sol
             sol['b_88'] = b_sol
-        elif set['vegf_dep'] == 1:
+        elif set['ki_dep'] == 1:
             sol['n_1010'] = numpy.zeros(set['Nx']/2)
             sol['b_1010'] = numpy.zeros(set['Nx']/2)
             sol['n_1010'] = n_sol
@@ -245,26 +245,26 @@ def pic_1d(coef,set,sol):
 #         plt.close()
 #         sol['stEC_1'] +=1 
 #             
-#         plt.figure(3)
-#         axes = plt.gca()
-#         axes.set_xlim([0,1])
-#         axes.set_ylim([0,1.2])
-#         plt.title('%s%f' % ('t=',set['t']))
-#         x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
-#         x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
-#         plt.plot(x_main_axis, n_sol, ':', color = 'k', label = 'Tip cell')
-#         plt.plot(x_main_axis, b_sol, '-.', color = 'k', label = 'Stalk cell') 
-#         plt.xlim([0,1])
-#         plt.ylim([0,1.2])
-#         plt.legend()
-#         plt.xlabel('x (position)')
-#         plt.ylabel('density')
-#         flag = 'N&S=%s' % str(sol['stEC_2']) 
-#         plt.savefig("%s.png" % flag)
-#         plt.close()
-#         sol['stEC_2'] +=1 
+        plt.figure(3)
+        axes = plt.gca()
+        axes.set_xlim([0,1])
+        axes.set_ylim([0,1.2])
+        plt.title('%s%f' % ('t=',set['t']))
+        x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
+        x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
+        plt.plot(x_main_axis, n_sol, ':', color = 'k', label = 'Tip cell')
+        plt.plot(x_main_axis, b_sol, '-.', color = 'k', label = 'Stalk cell') 
+        plt.xlim([0,1])
+        plt.ylim([0,1.2])
+        plt.legend()
+        plt.xlabel('x (position)')
+        plt.ylabel('density')
+        flag = 'N&S=%s' % str(sol['stEC_2']) 
+        plt.savefig("%s.png" % flag)
+        plt.close()
+        sol['stEC_2'] +=1 
         
-        if set['k'] == 8000:
+#         if set['k'] == 4000:
 #             plt.figure(4)
 #             axes = plt.gca()
 #             axes.set_xlim([0,1])
@@ -331,52 +331,52 @@ def pic_1d(coef,set,sol):
 #             plt.savefig("%s.png" % flag)
 #             plt.close()
         
-            if set['vegf_dep'] == 1:
-                plt.figure(7)
-                axes = plt.gca()
-                axes.set_xlim([0,1])
-                axes.set_ylim([0,1.2])
-                plt.title('Tip Density at t=6')
-                x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
-                x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
-    #             plt.plot(x_sub_axis, sol['c_0'], '-', x_sub_axis, sol['c_2'], '-', x_sub_axis, sol['c_4'], '-', x_sub_axis, sol['c_6'], '-', x_sub_axis, sol['c_8'], '-', color = 'k') 
-                plt.plot(x_main_axis, sol['n_00'], label = 'VEGF=0')
-                plt.plot(x_main_axis, sol['n_22'], label = 'VEGF=0.2')
-                plt.plot(x_main_axis, sol['n_44'], label = 'VEGF=0.4')
-                plt.plot(x_main_axis, sol['n_66'], label = 'VEGF=0.6')
-                plt.plot(x_main_axis, sol['n_88'], label = 'VEGF=0.8')
-                plt.plot(x_main_axis, sol['n_1010'], label = 'VEGF=1')
-                plt.xlim([0,1])
-                plt.ylim([0,1.2])
-                plt. legend()
-                plt.xlabel('x (position)')
-                plt.ylabel('density')
-                flag = 'n_vegf'
-                plt.savefig("%s.png" % flag)
-                plt.close()
-                
-                plt.figure(8)
-                axes = plt.gca()
-                axes.set_xlim([0,1])
-                axes.set_ylim([0,1.2])
-                plt.title('Stalk Density at t=6')
-                x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
-                x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
-    #             plt.plot(x_sub_axis, sol['c_0'], '-', x_sub_axis, sol['c_2'], '-', x_sub_axis, sol['c_4'], '-', x_sub_axis, sol['c_6'], '-', x_sub_axis, sol['c_8'], '-', color = 'k') 
-                plt.plot(x_main_axis, sol['b_00'], label = 'VEGF=0')
-                plt.plot(x_main_axis, sol['b_22'], label = 'VEGF=0.2')
-                plt.plot(x_main_axis, sol['b_44'], label = 'VEGF=0.4')
-                plt.plot(x_main_axis, sol['b_66'], label = 'VEGF=0.6')
-                plt.plot(x_main_axis, sol['b_88'], label = 'VEGF=0.8')
-                plt.plot(x_main_axis, sol['b_1010'], label = 'VEGF=1')
-                plt.xlim([0,1])
-                plt.ylim([0,1.2])
-                plt. legend()
-                plt.xlabel('x (position)')
-                plt.ylabel('density')
-                flag = 'b_vegf'
-                plt.savefig("%s.png" % flag)
-                plt.close()
-           
+#             if set['ki_dep'] == 1:
+#                 plt.figure(7)
+#                 axes = plt.gca()
+#                 axes.set_xlim([0,1])
+#                 axes.set_ylim([0,1.2])
+#                 plt.title('Tip Density at t=4')
+#                 x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
+#                 x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
+#     #             plt.plot(x_sub_axis, sol['c_0'], '-', x_sub_axis, sol['c_2'], '-', x_sub_axis, sol['c_4'], '-', x_sub_axis, sol['c_6'], '-', x_sub_axis, sol['c_8'], '-', color = 'k') 
+#                 plt.plot(x_main_axis, sol['n_00'], label = r'$_s$=0.00')
+#                 plt.plot(x_main_axis, sol['n_22'], label = r'$_s$=0.01')
+#                 plt.plot(x_main_axis, sol['n_44'], label = r'$_s$=0.02')
+#                 plt.plot(x_main_axis, sol['n_66'], label = r'$_s$=0.03')
+#                 plt.plot(x_main_axis, sol['n_88'], label = r'$_s$=0.04')
+#                 plt.plot(x_main_axis, sol['n_1010'], label = r'$_s$=0.05')
+#                 plt.xlim([0,0.6])
+#                 plt.ylim([0,1.2])
+#                 plt. legend()
+#                 plt.xlabel('x (position)')
+#                 plt.ylabel('density')
+#                 flag = 'n_ki0'
+#                 plt.savefig("%s.png" % flag)
+#                 plt.close()
+#                 
+#                 plt.figure(8)
+#                 axes = plt.gca()
+#                 axes.set_xlim([0,1])
+#                 axes.set_ylim([0,1.2])
+#                 plt.title('Stalk Density at t=4')
+#                 x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
+#                 x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
+#     #             plt.plot(x_sub_axis, sol['c_0'], '-', x_sub_axis, sol['c_2'], '-', x_sub_axis, sol['c_4'], '-', x_sub_axis, sol['c_6'], '-', x_sub_axis, sol['c_8'], '-', color = 'k') 
+#                 plt.plot(x_main_axis, sol['b_00'], label = r'$_s$=0.00')
+#                 plt.plot(x_main_axis, sol['b_22'], label = r'$_s$=0.01')
+#                 plt.plot(x_main_axis, sol['b_44'], label = r'$_s$=0.02')
+#                 plt.plot(x_main_axis, sol['b_66'], label = r'$_s$=0.03')
+#                 plt.plot(x_main_axis, sol['b_88'], label = r'$_s$=0.04')
+#                 plt.plot(x_main_axis, sol['b_1010'], label = r'$_s$=0.05')
+#                 plt.xlim([0,0.6])
+#                 plt.ylim([0,1.2])
+#                 plt. legend()
+#                 plt.xlabel('x (position)')
+#                 plt.ylabel('density')
+#                 flag = 'b_ki0'
+#                 plt.savefig("%s.png" % flag)
+#                 plt.close()
+#            
         
     return

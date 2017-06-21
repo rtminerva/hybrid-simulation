@@ -20,9 +20,13 @@ def declare_coef(): #1
     set['Dimension'] = '1D'
 #     set['Dimension'] = '2D'
     
-    set['vegf_dep'] = 6
-#     set['vegf_dep'] = 1
-    set['c_init'] = 0
+#     set['vegf_dep'] = 6
+#     set['c_init'] = 0
+
+    set['vegf_dep'] = 1
+    set['c_init'] = 0.5
+    
+    set['ki_dep'] = 1
     
 #     set['c_prof'] = 'C1'
 #     set['c_prof'] = 'C2'
@@ -39,7 +43,7 @@ def declare_coef(): #1
     
     ''''Stalk (b)'''
     coef['D_b'] = 0.00018#0.001 #1*10**(-3)#3*10**(-3) #NODATA Stalk diffusion
-    coef['Ki_b'] = 0.01#0.01 #NODATA tip-taxis
+    coef['Ki_b'] = 0.01 #NODATA tip-taxis
     ##Kinetics
     coef['mu2'] = 7#1 #stalk proliferation 1 self
     coef['mu3'] = 3#03 #stalk-tip proliferation self
@@ -57,7 +61,7 @@ def declare_coef(): #1
     ##set dictionaries (fixed: never change)
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 8.001
+    set['T'] = 4.001
     set['Nt'] = 1000000
     set['rad'] = 0.12
     set['h'] = 0.005 #0.005 #0.01#
