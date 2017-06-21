@@ -61,7 +61,7 @@ def declare_coef(): #1
     ##set dictionaries (fixed: never change)
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 4.001
+    set['T'] = 4.001 #
     set['Nt'] = 1000000
     set['rad'] = 0.12
     set['h'] = 0.005 #0.005 #0.01#
