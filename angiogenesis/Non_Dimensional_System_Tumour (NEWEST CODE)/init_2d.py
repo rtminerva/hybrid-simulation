@@ -11,7 +11,7 @@ def f_prof_2(coef,set,sol,x,y):
 def c_prof_1(coef,set,sol):
     for y in range(0,set['Ny']+1,2):
         for x in range(0,set['Nx']+1,2):
-            sol['c'][x,y] = numpy.exp(-(1-x*set['Hh'])**2/0.45)
+            sol['c'][x,y] = 0.1#numpy.exp(-(1-x*set['Hh'])**2/0.45)
             if set['f_prof'] == 'F2':
                 sol = f_prof_2(coef,set,sol,x,y)
             elif set['f_prof'] == 'F1':

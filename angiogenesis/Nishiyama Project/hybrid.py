@@ -283,6 +283,20 @@ def hybrid_tech(coef, set, sol): #2.23
     if len(sol['backward_list']) > 0:
         sol['backward_count'].append(set['k'])
 
+    '''Create tip cell area'''    
+    for tip in sol['tip_cell']:
+        sol['tip_cell_area'].append([tip[0]-2,tip[1]])
+        sol['tip_cell_area'].append([tip[0]+2,tip[1]])
+        sol['tip_cell_area'].append([tip[0],tip[1]-2])
+        sol['tip_cell_area'].append([tip[0],tip[1]+2])
+        sol['tip_cell_area'].append([tip[0]-2,tip[1]+2])
+        sol['tip_cell_area'].append([tip[0]+2,tip[1]+2])
+        sol['tip_cell_area'].append([tip[0]+2,tip[1]-2])
+        sol['tip_cell_area'].append([tip[0]-2,tip[1]-2])
+    
+    
+    
+
     '''Record New Tip Cell'''
 #     sol['tip_cell'] = []
 #     for nom in range(0,len(sol['matrix_tip'])): #dicek setiap tip

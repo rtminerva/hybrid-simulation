@@ -9,11 +9,10 @@ def c_f_T(coef, set, sol):
     for y in range(0,set['Ny']+1,2):
         for x in range(0,set['Nx']+1,2):                       
             '''TIP CELL?'''
-            if [x-1,y-1] in sol['tip_cell'] or [x+1,y-1] in sol['tip_cell'] or [x+1,y+1] in sol['tip_cell'] or [x-1,y+1] in sol['tip_cell']:
-                n_tip = 1
+            if [x-1,y-1] in sol['tip_cell_area'] or [x+1,y-1] in sol['tip_cell_area'] or [x+1,y+1] in sol['tip_cell_area'] or [x-1,y+1] in sol['tip_cell_area']:
+                n_tip = 1               
             else:
                 n_tip = 0
-            n_stacks = 1-n_tip     
             
             if y == 0: 
                 if x == 0:
@@ -81,5 +80,7 @@ def c_f_T(coef, set, sol):
                                
                     sol['c'][x,y] = c_o[x,y]*(1 - set['dt']*coef['Nu']*n_bool*n_tip)#+ coef['D_c']*set['dt']/set['h']**2*(c_o[x+2,y]+c_o[x-2,y]+c_o[x,y+2]+c_o[x,y-2]-4*c_o[x,y])
                     sol['f'][x,y] = f_o[x,y] + set['dt']*coef['Beta']*n_bool*n_tip - set['dt']*coef['Gama']*f_o[x,y]*n_bool*n_tip
+    
+    sol['tip_cell_area'] = []
     
     return sol

@@ -6,8 +6,8 @@ import numpy
 from timeit import default_timer as timer 
 import time
 import matplotlib.pyplot as plt 
-# from picture_2d import pic_2d
-from pic_2d import pic_2d
+from picture_2d import pic_2d
+# from pic_2d import pic_2d
 #from picture_2d_con import pic_2d
 from picture_3d import pic_3d
 #declare coefficients & initial settings

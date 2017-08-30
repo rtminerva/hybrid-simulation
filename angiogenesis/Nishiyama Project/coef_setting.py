@@ -19,7 +19,7 @@ def declare_coef():
     ##Tip (n)
     coef['D_n'] = 0.00035
     coef['Ki_n'] = 0.38
-    coef['Al_n'] = 0.6
+    coef['Al_n'] = 0#.6
     coef['Ro'] = 0.3#0.34
     
     ##VEGF (c)

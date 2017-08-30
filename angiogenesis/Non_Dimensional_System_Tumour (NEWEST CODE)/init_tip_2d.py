@@ -70,6 +70,7 @@ def init_tip_2d_(coef,set,sol):
     sol['life_mit'] = []
     sol['sp_stop'] = []
     sol['tip_cell'] = []
+    sol['tip_cell_area'] = []
     
     if set['initial_prof'] == 'rectangular_1_tip':
         sol = rec_1_tip(coef,set,sol)

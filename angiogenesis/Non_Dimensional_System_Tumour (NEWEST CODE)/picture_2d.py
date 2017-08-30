@@ -11,8 +11,6 @@ def pic_2d(coef,set,sol):
     '''EC'''
     fig = plt.figure()
     plt.title('%s%f' % ('EC at t=',set['t']))
-    plt.xlim(set['Hh'],coef['X']-set['Hh'])
-    plt.ylim(set['Hh'],coef['Y']-set['Hh'])
     ax = fig.add_subplot(111)
     for i in range(0,len(sol['matrix_tip'])):
         x_p = []
@@ -27,6 +25,8 @@ def pic_2d(coef,set,sol):
         x_p.append(tip[0]*set['Hh'])
         y_p.append(tip[1]*set['Hh'])
     ax.scatter(x_p, y_p, marker = 'o', s = 2, color ='b')
+    plt.xlim(set['Hh'],coef['X']-set['Hh'])
+    plt.ylim(set['Hh'],coef['Y']-set['Hh'])
     sol['stEC'] +=1  
     flag = 'EC=%s' % str(sol['stEC']) 
     plt.savefig("%s.png" % flag)
@@ -35,7 +35,7 @@ def pic_2d(coef,set,sol):
     
     if set['k'] % 500 == 0:
         ppp = 1
-        '''Continuous Plot
+        '''Continuous Plot'''
         fig1 = plt.figure(1)
         plt.title('%s%f' % ('VEGF at t=',set['t']))
         #ax = fig1.gca(projection='3d')
@@ -61,40 +61,41 @@ def pic_2d(coef,set,sol):
         #surf = ax.plot_surface(x_sub_axis, y_sub_axis, c_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
         #        linewidth=0, antialiased=False)
         #fig1.colorbar(surf, shrink=0.5, aspect=5)
+        c_sol = numpy.ma.masked_array(c_sol, c_sol < 0.0001)
         plt.pcolormesh(y_sub_axis, x_sub_axis, c_sol)
-        sol['stVEGF'] +=1  
-        flag = 'VEGF=%s' % str(sol['stVEGF']) 
+        sol['VEGF'] +=1  
+        flag = 'VEGF=%s' % str(sol['VEGF']) 
         plt.savefig("%s.png" % flag)
         plt.close()
-        '''
         
-        '''Continuous Plot f'''
-        fig1 = plt.figure(1)
-        plt.title('%s%f' % ('Fibronectin at t=',set['t']))
-        #ax = fig1.gca(projection='3d')
-        #ax.set_zlim(-0.1, 1)
-        #ax.zaxis.set_major_locator(LinearLocator(10))
-        #ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
         
-        plt.xlabel('X')
-        plt.ylabel('Y')
-        
-         
-        x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
-        y_sub_axis = numpy.arange(0, coef['Y']+set['Hh'], set['h'])
-        x_sub_axis, y_sub_axis = numpy.meshgrid(x_sub_axis, y_sub_axis)
-         
-        f_sol = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
-        for j, y in enumerate(range(0,set['Ny']+1,2)):
-            for i, x in enumerate(range(0,set['Nx']+1,2)):
-                f_sol[i,j] = sol['f'][x,y]
-        #surf = ax.plot_surface(x_sub_axis, y_sub_axis, f_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
-        #        linewidth=0, antialiased=False)
-        #fig1.colorbar(surf, shrink=0.5, aspect=5)
-        plt.pcolormesh(y_sub_axis, x_sub_axis, f_sol)
-        sol['stFb'] +=1  
-        flag = 'Fb=%s' % str(sol['stFb']) 
-        plt.savefig("%s.png" % flag)
-        plt.close()
+#         '''Continuous Plot f'''
+#         fig1 = plt.figure(1)
+#         plt.title('%s%f' % ('Fibronectin at t=',set['t']))
+#         #ax = fig1.gca(projection='3d')
+#         #ax.set_zlim(-0.1, 1)
+#         #ax.zaxis.set_major_locator(LinearLocator(10))
+#         #ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+#         
+#         plt.xlabel('X')
+#         plt.ylabel('Y')
+#         
+#          
+#         x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
+#         y_sub_axis = numpy.arange(0, coef['Y']+set['Hh'], set['h'])
+#         x_sub_axis, y_sub_axis = numpy.meshgrid(x_sub_axis, y_sub_axis)
+#          
+#         f_sol = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
+#         for j, y in enumerate(range(0,set['Ny']+1,2)):
+#             for i, x in enumerate(range(0,set['Nx']+1,2)):
+#                 f_sol[i,j] = sol['f'][x,y]
+#         #surf = ax.plot_surface(x_sub_axis, y_sub_axis, f_sol, rstride=1, cstride=1, cmap=cm.coolwarm,
+#         #        linewidth=0, antialiased=False)
+#         #fig1.colorbar(surf, shrink=0.5, aspect=5)
+#         plt.pcolormesh(y_sub_axis, x_sub_axis, f_sol)
+#         sol['stFb'] +=1  
+#         flag = 'Fb=%s' % str(sol['stFb']) 
+#         plt.savefig("%s.png" % flag)
+#         plt.close()
     
     return

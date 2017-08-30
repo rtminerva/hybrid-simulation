@@ -152,7 +152,7 @@ def system_2d(coef, set, sol, n_o): #2.3
     for y in range(0,set['Ny']+1,2):
         for x in range(0,set['Nx']+1,2):
             c_star = sol['c_o'][x,y] - c_o[x,y]
-            gam_f = coef['Beta']*sol['c_o'][x,y]*c_star/((1/(coef['Gama']))+c_star)
+            gam_f = sol['c_o'][x,y]*c_star/((1/(coef['Gama']))+c_star)
             move_c = 0
             move_f = 0
             if y == 0: 
