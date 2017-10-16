@@ -79,7 +79,7 @@ while set['ki_dep'] > 0:
             print '***************************************************'
             print     
                 
-            set['t'] += set['dt']
+#             set['t'] += set['dt']
             set['k'] += 1
         set['t'] = 0
         set['k'] = 0

@@ -37,8 +37,9 @@ def declare_coef(): #1
     coef['Xi_n'] = 1
     coef['alpha'] =0.5 #first velocity 
     coef['beta'] = 2 #adaptation velocity
-    coef['vel'] = 3 #velocity of wave
+    coef['vel'] = 2#3 #velocity of wave
     coef['perio'] = 0.7 #period of wave
+    coef['A_c'] = 0.8 #amplitude of wave
     
     ##Kinetics
     coef['mu1'] = 0.83##AUBERT, Gaffney max tip branching OK

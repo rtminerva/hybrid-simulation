@@ -204,9 +204,9 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, al_o, branching_par = 0, branching = Fa
 #         sol['c'][x] = 0.5*(numpy.sin(2*m.pi/(coef['la'])*x*set['Hh']-2*m.pi/(coef['pe'])*set['dt']*set['k'])) 
 #         if sol['c'][x] < 0:
 #             sol['c'][x] *= 0
-        sol['c'][x] = 0.5*m.exp(-(x*set['Hh']-coef['vel']*set['dt']*set['k'])**2/0.02)
+        sol['c'][x] = coef['A_c']*m.exp(-(x*set['Hh']-coef['vel']*set['dt']*set['k'])**2/0.02)
         for i in range(1,100):
-            sol['c'][x] += 0.5*m.exp(-(x*set['Hh']+i*coef['perio']-coef['vel']*set['dt']*set['k'])**2/0.02)        
+            sol['c'][x] += coef['A_c']*m.exp(-(x*set['Hh']+i*coef['perio']-coef['vel']*set['dt']*set['k'])**2/0.02)        
     return sol
 
 def system_1d(coef, set, sol): #2.3
