@@ -5,7 +5,7 @@ def declare_coef(): #1
     #to store coefficients
     coef = {}
     set = {}
-    sol = {}
+    sol = {} #
     
     '''LEGI Model'''
     coef['k_a'] = 0.3
