@@ -25,7 +25,7 @@ def boolean_1_iter(coef, set, sol): #2
         dt_1 = set['h']/V_1
         dt_3 = (set['h'])**2/(2*coef['D_n'])
         
-        set['dt'] = min(dt_1,dt_3)
+        set['dt'] = 0.001#min(dt_1,dt_3)
         set['t'] += set['dt']
         print 'dt', set['dt']
         

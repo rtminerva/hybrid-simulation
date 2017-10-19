@@ -8,26 +8,28 @@ def declare_coef(): #1
     sol = {} #
     
     '''LEGI Model'''
-    coef['k_a'] = 0.3
-    coef['k_i'] = 0.2
-    coef['l_a'] = 0.02
-    coef['l_i'] = 0.01
-    coef['k_A'] = 3
-    coef['k_I'] = 9
+    coef['k_a'] = 3.3#0.3
+    coef['k_i'] = 2.8#0.2
+    coef['l_a'] = 0.2#0.02
+    coef['l_i'] = 0.1#0.01
+    coef['k_A'] = 3#5
+    coef['k_I'] = 1.6#2
     coef['Ki_tot'] = 1
+    coef['K_A'] = 0.44#3
+    coef['K_I'] = 0.1#1
 
     ''''Tip (n)'''
     coef['D_n'] = 0.00018 #AUBERT, anderson chaplain tip Diffusion OK
-    coef['Ki_n'] = 0.33#133 #AUBERT, Stokes Chemotaxis coef (range max) OK
-    coef['vel'] = 5#3 #velocity of wave
-    coef['perio'] = 0.7 #period of wave
+#     coef['Ki_n'] = 0.33#133 #AUBERT, Stokes Chemotaxis coef (range max) OK
+    coef['vel'] = 0.5#3 #velocity of wave
+    coef['perio'] = 3#0.9 #period of wave
     coef['A_c'] = 0.8 #amplitude of wave
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries (fixed: never change)
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 4.001 #
+    set['T'] = 10.001 #
     set['Nt'] = 1000000
     set['h'] = 0.005 #0.005 #0.01#
     set['rad'] = 0.12

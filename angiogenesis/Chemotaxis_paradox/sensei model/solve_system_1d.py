@@ -34,11 +34,17 @@ def H_vector_sol(coef,set,sol,n_o,c_o):
             if not x == set['Nx']:
                 cijx_p, cijx_n = max_min_c(set,sol,x,c_o) #2.3.(1).(1)
                 c_mean = (c_o[x]+c_o[x-2])/2
-                G_plus_1 = coef['Xi_n']*cijx_p*c_mean/((cijx_p)**2+coef['xi'])
+                if (cijx_p)**2 < 0.1:#05:
+                    G_plus_1 = coef['Xi_n']*cijx_p*c_mean/((cijx_p)**2+coef['xi'])
+                else:
+                    G_plus_1 = coef['Xi_n']*cijx_p*c_mean/(cijx_p)**2
                 
                 cijx_p, cijx_n = max_min_c(set,sol,x+2,c_o) #2.3.(1).(1)
                 c_mean = (c_o[x+2]+c_o[x])/2
-                G_neg_1 = coef['Xi_n']*cijx_n*c_mean/((cijx_n)**2+coef['xi'])
+                if (cijx_n)**2 < 0.1:#05:
+                    G_neg_1 = coef['Xi_n']*cijx_n*c_mean/((cijx_n)**2+coef['xi'])
+                else:
+                    G_neg_1 = coef['Xi_n']*cijx_n*c_mean/(cijx_n)**2
 
                 H_sol_1[x] = (n_o[x-1])**2*G_plus_1-(n_o[x+1])**2*G_neg_1
                 
@@ -60,22 +66,28 @@ def n_b_c(coef, set, sol, n_o, c_o):
             move_n = set['dt']*(F_sol_1[x+1]-F_sol_1[x-1])/set['h']
             chemotaxis_n = set['dt']*(H_sol_1[x+1]-H_sol_1[x-1])/set['h']
         sol['n'][x] = n_o[x] - coef['alpha']*move_n + coef['beta']*chemotaxis_n
-        if chemotaxis_n > 0.001:
-            print 'chemo_n', chemotaxis_n, 'move', move_n
+#         if chemotaxis_n > 0.001:
+#             print 'chemo_n', chemotaxis_n, 'move', move_n
                      
     '''Calculate c at sub lattice'''
     for x in range(0,set['Nx']+1,2):
 #         sol['c'][x] = 0.5*(numpy.sin(2*m.pi/(coef['la'])*x*set['Hh']-2*m.pi/(coef['pe'])*set['dt']*set['k'])) 
 #         if sol['c'][x] < 0:
 #             sol['c'][x] *= 0
-        sol['c'][x] = coef['A_c']*m.exp(-(x*set['Hh']-coef['vel']*set['dt']*set['k'])**2/0.02)
+        sol['c'][x] = coef['A_c']*m.exp(-(x*set['Hh']+5*set['rad']-coef['vel']*set['dt']*set['k'])**2/0.05)
         for i in range(1,100):
-            sol['c'][x] += coef['A_c']*m.exp(-(x*set['Hh']+i*coef['perio']-coef['vel']*set['dt']*set['k'])**2/0.02)        
+            sol['c'][x] += coef['A_c']*m.exp(-(x*set['Hh']+5*set['rad']+i*coef['perio']-coef['vel']*set['dt']*set['k'])**2/0.05)        
     return sol
 
 def system_1d(coef, set, sol): #2.3
     c_o = numpy.copy(sol['c']) #to save values at time step k (we are calculating at time step k+1)
     n_o = numpy.copy(sol['n']) 
     sol = n_b_c(coef, set, sol, n_o, c_o)
+    
+    '''Calculate vel'''
+    for x in range(1,set['Nx'],2):
+        c_mean = (c_o[x+1]+c_o[x-1])/2
+        c_grad = (c_o[x+1]-c_o[x-1])/(set['h'])
+        sol['vel_n'][x] = coef['alpha'] - (coef['beta']*sol['n'][x]*c_mean/((c_grad)**2+coef['xi']))
                      
     return sol

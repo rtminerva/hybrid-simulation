@@ -18,7 +18,7 @@ def v_2_max(set, sol, coef):
     for x in range(1,set['Nx'],2):
         a1 = (sol['c'][x+1]-sol['c'][x-1])/(set['h'])
         a2 = a1**2
-        A = (sol['c'][x+1]+sol['c'][x-1])/2*a1/(a2+coef['xi'])
+        A = (sol['c'][x+1]+sol['c'][x-1])/2*a1/(a2+coef['xi'])#*sol['n'][x]
         
         if A < 0:
             A *= -1
@@ -40,7 +40,7 @@ def boolean_1_iter(coef, set, sol): #2
         dt_2 = set['h']/V_2
         dt_3 = (set['h'])**2/(2*coef['D_n'])
         
-        set['dt'] = min(dt_1,dt_2,dt_3)
+        set['dt'] = 0.001#min(dt_1,dt_2,dt_3)
         set['t'] += set['dt']
         print 'dt', set['dt']
         
