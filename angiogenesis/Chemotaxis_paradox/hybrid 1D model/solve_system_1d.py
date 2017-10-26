@@ -1,0 +1,87 @@
+from random import randint, sample, uniform
+import numpy
+import math as m
+import random
+from random import randint
+
+def set_list_prob(dirr): #2.2.(1)
+    line_1 = range(1,10001)
+    if dirr[1] == 0:
+        list_prob_1 = []
+    else:
+        list_prob_1 = random.sample(line_1, dirr[1])
+        for i in list_prob_1:
+            line_1.remove(i)
+    if dirr[2] == 0:
+        list_prob_2 = []
+    else:
+        list_prob_2 = random.sample(line_1, dirr[2])
+        for i in list_prob_2:
+            line_1.remove(i)
+    list_prob_0 = line_1
+    return list_prob_0,list_prob_1,list_prob_2
+
+def c_(coef, set, sol, c_o):              
+    '''Calculate c at sub lattice'''
+    for x in range(0,set['Nx']+1,2):
+#         sol['c'][x] = 0.5*(numpy.sin(2*m.pi/(coef['la'])*x*set['Hh']-2*m.pi/(coef['pe'])*set['dt']*set['k'])) 
+#         if sol['c'][x] < 0:
+#             sol['c'][x] *= 0
+        sol['c'][x] = coef['A_c']*m.exp(-(x*set['Hh']+5*set['rad']-coef['vel']*set['dt']*set['k'])**2/0.05)
+        for i in range(1,100):
+            sol['c'][x] += coef['A_c']*m.exp(-(x*set['Hh']+5*set['rad']+i*coef['perio']-coef['vel']*set['dt']*set['k'])**2/0.05)        
+    return sol
+
+def system_1d(coef, set, sol): #2.3
+    c_o = numpy.copy(sol['c']) #to save values at time step k (we are calculating at time step k+1)
+    
+    '''Calculate Velocity of cell at n_p'''
+    n_p = sol['n'][-1]
+    c_mean = (c_o[n_p+1]+c_o[n_p-1])/2
+    c_grad = (c_o[n_p+1]-c_o[n_p-1])/(set['h'])
+    sol['vel_n'].append((coef['alpha'] - (coef['beta']*c_mean/((c_grad)**2+coef['xi'])))*c_grad) #SOL N_P = 1
+    print 'velocity_value', sol['vel_n'][-1]
+    
+    '''Diffusion term'''
+    p_1 = coef['D_n']*set['dt']/(set['h']**2)
+    p_2 = p_1
+    
+    '''Adaptive term'''
+    if sol['vel_n'][-1] < 0:
+        p_1 += set['dt']/(set['h'])*(-sol['vel_n'][-1])
+    else:
+        p_2 += set['dt']/(set['h'])*(sol['vel_n'][-1])
+    print p_1,',', p_2
+    '''create integer number based on probability value'''
+    P_1 = int(p_1*10000)
+    P_2 = int(p_2*10000)
+    
+    '''boundary checking'''
+    if n_p == 1:
+        P_1 = 0
+    elif n_p == set['Nx']-1:
+        P_2 = 0
+    P_0 = 10000-(P_1+P_2)
+    
+    '''Probability value'''
+    dirr = [P_0, P_1, P_2]  
+    print dirr  
+    list_prob_0,list_prob_1,list_prob_2 = set_list_prob(dirr)  
+    
+    '''Decide movement''' 
+    tes = randint(1,10000)
+    if tes in list_prob_0:
+        sol['n'].append(sol['n'][-1])
+        print 'stay'
+    elif tes in list_prob_1:
+        sol['n'].append(sol['n'][-1]-2)
+        print 'left'
+    elif tes in list_prob_2:
+        sol['n'].append(sol['n'][-1]+2)
+        print 'right'
+
+    sol = c_(coef, set, sol, c_o)
+    
+    
+                     
+    return sol
