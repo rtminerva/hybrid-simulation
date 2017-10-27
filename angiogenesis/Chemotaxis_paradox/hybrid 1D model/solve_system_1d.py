@@ -27,9 +27,9 @@ def c_(coef, set, sol, c_o):
 #         sol['c'][x] = 0.5*(numpy.sin(2*m.pi/(coef['la'])*x*set['Hh']-2*m.pi/(coef['pe'])*set['dt']*set['k'])) 
 #         if sol['c'][x] < 0:
 #             sol['c'][x] *= 0
-        sol['c'][x] = coef['A_c']*m.exp(-(x*set['Hh']+5*set['rad']-coef['vel']*set['dt']*set['k'])**2/0.05)
+        sol['c'][x] = coef['A_c']*m.exp(-(x*set['Hh']+5*set['rad']-coef['vel']*set['t'])**2/coef['vari'])
         for i in range(1,100):
-            sol['c'][x] += coef['A_c']*m.exp(-(x*set['Hh']+5*set['rad']+i*coef['perio']-coef['vel']*set['dt']*set['k'])**2/0.05)        
+            sol['c'][x] += coef['A_c']*m.exp(-(x*set['Hh']+5*set['rad']+i*coef['perio']-coef['vel']*set['t'])**2/coef['vari'])        
     return sol
 
 def system_1d(coef, set, sol): #2.3
@@ -37,10 +37,16 @@ def system_1d(coef, set, sol): #2.3
     
     '''Calculate Velocity of cell at n_p'''
     n_p = sol['n'][-1]
+    print 'Position cell now:', n_p
     c_mean = (c_o[n_p+1]+c_o[n_p-1])/2
     c_grad = (c_o[n_p+1]-c_o[n_p-1])/(set['h'])
     sol['vel_n'].append((coef['alpha'] - (coef['beta']*c_mean/((c_grad)**2+coef['xi'])))*c_grad) #SOL N_P = 1
-    print 'velocity_value', sol['vel_n'][-1]
+    sol['in_vel_n'].append((coef['alpha'] - (coef['beta']*c_mean/((c_grad)**2+coef['xi']))))
+    sol['c_x'].append(c_grad)
+    
+    
+    
+#     print 'velocity_value', sol['vel_n'][-1]
     
     '''Diffusion term'''
     p_1 = coef['D_n']*set['dt']/(set['h']**2)
@@ -51,7 +57,7 @@ def system_1d(coef, set, sol): #2.3
         p_1 += set['dt']/(set['h'])*(-sol['vel_n'][-1])
     else:
         p_2 += set['dt']/(set['h'])*(sol['vel_n'][-1])
-    print p_1,',', p_2
+#     print p_1,',', p_2
     '''create integer number based on probability value'''
     P_1 = int(p_1*10000)
     P_2 = int(p_2*10000)
