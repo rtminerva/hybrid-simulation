@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 #declare coefficients & initial settings
 coef, set, sol = declare_coef() #1 
 
+#test
 #to plot interactively
 plt.ion()
 
