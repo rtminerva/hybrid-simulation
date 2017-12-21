@@ -1,7 +1,7 @@
 from collections import OrderedDict
 
 def declare_coef(): #1
-    '''Coefficients'''
+    '''Coefficients''' #
     #to store coefficients
     coef = {}
     set = {}
