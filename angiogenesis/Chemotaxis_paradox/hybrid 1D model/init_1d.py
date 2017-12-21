@@ -14,6 +14,8 @@ def init_1d_(coef,set,sol): #2.1.1
     sol['vel_n'] = [0]
     sol['in_vel_n'] = [0]
     sol['c_x'] = [0]
+    sol['c_'] = [0]
+#     sol['n_pos'] = [2]
        
     sol = c_prof(coef,set,sol)
     

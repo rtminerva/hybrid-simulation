@@ -17,7 +17,7 @@ def declare_coef(): #1
     coef['beta'] = 1#2#2 #adaptation velocity
     
     '''VEGF (c)'''
-    coef['vel'] = 25#10 #velocity of wave
+    coef['vel'] = 10#10 #velocity of wave
     coef['perio'] = 3 #period of wave
     coef['A_c'] = 0.8 #amplitude of wave
     coef['vari'] = 0.3#0.05 #variance of wave
@@ -26,7 +26,7 @@ def declare_coef(): #1
     ##set dictionaries (fixed: never change)
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 5.001 #
+    set['T'] = 0.401 #
     set['Nt'] = 1000000
     set['h'] = 0.005 #0.005 #0.01#
     set['rad'] = 0.12

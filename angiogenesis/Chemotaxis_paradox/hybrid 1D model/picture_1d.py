@@ -9,10 +9,16 @@ def pic_1d(coef,set,sol):
     c_sol = numpy.zeros(set['Nx']/2+1) #to save values at time step k (we are calculating at time step k+1)
     n_sol = [set['Hh'] * sol['n'][-1]]
     cell = numpy.zeros(len(sol['n']))
+    cell_2 = numpy.zeros(len(sol['n']))
 #     t2 = numpy.arange(0, 1, 1000)
     id = 0
     for ind in sol['n']:
         cell[id] = ind*set['Hh']
+        id += 1
+        
+    id = 0
+    for ind in cell:
+        cell_2[id] = ind * 6 -3
         id += 1
          
     x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
@@ -24,20 +30,20 @@ def pic_1d(coef,set,sol):
             c_sol[id] = sol['c'][ind]
             id += 1
 
-    plt.figure(1)
-    axes = plt.gca()
-    plt.title('%s%f' % ('t=',set['t']))
-    plt.scatter(n_sol, 0+0.05, s=500, label = 'Cell')#, 0, color = 'r', 'o')#, label = 'Tip')
-    plt.plot(x_sub_axis, c_sol, color = 'k', linewidth=3.0, label = 'VEGF')#, label = 'VEGF')
-    plt.xlim([0,1])
-    plt.ylim([0,1.2])
-#     plt.legend()
-    plt.xlabel('x (position)')
-    plt.ylabel('density')
-    flag = 'z=%s' % str(sol['stEC']) 
-    plt.savefig("%s.png" % flag)
-    plt.close()
-    sol['stEC'] +=1 
+#     plt.figure(1)
+#     axes = plt.gca()
+#     plt.title('%s%f' % ('t=',set['t']))
+#     plt.scatter(n_sol, 0+0.05, s=500, label = 'Cell')#, 0, color = 'r', 'o')#, label = 'Tip')
+#     plt.plot(x_sub_axis, c_sol, color = 'k', linewidth=3.0, label = 'VEGF')#, label = 'VEGF')
+#     plt.xlim([0,1])
+#     plt.ylim([0,1.2])
+# #     plt.legend()
+#     plt.xlabel('x (position)')
+#     plt.ylabel('density')
+#     flag = 'z=%s' % str(sol['stEC']) 
+#     plt.savefig("%s.png" % flag)
+#     plt.close()
+#     sol['stEC'] +=1 
     
     if set['t'] >= set['T']:  
 #         fig, ax1 = plt.subplot()  
@@ -58,10 +64,10 @@ def pic_1d(coef,set,sol):
 #         fig.close()
 #         sol['stEC_1'] +=1
 #         plt.show 
-        
+        '''Cell movement path'''
         plt.figure(2)
         axes = plt.gca()
-        plt.title('%s%f' % ('Cell position after t=',set['t']))  
+        plt.title('%s%f' % ('Cell movement path t=',set['t']))  
         plt.plot(cell, sol['time'], 'k', linewidth=2.0)
         plt.xlim([0,1])
         plt.ylim([0,5])
@@ -72,16 +78,19 @@ def pic_1d(coef,set,sol):
         plt.close()
         sol['stEC_1'] +=1 
         
+        '''Chemotaxis velocity analysis'''
         plt.figure(3)
         axes = plt.gca()
         plt.title('%s' % ('Graph of Velocity of cell'))  
-        plt.plot(sol['time'], sol['vel_n'], 'k', linewidth=2.0, label = 'Velocity of cell')
-        plt.plot(sol['time'], sol['in_vel_n'], 'y', linewidth=2.0, label = 'Velocity of cell/c_x')
+        plt.plot(sol['time'], sol['vel_n'], 'k', linewidth=2.0, label = 'v')
+        plt.plot(sol['time'], sol['in_vel_n'], 'y', linewidth=2.0, label = 'v/c_x')
         plt.plot(sol['time'], sol['c_x'], 'b', linewidth=2.0, label = 'c_x')
-        plt.legend()
+        plt.plot(sol['time'], sol['c_'], 'g', linewidth=2.0, label = 'c_')
+        plt.plot(sol['time'], cell_2, 'r', linewidth=2.0, label = 'cell pos')
+        plt.legend(bbox_to_anchor=(0.9, 0.2), loc=2, borderaxespad=0.)
         plt.xlim([0,5])
         plt.ylim([-30,30])
-        plt.ylabel('value (non-dimensional)')
+        plt.ylabel('value (non-dimensional) / position (x=0~1)')
         plt.xlabel('t (time)')
         flag = 'b=%s' % str(sol['stEC_2']) 
         plt.savefig("%s.png" % flag)
@@ -94,13 +103,15 @@ def pic_1d(coef,set,sol):
         plt.figure(6)
         axes = plt.gca()
         plt.title('%s' % ('Graph of Velocity of cell (t=0-1)'))  
-        plt.plot(sol['time'], sol['vel_n'], 'k', linewidth=2.0)
-        plt.plot(sol['time'], sol['in_vel_n'], 'y', linewidth=2.0)
-        plt.plot(sol['time'], sol['c_x'], 'b', linewidth=2.0)
-        plt.legend()
+        plt.plot(sol['time'], sol['vel_n'], 'k', linewidth=2.0, label = 'v')
+        plt.plot(sol['time'], sol['in_vel_n'], 'y', linewidth=2.0, label = 'v/c_x')
+        plt.plot(sol['time'], sol['c_x'], 'b', linewidth=2.0, label = 'c_x')
+        plt.plot(sol['time'], sol['c_'], 'g', linewidth=2.0, label = 'c_')
+        plt.plot(sol['time'], cell_2, 'r', linewidth=2.0, label = 'cell pos')
+        plt.legend(bbox_to_anchor=(0.9, 0.2), loc=2, borderaxespad=0.)
         plt.xlim([0,1])
         plt.ylim([-30,30])
-        plt.ylabel('value (non-dimensional)')
+        plt.ylabel('value (non-dimensional) / position (x=0~1)')
         plt.xlabel('t (time)')
         flag = 'c=%s' % str(sol['stEC_3']) 
         plt.savefig("%s.png" % flag)
@@ -110,13 +121,15 @@ def pic_1d(coef,set,sol):
         plt.figure(4)
         axes = plt.gca()
         plt.title('%s' % ('Graph of Velocity of cell (magnified view)'))  
-        plt.plot(sol['time'], sol['vel_n'], 'k', linewidth=2.0)
-        plt.plot(sol['time'], sol['in_vel_n'], 'y', linewidth=2.0)
-        plt.plot(sol['time'], sol['c_x'], 'b', linewidth=2.0)
-        plt.legend()
-        plt.xlim([0,0.7])
-        plt.ylim([-10,10])
-        plt.ylabel('value (non-dimensional)')
+        plt.plot(sol['time'], sol['vel_n'], 'k', linewidth=2.0, label = 'v')
+        plt.plot(sol['time'], sol['in_vel_n'], 'y', linewidth=2.0, label = 'v/c_x')
+        plt.plot(sol['time'], sol['c_x'], 'b', linewidth=2.0, label = 'c_x')
+        plt.plot(sol['time'], sol['c_'], 'g', linewidth=2.0, label = 'c_')
+        plt.plot(sol['time'], cell_2, 'r', linewidth=2.0, label = 'cell pos')
+        plt.legend(bbox_to_anchor=(0.9, 0.2), loc=2, borderaxespad=0.)
+        plt.xlim([0,0.35])
+        plt.ylim([-3,3])
+        plt.ylabel('value (non-dimensional) / position (x=0~1)')
         plt.xlabel('t (time)')
         flag = 'd=%s' % str(sol['stEC_4']) 
         plt.savefig("%s.png" % flag)
@@ -128,7 +141,7 @@ def pic_1d(coef,set,sol):
         plt.title('%s%f' % ('(magnified view) Cell position after t=',set['t']))  
         plt.plot(cell, sol['time'], 'k', linewidth=2.0)
         plt.xlim([0.6,1])
-        plt.ylim([0,2])
+        plt.ylim([0,0.35])
         plt.xlabel('x (position)')
         plt.ylabel('t (time)')
         flag = 'e=%s' % str(sol['stEC_5']) 

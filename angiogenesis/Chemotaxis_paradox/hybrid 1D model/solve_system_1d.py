@@ -38,12 +38,14 @@ def system_1d(coef, set, sol): #2.3
     '''Calculate Velocity of cell at n_p'''
     n_p = sol['n'][-1]
     print 'Position cell now:', n_p
+    n_ = 2 - n_p * set['Hh']
     c_mean = (c_o[n_p+1]+c_o[n_p-1])/2
     c_grad = (c_o[n_p+1]-c_o[n_p-1])/(set['h'])
     sol['vel_n'].append((coef['alpha'] - (coef['beta']*c_mean/((c_grad)**2+coef['xi'])))*c_grad) #SOL N_P = 1
     sol['in_vel_n'].append((coef['alpha'] - (coef['beta']*c_mean/((c_grad)**2+coef['xi']))))
     sol['c_x'].append(c_grad)
-    
+    sol['c_'].append(c_mean)
+#     sol['n_pos'].append(n_)
     
     
 #     print 'velocity_value', sol['vel_n'][-1]
