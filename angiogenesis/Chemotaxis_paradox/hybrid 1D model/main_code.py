@@ -19,6 +19,8 @@ def v_conv_max(set, sol, coef):
     V_conv_max = 0
     v_conv = 0
     n_p = sol['n'][-1]
+    
+    '''Method c_t = cn'''
     n_bool = 0
     for x in range(1,set['Nx'],2):
         if x == n_p:
@@ -30,6 +32,17 @@ def v_conv_max(set, sol, coef):
             v_conv *= -1
         if v_conv > V_conv_max:
             V_conv_max = v_conv
+    
+    '''Method c_t = -w c_x'''
+    for x in range(1,set['Nx'],2):
+        c_mean = (sol['c'][x+1]+sol['c'][x-1])/2
+        c_grad = (sol['c'][x+1]-sol['c'][x-1])/(set['h'])
+        v_conv = (coef['alpha'] - (coef['beta']*coef['vel']*c_grad/((c_grad)**2+coef['xi'])))*c_grad
+        if v_conv < 0:
+            v_conv *= -1
+        if v_conv > V_conv_max:
+            V_conv_max = v_conv        
+    
 #     print V_conv_max
     return V_conv_max
 

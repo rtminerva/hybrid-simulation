@@ -13,20 +13,20 @@ def declare_coef(): #1
     coef['xi'] = 0.00001
     coef['A_n'] = 0.4 #amplitude of n    
     coef['Xi_n'] = 1
-    coef['alpha'] =1#0.5 #first velocity 
-    coef['beta'] = 1#2#2 #adaptation velocity
+    coef['alpha'] =1#0.1#1 #first velocity 
+    coef['beta'] = 1#10 #1 #adaptation velocity
     
     '''VEGF (c)'''
     coef['vel'] = 10#10 #velocity of wave
     coef['perio'] = 3 #period of wave
-    coef['A_c'] = 0.8 #amplitude of wave
-    coef['vari'] = 0.3#0.05 #variance of wave
+    coef['A_c'] = 0.5#0.8 #amplitude of wave
+    coef['vari'] = 0.05#0.3#0.05 #variance of wave
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries (fixed: never change)
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 0.401 #
+    set['T'] = 1.001 #
     set['Nt'] = 1000000
     set['h'] = 0.005 #0.005 #0.01#
     set['rad'] = 0.12
