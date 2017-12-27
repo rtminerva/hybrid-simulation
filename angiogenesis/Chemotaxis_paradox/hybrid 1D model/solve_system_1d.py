@@ -27,9 +27,9 @@ def c_(coef, set, sol, c_o):
 #         sol['c'][x] = 0.5*(numpy.sin(2*m.pi/(coef['la'])*x*set['Hh']-2*m.pi/(coef['pe'])*set['dt']*set['k'])) 
 #         if sol['c'][x] < 0:
 #             sol['c'][x] *= 0
-        sol['c'][x] = coef['A_c']*m.exp(-(x*set['Hh']+(-1.5)*set['rad']-coef['vel']*set['t'])**2/coef['vari'])
+        sol['c'][x] = coef['A_c']*m.exp(-(x*set['Hh']+(-3)*set['rad']-coef['vel']*set['t'])**2/coef['vari'])
         for i in range(1,100):
-            sol['c'][x] += coef['A_c']*m.exp(-(x*set['Hh']+(-1.5)*set['rad']+i*coef['perio']-coef['vel']*set['t'])**2/coef['vari'])        
+            sol['c'][x] += coef['A_c']*m.exp(-(x*set['Hh']+(-3)*set['rad']+i*coef['perio']-coef['vel']*set['t'])**2/coef['vari'])        
     return sol
 
 def system_1d(coef, set, sol): #2.3
@@ -52,13 +52,22 @@ def system_1d(coef, set, sol): #2.3
     '''Metode c_t = -w c_x'''
     sol['vel_n'].append((coef['alpha'] - (coef['beta']*coef['vel']*c_grad/((c_grad)**2+coef['xi'])))*c_grad)
     sol['in_vel_n'].append((coef['alpha'] - (coef['beta']*coef['vel']*c_grad/((c_grad)**2+coef['xi']))))
-    sol['a_per_b'].append(coef['vel']*c_grad/((c_grad)**2+coef['xi']))    
+    sol['a_per_b_left'].append(coef['vel']*c_grad/((c_grad)**2+coef['xi']))
+    sol['a_per_b_coef'].append(coef['alpha']/(coef['beta']))
+    
+    '''when vel c = 1'''
+    sol['vel_n'].append(coef['alpha']*c_grad-coef['beta'])
         
     sol['c_x'].append(c_grad)
     sol['c_'].append(c_mean)
     
-
+    print '-----------------'
+    print 'c_x', c_grad
+    print 'a/b', coef['alpha']/(coef['beta'])
+    print 'v_sen', sol['a_per_b_left'][-1]
+    print 'inside vel', sol['in_vel_n'][-1] 
     print 'velocity_value', sol['vel_n'][-1]
+    print '-----------------'
     
     '''Diffusion term'''
     p_1 = coef['D_n']*set['dt']/(set['h']**2)
@@ -70,7 +79,7 @@ def system_1d(coef, set, sol): #2.3
     else:
         p_2 += set['dt']/(set['h'])*(sol['vel_n'][-1])
     p_0 = 1-(p_1+p_2)    
-    print p_0,',', p_1, ',', p_2
+#     print p_0,',', p_1, ',', p_2
     '''create integer number based on probability value'''
     P_1 = int(p_1*10000)
     P_2 = int(p_2*10000)
@@ -84,7 +93,7 @@ def system_1d(coef, set, sol): #2.3
     
     '''Probability value'''
     dirr = [P_0, P_1, P_2]  
-    print dirr  
+#     print dirr  
     list_prob_0,list_prob_1,list_prob_2 = set_list_prob(dirr)  
     
     '''Decide movement''' 
