@@ -24,12 +24,26 @@ def set_list_prob(dirr): #2.2.(1)
 def c_(coef, set, sol, c_o):              
     '''Calculate c at sub lattice'''
     for x in range(0,set['Nx']+1,2):
-#         sol['c'][x] = 0.5*(numpy.sin(2*m.pi/(coef['la'])*x*set['Hh']-2*m.pi/(coef['pe'])*set['dt']*set['k'])) 
-#         if sol['c'][x] < 0:
-#             sol['c'][x] *= 0
-        sol['c'][x] = coef['A_c']*m.exp(-(x*set['Hh']+(-3)*set['rad']-coef['vel']*set['t'])**2/coef['vari'])
+# #         sol['c'][x] = 0.5*(numpy.sin(2*m.pi/(coef['la'])*x*set['Hh']-2*m.pi/(coef['pe'])*set['dt']*set['k'])) 
+# #         if sol['c'][x] < 0:
+# #             sol['c'][x] *= 0
+        sol['c'][x] = coef['A_c']*m.exp(-(x*set['Hh']+(1)*set['rad']-coef['vel']*set['t'])**2/coef['vari'])
         for i in range(1,100):
-            sol['c'][x] += coef['A_c']*m.exp(-(x*set['Hh']+(-3)*set['rad']+i*coef['perio']-coef['vel']*set['t'])**2/coef['vari'])        
+            sol['c'][x] += coef['A_c']*m.exp(-(x*set['Hh']+(1)*set['rad']+i*coef['perio']-coef['vel']*set['t'])**2/coef['vari'])        
+         
+#     '''Different Var'''
+#     dd = 0
+#     x = 0
+#     while dd == 0 and x <= set['Nx']:
+#         if sol['c'][x] == coef['A_c']:
+#             dd = 1
+#         elif sol['c'][x] < coef['A_c']:
+#             vari = 0.1
+#             sol['c'][x] = coef['A_c']*m.exp(-(x*set['Hh']+(-3)*set['rad']-coef['vel']*set['t'])**2/vari)#0.05 set['dt']*set['k']
+#             for i in range(1,100):
+#                 sol['c'][x] += coef['A_c']*m.exp(-(x*set['Hh']+(-3)*set['rad']+i*coef['perio']-coef['vel']*set['t'])**2/vari)
+#             x += 2
+    
     return sol
 
 def system_1d(coef, set, sol): #2.3
@@ -40,6 +54,7 @@ def system_1d(coef, set, sol): #2.3
     print 'Position cell now:', n_p
     c_mean = (c_o[n_p+1]+c_o[n_p-1])/2
     c_grad = (c_o[n_p+1]-c_o[n_p-1])/(set['h'])
+    print 'c_grad at n', c_grad
     a_per_b = c_mean/()
 #     if c_grad < 0:
 #         coef['alpha']
@@ -50,10 +65,10 @@ def system_1d(coef, set, sol): #2.3
 #     sol['a_per_b'].append(c_mean/((c_grad)**2+coef['xi']))
     
     '''Metode c_t = -w c_x'''
-    sol['vel_n'].append((coef['alpha'] - (coef['beta']*coef['vel']*c_grad/((c_grad)**2+coef['xi'])))*c_grad)
-    sol['in_vel_n'].append((coef['alpha'] - (coef['beta']*coef['vel']*c_grad/((c_grad)**2+coef['xi']))))
-    sol['a_per_b_left'].append(coef['vel']*c_grad/((c_grad)**2+coef['xi']))
-    sol['a_per_b_coef'].append(coef['alpha']/(coef['beta']))
+#     sol['vel_n'].append((coef['alpha'] - (coef['beta']*coef['vel']*c_grad/((c_grad)**2+coef['xi'])))*c_grad)
+#     sol['in_vel_n'].append((coef['alpha'] - (coef['beta']*coef['vel']*c_grad/((c_grad)**2+coef['xi']))))
+#     sol['a_per_b_left'].append(coef['vel']*c_grad/((c_grad)**2+coef['xi']))
+#     sol['a_per_b_coef'].append(coef['alpha']/(coef['beta']))
     
     '''when vel c = 1'''
     sol['vel_n'].append(coef['alpha']*c_grad-coef['beta'])
