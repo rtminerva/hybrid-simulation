@@ -4,23 +4,25 @@ lloyd = {
     "quizzes": [88.0, 40.0, 94.0],
     "tests": [75.0, 90.0]
 }
-alice = {
-    "name": "Alice",
-    "homework": [100.0, 92.0, 98.0, 100.0],
-    "quizzes": [82.0, 83.0, 91.0],
-    "tests": [89.0, 97.0]
-}
-tyler = {
-    "name": "Tyler",
-    "homework": [0.0, 87.0, 75.0, 22.0],
-    "quizzes": [0.0, 75.0, 78.0],
-    "tests": [100.0, 100.0]
-}
+# alice = {
+#     "name": "Alice",
+#     "homework": [100.0, 92.0, 98.0, 100.0],
+#     "quizzes": [82.0, 83.0, 91.0],
+#     "tests": [89.0, 97.0]
+# }
+# tyler = {
+#     "name": "Tyler",
+#     "homework": [0.0, 87.0, 75.0, 22.0],
+#     "quizzes": [0.0, 75.0, 78.0],
+#     "tests": [100.0, 100.0]
+# }
+# 
+# students = [lloyd, alice, tyler]
 
-students = [lloyd, alice, tyler]
+print type(lloyd)#['homework']
 
-for student in students:
-    print student["name"]
-    print str(student["homework"])
-    print str(student["quizzes"])
-    print str(student["tests"])
+# for student in students:
+#     print student["name"]
+#     print str(student["homework"])
+#     print str(student["quizzes"])
+#     print str(student["tests"])

@@ -15,7 +15,7 @@ coef, set, sol = declare_coef() #1
 plt.ion()
 
 while set['t'] <= set['T'] and set['k'] < set['Nt']:
-    sol = main.boolean_1_iter(coef, set, sol) #2                
+    sol = main.boolean_1_iter(coef, set, sol) #2             
     if sol["stop_iter"] >= 100000:
         set['k'] = sol['stop_iter']
     '''PRINTING RESULT AS CONTROL'''  
@@ -33,7 +33,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'Max Value of c, n', sol['c'].max(),',', sol['n'].max()
     print 'Min Value of c, n', sol['c'].min(),',', sol['n'].min()
     
-    if len(sol['backward_list'])>0 or set['k'] % 10 == 0:
+    if set['k'] % 10 == 0: #len(sol['backward_list'])>0 or 
         pic.pic_2d(coef,set,sol) #3
 
     '''Recording Time'''         

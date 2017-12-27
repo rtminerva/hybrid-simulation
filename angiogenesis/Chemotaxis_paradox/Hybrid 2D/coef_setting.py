@@ -21,14 +21,14 @@ def declare_coef():
     coef['xi'] = 0.00001
     coef['A_n'] = 0.4 #amplitude of n    
     coef['Xi_n'] = 1
-    coef['alpha'] =20#1 #first velocity 
+    coef['alpha'] =1#20 #first velocity 
     coef['beta'] = 1 #adaptation velocity
     
     ##VEGF (c)
-    coef['vel'] = 1#10 #velocity of wave
-    coef['perio'] = 0.8 #period of wave
-    coef['A_c'] = 0.3#0.8 #amplitude of wave
-    coef['vari'] = 0.01#0.3#0.05 #variance of wave
+    coef['vel'] = 15#10 #velocity of wave
+    coef['perio'] = 4 #period of wave
+    coef['A_c'] = 0.5#0.8 #amplitude of wave
+    coef['vari'] = 0.1#0.3#0.05 #variance of wave
  
     '''Branching & Mitosis'''
     coef['T_branch'] = 0.25
@@ -38,7 +38,7 @@ def declare_coef():
     ##set dictionaries tidak pernah berubah
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 10.002
+    set['T'] = 1.002
     set['Nt'] = 100000
     set['theta'] = 0.5
     set['rad'] = 0.12

@@ -8,7 +8,10 @@ def movement_dir(coef, set, sol, xb, yb): #2.2.1
      
     '''NEW Velocity'''    
     vijx = coef['alpha']*cijx - coef['beta']
-    vijy = coef['alpha']*cijy - coef['beta']
+    vijy = coef['alpha']*cijy# - coef['beta']
+    
+#     print 'grad c', cijx, cijy
+#     print 'vel_c', vijx, vijy
     
     vijx_p = max(0,vijx)
     vijx_n = max(0,-vijx)
@@ -82,6 +85,7 @@ def movement_dir(coef, set, sol, xb, yb): #2.2.1
     
     prob_range = [P_0,P_1,P_2,P_3,P_4]
     prob = [p_0,p_1,p_2,p_3,p_4]
+#     print prob_range
     if p_1 == 0 and p_2 == 0 and p_3 == 0 and p_4 == 0:
         print 'ALL P ZEROS', prob_range
     
