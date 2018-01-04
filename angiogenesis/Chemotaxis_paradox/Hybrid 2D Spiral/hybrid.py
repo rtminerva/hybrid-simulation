@@ -226,7 +226,7 @@ def prob_by_c(sol,xb,yb): #2.2.(4)
         list_prob = line
     return list_prob
 
-def hybrid_tech(coef, set, sol): #2.23
+def hybrid_tech(coef, set, sol, c_o): #2.23
     n_sp = len(sol['matrix_tip']) #to save original number of tips before branching
     n_o = numpy.copy(sol['n']) #to save the value of 'n' at time step k (we are calculating at time step k+1)
 
@@ -237,7 +237,7 @@ def hybrid_tech(coef, set, sol): #2.23
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
             yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
             
-            dirr, probb = movement_dir(coef, set, sol, xb, yb) #2.2.1 => go to direction_of_movement.py
+            dirr, probb = movement_dir(coef, set, sol, xb, yb, c_o) #2.2.1 => go to direction_of_movement.py
         
             if dirr[1] == 0 and dirr[2] == 0 and dirr[3] == 0 and dirr[4] == 0: #checking if there is space for tip cell to move
                 if not nom in sol['sp_stop']:

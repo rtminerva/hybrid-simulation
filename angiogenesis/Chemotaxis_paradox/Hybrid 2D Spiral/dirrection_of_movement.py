@@ -1,19 +1,21 @@
 import numpy
 import math as m
 
-def movement_dir(coef, set, sol, xb, yb): #2.2.1
+def movement_dir(coef, set, sol, xb, yb, c_o): #2.2.1
     #xb, yb are on main-lattices
-
     cijx = (sol['c'][xb+1,yb+1]-sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb-1]-sol['c'][xb-1,yb-1])/(2*set['h'])
     cijy = (sol['c'][xb+1,yb+1]-sol['c'][xb+1,yb-1]+sol['c'][xb-1,yb+1]-sol['c'][xb-1,yb-1])/(2*set['h'])
-     
-    '''NEW Velocity'''    
-    vijx = coef['alpha']*cijx - coef['beta']
-    vijy = coef['alpha']*cijy# - coef['beta']
+    
+    #mean c
+    c_mean_now = (sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb-1]+sol['c'][xb-1,yb-1])/4
+    c_mean_yes = (c_o[xb+1,yb+1]+c_o[xb-1,yb+1]+c_o[xb+1,yb-1]+c_o[xb-1,yb-1])/4
+#     '''NEW Velocity'''    
+#     vijx = coef['alpha']*cijx - coef['beta']
+#     vijy = coef['alpha']*cijy# - coef['beta']
     
     '''Velocity cx'''
-    vijx = coef['alpha']*cijx - (coef['beta']/(m.sqrt(cijx**2+cijy**2)+0.0001))*cijx
-    vijy = coef['alpha']*cijy - (coef['beta']/(m.sqrt(cijx**2+cijy**2)+0.0001))*cijy
+    vijx = (coef['alpha'] - (coef['beta']*(c_mean_now-c_mean_yes)/(((cijx**2+cijy**2)+0.0001)+set['dt']))) *cijx
+    vijy = (coef['alpha'] - (coef['beta']*(c_mean_now-c_mean_yes)/(((cijx**2+cijy**2)+0.0001)+set['dt']))) *cijy
     
 #     print 'cx', cijx, cijy
 #     print 'VVVV', vijx, vijy

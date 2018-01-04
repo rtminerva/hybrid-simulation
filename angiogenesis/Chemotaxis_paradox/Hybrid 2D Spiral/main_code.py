@@ -7,19 +7,15 @@ def boolean_1_iter(coef, set, sol): #2
     if set['k'] == 0:
         '''Initial Profile'''
         sol = initial_prof(coef, set, sol) #2.1
-        
-    else:                             
-        '''2. Branching and Movement''' 
-#         print 'all sol', type(sol)#["stop_iter"]
-        start1 = timer()  
-        sol = hybrid_tech(coef, set, sol) #2.2
-        start2 = timer()
-#         print 'all sol', type(sol)#["stop_iter"]
+    else:   
+        start1 = timer()                 
         '''Solving c,f,T'''
-#         print sol
-        sol = system_2d(coef, set, sol) #2.3
-#         print sol
-        start3 = timer()            
+        sol, c_o = system_2d(coef, set, sol) #2.3
+        start2 = timer()         
+        '''2. Branching and Movement'''          
+        sol = hybrid_tech(coef, set, sol, c_o) #2.2
+        start3 = timer()
+                            
         print 'Hybrid for n time', start2-start1
         print 'Solve c,f,T time', start3-start2 
                     

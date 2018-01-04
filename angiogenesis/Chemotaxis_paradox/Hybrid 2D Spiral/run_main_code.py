@@ -20,18 +20,18 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         set['k'] = sol['stop_iter']
     '''PRINTING RESULT AS CONTROL'''  
     print 'at Time', set['t']
-    print 'Total Tips:', len(sol['matrix_tip'])
-    print 'Total Stop Tips:', len(sol['sp_stop'])
-    print 'tip stop:', sol['sp_stop']
-    print 'Tip Cell Pos:', sol['tip_cell']
+#     print 'Total Tips:', len(sol['matrix_tip'])
+#     print 'Total Stop Tips:', len(sol['sp_stop'])
+#     print 'tip stop:', sol['sp_stop']
+    print 'Tip Cell Position:', sol['tip_cell']
 #     for e, i in enumerate(sol['matrix_tip']):
 #         if e in sol['sp_stop']:
 #             print 'stop', e, ':', i[-1], ',', sol['cause'][e], ',', 'Length of sprout:', len(i)
 #         else:
 #             print 'RUN', e, ':', i[-1], ',', 'Length of sprout:', len(i)
 #     print 'Backward at time step:', sol['backward_count']
-    print 'Max Value of c, n', sol['c'].max(),',', sol['n'].max()
-    print 'Min Value of c, n', sol['c'].min(),',', sol['n'].min()
+#     print 'Max Value of c, n', sol['c'].max(),',', sol['n'].max()
+#     print 'Min Value of c, n', sol['c'].min(),',', sol['n'].min()
     
     if set['k'] % 1 == 0: #len(sol['backward_list'])>0 or #10
         pic.pic_2d(coef,set,sol) #3
@@ -68,8 +68,9 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print     
         
     set['t'] += set['dt']
-    set['t_c'] += set['dt_c']
     set['k'] += 1
+    ##rotation time
+    set['t_c'] += set['dt_c']
      
 print '*************DONE*****************'
 print '''All Coefficients:'''
