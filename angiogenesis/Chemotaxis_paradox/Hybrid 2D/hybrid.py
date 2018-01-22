@@ -229,7 +229,7 @@ def prob_by_c(sol,xb,yb): #2.2.(4)
 def hybrid_tech(coef, set, sol): #2.23
 #     print 'all sol', type(sol)#["stop_iter"]
     n_sp = len(sol['matrix_tip']) #to save original number of tips before branching
-    n_o = numpy.copy(sol['n']) #to save the value of 'n' at time step k (we are calculating at time step k+1)
+#     n_o = numpy.copy(sol['n']) #to save the value of 'n' at time step k (we are calculating at time step k+1)
 #     sol['vn_o'] = [] #to record tip cell position
 #     sol['bw'] = 0 #to detect backward list
     sol['backward_list'] = [] #backward list

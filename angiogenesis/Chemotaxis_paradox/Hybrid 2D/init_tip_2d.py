@@ -70,7 +70,7 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
 
 def init_tip_2d_(coef,set,sol):
     sol['n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
-    sol['stalk'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
+#     sol['stalk'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
 #     sol['b'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
 #     sol['Vb_x'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
 #     sol['Vb_y'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
