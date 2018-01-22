@@ -14,8 +14,8 @@ def movement_dir(coef, set, sol, xb, yb, c_o): #2.2.1
 #     vijy = coef['alpha']*cijy# - coef['beta']
     
     '''Velocity cx'''
-    vijx = (coef['alpha'] - (coef['beta']*(c_mean_now-c_mean_yes)/(((cijx**2+cijy**2)+0.0001)+set['dt']))) *cijx
-    vijy = (coef['alpha'] - (coef['beta']*(c_mean_now-c_mean_yes)/(((cijx**2+cijy**2)+0.0001)+set['dt']))) *cijy
+    vijx = (coef['alpha'] - (coef['beta']*(c_mean_now-c_mean_yes)/(((cijx**2+cijy**2)+0.0001)*set['dt']))) *cijx
+    vijy = (coef['alpha'] - (coef['beta']*(c_mean_now-c_mean_yes)/(((cijx**2+cijy**2)+0.0001)*set['dt']))) *cijy
     
 #     print 'cx', cijx, cijy
 #     print 'VVVV', vijx, vijy

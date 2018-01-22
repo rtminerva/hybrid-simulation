@@ -20,7 +20,7 @@ def declare_coef():
     coef['vel'] = 15#10 #velocity of wave
     coef['perio'] = 4 #period of wave
     coef['A_c'] = 0.5#0.5#0.8 #amplitude of wave
-    coef['vari'] = 0.04#0.1#0.3#0.05 #variance of wave
+    coef['vari'] = 0.08#0.1#0.3#0.05 #variance of wave
     
     '''Rotation'''
     coef['r'] = 1

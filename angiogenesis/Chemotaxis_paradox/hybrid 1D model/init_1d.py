@@ -32,6 +32,8 @@ def init_1d_(coef,set,sol): #2.1.1
     sol['c_'] = [0]
     sol['a_per_b_left'] = [0]
     sol['a_per_b_coef'] = [coef['alpha']/(coef['beta'])]
+    sol['c_t'] = [0]
+    sol['c_t_f'] = [0] 
        
     sol = c_prof(coef,set,sol)
     
