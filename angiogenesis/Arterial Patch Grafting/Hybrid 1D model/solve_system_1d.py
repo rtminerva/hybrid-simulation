@@ -55,42 +55,10 @@ def system_1d(coef, set, sol): #2.3
     '''Calculate Velocity of cell at n_p'''
     n_p = sol['n'][-1]
     print 'Position cell now:', n_p
-    c_mean = (c_o[n_p+1]+c_o[n_p-1])/2
-    c_mean_t = (sol['c'][n_p+1]+sol['c'][n_p-1])/2
-    c_grad = (c_o[n_p+1]-c_o[n_p-1])/(set['h'])
-    print 'c_grad at n', c_grad
-    a_per_b = c_mean/()
-#     if c_grad < 0:
-#         coef['alpha']
-#     elif c_grad > 0:
-    '''Metode c_t = cn'''    
-#     sol['vel_n'].append((coef['alpha'] - (coef['beta']*c_mean/((c_grad)**2+coef['xi'])))*c_grad) #SOL N_P = 1
-#     sol['in_vel_n'].append((coef['alpha'] - (coef['beta']*c_mean/((c_grad)**2+coef['xi']))))
-#     sol['a_per_b'].append(c_mean/((c_grad)**2+coef['xi']))
-    
-    '''Metode c_t = -w c_x'''
-#     sol['vel_n'].append((coef['alpha'] - (coef['beta']*coef['vel']*c_grad/((c_grad)**2+coef['xi'])))*c_grad)
-#     sol['in_vel_n'].append((coef['alpha'] - (coef['beta']*coef['vel']*c_grad/((c_grad)**2+coef['xi']))))
-#     sol['a_per_b_left'].append(coef['vel']*c_grad/((c_grad)**2+coef['xi']))
-#     sol['a_per_b_coef'].append(coef['alpha']/(coef['beta']))
-    
-    '''when vel w = 1'''
-#     sol['vel_n'].append(coef['alpha']*c_grad-coef['beta'])
-
-    '''Using c_t = (c now - c yest) / dt'''
-    c_tt = (c_mean_t-c_mean)/set['dt']
-    sol['c_t'].append(c_tt)
-#     vel_nn = (coef['alpha']-coef['beta']*c_tt/((c_grad)**2+coef['xi']))*c_grad
-#     sol['vel_n'].append(vel_nn)
-    
-    '''Using c_t = f_derivative'''
-    c_t_f = 0
-    for i in range(0,100):
-        c_t_f += 2*coef['A_c']*(n_p*set['Hh']+i*coef['perio']-coef['vel']*set['t'])/coef['vari']*m.exp(-(n_p*set['Hh']+i*coef['perio']-coef['vel']*set['t'])**2/coef['vari'])
-    sol['c_t_f'].append(c_t_f)
-    vel_nn = (coef['alpha']-coef['beta']*c_t_f/((c_grad)**2+coef['xi']))*c_grad
-    sol['vel_n'].append(vel_nn)
-    
+    c_t_f = (sol['c'][n_p+1]-c_o[n_p+1])/set['dt']
+    c_t_b = (sol['c'][n_p-1]-c_o[n_p-1])/set['dt']
+    c_t_x = (c_t_f-c_t_b)/set['h']
+    sol['vel_n'].append(c_t_x)  
     
     
     sol['c_x'].append(c_grad)
@@ -98,11 +66,6 @@ def system_1d(coef, set, sol): #2.3
     
     print '-----------------'
     print 'c_x', c_grad
-#     print 'a/b', coef['alpha']/(coef['beta'])
-#     print 'v_sen', sol['a_per_b_left'][-1]
-#     print 'inside vel', sol['in_vel_n'][-1] 
-    print 'c_t', c_tt
-    print 'c_t_f', c_t_f
     print 'velocity_value', sol['vel_n'][-1]
     print '-----------------'
     

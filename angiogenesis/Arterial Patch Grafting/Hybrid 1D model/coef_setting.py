@@ -12,7 +12,6 @@ def declare_coef(): #1
     coef['Ki_n'] = 0.33#133 #AUBERT, Stokes Chemotaxis coef (range max) OK
     coef['xi'] = 0.00001
     coef['A_n'] = 0.4 #amplitude of n    
-    coef['Xi_n'] = 1
     coef['alpha'] =1#20 #first velocity 
     coef['beta'] = 5 #adaptation velocity
     
