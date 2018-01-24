@@ -59,10 +59,12 @@ def system_1d(coef, set, sol): #2.3
     c_t_b = (sol['c'][n_p-1]-c_o[n_p-1])/set['dt']
     c_t_x = (c_t_f-c_t_b)/set['h']
     sol['vel_n'].append(c_t_x)  
-    
+    c_grad = (c_o[n_p+1]-c_o[n_p-1])/(set['h'])
+    c_mean = (c_o[n_p+1]+c_o[n_p-1])/2
     
     sol['c_x'].append(c_grad)
     sol['c_'].append(c_mean)
+    sol['c_t'].append((c_t_f+c_t_b)/2)
     
     print '-----------------'
     print 'c_x', c_grad
