@@ -29,21 +29,21 @@ def pic_1d(coef,set,sol):
         if ind % 2 == 0:
             c_sol[id] = sol['c'][ind]
             id += 1
-    if set['k'] % 10 == 0:
-        plt.figure(1)
-        axes = plt.gca()
-        plt.title('%s%f' % ('t=',set['t']))
-        plt.scatter(n_sol, 0+0.05, s=500, label = 'Cell')#, 0, color = 'r', 'o')#, label = 'Tip')
-        plt.plot(x_sub_axis, c_sol, color = 'k', linewidth=3.0, label = 'VEGF')#, label = 'VEGF')
-        plt.xlim([0,1])
-        plt.ylim([0,1.2])
-        plt.legend()
-        plt.xlabel('x (position)')
-        plt.ylabel('density')
-        flag = 'z=%s' % str(sol['stEC']) 
-        plt.savefig("%s.png" % flag)
-        plt.close()
-        sol['stEC'] +=1 
+#     if set['k'] % 10 == 0:
+#         plt.figure(1)
+#         axes = plt.gca()
+#         plt.title('%s%f' % ('t=',set['t']))
+#         plt.scatter(n_sol, 0+0.05, s=500, label = 'Cell')#, 0, color = 'r', 'o')#, label = 'Tip')
+#         plt.plot(x_sub_axis, c_sol, color = 'k', linewidth=3.0, label = 'VEGF')#, label = 'VEGF')
+#         plt.xlim([0,1])
+#         plt.ylim([0,1.2])
+#         plt.legend()
+#         plt.xlabel('x (position)')
+#         plt.ylabel('density')
+#         flag = 'z=%s' % str(sol['stEC']) 
+#         plt.savefig("%s.png" % flag)
+#         plt.close()
+#         sol['stEC'] +=1 
     
     if set['t'] >= set['T']:  
 #         fig, ax1 = plt.subplot()  

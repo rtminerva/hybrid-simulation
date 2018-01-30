@@ -82,11 +82,11 @@ def system_1d(coef, set, sol): #2.3
     sol['c_t'].append(c_tt)
 #     vel_nn = (coef['alpha']-coef['beta']*c_tt/((c_grad)**2+coef['xi']))*c_grad
 #     sol['vel_n'].append(vel_nn)
-    
+#     
     '''Using c_t = f_derivative'''
     c_t_f = 0
-    for i in range(0,100):
-        c_t_f += 2*coef['A_c']*(n_p*set['Hh']+i*coef['perio']-coef['vel']*set['t'])/coef['vari']*m.exp(-(n_p*set['Hh']+i*coef['perio']-coef['vel']*set['t'])**2/coef['vari'])
+    for i in range(0,100): 
+        c_t_f += 2*coef['A_c']*(n_p*set['Hh']+(1)*set['rad']+i*coef['perio']-coef['vel']*set['t'])/coef['vari']*m.exp(-(n_p*set['Hh']+(1)*set['rad']+i*coef['perio']-coef['vel']*set['t'])**2/coef['vari'])
     sol['c_t_f'].append(c_t_f)
     vel_nn = (coef['alpha']-coef['beta']*c_t_f/((c_grad)**2+coef['xi']))*c_grad
     sol['vel_n'].append(vel_nn)

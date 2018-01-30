@@ -65,14 +65,12 @@ def boolean_1_iter(coef, set, sol): #2
         sol = initial_prof(coef, set, sol) #2.1
         sol['time'] = [0]
     else:                             
-        '''2. Solvng System''' 
         start1 = timer()  
         '''calculate dt'''
         V_conv = v_conv_max(set, sol, coef)
         print 'V_max', V_conv
         dt_conv = set['h']/(2*V_conv)
         dt_diff = (set['h'])**2/(2*coef['D_n'])
-        
 #         set['dt'] = 0.001
         set['dt'] = min(dt_diff,dt_conv)
         set['t'] += set['dt']
