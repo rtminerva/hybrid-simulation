@@ -96,31 +96,25 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
      
     '''Solve b, n at main lattice'''
     for x in range(1,set['Nx'],2):
-#         kinetic_n = set['dt']*coef['mu1']*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
-       
         #branching is obtained by cell density and vegf level
         if branching == True:# and x == tip_cell_pos:
             #branching due to cell density and VEGF
-            branch_dec = (b_o[x] - 1/2*n_o[x]) * ((c_o[x+1]+c_o[x-1])/(2*0.1) - 1)
+            branch_dec = (b_o[x] - 1/2*n_o[x]) * ((c_o[x+1]+c_o[x-1])/2) #((c_o[x+1]+c_o[x-1])/(2*coef['C_branc']) - 1)
             
             if branch_dec > 0:
-                branching_par = coef['mu1']
-#                 print 'branching'
-#                 print x
-#                 print branch_dec
+                branching_par = coef['k_2']
                 sol['age'] = 0
-        
-        kinetic_n = set['dt']*branching_par*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]
-        
+        #with branching true or false
+        kinetic_n = set['dt']*branching_par*n_o[x] - set['dt']*coef['k_3']*(n_o[x])**2-set['dt']*coef['k_4']*n_o[x]*b_o[x]
+        #without
+#         kinetic_n = set['dt']*coef['mu1']*n_o[x] - set['dt']*coef['Lam_1']*(n_o[x])**2-set['dt']*coef['Lam_2']*n_o[x]*b_o[x]       
         
         '''Model Extension''' 
         if set['Model'] == 'extensions':  #SSSSSSS
-            kinetic_b = set['dt']*coef['mu2']*(1/(1+ma_o[x]))*b_o[x]*(1-b_o[x]) + set['dt']*coef['mu3']*(1/(1+ma_o[x]))*n_o[x]*b_o[x]*(1-(b_o[x])/(coef['beta1'])) + set['dt']*coef['Lam_3']*(coef['Lam_1']*(n_o[x])**2+coef['Lam_2']*n_o[x]*b_o[x])
+            kinetic_b = set['dt']*coef['nu']*(1/(1+ma_o[x]))*b_o[x]*(1-b_o[x]) + set['dt']*coef['omega']*(1/(1+ma_o[x]))*n_o[x]*b_o[x]*(1-(b_o[x])/(coef['beta'])) + set['dt']*coef['k_5']*(coef['k_3']*(n_o[x])**2+coef['k_4']*n_o[x]*b_o[x])
         else:
-            kinetic_b = set['dt']*coef['mu2']*b_o[x]*(1-b_o[x])*(c_o[x-1]+c_o[x+1])/2 + (c_o[x-1]+c_o[x+1])/2*set['dt']*coef['mu3']*n_o[x]*b_o[x]*(1-(b_o[x])/(coef['beta1'])) + set['dt']*coef['Lam_3']*(coef['Lam_1']*(n_o[x])**2+coef['Lam_2']*n_o[x]*b_o[x])
-            
-        ##Pettet & Balding
-#         kinetic_b = - 0.1*set['dt']*coef['C_1']*(n_mean[0]-n_mean[1])/(set['h']) #+ set['dt']*coef['Ki']*(c_o[x+1]-c_o[x-1])/(set['h'])
+            kinetic_b = set['dt']*coef['nu']*b_o[x]*(1-b_o[x]) + set['dt']*coef['omega']*n_o[x]*b_o[x]*(1-(b_o[x])/(coef['beta'])) + set['dt']*coef['k_5']*(coef['k_3']*(n_o[x])**2+coef['k_4']*n_o[x]*b_o[x])
+            #*(c_o[x-1]+c_o[x+1])/2 for nu #
         #we put the convection term as move variable
         if x == 1:
             n_mean_i = n_mean_function(set,sol,x,n_o)
@@ -156,8 +150,8 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
             move_b = set['dt']*coef['Ki_b']*((b_o[x]*max((n_mean_i[1]-n_mean_i[0])/set['h'],0)-b_o[x+2]*max(-(n_mean_ip1[1]-n_mean_ip1[0])/set['h'],0))-(b_o[x-2]*max((n_mean_in1[1]-n_mean_in1[0])/set['h'],0)-b_o[x]*max(-(n_mean_i[1]-n_mean_i[0])/set['h'],0)))/set['h'] - coef['D_b']*set['dt']*(b_o[x-2]+b_o[x+2]-2*b_o[x])/(set['h']**2)
             ##Stalk Vel positive grad c
 #             move_b = set['dt']*coef['Ki_b']*((b_o[x]*max((c_o[x+1]-c_o[x-1])/set['h'],0)-b_o[x+2]*max(-(c_o[x+3]-c_o[x+1])/set['h'],0))-(b_o[x-2]*max((c_o[x-1]-c_o[x-3])/set['h'],0)-b_o[x]*max(-(c_o[x+1]-c_o[x-1])/set['h'],0)))/set['h']
-        sol['n'][x] = n_o[x] - move_n# + kinetic_n
-        sol['b'][x] = b_o[x] - move_b# + kinetic_b
+        sol['n'][x] = n_o[x] - move_n + kinetic_n
+        sol['b'][x] = b_o[x] - move_b + kinetic_b
         
 #         sol['b'][1] =1
 #         #Keeping Source of Stalk
@@ -174,32 +168,32 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
         if x == 0:
             mean_b = b_o[x+1]/2
             mean_n = n_o[x+1]/2
-            if mean_b < coef['beta2']:
-                S = 1- (mean_b/coef['beta2'])
-            else:
-                S = 0
+#             if mean_b < coef['beta2']:
+#                 S = 1- (mean_b/coef['beta2'])
+#             else:
+#                 S = 0
             move_c = coef['D_c']*set['dt']*(c_o[x+2]+c_o[x]-2*c_o[x])/(set['h']**2)                 
         elif x == set['Nx']:
             mean_b = b_o[x-1]/2
             mean_n = n_o[x-1]/2
-            if mean_b < coef['beta2']:
-                S = 1- (mean_b/coef['beta2'])
-            else:
-                S = 0
+#             if mean_b < coef['beta2']:
+#                 S = 1- (mean_b/coef['beta2'])
+#             else:
+#                 S = 0
             move_c = coef['D_c']*set['dt']*(c_o[x-2]+c_o[x]-2*c_o[x])/(set['h']**2)
         else:
             mean_b = (b_o[x-1] + b_o[x+1])/2
             mean_n = (n_o[x-1] + n_o[x+1])/2
-            if mean_b < coef['beta2']:
-                S = 1- (mean_b/coef['beta2'])
-            else:
-                S = 0   
+#             if mean_b < coef['beta2']:
+#                 S = 1- (mean_b/coef['beta2'])
+#             else:
+#                 S = 0   
             move_c = coef['D_c']*set['dt']*(c_o[x+2]+c_o[x-2]-2*c_o[x])/(set['h']**2)               
-        prolifer_c = set['dt']*coef['mu4']*S
+#         prolifer_c = set['dt']*coef['mu4']*S
         digestion_c = set['dt']*coef['Lam_4']*c_o[x]*mean_n
         degradation_c = set['dt']*coef['mu5']*c_o[x] 
         
-        sol['c'][x] = c_o[x] + move_c + prolifer_c - digestion_c - degradation_c
+        sol['c'][x] = c_o[x] + move_c - digestion_c - degradation_c #+ prolifer_c
         
 #     for y in range(1,set['Ny'],2):
 #         for x in range(1,set['Nx'],2):
