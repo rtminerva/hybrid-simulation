@@ -19,53 +19,73 @@ def declare_coef(): #1
 #     set['Model'] = 'extension'
     set['Dimension'] = '1D'
 #     set['Dimension'] = '2D'
-    
-#     set['vegf_dep'] = 6
-#     set['c_init'] = 0
 
     set['vegf_dep'] = 1
-    set['c_init'] = 0.5
+    set['c_init'] = 1
     
     set['ki_dep'] = 1
     
 #     set['c_prof'] = 'C1'
 #     set['c_prof'] = 'C2'
+    '''measurement'''
+    r = 0.07 #cm start from surface of spheroid
+    T_1 = 86400 #s
     
     ''''Tip (n)'''
-    coef['D_n'] = 0.00018 #AUBERT, anderson chaplain tip Diffusion OK
-    coef['Ki_n'] = 0.33#133 #AUBERT, Stokes Chemotaxis coef (range max) OK
-    coef['Ro_n'] = 0.00018#0.0001#8 #AUBERT, Gaffney tip away from stalk OK
+    #diffusion
+    d_n = 10**(-10) #cm^2s^(-1)  
+    coef['D_n'] = d_n*T_1/r**2
+#     coef['D_n'] = 1.8*10**(-4) #aubert 
+    #chemotaxis
+#     ki_n = 2600-750 #cm^2 s^(-1) M^(-1) #stokes 1990
+    ki_n = 650 #cm^2 s^(-1) M^(-1) #aubert estimation 650 - 750
+    c_o = 10**(-10) #M
+    coef['Ki_n'] = ki_n*T_1*c_o/r**2
+#     coef['Ki_n'] = 0.133 #aubert
+    coef['Ro_n'] = coef['D_n'] #Gaffney 0.003 #
+
     ##Kinetics
-    coef['mu1'] = 0.83##AUBERT, Gaffney max tip branching OK
-    coef['Lam_1'] = 0.83#5 #AUBERT in range tip-tip anastomosis OK
-    coef['Lam_2'] = 0.85#5 #AUBERT in range tip-stalk anastomosis OK
-    sol['age'] = 0
+    coef['k_2'] = 8##Gaffney max tip branching OK
+    coef['k_3'] = 5 #Aubert 0.83 in range tip-tip anastomosis OK
+    coef['k_4'] = 7 #Dyson 0.85 in range tip-stalk anastomosis OK
     
-    ''''Stalk (b)'''
-    coef['D_b'] = 0.00018#0.001 #1*10**(-3)#3*10**(-3) #NODATA Stalk diffusion
-    coef['Ki_b'] = 0.01 #NODATA tip-taxis
+    sol['age'] = 0.25 #Anderson and Chaplain
+    coef['C_branc'] = 0.25 #Anderson and Chaplain
+    
+    ''''Stalk (s)'''
+    #diffusion
+    d_s = 1.5*10**(-10) #cm^2s^(-1) #nishiyama cell rep murine : stalk > tip (motility)
+    coef['D_b'] = d_s*T_1/r**2 
+    #tiptaxis
+    coef['Ki_b'] = 0.02 #tip-taxis #will be estimated
+    
     ##Kinetics
-    coef['mu2'] = 7#1 #stalk proliferation 1 self
-    coef['mu3'] = 3#03 #stalk-tip proliferation self
-    coef['beta1'] = 9.29 #AUBERT, Dyson stalk-tip saturation point OK
-    coef['Lam_3'] = 0.001 #Anastomosis should be small enough self
+    coef['nu'] = 0.7 #stalk proliferation #1 aubert
+    coef['omega'] = 0.5 #stalk-tip proliferation #5 aubert
+    coef['beta'] = 9.29 #Dyson stalk-tip saturation point
+    coef['k_5'] = 0.01 #0.001 #Anastomosis should be small enough (provide stalk proliferation)
     
-    '''VEGF (c)''' ##DONE
-    coef['D_c'] = 0.01 #AUBERT diffusion OK
-    coef['Lam_4'] = 0.1 #AUBERT, anderson chaplain digestion OK
-    coef['mu4'] = 0.1 #AUBERT max proliferation OK
-    coef['mu5'] = 0.5 #AUBERT, maggelasis and savakis decay OK
-    coef['beta2'] = 0.3 #AUBERT stalk critical point
+    '''VEGF (c)'''
+    #diffusion
+#     d_c = 2.9*10**(-7) #cm^2s^(-1) #Anderson and Chaplain, Bray
+    d_c = 5.6*10**(-11) #aubert estimation 5.6*10**(-9) - 1.4*10**(-8)
+#     d_c = 2.8*10**(-8) #miura 2009
+    coef['D_c'] = d_c*T_1/r**2
+#     coef['D_c'] = 0.01 #aubert
+    
+    ##Kinetics
+    coef['Lam_4'] = 0.1 #Anderson and Chaplain digestion
+    coef['mu5'] = 0.1 #Maggelasis and Savakis decay #0.5
 
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries (fixed: never change)
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 4.001 #
+    set['T'] = 5.001
     set['Nt'] = 1000000
-    set['rad'] = 0.12
-    set['h'] = 0.005 #0.005 #0.01#
-    set['dt'] = 0.001 #0.001
+    set['rad'] = 0.01/r
+    set['h'] = 0.005
+    set['dt'] = 0.001
     set['Hh'] = set['h']/2
     set['Nx'] = int(coef['X']/set['Hh'])
     set['Ny'] = int(coef['Y']/set['Hh'])

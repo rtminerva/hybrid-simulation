@@ -216,6 +216,8 @@ def pic_1d(coef,set,sol):
         plt.plot(x_main_axis, n_sol, ':', color = 'k', label = 'Tip cell')
         plt.plot(x_main_axis, b_sol, '-.', color = 'k', label = 'Stalk cell')
         plt.plot(x_sub_axis, c_sol, '-', color = 'k', label = 'VEGF') 
+        plt.plot(set['exp_data'], [0.3,0.3,0.3,0.3,0.3,0.3], 'ro', label = 'exp data (mean)')
+        plt.plot()
         plt.xlim([0,1])
         plt.ylim([0,1.2])
         plt.legend()

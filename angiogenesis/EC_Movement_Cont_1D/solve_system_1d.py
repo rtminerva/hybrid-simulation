@@ -164,6 +164,7 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
 #             print 'Value of degradation by movement:', move_b    
                      
     '''Solve c at sub lattice'''
+#     vegf_start = int(set['rad']/set['Hh'])
     for x in range(0,set['Nx']+1,2):
         if x == 0:
             mean_b = b_o[x+1]/2
