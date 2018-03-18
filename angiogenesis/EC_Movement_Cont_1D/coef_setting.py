@@ -38,16 +38,17 @@ def declare_coef(): #1
 #     coef['D_n'] = 1.8*10**(-4) #aubert 
     #chemotaxis
 #     ki_n = 2600-750 #cm^2 s^(-1) M^(-1) #stokes 1990
-    ki_n = 650 #cm^2 s^(-1) M^(-1) #aubert estimation 650 - 750
+    ki_n = 650 #100 #cm^2 s^(-1) M^(-1) #aubert estimation 650 - 750
     c_o = 10**(-10) #M
     coef['Ki_n'] = ki_n*T_1*c_o/r**2
 #     coef['Ki_n'] = 0.133 #aubert
-    coef['Ro_n'] = coef['D_n'] #Gaffney 0.003 #
+    coef['Ro_n'] = 0#coef['D_n'] #Gaffney
+#     coef['Ro_n'] = 0.001
 
     ##Kinetics
-    coef['k_2'] = 8##Gaffney max tip branching OK
-    coef['k_3'] = 5 #Aubert 0.83 in range tip-tip anastomosis OK
-    coef['k_4'] = 7 #Dyson 0.85 in range tip-stalk anastomosis OK
+    coef['k_2'] = 0.83#7##Gaffney max tip branching OK
+    coef['k_3'] = 0.85#5 #Aubert 0.83 in range tip-tip anastomosis OK
+    coef['k_4'] = 0.85#9#7 #Dyson 0.85 in range tip-stalk anastomosis OK
     
     sol['age'] = 0.25 #Anderson and Chaplain
     coef['C_branc'] = 0.25 #Anderson and Chaplain
@@ -57,13 +58,13 @@ def declare_coef(): #1
     d_s = 1.5*10**(-10) #cm^2s^(-1) #nishiyama cell rep murine : stalk > tip (motility)
     coef['D_b'] = d_s*T_1/r**2 
     #tiptaxis
-    coef['Ki_b'] = 0.02 #tip-taxis #will be estimated
+    coef['Ki_b'] = 0.08 #tip-taxis #will be estimated
     
     ##Kinetics
     coef['nu'] = 0.7 #stalk proliferation #1 aubert
     coef['omega'] = 0.5 #stalk-tip proliferation #5 aubert
     coef['beta'] = 9.29 #Dyson stalk-tip saturation point
-    coef['k_5'] = 0.01 #0.001 #Anastomosis should be small enough (provide stalk proliferation)
+    coef['k_5'] = 0.01 #0.01 #Anastomosis should be small enough (provide stalk proliferation)
     
     '''VEGF (c)'''
     #diffusion
@@ -74,8 +75,8 @@ def declare_coef(): #1
 #     coef['D_c'] = 0.01 #aubert
     
     ##Kinetics
-    coef['Lam_4'] = 0.1 #Anderson and Chaplain digestion
-    coef['mu5'] = 0.1 #Maggelasis and Savakis decay #0.5
+    coef['Lam_4'] = 0.3 #Anderson and Chaplain digestion
+    coef['mu5'] = 0.1#0.1 #Maggelasis and Savakis decay #0.5
 
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries (fixed: never change)
