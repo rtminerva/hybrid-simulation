@@ -295,11 +295,16 @@ def hybrid_tech(coef, set, sol): #2.23
 #         sol['tip_cell_area'].append([tip[0]-2,tip[1]-2])
     
     
-    
+    sol['tip_cell_area'] = []
+    for i in sol['tip_cell']:
+        sol['tip_cell_area'].append([i[0]+1, i[1]+1])
+        sol['tip_cell_area'].append([i[0]+1, i[1]-1])
+        sol['tip_cell_area'].append([i[0]-1, i[1]+1])
+        sol['tip_cell_area'].append([i[0]-1, i[1]-1])
 
     '''Record New Tip Cell'''
 #     sol['tip_cell'] = []
 #     for nom in range(0,len(sol['matrix_tip'])): #dicek setiap tip
 #         if not nom in sol['sp_stop']: #record only active sprout
 #             sol['tip_cell'].append([sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]])
-    return sol, n_o
+    return sol

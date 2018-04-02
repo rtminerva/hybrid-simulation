@@ -7,7 +7,7 @@ def c_prof(coef,set,sol): #2.1.1.(1)
 #             sol['c'][x] = numpy.exp(-(1-x*set['Hh'])**2/15) #0.45
 #             sol['c'][x] = 1*m.exp(-(x*set['Hh']-set['rad'])**2/0.001) #0.25 
 #             sol['c'][x] = set['c_init']
-        sol['c'][x] = 0.5 + 0.5*m.tanh((x*set['Hh']-(set['rad']-1.5))/0.9)
+        sol['c'][x] = 0.5 + 0.5*m.tanh((x*set['Hh']-(set['rad']-0.8))/0.6) #0.5))/0.5
     return sol
 
 def n_prof(coef,set,sol):
@@ -45,6 +45,8 @@ def init_1d_(coef,set,sol): #2.1.1
     sol['b'] = numpy.zeros(set['Nx']+1)
     sol['ma'] = numpy.zeros(set['Nx']+1)
     set['exp_data'] = [0.143,0.358,0.465,0.609,0.691,0.786]
+    set['exp_data'] = [0,0.251,0.375,0.544,0.640,0.751]
+
     
     sol = c_prof(coef,set,sol)
     sol = n_prof(coef,set,sol) 

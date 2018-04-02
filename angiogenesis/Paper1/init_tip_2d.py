@@ -19,12 +19,12 @@ def rec_1_tip(coef,set,sol): #2.1.2.(1)
 
 def random_tip(coef,set,sol): #2.1.2.(2)
     line = range(1,set['Ny'],2)
-    x = int(set['rad']/set['Hh'])
-    
+#     x = int(set['rad']/set['Hh'])
+    x = 1
     if x % 2 == 0:
         x += 1
     
-    for i in range(0,15):
+    for i in range(0,20):
         y = random.choice(line)
         sol['matrix_tip'].append([[x,y]])
         sol['n'][x,y] = 1

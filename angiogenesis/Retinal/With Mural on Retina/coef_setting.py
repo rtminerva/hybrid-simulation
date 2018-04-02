@@ -7,23 +7,38 @@ def declare_coef():
     set = {}
     sol = {}
     
-    ##Endothelial (n)
-    coef['Ro'] = 0.16
-    coef['D_n'] = 0.00018
-    coef['Ki_n'] = 0.4
-    coef['Al_n'] = 0.6
+    '''measurement'''
+    ra = 0.07
+    x = ra*2 #cm start from surface of spheroid
+    y = ra*2
+    T_1 = 86400 #s
+    
+    ##tip cell (n)
+    #diffusion
+    d_n = 10**(-10) #cm^2s^(-1)  
+    coef['D_n'] = d_n*T_1/(ra**2+ra**2)
+    #chemotaxis
+#     ki_n = 2600-750 #cm^2 s^(-1) M^(-1) #stokes 1990
+    ki_n = 650 #cm^2 s^(-1) M^(-1) #aubert estimation 650 - 750
+    c_o = 10**(-10) #M
+    coef['Ki_n'] = ki_n*T_1*c_o/(ra**2+ra**2)
+#     coef['Ki_n'] = 0.133 #aubert
+    coef['Al_n'] = 0#.6
     
     ##VEGF (c)
-    coef['D_c'] = 0.005
-    coef['Nu'] = 0.1
-    
-    ##Fibronectin (f)
-    coef['Beta'] = 0.05#0.05
-    coef['Gama'] = 0.085#07#0.1
+    #diffusion
+#     d_c = 2.9*10**(-7) #cm^2s^(-1) #Anderson and Chaplain, Bray
+    d_c = 5.6*10**(-10) #aubert estimation 5.6*10**(-9) - 1.4*10**(-8)
+#     d_c = 2.8*10**(-8) #miura 2009
+    coef['D_c'] = d_c*T_1/(ra**2+ra**2)
+#     coef['D_c'] = 0.01 #aubert
+
+    coef['Nu'] = 1#1
+    coef['lam'] = 0.05#1
     
     ##Chemotaxis inhibition & Haptotaxis Activation
-    coef['Kappa'] = 0.4
-    coef['Mic'] = 0.4
+    coef['Kappa'] = 0#.4
+    coef['Mic'] = 0#.4
     
     if not coef['Kappa'] == 0 or not coef['Mic'] == 0:
         ##With Ang2
@@ -44,42 +59,40 @@ def declare_coef():
     #coef['T_mitosis'] = 0.709
     
     '''Setting layout1''' #==> changes initial prof of m
-    #set['layout'] = 'retina'
-    #set['initial_prof'] = 'retina_tip'
-    #set['initial_prof'] = 'retina_1_tip'
+    set['layout'] = 'retina'
     
     '''Setting layout2''' ##==> changes initial prof of m
-    set['layout'] = 'rectangular'
-    #set['initial_prof'] = 'rectangular_tip'
-    set['initial_prof'] = 'rectangular_1_tip'
+#     set['layout'] = 'rectangular'
+    
 
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah
-    set['T'] = 10.002
+    set['T'] = 5.002
     set['Nt'] = 100000
     
     if set['layout'] == 'retina':
-        coef['X'] = 4.4
-        coef['Y'] = 4.4
-        set['h'] = 0.02
-        set['R_min'] = 0.52/2
-        set['R_max'] = coef['X']/2
-        set['error'] = 0.02
-        set['dt'] = 0.002
+        coef['X'] = 2
+        coef['Y'] = 2
+        set['h'] = 0.005
+        set['R_min'] = 0.01/ra
+        set['error'] = 0.005
+        set['dt'] = 0.001
+        set['O_x'] = set['Nx']/2*set['Hh']
+        set['O_y'] = set['Ny']/2*set['Hh']
+        set['initial_prof'] = 'retina_tip'
+#         set['initial_prof'] = 'retina_1_tip'
             
     if set['layout'] == 'rectangular':
         coef['X'] = 1
         coef['Y'] = 1
         set['h'] = 0.01
         set['dt'] = 0.001
+        set['initial_prof'] = 'rectangular_tip'
+#         set['initial_prof'] = 'rectangular_1_tip'
     
     set['Hh'] = set['h']/2
     set['Nx'] = int(coef['X']/set['Hh'])
     set['Ny'] = int(coef['Y']/set['Hh'])
-    
-    if set['layout'] == 'retina':
-        set['O_x'] = set['Nx']/2*set['Hh']
-        set['O_y'] = set['Ny']/2*set['Hh']
     
     '''Initial Setting'''
     set['t'] = 0
@@ -90,7 +103,7 @@ def declare_coef():
     ##sol dictionaries dapat berubah
     sol['stEC'] = 0
     sol['stVEGF'] = 0
-    sol['stFb'] = 0
+#     sol['stFb'] = 0
     sol['tp'] = set['dt']
     sol['inner_bound_tip'] = 0
     sol['matrix_tip'] = 0
@@ -100,7 +113,7 @@ def declare_coef():
     sol['sp_stop'] = 0
     sol['n'] = 0
     sol['c'] = 0
-    sol['f'] = 0
+#     sol['f'] = 0
     sol['tip_cell'] = 0
     if not coef['Kappa'] == 0 or not coef['Mic'] == 0:
         #set['initial_m'] = 'retina_tip'

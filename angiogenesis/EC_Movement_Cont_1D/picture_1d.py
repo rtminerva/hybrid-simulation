@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt 
+import os
 import numpy
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
@@ -41,6 +42,14 @@ def pic_1d(coef,set,sol):
     sol['stEC'] +=1 
 '''
 def pic_1d(coef,set,sol):
+    script_dir = os.path.dirname(__file__)
+    results_dir = os.path.join(script_dir, 'Results_0/')
+    
+    if not os.path.isdir(results_dir):
+        os.makedirs(results_dir)
+    
+    
+    
     c_sol = numpy.zeros(set['Nx']/2+1) #to save values at time step k (we are calculating at time step k+1)
     n_sol = numpy.zeros(set['Nx']/2)
     b_sol = numpy.zeros(set['Nx']/2)
@@ -178,7 +187,7 @@ def pic_1d(coef,set,sol):
         x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
         plt.plot(x_main_axis, n_sol, 'b', x_main_axis, b_sol, 'g', x_sub_axis, c_sol, 'r', x_main_axis, m_sol, 'g--', x_main_axis, ma_sol, 'g^') 
         flag = 'A=%s' % str(sol['stEC']) 
-        plt.savefig("%s.png" % flag)
+        plt.savefig(results_dir + "%s.png" % flag)
         plt.close()
         sol['stEC'] +=1 
         
@@ -189,7 +198,7 @@ def pic_1d(coef,set,sol):
         plt.title('%s%f' % ('PDGF-B, Tie2, Ang1, Ang2, Mural, Attached-Mural at t=',set['t']))
         plt.plot(x_sub_axis, p_sol, 'bs', x_main_axis, e_sol, 'g', x_main_axis, a1_sol, 'r', x_main_axis, a2_sol, 'b', x_main_axis, m_sol, 'g--', x_main_axis, ma_sol, 'g^') 
         flag = 'B=%s' % str(sol['stEC_1']) 
-        plt.savefig("%s.png" % flag)
+        plt.savefig(results_dir + "%s.png" % flag)
         plt.close()
         sol['stEC_1'] +=1 
         
@@ -200,7 +209,7 @@ def pic_1d(coef,set,sol):
         plt.title('%s%f' % ('Ang1-Tie2, Ang2-Tie2 at t=',set['t']))
         plt.plot(x_main_axis, r1_sol, 'r', x_main_axis, r2_sol, 'b') 
         flag = 'C=%s' % str(sol['stEC_2']) 
-        plt.savefig("%s.png" % flag)
+        plt.savefig(results_dir + "%s.png" % flag)
         plt.close()
         sol['stEC_2'] +=1
         
@@ -224,7 +233,7 @@ def pic_1d(coef,set,sol):
         plt.xlabel('x (position)')
         plt.ylabel('density')
         flag = 'N&S&C=%s' % str(sol['stEC']) 
-        plt.savefig("%s.png" % flag)
+        plt.savefig(results_dir + "%s.png" % flag)
         plt.close()
         sol['stEC'] +=1 
              

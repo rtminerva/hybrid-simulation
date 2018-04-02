@@ -165,6 +165,45 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
                      
     '''Solve c at sub lattice'''
 #     vegf_start = int(set['rad']/set['Hh'])
+#     '''Using matrix backward timespace'''
+#     #isi matrix
+#     c_lr = coef['D_c']*set['dt']/set['h']**2
+#     M = numpy.zeros(shape=(set['Ny']/2+1,set['Nx']/2+1))
+#     for i,e_i in enumerate(range(0,set['Nx']+1,2)):
+#         if e_i == 0:
+#             mean_n = n_o[x+1]
+#             c_c = 1-2*c_lr-set['dt']*coef['mu5']-set['dt']*coef['Lam_4']*mean_n
+#             M[i,i] = c_c+c_lr
+#             M[i,i+1] = c_lr
+#         
+#         elif e_i == set['Nx']:
+#             mean_n = n_o[x-1]
+#             c_c = 1-2*c_lr-set['dt']*coef['mu5']-set['dt']*coef['Lam_4']*mean_n
+#             M[i,i] = c_c+c_lr
+#             M[i,i-1] = c_lr
+#             
+#         else:       
+#             mean_n = (n_o[x-1] + n_o[x+1])/2
+#             c_c = 1-2*c_lr-set['dt']*coef['mu5']-set['dt']*coef['Lam_4']*mean_n
+#             M[i,i-1] = c_lr
+#             M[i,i] = c_c
+#             M[i,i+1] = c_lr
+#     #matrix c solution at i-1
+#     c_sol_back = numpy.zeros(set['Nx']/2+1)
+#     id = 0
+#     for ind, v in enumerate(c_o):
+#         if ind % 2 == 0:
+#             c_sol_back[id] = v
+#             id += 1
+#     #solving
+#     c_sol = numpy.dot(M,c_sol_back)
+#     #insert solution to sol
+#     for ind, even in enumerate(range(0,set['Nx']+1,2)):
+#         sol['c'][even] = c_sol[ind] 
+# #     print sol['c']
+        
+    
+    '''Forward timestep method (without matrix)'''
     for x in range(0,set['Nx']+1,2):
         if x == 0:
             mean_b = b_o[x+1]/2
@@ -193,7 +232,7 @@ def n_b_c(coef, set, sol, n_o, b_o, c_o, ma_o, branching_par = 0, branching = Fa
 #         prolifer_c = set['dt']*coef['mu4']*S
         digestion_c = set['dt']*coef['Lam_4']*c_o[x]*mean_n
         degradation_c = set['dt']*coef['mu5']*c_o[x] 
-        
+         
         sol['c'][x] = c_o[x] + move_c - digestion_c - degradation_c #+ prolifer_c
         
 #     for y in range(1,set['Ny'],2):

@@ -37,15 +37,15 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'Total Tips:', len(sol['matrix_tip'])
     print 'Total Stop Tips:', len(sol['sp_stop'])
     if not coef['Mic'] == 0 or not coef['Kappa'] == 0:
-        print 'NILAI C, F, P MAX', sol['c'].max(), ',', sol['f'].max(), ',', sol['p'].max()
-        print 'NILAI C, F, P MIN', sol['c'].min(), ',', sol['f'].min(), ',', sol['p'].min()
+        print 'NILAI C, F MAX', sol['c'].max(), ',', sol['f'].max()#, ',', sol['p'].max()
+        print 'NILAI C, F MIN', sol['c'].min(), ',', sol['f'].min()#, ',', sol['p'].min()
         print '# of MC on EC', len(sol['index_mn'])
         print '# of EC', numpy.count_nonzero(sol['n'])
         gg = len(sol['index_mn'])*100/(numpy.count_nonzero(sol['n']))
         print gg, '%'
     else:
-        print 'NILAI C, F MAX', sol['c'].max(), ',', sol['f'].max()
-        print 'NILAI C, F MIN', sol['c'].min(), ',', sol['f'].min()
+        print 'NILAI C MAX', sol['c'].max()#, ',', sol['f'].max()
+        print 'NILAI C MIN', sol['c'].min()#, ',', sol['f'].min()
     print 'process time of Hybrid:', start2-start1
 #     for i, tip in enumerate(sol['matrix_tip']):
 #         print 'TIP', i,':',tip
