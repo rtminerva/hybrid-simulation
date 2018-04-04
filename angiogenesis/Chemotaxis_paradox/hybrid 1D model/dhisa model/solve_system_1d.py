@@ -79,21 +79,21 @@ def system_1d(coef, set, sol): #2.3
     print 'Position cell now:', n_p
     c_grad = (c_o[n_p+1]-c_o[n_p-1])/(set['h'])
     print 'c_grad', c_grad
-    side = int(coef['l']/set['h'])
+    side = int(coef['l']/set['Hh'])
     pos_plus = n_p + side
     pos_neg = n_p - side
     if pos_plus % 2 == 0:
         print 'even'
-        Ki_plus_mean = sol['Ki'][n_p + side]
-        Ki_neg_mean = sol['Ki'][n_p - side]
+        Ki_plus_mean = sol['Ki'][pos_plus]
+        Ki_neg_mean = sol['Ki'][pos_neg]
     else:
         print 'odd'
         Ki_plus_mean = (sol['Ki'][pos_plus+1] + sol['Ki'][pos_plus-1])/2 
         Ki_neg_mean = (sol['Ki'][pos_neg+1] + sol['Ki'][pos_neg-1])/2
     print 'KI', Ki_plus_mean - Ki_neg_mean
-    print 'position of side +-', pos_plus, pos_neg
+    print 'position of side -+', pos_neg, pos_plus
      
-    vel_nn = coef['ki_o']* (Ki_plus_mean - Ki_neg_mean) *c_grad
+    vel_nn = coef['ki_o']* (Ki_plus_mean - Ki_neg_mean)# *c_grad
     sol['vel_n'].append(vel_nn)
     
     '''Save c, A, I, K'''
@@ -155,7 +155,7 @@ def system_1d(coef, set, sol): #2.3
     '''Diffusion term'''
     p_1 = coef['D_n']*set['dt']/(set['h']**2)
     p_2 = p_1
-    
+    print 'diffusion term', p_1
     '''Adaptive term'''
     if sol['vel_n'][-1] < 0:
         p_1 += set['dt']/(set['h'])*(-sol['vel_n'][-1])

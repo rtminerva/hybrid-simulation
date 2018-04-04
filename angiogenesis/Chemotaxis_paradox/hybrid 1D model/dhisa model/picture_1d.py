@@ -29,7 +29,7 @@ def pic_1d(coef,set,sol):
         if ind % 2 == 0:
             c_sol[id] = sol['c'][ind]
             id += 1
-    if set['k'] % 1 == 0:
+    if set['k'] % 100 == 0:
         plt.figure(1)
         axes = plt.gca()
         plt.title('%s%f' % ('t=',set['t']))
@@ -45,7 +45,7 @@ def pic_1d(coef,set,sol):
         plt.close()
         sol['p_1'] +=1 
     
-    if set['k'] % 1 == 0:#set['t'] >= set['T']:  
+    if set['k'] % 50 == 0:#set['t'] >= set['T']:  
 #         fig, ax1 = plt.subplot()  
 #         plt.title('%s%f' % ('Cell position and VEGF concentration after t=',set['t']))
 #         ax1.plot(cell, t1, 'b', linewidth=2.0)
