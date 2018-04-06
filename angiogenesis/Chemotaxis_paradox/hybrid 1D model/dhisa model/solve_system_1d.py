@@ -29,10 +29,10 @@ def c_kinetic_(coef, set, sol, c_o, A_o, I_o, Ki_o):
 # #         if sol['c'][x] < 0:
 # #             sol['c'][x] *= 0
         '''Calculate c '''
-        sol['c'][x] = coef['A_c']*m.exp(-(x*set['Hh']+coef['shifted']-coef['vel']*set['t'])**2/coef['vari'])
+        sol['c'][x] = coef['A_c']*m.exp(-(x*set['Hh']+coef['shifted']-coef['vel']*set['dt']*set['k'])**2/coef['vari'])
         if coef['w'] > 1:
             for i in range(1,coef['w']):
-                sol['c'][x] += coef['A_c']*m.exp(-(x*set['Hh']+coef['shifted']+i*coef['perio']-coef['vel']*set['t'])**2/coef['vari'])        
+                sol['c'][x] += coef['A_c']*m.exp(-(x*set['Hh']+coef['shifted']+i*coef['perio']-coef['vel']*set['dt']*set['k'])**2/coef['vari'])        
         
         '''Calculate A,I,Ki'''
         sol['A'][x] = A_o[x]*(1-set['dt']*coef['l_a']) + set['dt']*coef['k_a']*c_o[x] + set['dt']*coef['teta_a']
@@ -47,7 +47,7 @@ def c_kinetic_(coef, set, sol, c_o, A_o, I_o, Ki_o):
             sol['F_Ki'][x] = coef['k_A']*(coef['R_o']-Ki_o[x])/((coef['R_o']-Ki_o[x])+coef['K_A'])
             sol['G_Ki'][x] = coef['k_I']*Ki_o[x]/(Ki_o[x]+coef['K_I'])
             
-        sol['Ki'][x] = Ki_o[x] + set['dt']*(sol['F_Ki'][x]*A_o[x]-sol['G_Ki'][x]*I_o[x])
+        sol['Ki'][x] = Ki_o[x] + set['dt']*(sol['F_Ki'][x]*A_o[x] - sol['G_Ki'][x]*I_o[x])
         
     
     
@@ -95,6 +95,23 @@ def system_1d(coef, set, sol): #2.3
      
     vel_nn = coef['ki_o']* (Ki_plus_mean - Ki_neg_mean)# *c_grad
     sol['vel_n'].append(vel_nn)
+    
+    n_oo = sol['n'][0]
+    side = int(coef['l']/set['Hh'])
+    pos_plus = n_oo + side
+    pos_neg = n_oo - side
+    if pos_plus % 2 == 0:
+        print 'even'
+        Ki_c_plus_mean = sol['Ki'][pos_plus]
+        Ki_c_neg_mean = sol['Ki'][pos_neg]
+    else:
+        print 'odd'
+        Ki_c_plus_mean = (sol['Ki'][pos_plus+1] + sol['Ki'][pos_plus-1])/2 
+        Ki_c_neg_mean = (sol['Ki'][pos_neg+1] + sol['Ki'][pos_neg-1])/2
+    
+    sol['center_Ki_p'].append(Ki_c_plus_mean)
+    sol['center_Ki_n'].append(Ki_c_neg_mean)
+    
     
     '''Save c, A, I, K'''
     c_mean = (c_o[n_p+1]+c_o[n_p-1])/2
@@ -147,6 +164,7 @@ def system_1d(coef, set, sol): #2.3
     sol['I_'].append(I_mean)
     sol['Ki_p'].append(Ki_plus_mean)
     sol['Ki_n'].append(Ki_neg_mean)
+    sol['center'].append(sol['c'][set['Nx']/2])
     
     print '-----------------'
     print 'velocity_value', sol['vel_n'][-1]

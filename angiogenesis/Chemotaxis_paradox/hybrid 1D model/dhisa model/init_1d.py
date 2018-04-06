@@ -3,10 +3,10 @@ import math as m
 
 def c_prof(coef,set,sol): #2.1.1.(1)
     for x in range(0,set['Nx']+1,2):
-        sol['c'][x] = coef['A_c']*m.exp(-(x*set['Hh']+coef['shifted']-coef['vel']*set['t'])**2/coef['vari'])#0.05 set['dt']*set['k']
+        sol['c'][x] = coef['A_c']*m.exp(-(x*set['Hh']+coef['shifted']-coef['vel']*set['dt']*set['k'])**2/coef['vari'])#0.05 set['dt']*set['k']
         if coef['w'] > 1:
             for i in range(1,coef['w']):
-                sol['c'][x] += coef['A_c']*m.exp(-(x*set['Hh']+coef['shifted']+i*coef['perio']-coef['vel']*set['t'])**2/coef['vari'])
+                sol['c'][x] += coef['A_c']*m.exp(-(x*set['Hh']+coef['shifted']+i*coef['perio']-coef['vel']*set['dt']*set['k'])**2/coef['vari'])
         
 #     '''Different Var'''
 #     dd = 0
@@ -27,6 +27,7 @@ def c_prof(coef,set,sol): #2.1.1.(1)
 def init_1d_(coef,set,sol): #2.1.1
     sol['c'] = numpy.zeros(set['Nx']+1)
     sol['n'] = [set['Nx']/2+1]
+    sol['center'] = [sol['c'][set['Nx']/2]]
     
     sol['A'] = numpy.zeros(set['Nx']+1)
     sol['I'] = numpy.zeros(set['Nx']+1)
@@ -48,6 +49,22 @@ def init_1d_(coef,set,sol): #2.1.1
 #     sol['c_t_f'] = [0] 
        
     sol = c_prof(coef,set,sol)
+    
+    n_p = sol['n'][0]
+    side = int(coef['l']/set['Hh'])
+    pos_plus = n_p + side
+    pos_neg = n_p - side
+    if pos_plus % 2 == 0:
+        print 'even'
+        Ki_plus_mean = sol['Ki'][pos_plus]
+        Ki_neg_mean = sol['Ki'][pos_neg]
+    else:
+        print 'odd'
+        Ki_plus_mean = (sol['Ki'][pos_plus+1] + sol['Ki'][pos_plus-1])/2 
+        Ki_neg_mean = (sol['Ki'][pos_neg+1] + sol['Ki'][pos_neg-1])/2
+    
+    sol['center_Ki_p'] = [Ki_plus_mean]
+    sol['center_Ki_n'] = [Ki_neg_mean]
     
     return sol
         
