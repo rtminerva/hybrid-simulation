@@ -10,9 +10,6 @@ def rec_1_tip(coef,set,sol): #2.1.2.(1)
         y += 1
     sol['matrix_tip'].append([[1,y]]) #should be on main-lattice (odd numbers)
     sol['n'][1,y] = 1
-#     sol['b'][1,y] = 1
-    #sol['b'][5,y] = 1
-    #sol['b'][7,y] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     return sol
@@ -28,7 +25,6 @@ def random_tip(coef,set,sol): #2.1.2.(2)
         y = random.choice(line)
         sol['matrix_tip'].append([[x,y]])
         sol['n'][x,y] = 1
-#     sol['b'][5,y-24] = 1
         sol['list_tip_movement'].append('start') #movement tip
         sol['life_time_tip'].append(0) #lifetime
         line.remove(y)
@@ -44,7 +40,6 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
         y += 1
     sol['matrix_tip'].append([[x,y-24]])
     sol['n'][1,y-24] = 1
-#     sol['b'][5,y-24] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     
@@ -54,7 +49,6 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
         y1 += 1
     sol['matrix_tip'].append([[x,y1-14]])
     sol['n'][1,y1-14] = 1
-#     sol['b'][5,y1-14] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     
@@ -64,7 +58,6 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
         y2 += 1
     sol['matrix_tip'].append([[x,y2]])
     sol['n'][1,y2] = 1
-#     sol['b'][5,y2] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     
@@ -74,7 +67,6 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
         y2 += 1
     sol['matrix_tip'].append([[x,y2+14]])
     sol['n'][1,y2+14] = 1
-#     sol['b'][5,y2+14] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     
@@ -84,33 +76,33 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
         y2 += 1
     sol['matrix_tip'].append([[x,y2+24]])
     sol['n'][1,y2+24] = 1
-#     sol['b'][5,y2+24] = 1
     sol['list_tip_movement'].append('start') #movement tip
     sol['life_time_tip'].append(0) #lifetime
     
     return sol
 
 def init_tip_2d_(coef,set,sol):
+    '''Create new variable to store solutions'''
     sol['n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['stalk'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
-#     sol['b'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
 #     sol['Vb_x'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
 #     sol['Vb_y'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
-    
     sol['matrix_tip'] = []
     sol['list_tip_movement'] = []
     sol['life_time_tip'] = []
-    
     sol['sp_stop'] = []
     sol['tip_cell'] = []
+    
+    '''Define tip cell'''
 #     sol = rec_1_tip(coef,set,sol) #2.1.2.(1)
 #     sol = rec_5_tip(coef,set,sol) #2.1.2.(2)
     sol = random_tip(coef,set,sol)
-    '''Identifying Tip Cell'''
+    
+    '''Storing Tip Cell'''
     for e,ti in enumerate(sol['matrix_tip']):
         sol['tip_cell'].append([sol['matrix_tip'][e][-1][0],sol['matrix_tip'][e][-1][1]])  
     
-    '''Tip cell area'''
+    '''Recording Tip cell area (4 points)'''
     sol['tip_cell_area'] = []
     for i in sol['tip_cell']:
         sol['tip_cell_area'].append([i[0]+1, i[1]+1])
