@@ -6,23 +6,14 @@ def declare_coef():
     coef = {}
     set = {}
     sol = {}
-    
-    set['initial_prof'] = 'rectangular_1_tip'
-#     set['initial_prof'] = 'rectangular_tip'
-    
-#     set['c_prof'] = 'C1'
-    set['c_prof'] = 'C2'
-    
-    set['layout'] = 'square'
-#     set['layout'] = 'retina'
-    
+
     '''measurement'''
     ra = 0.06 #cm start from surface of spheroid
     x = ra*2 #for spheroid
     y = ra*2 #for spheroid
     T_1 = 86400 #s
     
-    ''''Tip (n)'''
+    '''Tip (n)'''
     #diffusion
     d_n = 10**(-10) #cm^2s^(-1)  
     coef['D_n'] = d_n*T_1/(ra**2+ra**2)

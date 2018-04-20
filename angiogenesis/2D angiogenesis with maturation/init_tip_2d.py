@@ -85,6 +85,7 @@ def init_tip_2d_(coef,set,sol):
     '''Create new variable to store solutions'''
     sol['n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['stalk'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
+    sol['m'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
 #     sol['Vb_x'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
 #     sol['Vb_y'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['matrix_tip'] = []

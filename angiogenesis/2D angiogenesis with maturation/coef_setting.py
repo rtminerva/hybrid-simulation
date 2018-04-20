@@ -7,19 +7,32 @@ def declare_coef():
     set = {}
     sol = {}
     
-#     set['c_prof'] = 'C1'
-    set['c_prof'] = 'C2'
-    
-    set['layout'] = 'square'
-#     set['layout'] = 'retina'
-    
     '''measurement'''
     ra = 0.06 #cm start from surface of spheroid
-    x = ra*2 #for spheroid
-    y = ra*2 #for spheroid
+#     x = ra*2 #for spheroid
+#     y = ra*2 #for spheroid
     T_1 = 86400 #s
     
-    ''''Tip (n)'''
+    '''PDGF-B (p)'''
+    #diffusion
+    d_p = 10**(-10) #cm^2s^(-1)  
+    coef['D_p'] = d_p*T_1/(ra**2+ra**2)
+    #kinetic
+    coef['mu_p'] = 0
+    coef['del_p'] = 0
+    coef['mp_p'] = 0
+    
+    '''Mural (m)'''
+    #diffusion
+    d_m = 10**(-10) #cm^2s^(-1)  
+    coef['D_m'] = d_m*T_1/(ra**2+ra**2)
+    #chemotaxis
+    ki_m = 2600-1000 #cm^2 s^(-1) M^(-1) #aubert estimation 650 - 750
+    p_o = 10**(-10) #M
+    coef['Ki_m'] = ki_m*T_1*p_o/(ra**2+ra**2)
+    #kinetic = mural cell mitosis and degradation
+    
+    '''Tip (n)'''
     #diffusion
     d_n = 10**(-10) #cm^2s^(-1)  
     coef['D_n'] = d_n*T_1/(ra**2+ra**2)
