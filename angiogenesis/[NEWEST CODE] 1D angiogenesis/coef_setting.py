@@ -7,14 +7,6 @@ def declare_coef(): #1
     set = {}
     sol = {}
     
-#     '''Gradient of h function'''
-#     #profile 1: \/\
-#     coef['m1'] = (1.2-1.5)/(50-2)
-#     coef['m2'] = (1.5-1.2)/(75-50)
-#     coef['m3'] = (1-1.5)/(100-75)
-#     
-#     #profile 2: /
-#     coef['M'] = (1-1.5)/(100-2)
     set['Model'] = 'normal'
 #     set['Model'] = 'extension'
     set['Dimension'] = '1D'
@@ -22,11 +14,11 @@ def declare_coef(): #1
 
     set['vegf_dep'] = 1
     set['c_init'] = 1
+#     set['c_prof'] = 'C1'
+#     set['c_prof'] = 'C2'
     
     set['ki_dep'] = 1
     
-#     set['c_prof'] = 'C1'
-#     set['c_prof'] = 'C2'
     '''measurement'''
     r = 0.07 #cm start from surface of spheroid
     T_1 = 86400 #s
