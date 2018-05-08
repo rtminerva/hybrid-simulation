@@ -25,6 +25,7 @@ def random_tip(coef,set,sol): #2.1.2.(2)
         y = random.choice(line)
         sol['matrix_tip'].append([[x,y]])
         sol['n'][x,y] = 1
+        sol['m'][x,y] = 1
         sol['list_tip_movement'].append('start') #movement tip
         sol['life_time_tip'].append(0) #lifetime
         line.remove(y)
@@ -85,7 +86,6 @@ def init_tip_2d_(coef,set,sol):
     '''Create new variable to store solutions'''
     sol['n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['stalk'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
-    sol['m'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
 #     sol['Vb_x'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
 #     sol['Vb_y'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['matrix_tip'] = []
@@ -110,4 +110,8 @@ def init_tip_2d_(coef,set,sol):
         sol['tip_cell_area'].append([i[0]+1, i[1]-1])
         sol['tip_cell_area'].append([i[0]-1, i[1]+1])
         sol['tip_cell_area'].append([i[0]-1, i[1]-1])
+        
+    '''Defining mural cell'''    
+    sol['m'] = numpy.zeros((set['Nx']+1,set['Ny']+1))    
+    
     return sol
