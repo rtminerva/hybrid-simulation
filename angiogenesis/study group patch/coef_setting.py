@@ -41,19 +41,17 @@ def declare_coef():
     coef['T_branch'] = 0.25
 #     coef['T_mitosis'] = 1000#0.5
     
-    set['k'] = 0.5
-    
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 10.002
+    set['T'] = 2.002
     set['Nt'] = 100000
     set['theta'] = 0.5
     set['rad'] = 0.01/ra
     
     set['h'] = 0.005 #0.01#
-    set['dt'] = 0.1#0.01
+    set['dt'] = 0.001
     
     set['Hh'] = set['h']/2
     set['Nx'] = int(coef['X']/set['Hh'])
