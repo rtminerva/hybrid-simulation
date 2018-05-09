@@ -40,6 +40,8 @@ def declare_coef():
     '''Branching & Mitosis'''
     coef['T_branch'] = 0.25
 #     coef['T_mitosis'] = 1000#0.5
+
+    set['K'] = 1
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah

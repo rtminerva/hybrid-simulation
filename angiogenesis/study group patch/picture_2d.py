@@ -109,7 +109,7 @@ def pic_2d(coef,set,sol):
 #     plt.savefig("%s.png" % flag)
 #     plt.close()
     '''Continuous Plot VEGF & ECM'''
-    if set['k'] % 1000 == 0:
+    if set['k'] % 10 == 0:
         '''MERGE_cn'''
         fig13 = plt.figure(6)
         plt.title('%s%f' % ('VEGF and Vessel t=',set['t']))
