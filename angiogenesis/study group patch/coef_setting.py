@@ -51,7 +51,7 @@ def declare_coef():
     set['rad'] = 0.01/ra
     
     set['h'] = 0.005 #0.01#
-    set['dt'] = 0.001
+    set['dt'] = 0.005#001
     
     set['Hh'] = set['h']/2
     set['Nx'] = int(coef['X']/set['Hh'])
