@@ -13,8 +13,14 @@ def movement_dir(coef, set, sol, xb, yb): #2.2.1
 #     fijy = (sol['f'][xb+1,yb+1]-sol['f'][xb+1,yb-1]+sol['f'][xb-1,yb+1]-sol['f'][xb-1,yb-1])/(2*set['h'])
     
     '''NEW METHOD'''
-    vijx = set['al_1']*cijx - set['be_1']*ctijx
-    vijy = set['al_1']*cijy - set['be_1']*ctijy
+    ave_ct = (sol['c_t'][xb-1,yb-1] + sol['c_t'][xb+1,yb+1] + sol['c_t'][xb-1,yb+1] + sol['c_t'][xb+1,yb-1])/4
+    
+    if ave_ct > 0:
+        vijx = set['al_1']*cijx - set['be_1']*ctijx
+        vijy = set['al_1']*cijy - set['be_1']*ctijy
+    else:
+        vijx = set['al_1']*cijx
+        vijy = set['al_1']*cijy
     vijx_p = max(0,vijx)
     vijx_n = max(0,-vijx)
     vijy_p = max(0,vijy)
@@ -36,10 +42,17 @@ def movement_dir(coef, set, sol, xb, yb): #2.2.1
 #     vijy_n = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijy_n+coef['Ro']*fijy_n
 #     '''OLD METHOD'''
     
-    p_1 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_n)
-    p_2 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_p)
-    p_3 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_n)
-    p_4 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_p)
+    a_1 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_n)
+    a_2 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_p)
+    a_3 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_n)
+    a_4 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_p)
+    
+    tot_p = a_1 + a_2 + a_3 + a_4
+    
+    p_1 = a_1/tot_p
+    p_2 = a_2/tot_p
+    p_3 = a_3/tot_p
+    p_4 = a_4/tot_p
     
     P_1 = int(p_1*10000)
     P_2 = int(p_2*10000)

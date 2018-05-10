@@ -17,9 +17,9 @@ def rec_1_tip(coef,set,sol): #2.1.2.(1)
 def random_tip(coef,set,sol): #2.1.2.(2)
     line = range(1,set['Ny'],2)
 #     x = int(set['rad']/set['Hh'])
-    x = 1
+    x = set['Nx']/2
     if x % 2 == 0:
-        x += 1
+        x -= 1
     
     for i in range(0,10):
         y = random.choice(line)

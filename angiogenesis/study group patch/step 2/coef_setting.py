@@ -15,7 +15,7 @@ def declare_coef():
     
     '''Tip (n)'''
     #diffusion
-    d_n = 10**(-10)#10**(-10) #cm^2s^(-1)  
+    d_n = 10**(-10) #cm^2s^(-1)  
     coef['D_n'] = d_n*T_1/(ra**2+ra**2)
 #     coef['D_n'] = 1.8*10**(-4) #aubert 
     #chemotaxis
@@ -41,7 +41,11 @@ def declare_coef():
     coef['T_branch'] = 100#.25
 #     coef['T_mitosis'] = 1000#0.5
 
-    set['K'] = 0.05
+    set['al_1'] = 0
+    set['be_1'] = 1
+    set['et_1'] = 5
+    set['xi_1'] = 1
+    set['ga_1'] = 1
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah
@@ -53,7 +57,7 @@ def declare_coef():
     set['rad'] = 0.01/ra
     
     set['h'] = 0.005 #0.01#
-    set['dt'] = 0.001#001
+    set['dt'] = 0.005#001
     
     set['Hh'] = set['h']/2
     set['Nx'] = int(coef['X']/set['Hh'])

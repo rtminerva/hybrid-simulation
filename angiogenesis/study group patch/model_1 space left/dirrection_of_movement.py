@@ -6,15 +6,12 @@ def movement_dir(coef, set, sol, xb, yb): #2.2.1
     cijx = (sol['c'][xb+1,yb+1]-sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb-1]-sol['c'][xb-1,yb-1])/(2*set['h'])
     cijy = (sol['c'][xb+1,yb+1]-sol['c'][xb+1,yb-1]+sol['c'][xb-1,yb+1]-sol['c'][xb-1,yb-1])/(2*set['h'])
     
-    ctijx = (sol['c_t'][xb+1,yb+1]-sol['c_t'][xb-1,yb+1]+sol['c_t'][xb+1,yb-1]-sol['c_t'][xb-1,yb-1])/(2*set['h'])
-    ctijy = (sol['c_t'][xb+1,yb+1]-sol['c_t'][xb+1,yb-1]+sol['c_t'][xb-1,yb+1]-sol['c_t'][xb-1,yb-1])/(2*set['h'])
-    
 #     fijx = (sol['f'][xb+1,yb+1]-sol['f'][xb-1,yb+1]+sol['f'][xb+1,yb-1]-sol['f'][xb-1,yb-1])/(2*set['h'])
 #     fijy = (sol['f'][xb+1,yb+1]-sol['f'][xb+1,yb-1]+sol['f'][xb-1,yb+1]-sol['f'][xb-1,yb-1])/(2*set['h'])
     
     '''NEW METHOD'''
-    vijx = set['al_1']*cijx - set['be_1']*ctijx
-    vijy = set['al_1']*cijy - set['be_1']*ctijy
+    vijx = cijx#+coef['Ro']*fijx
+    vijy = cijy#+coef['Ro']*fijy
     vijx_p = max(0,vijx)
     vijx_n = max(0,-vijx)
     vijy_p = max(0,vijy)
@@ -106,5 +103,5 @@ def movement_dir(coef, set, sol, xb, yb): #2.2.1
     if p_1 == 0 and p_2 == 0 and p_3 == 0 and p_4 == 0:
         print 'ALL P ZEROS', prob_range
     
-    #print 'probability P', P_0, ',',P_1,',',P_2,',',P_3,',',P_4
+#     print 'probability P', P_0, ',',P_1,',',P_2,',',P_3,',',P_4
     return prob_range, prob

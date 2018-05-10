@@ -7,8 +7,9 @@ def system_2d(coef, set, sol):
     
     for y in range(0,set['Ny']+1,2):
         for x in range(0,set['Nx']+1,2):
-            sol['c'][x,y] = m.sin(m.pi*set['Hh']*x)*set['t']/(set['k']+(set['t'])**2)
-    
+            sol['c'][x,y] = (1+m.sin(2*m.pi*set['ga_1']*x*set['Hh']-set['et_1']*set['t']))*m.exp(-set['xi_1']*set['t'])
+            sol['c_t'][x,y] = (-set['et_1']*m.cos(2*m.pi*set['ga_1']*x*set['Hh']-set['et_1']*set['t']))*m.exp(-set['xi_1']*set['t']) - set['xi_1']*(1+m.sin(2*m.pi*set['ga_1']*x*set['Hh']-set['et_1']*set['t']))*m.exp(-set['xi_1']*set['t'])
+
 #     '''Solve c, f, p at sub lattice'''
 #     for y in range(0,set['Ny']+1,2):
 #         for x in range(0,set['Nx']+1,2):                       

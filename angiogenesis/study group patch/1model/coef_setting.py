@@ -38,8 +38,14 @@ def declare_coef():
     coef['lam'] = 0.05#0.05
  
     '''Branching & Mitosis'''
-    coef['T_branch'] = 0.25
+    coef['T_branch'] = 100#.25
 #     coef['T_mitosis'] = 1000#0.5
+
+    set['al_1'] = 1
+    set['be_1'] = 1
+    set['et_1'] = 1
+    set['xi_1'] = 1
+    set['ga_1'] = 1
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah

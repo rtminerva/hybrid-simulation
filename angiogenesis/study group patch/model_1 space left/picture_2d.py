@@ -7,7 +7,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 def pic_2d(coef,set,sol):
     script_dir = os.path.dirname(__file__)
-    results_dir = os.path.join(script_dir, '0_k0.05/')
+    results_dir = os.path.join(script_dir, 'model_1 space left_0/')
     
     if not os.path.isdir(results_dir):
         os.makedirs(results_dir)
@@ -77,7 +77,7 @@ def pic_2d(coef,set,sol):
     '''Only VEGF'''
     fig1 = plt.figure(2)
     plt.title('%s%f' % ('VEGF Distribution at t=',set['t']))
-    plt.pcolormesh(y_sub_axis, x_sub_axis, c_sol, vmin = 0, vmax = 1, cmap="gist_ncar", shading = 'gouraud')
+    plt.pcolormesh(y_sub_axis, x_sub_axis, c_sol, vmin = 0, vmax = 1, cmap="BuGn", shading = 'gouraud')
     sol['VEGF'] +=1  
     flag = 'VEGF=%s' % str(sol['VEGF']) 
     plt.colorbar()
@@ -115,7 +115,7 @@ def pic_2d(coef,set,sol):
     ax = fig13.add_subplot(111)
     '''ecm'''
     c_sol = numpy.ma.masked_array(c_sol, c_sol < 0.0001)#-.5)
-    ax.pcolormesh(y_sub_axis, x_sub_axis, c_sol, vmin = 0, vmax = 1, cmap="gist_ncar", shading = 'gouraud')
+    ax.pcolormesh(y_sub_axis, x_sub_axis, c_sol, vmin = 0, vmax = 1, cmap="BuGn", shading = 'gouraud')
     '''tip cell'''
     x_p = []
     y_p = []

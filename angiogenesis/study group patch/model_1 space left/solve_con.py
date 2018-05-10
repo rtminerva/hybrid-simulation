@@ -7,7 +7,8 @@ def system_2d(coef, set, sol):
     
     for y in range(0,set['Ny']+1,2):
         for x in range(0,set['Nx']+1,2):
-            sol['c'][x,y] = m.sin(m.pi*set['Hh']*x)*2*(m.sqrt(set['K']))*set['t']/(set['K']+(set['t'])**2)
+            if x > set['Nx']/2:
+                sol['c'][x,y] = -m.sin(m.pi*2*set['Hh']*x)*2*(m.sqrt(set['K']))*set['t']/(set['K']+(set['t'])**2)
     
 #     '''Solve c, f, p at sub lattice'''
 #     for y in range(0,set['Ny']+1,2):
