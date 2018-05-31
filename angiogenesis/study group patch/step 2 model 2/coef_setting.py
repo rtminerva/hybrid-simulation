@@ -8,9 +8,9 @@ def declare_coef():
     sol = {}
 
     '''measurement'''
-    ra = 0.06 #cm start from surface of spheroid
-    x = ra*2 #for spheroid
-    y = ra*2 #for spheroid
+    ra = 0.06 
+    x = ra*2
+    y = ra*2
     T_1 = 86400 #s
     
     '''Tip (n)'''
@@ -24,8 +24,6 @@ def declare_coef():
     c_o = 10**(-10) #M
     coef['Ki_n'] = ki_n*T_1*c_o/(ra**2+ra**2)
 #     coef['Ki_n'] = 0.133 #aubert
-    coef['Ro_n'] = 0#coef['D_n'] #Gaffney 0.003 #
-    coef['Al_n'] = 0#.6
 
     '''VEGF (c)'''
     #diffusion
@@ -42,10 +40,15 @@ def declare_coef():
 #     coef['T_mitosis'] = 1000#0.5
 
     set['al_1'] = 0
-    set['be_1'] = 1
-    set['et_1'] = 5
+    set['be_1'] = 2.5
+    set['et_1'] = 1
     set['xi_1'] = 1
     set['ga_1'] = 1
+    
+    
+    
+    
+    
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah

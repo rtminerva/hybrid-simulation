@@ -4,16 +4,6 @@ from collections import OrderedDict
 import random
 from random import randint
 
-def rec_1_tip(coef,set,sol): #2.1.2.(1)
-    y = set['Ny']/2 
-    if y % 2 == 0:
-        y += 1
-    sol['matrix_tip'].append([[1,y]]) #should be on main-lattice (odd numbers)
-    sol['n'][1,y] = 1
-    sol['list_tip_movement'].append('start') #movement tip
-    sol['life_time_tip'].append(0) #lifetime
-    return sol
-
 def random_tip(coef,set,sol): #2.1.2.(2)
     line = range(1,set['Ny'],2)
 #     x = int(set['rad']/set['Hh'])
@@ -28,6 +18,16 @@ def random_tip(coef,set,sol): #2.1.2.(2)
         sol['list_tip_movement'].append('start') #movement tip
         sol['life_time_tip'].append(0) #lifetime
         line.remove(y)
+    return sol
+
+def rec_1_tip(coef,set,sol): #2.1.2.(1)
+    y = set['Ny']/2 
+    if y % 2 == 0:
+        y += 1
+    sol['matrix_tip'].append([[1,y]]) #should be on main-lattice (odd numbers)
+    sol['n'][1,y] = 1
+    sol['list_tip_movement'].append('start') #movement tip
+    sol['life_time_tip'].append(0) #lifetime
     return sol
 
 def rec_5_tip(coef,set,sol): #2.1.2.(2)
@@ -85,8 +85,6 @@ def init_tip_2d_(coef,set,sol):
     '''Create new variable to store solutions'''
     sol['n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['stalk'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
-#     sol['Vb_x'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
-#     sol['Vb_y'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['matrix_tip'] = []
     sol['list_tip_movement'] = []
     sol['life_time_tip'] = []

@@ -6,7 +6,6 @@ import numpy
 from timeit import default_timer as timer 
 import time
 import matplotlib.pyplot as plt 
-# from mpmath.functions.rszeta import coef
 
 #declare coefficients & initial settings
 coef, set, sol = declare_coef() #1
