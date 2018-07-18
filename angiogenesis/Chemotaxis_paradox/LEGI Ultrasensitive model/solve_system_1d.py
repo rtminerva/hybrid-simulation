@@ -9,9 +9,11 @@ def c_kinetic_(coef, set, sol, c_o, A_o, I_o, Ki_o):
     '''Calculate A,I,Ki'''
     A_ = A_o*(1-set['dt']*coef['l_a']) + set['dt']*coef['k_a']*c_o + set['dt']*coef['teta_a']
     I_ = I_o*(1-set['dt']*coef['l_i']) + set['dt']*coef['k_i']*c_o + set['dt']*coef['teta_i'] 
+    Q_ = A_/I_
     
     sol['A'].append(A_)
     sol['I'].append(I_)
+    sol['Q'].append(Q_)
     
     if coef['LEGI'] == 'basic':
         ##Basic LEGI
