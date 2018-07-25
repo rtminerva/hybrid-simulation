@@ -34,7 +34,7 @@ def declare_coef(): #1
     coef['K_A'] = ff*0.44
     
     '''VEGF (c)'''
-    coef['vel'] = 0.5#-115/60#10#200*60 #s #velocity of wave
+    coef['vel'] = 1#-115/60#10#200*60 #s #velocity of wave
     coef['perio'] = 0#1.5 #period of wave
     coef['A_c'] = 1 #amplitude of wave
     coef['vari'] = 1000#*15000#0.3#0.05 #variance of wave
@@ -43,8 +43,8 @@ def declare_coef(): #1
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries (fixed: never change)
-    set['T'] = 1500 + 0.001 #second
-    set['delay'] = -300
+    set['T'] = 1000 + 0.001 #second
+    set['delay'] = -500
     set['Nt'] = 1000000
     set['dt'] = 0.01
        

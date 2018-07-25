@@ -23,7 +23,7 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     print 'at Time', set['t']
         
     '''Picture'''  
-    if set['k'] % 10000 == 0:
+    if set['k'] % 100000 == 0:
         pic_1d.pic_1d(coef,set,sol) #3
 
     '''Recording Time'''         
