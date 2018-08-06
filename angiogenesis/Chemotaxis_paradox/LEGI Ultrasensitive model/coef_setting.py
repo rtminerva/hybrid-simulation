@@ -18,8 +18,8 @@ def declare_coef(): #1
     coef['l_i'] = ff*0.1
 #     coef['teta_i'] = ff*10**(-3) 
     if coef['LEGI'] == 'basic':
-        coef['k_A'] = 68
-        coef['k_I'] = 160        
+        coef['k_A'] = 3#68
+        coef['k_I'] = 1.6#160        
     elif coef['LEGI'] == 'ultrasensitive':
         coef['k_A'] = 3
         coef['k_I'] = 1.6
@@ -30,13 +30,13 @@ def declare_coef(): #1
     '''VEGF (c)'''
     coef['vel'] = 1 #velocity of wave
     coef['A_c'] = 1 #amplitude of wave
-    coef['vari'] = 600 #variance of wave
+    coef['vari'] = 100#600 #variance of wave
 
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries (fixed: never change)
-    set['T'] = 200 + 0.001 #second
-    set['delay'] = 90
+    set['T'] = 100 + 0.001 #second
+    set['delay'] = 80
     set['Nt'] = 1000000
     set['dt'] = 0.01
        

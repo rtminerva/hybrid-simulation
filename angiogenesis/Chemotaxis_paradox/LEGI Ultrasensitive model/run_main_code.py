@@ -22,7 +22,8 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
     '''PRINTING RESULT AS CONTROL'''  
     print 'at Time', set['t']
     print 'A,I,Q', sol['A'][-1],sol['I'][-1],sol['Q'][-1]
-    print 'S,R', 
+    print 'F,G', sol['F_Ki'][-1], sol['G_Ki'][-1]
+    print 'R', sol['Ki'][-1]
         
     '''Picture'''
     gg = int((set['T'] - 0.001)/set['dt'])
