@@ -2,27 +2,21 @@ from collections import OrderedDict
 
 def declare_coef(): #1
     '''Coefficients''' #
-    #to store coefficients
     coef = {}
     set = {}
     sol = {}
     
-#     coef['LEGI'] = 'basic'
-    coef['LEGI'] = 'ultrasensitive'
-
-    coef['Time'] = 60
-    coef['L'] = 50
-    coef['l'] = 7.5
-    
-    ff = 1
+    coef['LEGI'] = 'basic'
+#     coef['LEGI'] = 'ultrasensitive'
     
     #kinetics
+    ff = 1
     coef['k_a'] = ff*3.3
     coef['l_a'] = ff*0.2    
-    coef['teta_a'] = ff*10**(-3)
+#     coef['teta_a'] = ff*10**(-3)
     coef['k_i'] = ff*2.8
     coef['l_i'] = ff*0.1
-    coef['teta_i'] = ff*10**(-3) 
+#     coef['teta_i'] = ff*10**(-3) 
     if coef['LEGI'] == 'basic':
         coef['k_A'] = 68
         coef['k_I'] = 160        
@@ -34,17 +28,15 @@ def declare_coef(): #1
     coef['K_A'] = ff*0.44
     
     '''VEGF (c)'''
-    coef['vel'] = 1#-115/60#10#200*60 #s #velocity of wave
-    coef['perio'] = 0#1.5 #period of wave
+    coef['vel'] = 1 #velocity of wave
     coef['A_c'] = 1 #amplitude of wave
-    coef['vari'] = 1000#*15000#0.3#0.05 #variance of wave
-    coef['w'] = 1 #number of wave
-    coef['shifted'] = -1000 #position of first wave coming
+    coef['vari'] = 600 #variance of wave
+
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries (fixed: never change)
-    set['T'] = 1000 + 0.001 #second
-    set['delay'] = -500
+    set['T'] = 200 + 0.001 #second
+    set['delay'] = 90
     set['Nt'] = 1000000
     set['dt'] = 0.01
        

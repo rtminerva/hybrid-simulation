@@ -21,9 +21,12 @@ while set['t'] <= set['T'] and set['k'] < set['Nt']:
         set['k'] = sol['stop_iter']
     '''PRINTING RESULT AS CONTROL'''  
     print 'at Time', set['t']
+    print 'A,I,Q', sol['A'][-1],sol['I'][-1],sol['Q'][-1]
+    print 'S,R', 
         
-    '''Picture'''  
-    if set['k'] % 100000 == 0:
+    '''Picture'''
+    gg = int((set['T'] - 0.001)/set['dt'])
+    if set['k'] % gg == 0:
         pic_1d.pic_1d(coef,set,sol) #3
 
     '''Recording Time'''         

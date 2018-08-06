@@ -3,11 +3,19 @@ import numpy
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 from mpl_toolkits.mplot3d import Axes3D
+import os
+
 
 
 def pic_1d(coef,set,sol):
+    script_dir = os.path.dirname(__file__)
+    results_dir = os.path.join(script_dir, 'basic/')
+    
+    if not os.path.isdir(results_dir):
+        os.makedirs(results_dir)
+    
 
-    if set['k'] % 50 == 0:#set['t'] >= set['T']:  
+    if set['k'] % 1 == 0:#set['t'] >= set['T']:  
         '''Chemotaxis velocity analysis'''        
         plt.figure(1)
         axes = plt.gca()
@@ -21,7 +29,7 @@ def pic_1d(coef,set,sol):
         plt.ylabel('value')
         plt.xlabel('t (time)')
         flag = 'all=%s' % str(sol['p_3']) 
-        plt.savefig("%s.png" % flag)
+        plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
         
         plt.figure(2)
@@ -32,7 +40,7 @@ def pic_1d(coef,set,sol):
         plt.ylabel('value')
         plt.xlabel('t (time)')
         flag = 'S=%s' % str(sol['p_3']) 
-        plt.savefig("%s.png" % flag)
+        plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
         
         plt.figure(10)
@@ -43,7 +51,7 @@ def pic_1d(coef,set,sol):
         plt.ylabel('value')
         plt.xlabel('t (time)')
         flag = 'A=%s' % str(sol['p_3']) 
-        plt.savefig("%s.png" % flag)
+        plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
         
         plt.figure(11)
@@ -54,7 +62,7 @@ def pic_1d(coef,set,sol):
         plt.ylabel('value')
         plt.xlabel('t (time)')
         flag = 'I=%s' % str(sol['p_3']) 
-        plt.savefig("%s.png" % flag)
+        plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
 
         plt.figure(3)
@@ -65,7 +73,7 @@ def pic_1d(coef,set,sol):
         plt.ylabel('value')
         plt.xlabel('t (time)')
         flag = 'R=%s' % str(sol['p_3']) 
-        plt.savefig("%s.png" % flag)
+        plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
         
         plt.figure(4)
@@ -77,7 +85,7 @@ def pic_1d(coef,set,sol):
         plt.ylabel('value')
         plt.xlabel('t (time)')
         flag = 'AI=%s' % str(sol['p_3']) 
-        plt.savefig("%s.png" % flag)
+        plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
         
         plt.figure(5)
@@ -89,7 +97,7 @@ def pic_1d(coef,set,sol):
         plt.ylabel('value')
         plt.xlabel('t (time)')
         flag = 'SR=%s' % str(sol['p_3']) 
-        plt.savefig("%s.png" % flag)
+        plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
         
         plt.figure(6)
@@ -100,7 +108,7 @@ def pic_1d(coef,set,sol):
         plt.ylabel('value')
         plt.xlabel('t (time)')
         flag = 'Q=%s' % str(sol['p_3']) 
-        plt.savefig("%s.png" % flag)
+        plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
         
         plt.figure(7)
@@ -112,7 +120,7 @@ def pic_1d(coef,set,sol):
         plt.ylabel('value')
         plt.xlabel('t (time)')
         flag = 'QR=%s' % str(sol['p_3']) 
-        plt.savefig("%s.png" % flag)
+        plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
         
         plt.figure(12)
@@ -125,7 +133,7 @@ def pic_1d(coef,set,sol):
         plt.ylabel('value')
         plt.xlabel('t (time)')
         flag = 'QSR=%s' % str(sol['p_3']) 
-        plt.savefig("%s.png" % flag)
+        plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
         
         plt.figure(8)
@@ -138,22 +146,22 @@ def pic_1d(coef,set,sol):
         plt.ylabel('value')
         plt.xlabel('t (time)')
         flag = 'QAI=%s' % str(sol['p_3']) 
-        plt.savefig("%s.png" % flag)
+        plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
         
         plt.figure(9)
         axes = plt.gca()
         plt.title('%s' % ('Q, A & I short'))
-        plt.plot(sol['time'], sol['Q'], 'b', linewidth=2.0, label = 'Q')
+#         plt.plot(sol['time'], sol['Q'], 'b', linewidth=2.0, label = 'Q')
         plt.plot(sol['time'], sol['A'], 'c', linewidth=2.0, label = 'A')
         plt.plot(sol['time'], sol['I'], 'm', linewidth=2.0, label = 'I')
         plt.legend(bbox_to_anchor=(0.85, 0.25), loc=0, borderaxespad=0.)
-        plt.xlim(0,60)
-        plt.ylim(0,1.2)
+        plt.xlim(0,1)
+#         plt.ylim(0,1.2)
         plt.ylabel('value')
         plt.xlabel('t (time)')
         flag = 'QAIshort=%s' % str(sol['p_3']) 
-        plt.savefig("%s.png" % flag)
+        plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
 
 
