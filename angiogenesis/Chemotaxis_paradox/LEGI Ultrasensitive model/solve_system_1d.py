@@ -30,6 +30,8 @@ def c_kinetic_(coef, set, sol, c_o, A_o, I_o, Ki_o):
     
     Ki_ = Ki_o + set['dt']*(sol['F_Ki'][-1]*A_o - sol['G_Ki'][-1]*I_o)
     sol['Ki'].append(Ki_)
+    Qr_ = sol['G_Ki'][-1]/sol['F_Ki'][-1]
+    sol['Qr'].append(Qr_)
     
     return sol
  

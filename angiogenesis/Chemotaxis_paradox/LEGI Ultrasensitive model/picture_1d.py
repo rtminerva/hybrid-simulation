@@ -4,6 +4,7 @@ from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 from mpl_toolkits.mplot3d import Axes3D
 import os
+from dask.array.creation import linspace
 
 
 
@@ -13,6 +14,8 @@ def pic_1d(coef,set,sol):
     
     if not os.path.isdir(results_dir):
         os.makedirs(results_dir)
+        
+    rr = numpy.linspace(0,1.7)
     
 
     if set['k'] % 1 == 0:#set['t'] >= set['T']:  
@@ -96,6 +99,7 @@ def pic_1d(coef,set,sol):
         plt.legend(bbox_to_anchor=(0.85, 0.25), loc=0, borderaxespad=0.)
         plt.ylabel('value')
         plt.xlabel('t (time)')
+        plt.ylim(0,1.7)
         flag = 'SR=%s' % str(sol['p_3']) 
         plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
@@ -132,6 +136,7 @@ def pic_1d(coef,set,sol):
         plt.legend(bbox_to_anchor=(0.85, 0.25), loc=0, borderaxespad=0.)
         plt.ylabel('value')
         plt.xlabel('t (time)')
+        plt.ylim(0,1.7)
         flag = 'QSR=%s' % str(sol['p_3']) 
         plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
@@ -149,18 +154,44 @@ def pic_1d(coef,set,sol):
         plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
         
-        plt.figure(9)
+#         plt.figure(9)
+#         axes = plt.gca()
+#         plt.title('%s' % ('Q, A & I short'))
+# #         plt.plot(sol['time'], sol['Q'], 'b', linewidth=2.0, label = 'Q')
+#         plt.plot(sol['time'], sol['A'], 'c', linewidth=2.0, label = 'A')
+#         plt.plot(sol['time'], sol['I'], 'm', linewidth=2.0, label = 'I')
+#         plt.legend(bbox_to_anchor=(0.85, 0.25), loc=0, borderaxespad=0.)
+#         plt.xlim(0,1)
+# #         plt.ylim(0,1.2)
+#         plt.ylabel('value')
+#         plt.xlabel('t (time)')
+#         flag = 'QAIshort=%s' % str(sol['p_3']) 
+#         plt.savefig(results_dir +"%s.png" % flag)
+#         plt.close()
+        
+        plt.figure(13)
         axes = plt.gca()
-        plt.title('%s' % ('Q, A & I short'))
-#         plt.plot(sol['time'], sol['Q'], 'b', linewidth=2.0, label = 'Q')
+        plt.title('%s' % ('A,I & S'))
         plt.plot(sol['time'], sol['A'], 'c', linewidth=2.0, label = 'A')
         plt.plot(sol['time'], sol['I'], 'm', linewidth=2.0, label = 'I')
+        plt.plot(sol['time'], sol['c'], 'g', linewidth=2.0, label = 'S')
         plt.legend(bbox_to_anchor=(0.85, 0.25), loc=0, borderaxespad=0.)
-        plt.xlim(0,1)
-#         plt.ylim(0,1.2)
         plt.ylabel('value')
         plt.xlabel('t (time)')
-        flag = 'QAIshort=%s' % str(sol['p_3']) 
+        flag = 'AIS=%s' % str(sol['p_3']) 
+        plt.savefig(results_dir +"%s.png" % flag)
+        plt.close()
+        
+        plt.figure(14)
+        axes = plt.gca()
+        plt.title('%s' % ('Q(R)'))
+        plt.plot(sol['c'], sol['Qr'], 'r', linewidth=2.0)
+        plt.legend(bbox_to_anchor=(0.85, 0.25), loc=0, borderaxespad=0.)
+        plt.ylabel('Q=A/I')
+        plt.xlabel('R')
+        plt.ylim(-0.05,2)
+        plt.xlim(-0.05,2)
+        flag = 'Qr=%s' % str(sol['p_3']) 
         plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
 

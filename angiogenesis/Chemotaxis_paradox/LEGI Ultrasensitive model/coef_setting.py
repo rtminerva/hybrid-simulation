@@ -6,8 +6,8 @@ def declare_coef(): #1
     set = {}
     sol = {}
     
-    coef['LEGI'] = 'basic'
-#     coef['LEGI'] = 'ultrasensitive'
+#     coef['LEGI'] = 'basic'
+    coef['LEGI'] = 'ultrasensitive'
     
     #kinetics
     ff = 1
@@ -30,13 +30,13 @@ def declare_coef(): #1
     '''VEGF (c)'''
     coef['vel'] = 1 #velocity of wave
     coef['A_c'] = 1 #amplitude of wave
-    coef['vari'] = 100#600 #variance of wave
+    coef['vari'] = 1 #600 #variance of wave
 
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries (fixed: never change)
-    set['T'] = 100 + 0.001 #second
-    set['delay'] = 80
+    set['T'] = 7 + 0.001 #second #300
+    set['delay'] =5 #90
     set['Nt'] = 1000000
     set['dt'] = 0.01
        
