@@ -10,7 +10,7 @@ from dask.array.creation import linspace
 
 def pic_1d(coef,set,sol):
     script_dir = os.path.dirname(__file__)
-    results_dir = os.path.join(script_dir, 'ultrasensitive/')
+    results_dir = os.path.join(script_dir, 'basic/')
     
     if not os.path.isdir(results_dir):
         os.makedirs(results_dir)
@@ -137,6 +137,7 @@ def pic_1d(coef,set,sol):
         plt.ylabel('value')
         plt.xlabel('t (time)')
         plt.ylim(0,1.7)
+        plt.xlim(0,310)
         flag = 'QSR=%s' % str(sol['p_3']) 
         plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
@@ -194,7 +195,19 @@ def pic_1d(coef,set,sol):
         flag = 'Qr=%s' % str(sol['p_3']) 
         plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
-
+        
+        plt.figure(14)
+        axes = plt.gca()
+        plt.title('%s' % ('A,I & R'))
+        plt.plot(sol['time'], sol['A'], 'c', linewidth=2.0, label = 'A')
+        plt.plot(sol['time'], sol['I'], 'm', linewidth=2.0, label = 'I')
+        plt.plot(sol['time'], sol['Ki'], 'k', linewidth=2.0, label = 'R')
+        plt.legend(bbox_to_anchor=(0.85, 0.25), loc=0, borderaxespad=0.)
+        plt.ylabel('value')
+        plt.xlabel('t (time)')
+        flag = 'AIR=%s' % str(sol['p_3']) 
+        plt.savefig(results_dir +"%s.png" % flag)
+        plt.close()
 
 
         
