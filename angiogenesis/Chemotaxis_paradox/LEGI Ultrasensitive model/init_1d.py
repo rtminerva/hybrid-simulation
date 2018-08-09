@@ -6,7 +6,7 @@ def init_1d_(coef,set,sol): #2.1.1
     
     sol['A'] = [0]
     sol['I'] = [0]
-    sol['Ki'] = [0]
+    sol['Ki'] = [1]
     sol['Q'] = [0]
     sol['Qr'] = [0]
     
