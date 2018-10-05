@@ -15,7 +15,7 @@ def declare_coef(): #1
     
     #kinetics
     ff = 1
-    coef['k_a'] = ff*3.3
+    coef['k_a'] = ff*5#3.3 #5
     coef['l_a'] = ff*0.2 #0.2   
 #     coef['teta_a'] = ff*10**(-3)
     coef['k_i'] = ff*2.8
@@ -39,9 +39,9 @@ def declare_coef(): #1
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries (fixed: never change)
-    set['T'] = 30 + 0.001 #second #100 #300 #1500
+    set['T'] = 800 + 0.001 #second #100 #300 # 800
     set['delay1'] =200 #5 #90
-    set['delay2'] =350
+    set['delay2'] =400
     set['Nt'] = 1000000
     set['dt'] = 0.01
        

@@ -3,7 +3,7 @@ import math as m
 
 def c_kinetic_(coef, set, sol, c_o, A_o, I_o, Ki_o):              
     if coef['C_prof'] == 'exp':
-        C_ = coef['A_c']*m.exp(-(coef['vel']*set['dt']*set['k']-set['delay'])**2/coef['vari']) #exponentially
+        C_ = coef['A_c']*m.exp(-(coef['vel']*set['dt']*set['k']-set['delay1'])**2/coef['vari']) #exponentially
     elif coef['C_prof'] == 'step':
         if set['t'] > 60 and set['t'] < 180:
             C_ = 1

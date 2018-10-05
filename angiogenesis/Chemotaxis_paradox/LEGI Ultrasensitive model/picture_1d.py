@@ -17,6 +17,15 @@ def pic_1d(coef,set,sol):
         
     rr = numpy.linspace(0,1.7)
     
+    sol['R_h']=[]
+    r_s = numpy.linspace(0,5)
+    for i in r_s:
+        if coef['LEGI'] == 'basic':
+            R__h = coef['k_i']/coef['k_a']*i/(coef['R_o']-i)
+        elif coef['LEGI'] == 'ultrasensitive':
+            R__h = coef['k_i']/coef['k_a']*i/(coef['R_o']-i)*(coef['R_o']-i+coef['K_A'])/(i+coef['K_I'])
+        sol['R_h'].append(R__h)
+    
 
     if set['k'] % 1 == 0:#set['t'] >= set['T']:  
         '''Chemotaxis velocity analysis'''        
@@ -187,11 +196,12 @@ def pic_1d(coef,set,sol):
         axes = plt.gca()
         plt.title('%s' % ('Q-R'))
         plt.plot(sol['Ki'], sol['Q'], 'r', linewidth=2.0)
+        plt.plot(r_s, sol['R_h'], 'b','-', linewidth=2.0)
         plt.legend(bbox_to_anchor=(0.85, 0.25), loc=0, borderaxespad=0.)
         plt.ylabel('Q=A/I')
         plt.xlabel('R')
         plt.ylim(-0.05,2) # -0.05
-        plt.xlim(-0.05,2)
+        plt.xlim(-0.05,5)
         flag = 'Qr=%s' % str(sol['p_3']) 
         plt.savefig(results_dir +"%s.png" % flag)
         plt.close()
