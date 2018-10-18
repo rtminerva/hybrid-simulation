@@ -7,11 +7,11 @@ def declare_coef(): #1
     sol = {}
     
 #     coef['C_prof'] = 'exp'
-#     coef['C_prof'] = 'step'
-    coef['C_prof'] = 'tan'
+    coef['C_prof'] = 'step'
+#     coef['C_prof'] = 'tan'
     
-    coef['LEGI'] = 'basic'
-#     coef['LEGI'] = 'ultrasensitive'
+#     coef['LEGI'] = 'basic'
+    coef['LEGI'] = 'ultrasensitive'
     
     #kinetics
     ff = 1
