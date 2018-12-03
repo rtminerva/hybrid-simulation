@@ -9,21 +9,17 @@ def system_2d(coef, set, sol):
         for x in range(0,set['Nx']+1,2):
             r_c = numpy.sqrt((x*set['Hh'])**2+(y*set['Hh']-0.5)**2)
             if r_c >= 0.1:
-#                 sol['c'][x,y] = (r_c-viu)**2/(viu-0.1)**2 #* (1+m.sin((0.5-x*set['Hh'])*m.pi))* set['ga_1']/4* (m.sin(2*m.pi*set['et_1']*set['t'])+1)
-#                 sol['c_t'][x,y] = (r_c-viu)**2/(viu-0.1)**2 #* 2*m.pi*set['et_1']*m.cos(2*m.pi*set['et_1']*set['t']) * (1+m.sin((0.5-x*set['Hh'])*m.pi))* set['ga_1']/4
-                cc = (m.sin(2*m.pi*set['et_1']*set['t'])+1) * (1-m.exp(-1*r_c**2))
-                cc_t = 2*m.pi*set['et_1']*m.cos(2*m.pi*set['et_1']*set['t']) * (1-m.exp(-1*r_c**2))
-                sol['c'][x,y] = cc
-                sol['c_t'][x,y] = cc_t
-#                 if cc_t > 0:
-#                     sol['c'][x,y] = cc
-#                     sol['c_t'][x,y] = cc_t
-#                 else:
-#                     sol['c'][x,y] = 0
-#                     sol['c_t'][x,y] = 0
+                sol['c'][x,y] = (0.8 + m.sin(m.pi*set['et_1']*set['t']) * m.exp(-set['alpha']*set['t'])) * (1 - m.exp(-4*r_c**2))
+                sol['c_t'][x,y] = (m.pi*set['et_1']*m.cos(m.pi*set['et_1']*set['t']) - set['alpha']*m.sin(m.pi*set['et_1']*set['t'])) * m.exp(-set['alpha']*set['t']) * (1-m.exp(-1*r_c**2))
+#                 sol['c'][x,y] = (m.sin(2*m.pi*set['et_1']*set['t'])+1) * (1-m.exp(-1*r_c**2))
+#                 sol['c_t'][x,y] = 2*m.pi*set['et_1']*m.cos(2*m.pi*set['et_1']*set['t']) * (1-m.exp(-1*r_c**2))
             elif r_c >= 0 and r_c < 0.1:
                 sol['c'][x,y] = 0
                 sol['c_t'][x,y] = 0
+            
+#             #normal
+#             sol['c'][x,y] = (0.8 + m.sin(m.pi*set['et_1']*set['t']) * m.exp(-set['alpha']*set['t'])) * (1 - m.exp(-4*(x*set['Hh'])**2))
+#             sol['c_t'][x,y] = (m.pi*set['et_1']*m.cos(m.pi*set['et_1']*set['t']) - set['alpha']*m.sin(m.pi*set['et_1']*set['t'])) * m.exp(-set['alpha']*set['t']) * (1-m.exp(-1*(x*set['Hh'])**2))
             
             #normal
 #             sol['c'][x,y] = (1+m.sin((0.5-x*set['Hh'])*m.pi))* set['ga_1']/4* (m.sin(2*m.pi*set['et_1']*set['t'])+1) #* (1+m.cos(set['u']*m.pi*(x*set['Hh']-0.5)))

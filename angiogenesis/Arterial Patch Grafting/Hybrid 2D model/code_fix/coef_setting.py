@@ -22,18 +22,19 @@ def declare_coef():
 #     coef['Ki_n'] = 0.133 #aubert
     ki_n = 650 #cm^2 s^(-1) M^(-1) #aubert estimation 650 - 750
     c_o = 10**(-10) #M
-    coef['al_1'] = ki_n*T_1*c_o/(ra**2+ra**2)
+    coef['al_1'] = 0#ki_n*T_1*c_o/(ra**2+ra**2)
 
     #chemotaxis2
     coef['be_1'] = 0.01
 
  
     '''Branching & Mitosis'''
-    coef['T_branch'] = 0.25
+    coef['T_branch'] = 0.25 #Chaplain
 #     coef['T_mitosis'] = 1000#0.5
     
     set['ga_1'] = 1 #amplitude of vegf
-    set['et_1'] = 2 #oscilation vel vegf
+    set['et_1'] = 0.26 #oscilation velocity of vegf
+    set['alpha'] = 0.04
     
     set['u'] = 1 #area of patch
     
@@ -41,13 +42,13 @@ def declare_coef():
     ##set dictionaries tidak pernah berubah
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 7.002
+    set['T'] = 14.002
     set['Nt'] = 100000
     set['theta'] = 0.5
     set['rad'] = 0.01/ra
     
     set['h'] = 0.005 #0.01#
-    set['dt'] = 0.005#001
+    set['dt'] = 0.01#005
     
     set['Hh'] = set['h']/2
     set['Nx'] = int(coef['X']/set['Hh'])

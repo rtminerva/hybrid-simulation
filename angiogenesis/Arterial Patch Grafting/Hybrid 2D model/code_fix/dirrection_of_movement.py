@@ -20,6 +20,9 @@ def movement_dir(coef, set, sol, xb, yb): #2.2.1
     else:
         vijx = coef['al_1']*cijx
         vijy = coef['al_1']*cijy
+#     #test
+#     vijx = coef['al_1']*cijx - coef['be_1']*ctijx
+#     vijy = coef['al_1']*cijy - coef['be_1']*ctijy
         
     vijx_p = max(0,vijx)
     vijx_n = max(0,-vijx)
