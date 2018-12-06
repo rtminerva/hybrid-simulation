@@ -9,7 +9,7 @@ def declare_coef():
 
     '''measurement'''
     ra = 0.5 #cm 
-    T_1 = 86400 #s
+    T_1 = 86400 #s for 1 day
     
     '''Tip (n)'''
     #diffusion
@@ -27,25 +27,24 @@ def declare_coef():
     #chemotaxis2
     coef['be_1'] = 0.01
 
- 
-    '''Branching & Mitosis'''
-    coef['T_branch'] = 0.25 #Chaplain
-#     coef['T_mitosis'] = 1000#0.5
-    
+    '''VEGF (c)'''
     set['ga_1'] = 1 #amplitude of vegf
     set['et_1'] = 0.26 #oscilation velocity of vegf
     set['alpha'] = 0.04
-    
     set['u'] = 1 #area of patch
+    
+    '''Branching & Mitosis'''
+    coef['T_branch'] = 0.25 #Chaplain
+#     coef['T_mitosis'] = 1000#0.5
     
     '''Spatial and Temporal Meshes Number'''
     ##set dictionaries tidak pernah berubah
     coef['X'] = 1
     coef['Y'] = 1
     set['T'] = 14.002
-    set['Nt'] = 100000
-    set['theta'] = 0.5
-    set['rad'] = 0.01/ra
+#     set['Nt'] = 100000
+#     set['theta'] = 0.5
+#     set['rad'] = 0.01/ra
     
     set['h'] = 0.005 #0.01#
     set['dt'] = 0.01#005
@@ -54,8 +53,8 @@ def declare_coef():
     set['Nx'] = int(coef['X']/set['Hh'])
     set['Ny'] = int(coef['Y']/set['Hh'])
     
-    set['O_x'] = set['Nx']/2*set['Hh']
-    set['O_y'] = set['Ny']/2*set['Hh']
+#     set['O_x'] = set['Nx']/2*set['Hh']
+#     set['O_y'] = set['Ny']/2*set['Hh']
     
     '''Initial Setting'''
     set['t'] = 0

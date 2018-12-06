@@ -35,17 +35,38 @@ def movement_dir(coef, set, sol, xb, yb): #2.2.1
     a_3 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_n)
     a_4 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_p)
     
-    tot_p = a_1 + a_2 + a_3 + a_4
+#     tot_p = a_1 + a_2 + a_3 + a_4
     
-    p_1 = a_1/tot_p
-    p_2 = a_2/tot_p
-    p_3 = a_3/tot_p
-    p_4 = a_4/tot_p
+    p_1 = a_1#/tot_p
+    p_2 = a_2#/tot_p
+    p_3 = a_3#/tot_p
+    p_4 = a_4#/tot_p
     
-    P_1 = int(p_1*10000)
-    P_2 = int(p_2*10000)
-    P_3 = int(p_3*10000)
-    P_4 = int(p_4*10000)
+#     P_1 = int(p_1*10000)
+#     P_2 = int(p_2*10000)
+#     P_3 = int(p_3*10000)
+#     P_4 = int(p_4*10000)
+    
+    if df == '1':
+        P_1 = 0
+    else:
+        P_1 = int(p_1*10000)
+    
+    if df == '2':
+        P_2 = 0
+    else:
+        P_2 = int(p_2*10000)
+    
+    if df == '3':
+        P_3 = 0
+    else:
+        P_3 = int(p_3*10000)
+    
+    if df == '4':
+        P_4 = 0
+    else:
+        P_4 = int(p_4*10000)
+        
 
     if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
         print 'ADA P yang Negative'

@@ -6,7 +6,6 @@ import numpy
 from timeit import default_timer as timer 
 import time
 import matplotlib.pyplot as plt 
-# from mpmath.functions.rszeta import coef
 
 #declare coefficients & initial settings
 coef, set, sol = declare_coef() #1
@@ -14,18 +13,18 @@ coef, set, sol = declare_coef() #1
 #to plot interactively
 plt.ion()
 
-while set['t'] <= set['T']: # and set['k'] < set['Nt']
+while set['t'] <= set['T']:
     sol = main.boolean_1_iter(coef, set, sol) #2                 
-#     if sol['stop_iter'] >=100000:
-#         set['k'] = sol['stop_iter']
-    '''PRINTING RESULT AS CONTROL'''  
+    '''PRINTING RESULT AS CONTROL start'''  
     print 'at Time', set['t']
     print 'Total Tips:', len(sol['matrix_tip'])
     print 'Total Stop Tips:', len(sol['sp_stop'])
-    print 'tip stop:', sol['sp_stop']
+    print 'Tip Stop:', sol['sp_stop']
     print 'Tip Cell Pos:', sol['tip_cell']
-    if set['k'] % 200 == 0:
-        print 'Tip Cell Pos_ave:', sol['tip_cell_pos_ave']
+    print 'Max Value of c, n', sol['c'].max(),',', sol['n'].max()
+    print 'Min Value of c, n', sol['c'].min(),',', sol['n'].min()
+#     if set['k'] % 200 == 0:
+#         print 'Tip Cell Pos_ave:', sol['tip_cell_pos_ave']
 #     for e, i in enumerate(sol['matrix_tip']):
 #         if e in sol['sp_stop']:
 #             if len(i) > 1:
@@ -38,13 +37,14 @@ while set['t'] <= set['T']: # and set['k'] < set['Nt']
 #             else:
 #                 print 'RUN', e, ':',i[-1], ',', 'Length of sprout:', len(i)
 #     print 'Backward at time step:', sol['backward_count']
-    print 'Max Value of c, n', sol['c'].max(),',', sol['n'].max()
-    print 'Min Value of c, n', sol['c'].min(),',', sol['n'].min()
-     
+    '''PRINTING RESULT AS CONTROL end'''
+    
+    '''Picture result start'''
     if set['k'] % 1 == 0:
         pic.pic_2d(coef,set,sol) #3
-
-    '''Recording Time'''         
+    '''Picture result end'''
+        
+    '''Recording Time & Coefficients start'''         
     ttime = time.clock()
     if ttime >= 3600: #jam
         jam = int(ttime/3600)
@@ -66,16 +66,15 @@ while set['t'] <= set['T']: # and set['k'] < set['Nt']
         print 'total time of processing:', 0, 'hours', menit, 'minutes', detik, 'seconds'
     else:
         print 'total time of processing:', 0, 'hours', 0, 'minutes', ttime, 'seconds'
-#     print 'tip cell:', sol['tip_cell']
-    
-    if set['k'] % 100 == 0: #here
+    if set['k'] % 100 == 0:
         print '''All Coefficients:'''
         print coef
         print '''All Set'''
         print set
     print 'total time of processing:', time.clock()
     print '***************************************************'
-    print     
+    print 
+    '''Recording Time & Coefficients end'''    
         
     set['t'] += set['dt']
     set['k'] += 1

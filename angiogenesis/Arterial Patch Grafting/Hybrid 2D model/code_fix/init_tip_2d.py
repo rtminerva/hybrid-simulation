@@ -85,6 +85,8 @@ def init_tip_2d_(coef,set,sol):
     '''Create new variable to store solutions'''
     sol['n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['stalk'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
+    
+    sol['pair_tiptotip1'] = []
     sol['matrix_tip'] = []
     sol['list_tip_movement'] = []
     sol['life_time_tip'] = []
@@ -105,16 +107,4 @@ def init_tip_2d_(coef,set,sol):
                 sol['tip_cell'].append(i[-1])
         else:
             sol['tip_cell'].append(i[-1])
-    
-#     '''Storing Tip Cell'''
-#     for e,ti in enumerate(sol['matrix_tip']):
-#         sol['tip_cell'].append([sol['matrix_tip'][e][-1][0],sol['matrix_tip'][e][-1][1]])  
-    
-#     '''Recording Tip cell area (4 points)'''
-#     sol['tip_cell_area'] = []
-#     for i in sol['tip_cell']:
-#         sol['tip_cell_area'].append([i[0]+1, i[1]+1])
-#         sol['tip_cell_area'].append([i[0]+1, i[1]-1])
-#         sol['tip_cell_area'].append([i[0]-1, i[1]+1])
-#         sol['tip_cell_area'].append([i[0]-1, i[1]-1])
     return sol
