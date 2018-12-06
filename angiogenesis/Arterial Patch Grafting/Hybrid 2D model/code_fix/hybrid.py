@@ -413,7 +413,10 @@ def hybrid_tech(coef, set, sol): #2.23
     '''Branching decision start'''
     for ind_i, i in enumerate(sol['matrix_tip']):
         if isinstance(i[-1], int) == False: #sprout yang masih hidup
-            if sol['c_t'][i[-1][0],i[-1][1]] > 0: #C_t nya posotive
+            xpo = i[-1][0]
+            ypo = i[-1][1]
+            ave_ct = (sol['c_t'][xpo-1,ypo-1] + sol['c_t'][xpo+1,ypo+1] + sol['c_t'][xpo-1,ypo+1] + sol['c_t'][xpo+1,ypo-1])/4
+            if ave_ct > 0: #C_t nya positive
                 if sol['life_time_tip'][nom] < coef['T_branch']: #not able to branch
                     sol['life_time_tip'][nom] += set['dt']
                 else: #there is possibility to branch
