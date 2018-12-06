@@ -31,28 +31,28 @@ def pic_2d(coef,set,sol):
     plt.savefig("%s.png" % flag)
     plt.close()
    
-    '''Stalk'''
-    plt.figure(2)
-    plt.title('%s%f' % ('Stalk Cell Distribution at t=',set['t']))
-    plt.xlabel('X')
-    plt.ylabel('Y')
-         
-    x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
-    y_main_axis = numpy.arange(set['Hh'], coef['Y'], set['h'])
-    x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
-    
-    b_sol = numpy.zeros((set['Nx']/2, set['Ny']/2))
-    for j, y in enumerate(range(1,set['Ny'],2)):
-        for i, x in enumerate(range(1,set['Nx'],2)):
-            b_sol[i,j] = sol['b'][x,y]
-    b_sol = numpy.ma.masked_array(b_sol, b_sol < 0.00001)
-    plt.pcolormesh(y_main_axis, x_main_axis, b_sol, cmap='gist_ncar', vmin=0, vmax=1)
-    plt.colorbar()
-    
-    sol['stEC_1'] +=1  
-    flag = 'St=%s' % str(sol['stEC_1']) 
-    plt.savefig("%s.png" % flag)
-    plt.close()
+#     '''Stalk'''
+#     plt.figure(2)
+#     plt.title('%s%f' % ('Stalk Cell Distribution at t=',set['t']))
+#     plt.xlabel('X')
+#     plt.ylabel('Y')
+#          
+#     x_main_axis = numpy.arange(set['Hh'], coef['X'], set['h'])
+#     y_main_axis = numpy.arange(set['Hh'], coef['Y'], set['h'])
+#     x_main_axis, y_main_axis = numpy.meshgrid(x_main_axis, y_main_axis)
+#     
+#     b_sol = numpy.zeros((set['Nx']/2, set['Ny']/2))
+#     for j, y in enumerate(range(1,set['Ny'],2)):
+#         for i, x in enumerate(range(1,set['Nx'],2)):
+#             b_sol[i,j] = sol['b'][x,y]
+#     b_sol = numpy.ma.masked_array(b_sol, b_sol < 0.00001)
+#     plt.pcolormesh(y_main_axis, x_main_axis, b_sol, cmap='gist_ncar', vmin=0, vmax=1)
+#     plt.colorbar()
+#     
+#     sol['stEC_1'] +=1  
+#     flag = 'St=%s' % str(sol['stEC_1']) 
+#     plt.savefig("%s.png" % flag)
+#     plt.close()
     return sol
     
     '''Continuous Plot VEGF Hybrid'''
