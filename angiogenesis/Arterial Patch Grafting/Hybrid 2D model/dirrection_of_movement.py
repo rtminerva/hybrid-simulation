@@ -6,42 +6,67 @@ def movement_dir(coef, set, sol, xb, yb): #2.2.1
     cijx = (sol['c'][xb+1,yb+1]-sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb-1]-sol['c'][xb-1,yb-1])/(2*set['h'])
     cijy = (sol['c'][xb+1,yb+1]-sol['c'][xb+1,yb-1]+sol['c'][xb-1,yb+1]-sol['c'][xb-1,yb-1])/(2*set['h'])
     
-#     fijx = (sol['f'][xb+1,yb+1]-sol['f'][xb-1,yb+1]+sol['f'][xb+1,yb-1]-sol['f'][xb-1,yb-1])/(2*set['h'])
-#     fijy = (sol['f'][xb+1,yb+1]-sol['f'][xb+1,yb-1]+sol['f'][xb-1,yb+1]-sol['f'][xb-1,yb-1])/(2*set['h'])
+    ctijx = (sol['c_t'][xb+1,yb+1]-sol['c_t'][xb-1,yb+1]+sol['c_t'][xb+1,yb-1]-sol['c_t'][xb-1,yb-1])/(2*set['h'])
+    ctijy = (sol['c_t'][xb+1,yb+1]-sol['c_t'][xb+1,yb-1]+sol['c_t'][xb-1,yb+1]-sol['c_t'][xb-1,yb-1])/(2*set['h'])
     
     '''NEW METHOD'''
-    vijx = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijx#+coef['Ro']*fijx
-    vijy = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijy#+coef['Ro']*fijy
+#     vijx = coef['al_1']*cijx - coef['be_1']*ctijx
+#     vijy = coef['al_1']*cijy - coef['be_1']*ctijy
+    
+    ave_ct = (sol['c_t'][xb-1,yb-1] + sol['c_t'][xb+1,yb+1] + sol['c_t'][xb-1,yb+1] + sol['c_t'][xb+1,yb-1])/4
+    if ave_ct > 0:
+        vijx = coef['al_1']*cijx - coef['be_1']*ctijx
+        vijy = coef['al_1']*cijy - coef['be_1']*ctijy
+    else:
+        vijx = coef['al_1']*cijx
+        vijy = coef['al_1']*cijy
+#     #test
+#     vijx = coef['al_1']*cijx - coef['be_1']*ctijx
+#     vijy = coef['al_1']*cijy - coef['be_1']*ctijy
+        
     vijx_p = max(0,vijx)
     vijx_n = max(0,-vijx)
     vijy_p = max(0,vijy)
     vijy_n = max(0,-vijy)
     '''NEW METHOD'''
     
-#     '''OLD METHOD'''
-#     cijx_p = max(0,cijx)
-#     cijx_n = max(0,-cijx)
-#     cijy_p = max(0,cijy)
-#     cijy_n = max(0,-cijy)
-#     fijx_p = max(0,fijx)
-#     fijx_n = max(0,-fijx)
-#     fijy_p = max(0,fijy)
-#     fijy_n = max(0,-fijy)
-#     vijx_p = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijx_p+coef['Ro']*fijx_p
-#     vijx_n = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijx_n+coef['Ro']*fijx_n
-#     vijy_p = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijy_p+coef['Ro']*fijy_p
-#     vijy_n = coef['Ki_n']/(1+coef['Al_n']*1/4*(sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb+1]+sol['c'][xb-1,yb-1]+sol['c'][xb+1,yb-1]))*cijy_n+coef['Ro']*fijy_n
-#     '''OLD METHOD'''
+    a_1 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_n)
+    a_2 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_p)
+    a_3 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_n)
+    a_4 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_p)
     
-    p_1 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_n)
-    p_2 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_p)
-    p_3 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_n)
-    p_4 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_p)
+#     tot_p = a_1 + a_2 + a_3 + a_4
     
-    P_1 = int(p_1*10000)
-    P_2 = int(p_2*10000)
-    P_3 = int(p_3*10000)
-    P_4 = int(p_4*10000)
+    p_1 = a_1#/tot_p
+    p_2 = a_2#/tot_p
+    p_3 = a_3#/tot_p
+    p_4 = a_4#/tot_p
+    
+#     P_1 = int(p_1*10000)
+#     P_2 = int(p_2*10000)
+#     P_3 = int(p_3*10000)
+#     P_4 = int(p_4*10000)
+    
+    if df == '1':
+        P_1 = 0
+    else:
+        P_1 = int(p_1*10000)
+    
+    if df == '2':
+        P_2 = 0
+    else:
+        P_2 = int(p_2*10000)
+    
+    if df == '3':
+        P_3 = 0
+    else:
+        P_3 = int(p_3*10000)
+    
+    if df == '4':
+        P_4 = 0
+    else:
+        P_4 = int(p_4*10000)
+        
 
     if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
         print 'ADA P yang Negative'
