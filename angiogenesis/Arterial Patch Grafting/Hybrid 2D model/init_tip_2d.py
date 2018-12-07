@@ -21,7 +21,7 @@ def random_tip(coef,set,sol): #2.1.2.(2)
     if x % 2 == 0:
         x -= 1
     
-    for i in range(0,10):
+    for i in range(0,20):
         y = random.choice(line)
         sol['matrix_tip'].append([[x,y]])
         sol['n'][x,y] = 1
@@ -87,6 +87,7 @@ def init_tip_2d_(coef,set,sol):
     sol['stalk'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     
     sol['pair_tiptotip1'] = []
+    sol['new_ves_pair'] = []
     sol['matrix_tip'] = []
     sol['list_tip_movement'] = []
     sol['life_time_tip'] = []

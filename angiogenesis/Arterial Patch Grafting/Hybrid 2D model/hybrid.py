@@ -126,7 +126,6 @@ def movement(sol,set,tipp,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_pro
     else:
         tipp_s = 'stay'
         while tipp_s == 'stay':
-#             print 'haiyaaa'
             tes = randint(1,10000)
             if tes in list_prob_0:
                 tipp_s = 'stay'
@@ -139,6 +138,8 @@ def movement(sol,set,tipp,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_pro
                     sol, list_prob_0, list_prob_3, tipp_s = move_down(sol,set,nom,xb,yb,list_prob_0,list_prob_3) #2.2.(2).(3)   
                 elif tes in list_prob_4:
                     sol, list_prob_0, list_prob_4, tipp_s = move_up(sol,set,nom,xb,yb,list_prob_0,list_prob_4) #2.2.(2).(4)
+                else:
+                    tipp_s = 'stay'
                 
     return sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 
 
@@ -248,22 +249,22 @@ def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False):
 
 def prob_by_c(sol,xb,yb): #2.2.(4)
     line = range(1,11)
-    if sol['c'][xb+1,yb+1] >= 0 and sol['c'][xb+1,yb+1] < 0.25:
+    if sol['c'][xb-1,yb-1] >= 0 and sol['c'][xb-1,yb-1] < 0.25:
         list_prob = [20]
-    elif sol['c'][xb+1,yb+1] >= 0.25 and sol['c'][xb+1,yb+1] < 0.45:
+    elif sol['c'][xb-1,yb-1] >= 0.25 and sol['c'][xb-1,yb-1] < 0.5: #0.25 and #0.45
         prob_weight = 3
         list_prob = random.sample(line, prob_weight) 
-    elif sol['c'][xb+1,yb+1] >= 0.45 and sol['c'][xb+1,yb+1] < 0.6:
+    elif sol['c'][xb-1,yb-1] >= 0.5 and sol['c'][xb-1,yb-1] < 1: #0.45 and 0.6
         prob_weight = 4
         list_prob = random.sample(line, prob_weight)   
-    elif sol['c'][xb+1,yb+1] >= 0.6 and sol['c'][xb+1,yb+1] < 0.7:
+    elif sol['c'][xb-1,yb-1] >= 1 and sol['c'][xb-1,yb-1] < 1.6: #0.6 and 0.7
         prob_weight = 5
         list_prob = random.sample(line, prob_weight)  
-    elif sol['c'][xb+1,yb+1] >= 0.7:
+    elif sol['c'][xb-1,yb-1] >= 1.6: #0.7
         list_prob = line
     return list_prob
 
-def anas_after(sol, tipp, n_sp, new_ves, branchingg):
+def anas_after(sol, tipp, n_sp, branchingg):
     if branchingg == False:
         '''Tip to tip'''
         pair_tiptotip = [] #dicek anastomosis setelah setiap running.
@@ -311,16 +312,18 @@ def anas_after(sol, tipp, n_sp, new_ves, branchingg):
                         for ind_j,j in enumerate(sol['matrix_tip']):
                             if ind_i != ind_j: #bukan self-looping
     #                             if j[-1] != ind_i: # punya si anastomosis tip #can be removed
-                                
-                                    
                                 for ind_k, k in enumerate(j):
                                     if ind_k < (len(j)-1): #diceknya hanya ke sproutnya aja. bukan ke bagian tipnya
                                         if i[-1] == k: #anastomosis to sprout
-                                            say1 = -1 #start detecting if two sprout comes from the same anastomosis
+                                            say1 = -1 #start detecting if two sprout come from the same anastomosis
                                             for ind_o, o in enumerate(sol['pair_tiptotip1']):
                                                 if ind_i in o and ind_j in o:
                                                     say1 = 0 #end detecting if two sprout comes from the same anastomosis
-                                            if say1 !=0:
+                                            say2 = -1 #start detecting if two sprouts come from the same branch
+                                            for ind_o, o in enumerate(sol['new_ves_pair']):
+                                                if ind_i in o and ind_j in o:
+                                                    say2 = 0
+                                            if say1 != 0 or say2 != 0:
                                                 print 'end of sprout', ind_i, i[-1], isinstance(i[-1], int)
                                                 sol['sp_stop'].append(ind_i)
                                                 sol['cause'][ind_i] = 'anastomosis to sprout'
@@ -390,33 +393,33 @@ def hybrid_tech(coef, set, sol): #2.23
     n_o = numpy.copy(sol['n']) #to save the value of 'n' at time step k (we are calculating at time step k+1)
     sol['tip_cell'] = []
     tipp = []
-    new_ves = []
     
-    #running movement for all active sprouts
     for nom, nom_isi in enumerate(sol['matrix_tip']): #dicek setiap tip
         if isinstance(nom_isi[-1], int) == False: #cek kalau sproutnya masih hidup
 #         if not nom in sol['sp_stop']: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
             yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
             
-            '''Avoid backward movement start'''
-            xbm1 = sol['matrix_tip'][nom][-2][0] #get x position of 2nd last tip position (to avoid backward movement)
-            ybm1 = sol['matrix_tip'][nom][-2][1] #get y position of 2nd last tip position (to avoid backward movement)
-            tx1 = xb-xbm1
-            ty1 = yb-ybm1
-            
-            if tx1 == 0:
-                if ty1 < 0:
-                    df = '4'
-                else:
-                    df = '3'
-            else:
-                if tx1 < 0:
-                    df = '2'
-                else:
-                    df = '1'
-            #kalau terus backward nanti dia bikin cabang baru. 
-            '''Avoid backward movement start'''
+            df = '0'
+#             '''Avoid backward movement start'''
+#             if len(sol['matrix_tip'][nom]) >=2:
+#                 xbm1 = sol['matrix_tip'][nom][-2][0] #get x position of 2nd last tip position (to avoid backward movement)
+#                 ybm1 = sol['matrix_tip'][nom][-2][1] #get y position of 2nd last tip position (to avoid backward movement)
+#                 tx1 = xb-xbm1
+#                 ty1 = yb-ybm1
+#                 
+#                 if tx1 == 0:
+#                     if ty1 < 0:
+#                         df = '4'
+#                     else:
+#                         df = '3'
+#                 else:
+#                     if tx1 < 0:
+#                         df = '2'
+#                     else:
+#                         df = '1'
+#             #kalau terus backward nanti dia bikin cabang baru. 
+#             '''Avoid backward movement start'''
             
             dirr, probb = movement_dir(coef, set, sol, xb, yb, df) #2.2.1 => go to direction_of_movement.py
         
@@ -437,18 +440,18 @@ def hybrid_tech(coef, set, sol): #2.23
             branch = False
             sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,tipp,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(2)
     '''Check Anastomosis before branching decision'''
-    sol= anas_after(sol, tipp, n_sp, new_ves, branchingg = False)    
+    sol= anas_after(sol, tipp, n_sp, branchingg = False)    
     
-    #barus sampai sini editnya
     '''Branching decision start'''
     for ind_i, i in enumerate(sol['matrix_tip']):
         if isinstance(i[-1], int) == False: #sprout yang masih hidup
-            if sol['c_t'][i[-1][0],i[-1][1]] > 0: #C_t nya posotive
+            xbb = i[-1][0] - 1
+            ybb = i[-1][1] - 1
+            if sol['c_t'][xbb,ybb] > 0: #C_t nya positive
                 if sol['life_time_tip'][nom] < coef['T_branch']: #not able to branch
                     sol['life_time_tip'][nom] += set['dt']
                 else: #there is possibility to branch
-    #                             Probability of Branching using c
-                    list_prob = prob_by_c(sol,xb,yb) #range(1,11) #2.2.(4)
+                    list_prob = prob_by_c(sol,xb,yb) #Probability of Branching using c #range(1,11) #2.2.(4) 
                     tes = randint(1,10)
                     if not tes in list_prob: #not able to branch
                         sol['life_time_tip'][nom] += set['dt']
@@ -456,31 +459,31 @@ def hybrid_tech(coef, set, sol): #2.23
                         sol['life_time_tip'][nom] = 0
                         sol['matrix_tip'].append([[xb,yb]])
                         sol['life_time_tip'].append(0)
-                        new_ves.append(len(sol['matrix_tip'])-1)
+                        sol['new_ves_pair'].append([ind_i,len(sol['matrix_tip'])-1])
                         '''The Movement from branching'''
                         nom = len(sol['matrix_tip'])-1
                         xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
                         yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
-                         
-                        dirr, probb = movement_dir(coef, set, sol, xb, yb) #2.2.1 => go to direction_of_movement.py
-                         
-                        if dirr[1] == 0 and dirr[2] == 0 and dirr[3] == 0 and dirr[4] == 0: #checking if there is space for tip cell to move
-                            if not nom in sol['sp_stop']:
-                                sol['sp_stop'].append(nom)
-                                sol['cause'][nom] = 'no space'
-            #                 if [xb,yb] in sol['tip_cell']:
-            #                     sol['tip_cell'].remove([xb,yb])
-                            sol['n'][xb,yb] = 0
-                            sol['stalk'][xb,yb] = 1
-                            sol['matrix_tip'][nom][-1].append(1000) #1000 kode utk no space
-                        else:
-                            '''Making list of prob'''
-                            list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = set_list_prob(dirr) #2.2.(1)
-                             
-                            '''The Movement'''
-                            branch = True
-                            sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,tipp,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(2)
-                         
+                          
+#                         dirr, probb = movement_dir(coef, set, sol, xb, yb) #2.2.1 => go to direction_of_movement.py
+                          
+#                         if dirr[1] == 0 and dirr[2] == 0 and dirr[3] == 0 and dirr[4] == 0: #checking if there is space for tip cell to move
+#                             if not nom in sol['sp_stop']:
+#                                 sol['sp_stop'].append(nom)
+#                                 sol['cause'][nom] = 'no space'
+#             #                 if [xb,yb] in sol['tip_cell']:
+#             #                     sol['tip_cell'].remove([xb,yb])
+#                             sol['n'][xb,yb] = 0
+#                             sol['stalk'][xb,yb] = 1
+#                             sol['matrix_tip'][nom][-1].append(1000) #1000 kode utk no space
+#                         else:
+#                             '''Making list of prob'''
+#                             list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = set_list_prob(dirr) #2.2.(1)
+                              
+                        '''The Movement'''
+                        branch = True
+                        sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,tipp,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(2)
+                          
     #                     sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,tipp,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(5)
     '''Branching decision end'''
     
