@@ -75,9 +75,21 @@ while set['t'] <= set['T']:
     print '***************************************************'
     print 
     '''Recording Time & Coefficients end'''    
-        
-    set['t'] += set['dt']
+    max_ct = 0
+    for y in range(1,set['Ny'],2):
+        for x in range(1,set['Nx'],2):
+            v_1 = -(sol['c_t'][x+1,y+1]-sol['c_t'][x-1,y+1]+sol['c_t'][x+1,y-1]-sol['c_t'][x-1,y-1])/(2*set['h'])
+            v_2 = -(sol['c_t'][x+1,y+1]-sol['c_t'][x+1,y-1]+sol['c_t'][x-1,y+1]-sol['c_t'][x-1,y-1])/(2*set['h'])
+            if v_1 >= v_2:
+                vv = v_1
+            else:
+                vv = v_2
+            if vv > max_ct:
+                max_ct = vv
+    ddt = set['h']**2/(4*(coef['D_n']+set['h']*coef['be_1']*max_ct))
+    set['t'] += ddt#set['dt']
     set['k'] += 1
+    print 'max_ct,ddt',max_ct, ddt
      
 print '*************DONE*****************'
 print '''All Coefficients:'''

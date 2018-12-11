@@ -442,50 +442,50 @@ def hybrid_tech(coef, set, sol): #2.23
     '''Check Anastomosis before branching decision'''
     sol= anas_after(sol, tipp, n_sp, branchingg = False)    
     
-    '''Branching decision start'''
-    for ind_i, i in enumerate(sol['matrix_tip']):
-        if isinstance(i[-1], int) == False: #sprout yang masih hidup
-            xbb = i[-1][0] - 1
-            ybb = i[-1][1] - 1
-            if sol['c_t'][xbb,ybb] > 0: #C_t nya positive
-                if sol['life_time_tip'][nom] < coef['T_branch']: #not able to branch
-                    sol['life_time_tip'][nom] += set['dt']
-                else: #there is possibility to branch
-                    list_prob = prob_by_c(sol,xb,yb) #Probability of Branching using c #range(1,11) #2.2.(4) 
-                    tes = randint(1,10)
-                    if not tes in list_prob: #not able to branch
-                        sol['life_time_tip'][nom] += set['dt']
-                    else: #BRANCHING!
-                        sol['life_time_tip'][nom] = 0
-                        sol['matrix_tip'].append([[xb,yb]])
-                        sol['life_time_tip'].append(0)
-                        sol['new_ves_pair'].append([ind_i,len(sol['matrix_tip'])-1])
-                        '''The Movement from branching'''
-                        nom = len(sol['matrix_tip'])-1
-                        xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
-                        yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
-                          
-#                         dirr, probb = movement_dir(coef, set, sol, xb, yb) #2.2.1 => go to direction_of_movement.py
-                          
-#                         if dirr[1] == 0 and dirr[2] == 0 and dirr[3] == 0 and dirr[4] == 0: #checking if there is space for tip cell to move
-#                             if not nom in sol['sp_stop']:
-#                                 sol['sp_stop'].append(nom)
-#                                 sol['cause'][nom] = 'no space'
-#             #                 if [xb,yb] in sol['tip_cell']:
-#             #                     sol['tip_cell'].remove([xb,yb])
-#                             sol['n'][xb,yb] = 0
-#                             sol['stalk'][xb,yb] = 1
-#                             sol['matrix_tip'][nom][-1].append(1000) #1000 kode utk no space
-#                         else:
-#                             '''Making list of prob'''
-#                             list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = set_list_prob(dirr) #2.2.(1)
-                              
-                        '''The Movement'''
-                        branch = True
-                        sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,tipp,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(2)
-                          
-    #                     sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,tipp,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(5)
-    '''Branching decision end'''
+#     '''Branching decision start'''
+#     for ind_i, i in enumerate(sol['matrix_tip']):
+#         if isinstance(i[-1], int) == False: #sprout yang masih hidup
+#             xbb = i[-1][0] - 1
+#             ybb = i[-1][1] - 1
+#             if sol['c_t'][xbb,ybb] > 0: #C_t nya positive
+#                 if sol['life_time_tip'][nom] < coef['T_branch']: #not able to branch
+#                     sol['life_time_tip'][nom] += set['dt']
+#                 else: #there is possibility to branch
+#                     list_prob = prob_by_c(sol,xb,yb) #Probability of Branching using c #range(1,11) #2.2.(4) 
+#                     tes = randint(1,10)
+#                     if not tes in list_prob: #not able to branch
+#                         sol['life_time_tip'][nom] += set['dt']
+#                     else: #BRANCHING!
+#                         sol['life_time_tip'][nom] = 0
+#                         sol['matrix_tip'].append([[xb,yb]])
+#                         sol['life_time_tip'].append(0)
+#                         sol['new_ves_pair'].append([ind_i,len(sol['matrix_tip'])-1])
+#                         '''The Movement from branching'''
+#                         nom = len(sol['matrix_tip'])-1
+#                         xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
+#                         yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
+#                           
+# #                         dirr, probb = movement_dir(coef, set, sol, xb, yb) #2.2.1 => go to direction_of_movement.py
+#                           
+# #                         if dirr[1] == 0 and dirr[2] == 0 and dirr[3] == 0 and dirr[4] == 0: #checking if there is space for tip cell to move
+# #                             if not nom in sol['sp_stop']:
+# #                                 sol['sp_stop'].append(nom)
+# #                                 sol['cause'][nom] = 'no space'
+# #             #                 if [xb,yb] in sol['tip_cell']:
+# #             #                     sol['tip_cell'].remove([xb,yb])
+# #                             sol['n'][xb,yb] = 0
+# #                             sol['stalk'][xb,yb] = 1
+# #                             sol['matrix_tip'][nom][-1].append(1000) #1000 kode utk no space
+# #                         else:
+# #                             '''Making list of prob'''
+# #                             list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = set_list_prob(dirr) #2.2.(1)
+#                               
+#                         '''The Movement'''
+#                         branch = True
+#                         sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,tipp,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(2)
+#                           
+#     #                     sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,tipp,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(5)
+#     '''Branching decision end'''
     
     
     

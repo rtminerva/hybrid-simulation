@@ -25,7 +25,7 @@ def declare_coef():
     coef['al_1'] = 0#ki_n*T_1*c_o/(ra**2+ra**2)
 
     #chemotaxis2
-    coef['be_1'] = 5
+    coef['be_1'] = 0.5
 
     '''VEGF (c)'''
     set['ga_1'] = 1 #amplitude of vegf
@@ -46,7 +46,7 @@ def declare_coef():
 #     set['theta'] = 0.5
 #     set['rad'] = 0.01/ra
     
-    set['h'] = 0.01 #0.01#
+    set['h'] = 0.005 #0.01#
     set['dt'] = 0.001#005
     
     set['Hh'] = set['h']/2
