@@ -87,7 +87,11 @@ while set['t'] <= set['T']:
             if vv > max_ct:
                 max_ct = vv
     ddt = set['h']**2/(4*(coef['D_n']+set['h']*coef['be_1']*max_ct))
-    set['t'] += ddt#set['dt']
+    if ddt > set['dt']:
+        set['t'] += set['dt']
+    else:
+        set['t'] += ddt
+    
     set['k'] += 1
     print 'max_ct,ddt',max_ct, ddt
      
