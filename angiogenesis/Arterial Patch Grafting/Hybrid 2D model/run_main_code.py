@@ -74,26 +74,50 @@ while set['t'] <= set['T']:
     print 'total time of processing:', time.clock()
     print '***************************************************'
     print 
-    '''Recording Time & Coefficients end'''    
+    
+    '''Adaptive time step start'''    
     max_ct = 0
-    for y in range(1,set['Ny'],2):
-        for x in range(1,set['Nx'],2):
-            v_1 = -(sol['c_t'][x+1,y+1]-sol['c_t'][x-1,y+1]+sol['c_t'][x+1,y-1]-sol['c_t'][x-1,y-1])/(2*set['h'])
-            v_2 = -(sol['c_t'][x+1,y+1]-sol['c_t'][x+1,y-1]+sol['c_t'][x-1,y+1]-sol['c_t'][x-1,y-1])/(2*set['h'])
-            if v_1 >= v_2:
-                vv = v_1
+    for yb in range(1,set['Ny'],2):
+        for xb in range(1,set['Nx'],2):
+            cijx = (sol['c'][xb+1,yb+1]-sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb-1]-sol['c'][xb-1,yb-1])/(2*set['h'])
+            cijy = (sol['c'][xb+1,yb+1]-sol['c'][xb+1,yb-1]+sol['c'][xb-1,yb+1]-sol['c'][xb-1,yb-1])/(2*set['h'])
+            
+            ctijx = (sol['c_t'][xb+1,yb+1]-sol['c_t'][xb-1,yb+1]+sol['c_t'][xb+1,yb-1]-sol['c_t'][xb-1,yb-1])/(2*set['h'])
+            ctijy = (sol['c_t'][xb+1,yb+1]-sol['c_t'][xb+1,yb-1]+sol['c_t'][xb-1,yb+1]-sol['c_t'][xb-1,yb-1])/(2*set['h'])
+            
+            ave_ct = (sol['c_t'][xb-1,yb-1] + sol['c_t'][xb+1,yb+1] + sol['c_t'][xb-1,yb+1] + sol['c_t'][xb+1,yb-1])/4
+            if ave_ct > 0:
+                vijx = coef['al_1']*cijx - coef['be_1']*ctijx
+                vijy = coef['al_1']*cijy - coef['be_1']*ctijy
             else:
-                vv = v_2
+                vijx = coef['al_1']*cijx
+                vijy = coef['al_1']*cijy
+                
+            if vijx <=0:
+                vijx_m = max(0,-vijx)
+            elif vijx >0:
+                vijx_m = max(0,vijx)
+                
+            if vijy <=0:
+                vijy_m = max(0,-vijy)
+            elif vijy >0:
+                vijy_m = max(0,vijy)   
+            
+            if vijx_m >= vijy_m:
+                vv = vijx_m
+            else:
+                vv = vijy_m
+            
             if vv > max_ct:
                 max_ct = vv
     ddt = set['h']**2/(4*(coef['D_n']+set['h']*coef['be_1']*max_ct))
-    if ddt > set['dt']:
-        set['t'] += set['dt']
-    else:
-        set['t'] += ddt
-    
+#     if ddt > set['dt']:
+#         set['t'] += set['dt']
+#     else:
+    set['t'] += ddt
     set['k'] += 1
-    print 'max_ct,ddt',max_ct, ddt
+    print 'max_ct, ddt', max_ct, ddt
+    '''Adaptive time step end'''
      
 print '*************DONE*****************'
 print '''All Coefficients:'''
