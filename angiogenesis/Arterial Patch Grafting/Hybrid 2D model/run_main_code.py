@@ -110,7 +110,7 @@ while set['t'] <= set['T']:
             
             if vv > max_ct:
                 max_ct = vv
-    ddt = set['h']**2/(4*(coef['D_n']+set['h']*coef['be_1']*max_ct))
+    ddt = set['h']**2/(4*(coef['D_n']+set['h']*coef['be_1']*max_ct)) + 10**(-7)
     if ddt < set['dt']:
         set['t'] += ddt
     else:
