@@ -8,11 +8,7 @@ def movement_dir(coef, set, sol, xb, yb, df): #2.2.1
     
     ctijx = (sol['c_t'][xb+1,yb+1]-sol['c_t'][xb-1,yb+1]+sol['c_t'][xb+1,yb-1]-sol['c_t'][xb-1,yb-1])/(2*set['h'])
     ctijy = (sol['c_t'][xb+1,yb+1]-sol['c_t'][xb+1,yb-1]+sol['c_t'][xb-1,yb+1]-sol['c_t'][xb-1,yb-1])/(2*set['h'])
-    
-    '''NEW METHOD'''
-#     vijx = coef['al_1']*cijx - coef['be_1']*ctijx
-#     vijy = coef['al_1']*cijy - coef['be_1']*ctijy
-    
+        
     ave_ct = (sol['c_t'][xb-1,yb-1] + sol['c_t'][xb+1,yb+1] + sol['c_t'][xb-1,yb+1] + sol['c_t'][xb+1,yb-1])/4
     if ave_ct > 0:
         vijx = coef['al_1']*cijx - coef['be_1']*ctijx
@@ -20,15 +16,11 @@ def movement_dir(coef, set, sol, xb, yb, df): #2.2.1
     else:
         vijx = coef['al_1']*cijx
         vijy = coef['al_1']*cijy
-#     #test
-#     vijx = coef['al_1']*cijx - coef['be_1']*ctijx
-#     vijy = coef['al_1']*cijy - coef['be_1']*ctijy
-        
+
     vijx_p = max(0,vijx)
     vijx_n = max(0,-vijx)
     vijy_p = max(0,vijy)
     vijy_n = max(0,-vijy)
-    '''NEW METHOD'''
     
     a_1 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_n)
     a_2 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_p)
@@ -66,8 +58,8 @@ def movement_dir(coef, set, sol, xb, yb, df): #2.2.1
         P_4 = 0
     else:
         P_4 = int(p_4*10000)
-        
-
+    
+    '''Checking stability of the scheme'''
     if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
         print 'ADA P yang Negative'
         print 'probability P', P_1,',',P_2,',',P_3,',',P_4
@@ -92,7 +84,7 @@ def movement_dir(coef, set, sol, xb, yb, df): #2.2.1
         elif P_4 > 10000:
             P_4 = 0
       
-    '''Boundary Checking'''
+    '''Boundary Checking start'''
     if yb == 1: #batas bawah
         P_3 = 0
         p_3 = 0
@@ -119,6 +111,7 @@ def movement_dir(coef, set, sol, xb, yb, df): #2.2.1
             P_2 = 0
             p_2 = 0
         #selain batas2, tetap pada nilai P_1 ~ P_4 awal saja
+    '''Boundary Checking end'''
         
     P_0 = 10000-(P_1+P_2+P_3+P_4)
     p_0 = 1- (p_1+p_2+p_3+p_4)

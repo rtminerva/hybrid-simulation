@@ -487,8 +487,6 @@ def hybrid_tech(coef, set, sol): #2.23
 #     #                     sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,tipp,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(5)
 #     '''Branching decision end'''
     
-    
-    
 #     '''Check Anastomosis after branching decision'''
 #     sol= anas_after(sol, tipp, n_sp, new_ves, branchingg = True)            
       
@@ -500,90 +498,7 @@ def hybrid_tech(coef, set, sol): #2.23
         else:
             sol['tip_cell'].append(i[-1])
                 
-    
-    '''Record distance of tip cell from vessel'''
-#     if set['k'] % 200 == 0:
-#         max_len_all = []
-#         for ind_j, j in enumerate(sol['matrix_tip']):
-#             if ind_j not in sol['sp_stop']:
-#                 max_len = 0
-#                 for i in range(0,len(j)):
-#                    if j[i][0] > max_len:
-#                        max_len = j[i][0]
-#                 max_len_all.append(max_len)
-#         sol['tip_cell_pos_ave'].append(max(max_len_all)*5)
-        
-#         ban = len(sol['tip_cell'])
-#         tot_x = 0
-#         for i in sol['tip_cell']:
-#             tot_x += i[0]
-#         sol['tip_cell_pos_ave'].append(tot_x/ban*5)
-        
-        
-        
-#                 '''2.1 Branching Decision'''
-#                 PP = 'test'
-#                 if tipp == 'stay' and PP == 'test': #not able to branch, PP untuk pertama kali 
-#                     sol['life_time_tip'][nom] += set['dt']
-#                 else: #there is possibility to branch
-#                     if dirr.count(0) >= 3: #no space to move
-#                         sol['life_time_tip'][nom] += set['dt']
-#                     else: #there is possibility to branch
-#                         if sol['life_time_tip'][nom] < coef['T_branch']: #not able to branch
-#                             sol['life_time_tip'][nom] += set['dt']
-#                         else: #there is possibility to branch
-# #                             Probability of Branching using c
-#                             list_prob = prob_by_c(sol,xb,yb) #range(1,11) #2.2.(4)
-#                             tes = randint(1,10)
-#                             if not tes in list_prob: #not able to branch
-#                                 sol['life_time_tip'][nom] += set['dt']
-#                             else: #BRANCHING!
-# #                                 print 'Branchingg'
-#                                 sol['life_time_tip'][nom] = 0
-#                                 sol['matrix_tip'].append([[xb,yb]])
-#                                 sol['life_time_tip'].append(0)
-#                                 '''The Movement from branching'''
-#                                 branch = True
-#                                 nom = len(sol['matrix_tip'])-1
-#                                 sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #2.2.(5)
-    
     if len(sol['backward_list']) > 0:
         sol['backward_count'].append(set['k'])
-#     print 'nom', nom
-#     '''Create tip cell area'''    
-#     for tip in sol['tip_cell']:
-#         sol['tip_cell_area'].append([tip[0]-2,tip[1]])
-#         sol['tip_cell_area'].append([tip[0]+2,tip[1]])
-#         sol['tip_cell_area'].append([tip[0],tip[1]-2])
-#         sol['tip_cell_area'].append([tip[0],tip[1]+2])
-#         sol['tip_cell_area'].append([tip[0]-2,tip[1]+2])
-#         sol['tip_cell_area'].append([tip[0]+2,tip[1]+2])
-#         sol['tip_cell_area'].append([tip[0]+2,tip[1]-2])
-#         sol['tip_cell_area'].append([tip[0]-2,tip[1]-2])
 
-#     sol['tip_cell_area'] = []
-#     for i in sol['tip_cell']:
-#         sol['tip_cell_area'].append([i[0]+1, i[1]+1])
-#         sol['tip_cell_area'].append([i[0]+1, i[1]-1])
-#         sol['tip_cell_area'].append([i[0]-1, i[1]+1])
-#         sol['tip_cell_area'].append([i[0]-1, i[1]-1])
-
-#     '''Record New Tip Cell'''
-#     sol['tip_cell'] = []
-#     for nom in range(0,len(sol['matrix_tip'])): #dicek setiap tip
-#         if not nom in sol['sp_stop']: #record only active sprout
-#             sol['tip_cell'].append([sol['matrix_tip'][nom][-1][0],sol['matrix_tip'][nom][-1][1]])
-
-
-#         count_anas = len(i[1])
-#         prob_weight = 3
-#         line = range(1,count_anas*prob_weight+1)
-#         for ind_jj, j in enumerate(i[1]):
-#             globals()['%s' % ind_jj] = random.sample(line, prob_weight) 
-#             for k in globals()['%s' % ind_jj]:
-#                 line.remove(k)
-#         tess = randint(1,count_anas*prob_weight+1)
-#         kk = 0
-#         for ind_jj, j in enumerate(i[1]):
-#             if tess in 
     return sol
