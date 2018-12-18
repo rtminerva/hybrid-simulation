@@ -42,22 +42,22 @@ def movement_dir(coef, set, sol, xb, yb, df): #2.2.1
     if df == '1':
         P_1 = 0
     else:
-        P_1 = int(p_1*10000)
+        P_1 = int(p_1*1000)
     
     if df == '2':
         P_2 = 0
     else:
-        P_2 = int(p_2*10000)
+        P_2 = int(p_2*1000)
     
     if df == '3':
         P_3 = 0
     else:
-        P_3 = int(p_3*10000)
+        P_3 = int(p_3*1000)
     
     if df == '4':
         P_4 = 0
     else:
-        P_4 = int(p_4*10000)
+        P_4 = int(p_4*1000)
     
     '''Checking stability of the scheme'''
     if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
@@ -72,16 +72,16 @@ def movement_dir(coef, set, sol, xb, yb, df): #2.2.1
         elif P_4<0:
             P_4 = 0
             
-    if P_1 + P_2 + P_3 + P_4 > 10000:
+    if P_1 + P_2 + P_3 + P_4 > 1000:
         print 'ADA P yang Big'
         print 'probability P', P_1,',',P_2,',',P_3,',',P_4
-        if P_1 > 10000:
+        if P_1 > 1000:
             P_1 = 0
-        elif P_2 > 10000:
+        elif P_2 > 1000:
             P_2 = 0
-        elif P_3 > 10000:
+        elif P_3 > 1000:
             P_3 = 0
-        elif P_4 > 10000:
+        elif P_4 > 1000:
             P_4 = 0
       
     '''Boundary Checking start'''
@@ -113,7 +113,7 @@ def movement_dir(coef, set, sol, xb, yb, df): #2.2.1
         #selain batas2, tetap pada nilai P_1 ~ P_4 awal saja
     '''Boundary Checking end'''
         
-    P_0 = 10000-(P_1+P_2+P_3+P_4)
+    P_0 = 1000-(P_1+P_2+P_3+P_4)
     p_0 = 1- (p_1+p_2+p_3+p_4)
     
     prob_range = [P_0,P_1,P_2,P_3,P_4]
@@ -121,5 +121,5 @@ def movement_dir(coef, set, sol, xb, yb, df): #2.2.1
     if p_1 == 0 and p_2 == 0 and p_3 == 0 and p_4 == 0:
         print 'ALL P ZEROS', prob_range
     
-#     print 'probability p', p_0, ',',p_1,',',p_2,',',p_3,',',p_4
+#     print 'probability P', P_0, ',',P_1,',',P_2,',',P_3,',',P_4
     return prob_range, prob

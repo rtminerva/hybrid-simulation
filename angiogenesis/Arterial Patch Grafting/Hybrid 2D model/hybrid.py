@@ -8,7 +8,7 @@ from click import _winconsole
 from sympy.polys.benchmarks.bench_solvers import sol_10x8
 
 def set_list_prob(dirr): #2.2.(1)
-    line_1 = range(1,10001)
+    line_1 = range(1,1001)
     if dirr[1] == 0:
         list_prob_1 = []
     else:

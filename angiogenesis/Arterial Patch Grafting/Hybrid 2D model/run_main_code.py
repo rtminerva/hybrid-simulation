@@ -90,8 +90,8 @@ while set['t'] <= set['T']:
                 vijx = coef['al_1']*cijx - coef['be_1']*ctijx
                 vijy = coef['al_1']*cijy - coef['be_1']*ctijy
             else:
-                vijx = coef['al_1']*cijx
-                vijy = coef['al_1']*cijy
+                vijx = coef['al_1']*cijx - coef['be_1']*ctijx
+                vijy = coef['al_1']*cijy - coef['be_1']*ctijy
                 
             if vijx <=0:
                 vijx_m = max(0,-vijx)
