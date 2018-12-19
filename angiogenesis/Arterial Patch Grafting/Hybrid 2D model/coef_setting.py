@@ -13,7 +13,7 @@ def declare_coef():
     
     '''Tip (n)'''
     #diffusion
-    d_n = 10**(-10) #cm^2s^(-1)  
+    d_n = 10**(-9) #cm^2s^(-1)  10 
     coef['D_n'] = d_n*T_1/(ra**2+ra**2)
 #     coef['D_n'] = 1.8*10**(-4) #aubert 
     
@@ -25,7 +25,7 @@ def declare_coef():
     coef['al_1'] = 0#ki_n*T_1*c_o/(ra**2+ra**2)
 
     #chemotaxis2
-    coef['be_1'] = 0.15
+    coef['be_1'] = 0.2
 
     '''VEGF (c)'''
     set['ga_1'] = 1 #amplitude of vegf
@@ -34,7 +34,7 @@ def declare_coef():
     set['u'] = 1 #area of patch
     
     '''Branching & Mitosis'''
-    coef['T_branch'] = 0.25 #Chaplain
+    coef['T_branch'] = 0.75 #day Chaplain
 #     coef['T_mitosis'] = 1000#0.5
     
     '''Spatial and Temporal Meshes Number'''

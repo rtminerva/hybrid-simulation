@@ -93,7 +93,7 @@ def pic_2d(coef,set,sol):
     for tip in sol['tip_cell']:
         x_p.append(tip[0]*set['Hh'])
         y_p.append(tip[1]*set['Hh'])
-    ax.scatter(x_p, y_p, marker = 'o', s = 10, color ='r')
+    ax.scatter(x_p, y_p, marker = 'o', s = 5, color ='r')
 #     '''Backward Marker'''
 #     if len(sol['backward_list']) > 0:
 #         x_pp = []
