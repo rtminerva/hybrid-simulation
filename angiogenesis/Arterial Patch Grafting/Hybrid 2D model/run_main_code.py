@@ -9,12 +9,11 @@ import matplotlib.pyplot as plt
 
 #declare coefficients & initial settings
 coef, set, sol = declare_coef() #1
-
 #to plot interactively
 plt.ion()
 
 while set['t'] <= set['T']:
-    sol = main.boolean_1_iter(coef, set, sol) #2                 
+    sol = main.boolean_1_iter(coef, set, sol) #2            
     '''PRINTING RESULT AS CONTROL start'''  
     print 'at Time', set['t']
     print 'Total Tips:', len(sol['matrix_tip'])
@@ -42,6 +41,7 @@ while set['t'] <= set['T']:
     '''Picture result start'''
     if set['k'] % 1 == 0:
         pic.pic_2d(coef,set,sol) #3
+        
     '''Picture result end'''
         
     '''Recording Time & Coefficients start'''         
