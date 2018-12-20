@@ -22,10 +22,10 @@ def movement_dir(coef, set, sol, xb, yb, df='0'): #2.2.1
     vijy_p = max(0,vijy)
     vijy_n = max(0,-vijy)
     
-    a_1 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_n)
-    a_2 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_p)
-    a_3 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_n)
-    a_4 = (set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_p)
+    a_1 = set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_n
+    a_2 = set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_p
+    a_3 = set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_n
+    a_4 = set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_p
     
 #     tot_p = a_1 + a_2 + a_3 + a_4
     
@@ -63,26 +63,26 @@ def movement_dir(coef, set, sol, xb, yb, df='0'): #2.2.1
     if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
         print 'ADA P yang Negative'
         print 'probability P', P_1,',',P_2,',',P_3,',',P_4
-        if P_1 <0:
-            P_1 = 0
-        elif P_2<0:
-            P_2 = 0
-        elif P_3<0:
-            P_3 = 0
-        elif P_4<0:
-            P_4 = 0
+#         if P_1 <0:
+#             P_1 = 0
+#         elif P_2<0:
+#             P_2 = 0
+#         elif P_3<0:
+#             P_3 = 0
+#         elif P_4<0:
+#             P_4 = 0
             
     if P_1 + P_2 + P_3 + P_4 > 10000:
         print 'ADA P yang Big'
         print 'probability P', P_1,',',P_2,',',P_3,',',P_4
-        if P_1 > 10000:
-            P_1 = 0
-        elif P_2 > 10000:
-            P_2 = 0
-        elif P_3 > 10000:
-            P_3 = 0
-        elif P_4 > 10000:
-            P_4 = 0
+#         if P_1 > 10000:
+#             P_1 = 0
+#         elif P_2 > 10000:
+#             P_2 = 0
+#         elif P_3 > 10000:
+#             P_3 = 0
+#         elif P_4 > 10000:
+#             P_4 = 0
       
     '''Boundary Checking start'''
     if yb == 1: #batas bawah
