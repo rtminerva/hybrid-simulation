@@ -35,7 +35,7 @@ def ctprof_osci_decrease(coef,set,sol):
             
             #normal
             sol['c'][x,y] = (0.8 + m.sin(m.pi*set['et_1']*set['t']) * m.exp(-set['alpha']*set['t'])) * (1 - m.exp(-4*(x*set['Hh'])**2))
-            sol['c_t'][x,y] = (m.pi*set['et_1']*m.cos(m.pi*set['et_1']*set['t']) - set['alpha']*m.sin(m.pi*set['et_1']*set['t'])) * m.exp(-set['alpha']*set['t']) * (1-m.exp(-1*(x*set['Hh'])**2))
+            sol['c_t'][x,y] = (m.pi*set['et_1']*m.cos(m.pi*set['et_1']*set['t']) - set['alpha']*m.sin(m.pi*set['et_1']*set['t'])) * m.exp(-set['alpha']*set['t']) * (1-m.exp(-4*(x*set['Hh'])**2))
     return sol
 
 
