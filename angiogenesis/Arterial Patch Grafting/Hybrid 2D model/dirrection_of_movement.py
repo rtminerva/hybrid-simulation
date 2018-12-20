@@ -120,6 +120,5 @@ def movement_dir(coef, set, sol, xb, yb, df='0'): #2.2.1
     prob = [p_0,p_1,p_2,p_3,p_4]
     if p_1 == 0 and p_2 == 0 and p_3 == 0 and p_4 == 0:
         print 'ALL P ZEROS', prob_range
-    
 #     print 'probability P', P_0, ',',P_1,',',P_2,',',P_3,',',P_4
     return prob_range, prob
