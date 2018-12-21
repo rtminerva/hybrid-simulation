@@ -210,19 +210,19 @@ def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False):
     return sol
 
 def prob_by_c(sol,xb,yb): #2.2.(4)
-    line = range(1,11)
-    if sol['c'][xb+1,yb+1] >= 0 and sol['c'][xb+1,yb+1] < 0.25:
-        list_prob = [20]
-    elif sol['c'][xb+1,yb+1] >= 0.25 and sol['c'][xb+1,yb+1] < 0.5:
-        prob_weight = 3
+    line = range(1,51)
+    if sol['c'][xb+1,yb+1] >= 0 and sol['c'][xb+1,yb+1] < 0.02:
+        list_prob = [100]
+    elif sol['c'][xb+1,yb+1] >= 0.02 and sol['c'][xb+1,yb+1] < 0.1:
+        prob_weight = 10
         list_prob = random.sample(line, prob_weight) 
-    elif sol['c'][xb+1,yb+1] >= 0.5 and sol['c'][xb+1,yb+1] < 1:
-        prob_weight = 4
+    elif sol['c'][xb+1,yb+1] >= 0.1 and sol['c'][xb+1,yb+1] < 0.3:
+        prob_weight = 20
         list_prob = random.sample(line, prob_weight)   
-    elif sol['c'][xb+1,yb+1] >= 1 and sol['c'][xb+1,yb+1] < 1.6:
-        prob_weight = 5
+    elif sol['c'][xb+1,yb+1] >= 0.3 and sol['c'][xb+1,yb+1] < 0.5:
+        prob_weight = 30
         list_prob = random.sample(line, prob_weight)  
-    elif sol['c'][xb+1,yb+1] >= 1.6:
+    elif sol['c'][xb+1,yb+1] >= 0.5:
         list_prob = line
     return list_prob
 
