@@ -10,7 +10,7 @@ from dask.array.creation import linspace
 
 def pic_1d(coef,set,sol):
     script_dir = os.path.dirname(__file__)
-    results_dir = os.path.join(script_dir, 'ultrasensitive_1/')
+    results_dir = os.path.join(script_dir, 'ultrasensitive_2/')
     
     if not os.path.isdir(results_dir):
         os.makedirs(results_dir)

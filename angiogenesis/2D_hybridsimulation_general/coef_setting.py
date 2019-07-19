@@ -1,15 +1,14 @@
 from collections import OrderedDict
 
 def declare_coef():
-    '''Coefficients'''
-    #to store coefficients
+    '''Create storages to store all coefficient, setting, and solution'''
     coef = {}
     set = {}
     sol = {}
 
     '''measurement'''
-    ra = 0.5 #cm 
-    T_1 = 86400 #s for 1 day
+    ra = 0.5 #real distance on measurement (in cm) 
+    T_1 = 86400 #real time observations in 1 day (second)
     
     '''Tip (n)'''
     #diffusion
@@ -25,7 +24,7 @@ def declare_coef():
     coef['al_1'] = 0#ki_n*T_1*c_o/(ra**2+ra**2)
 
     #chemotaxis2
-    coef['be_1'] = 1
+    coef['be_1'] = 1 # this is for arterial patch model
 
     '''VEGF (c)'''
 #     set['u'] = 1 #area of patch
@@ -43,7 +42,7 @@ def declare_coef():
     ##set dictionaries tidak pernah berubah
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 14 + 0.002
+    set['T'] = 14 + 0.002 #Set maximum time observation
 #     set['Nt'] = 100000
 #     set['theta'] = 0.5
 #     set['rad'] = 0.01/ra

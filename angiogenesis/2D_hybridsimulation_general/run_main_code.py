@@ -1,20 +1,21 @@
+'''Import all files. We run all the files through run_main_code.py'''
 from coef_setting import declare_coef #1
 import main_code as main #2
 import picture_2d as pic #
 from initial_conditions import initial_prof
 
+'''Import additional functions to support calculation and graphics'''
 import numpy
 from timeit import default_timer as timer 
 import time
 import matplotlib.pyplot as plt 
 
-#declare coefficients & initial settings
+'''declare coefficients & initial settings'''
 coef, set, sol = declare_coef() #1
 
-#to plot interactively
-plt.ion()
+plt.ion() #to plot interactively
 
-'''Intialize for k=0, t=0'''
+'''Initialize functions for k=0 (first iteration), t=0 (initial time)'''
 sol = initial_prof(coef, set, sol)
 pic.pic_2d(coef,set,sol)
 print '''All Coefficients:'''
