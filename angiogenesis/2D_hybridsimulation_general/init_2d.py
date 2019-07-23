@@ -21,7 +21,7 @@ def ctprof_osci_stable(coef,set,sol):
 #             sol['c_t'][x,y] = 2*m.pi*set['et_1']*m.cos(2*m.pi*set['et_1']*set['t']) * (1+m.sin((0.5-x*set['Hh'])*m.pi))* set['ga_1']/4 #* (1+m.cos(set['u']*m.pi*(x*set['Hh']-0.5)))
     return sol
 
-def ctprof_osci_decrease(coef,set,sol):
+def ctprof_osci_decrease(coef,set,sol): #Ref.2.1.1
 #     viu = (numpy.sqrt(5)-0.1)/(numpy.sqrt(5)-1)
     for y in range(0,set['Ny']+1,2):
         for x in range(0,set['Nx']+1,2):
@@ -54,11 +54,11 @@ def ctprof_osci_decrease(coef,set,sol):
     return sol
 
 
-def init_2d_(coef,set,sol): #2.1.1
+def init_2d_(coef,set,sol): #Ref.2.1
     sol['c'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['c_t'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
 
 #     sol = ctprof_osci_stable(coef,set,sol)
-    sol = ctprof_osci_decrease(coef,set,sol)
+    sol = ctprof_osci_decrease(coef,set,sol) #Ref.2.1.1
     return sol
         

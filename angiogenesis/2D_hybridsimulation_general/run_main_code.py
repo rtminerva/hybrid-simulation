@@ -1,28 +1,29 @@
 '''Import all files. We run all the files through run_main_code.py'''
-from coef_setting import declare_coef #1
-import main_code as main #2
-import picture_2d as pic #
-from initial_conditions import initial_prof
+from coef_setting import declare_coef #Ref.1
+from initial_conditions import initial_prof #Ref.2
+import main_code as main #Ref.4
+import picture_2d as pic #Ref.5
+
 
 '''Import additional functions to support calculation and graphics'''
 import numpy
 from timeit import default_timer as timer 
 import time
 import matplotlib.pyplot as plt 
-
-'''declare coefficients & initial settings'''
-coef, set, sol = declare_coef() #1
-
 plt.ion() #to plot interactively
 
+'''declare coefficients & initial settings'''
+coef, set, sol = declare_coef() #Ref.1
+
 '''Initialize functions for k=0 (first iteration), t=0 (initial time)'''
-sol = initial_prof(coef, set, sol)
-pic.pic_2d(coef,set,sol)
+sol = initial_prof(coef, set, sol) #Ref.2
+pic.pic_2d(coef,set,sol) #to generate the picture of initial condition #Ref.5
 print '''All Coefficients:'''
 print coef
 print '''All Set'''
 print set
-'''PRINTING RESULT AS CONTROL start'''  
+
+'''PRINTING RESULT AS CONTROL'''  
 print 'at Time', set['t']
 print 'Total Tips:', len(sol['matrix_tip'])
 print 'Total Stop Tips:', len(sol['sp_stop'])
@@ -31,8 +32,9 @@ print 'Tip Cell Pos:', sol['tip_cell']
 print 'Max Value of ct, c', sol['c_t'].max(),',', sol['c'].max()
 print 'Min Value of ct, c', sol['c_t'].min(),',', sol['c'].min()
 
+'''Main part of the Hybrid calculation'''
 while set['t'] <= set['T']:
-    '''Adaptive time step start'''    
+    '''Adaptive time step start here''' #Ref.3    
     max_ct = 0
     for yb in range(1,set['Ny'],2):
         for xb in range(1,set['Nx'],2):
@@ -75,7 +77,7 @@ while set['t'] <= set['T']:
     set['dt'] = ddt
     set['t'] += set['dt']
     set['k'] += 1
-    '''Adaptive time step end'''    
+    '''Adaptive time step end here'''    
     
     '''PRINTING RESULT AS CONTROL'''  
     print 'at Time', set['t']
@@ -83,8 +85,8 @@ while set['t'] <= set['T']:
     print 'Max Value of ct, c', sol['c_t'].max(),',', sol['c'].max()
     print 'Min Value of ct, c', sol['c_t'].min(),',', sol['c'].min()
     
-    '''Solving Hybrid & non'''
-    sol = main.boolean_1_iter(coef, set, sol) #2     
+    '''Solving Hybrid'''
+    sol = main.boolean_1_iter(coef, set, sol) #Ref.4    
     
     '''PRINTING RESULT AS CONTROL'''
     print 'Total Tips:', len(sol['matrix_tip'])
@@ -92,6 +94,7 @@ while set['t'] <= set['T']:
     print 'Tip Stop:', sol['sp_stop']
     print 'Tip Cell Pos:', sol['tip_cell']
     
+    '''To check the reason of tip cell stopping'''
 #     if set['k'] % 200 == 0:
 #         print 'Tip Cell Pos_ave:', sol['tip_cell_pos_ave']
 #     for e, i in enumerate(sol['matrix_tip']):
@@ -109,10 +112,10 @@ while set['t'] <= set['T']:
     
     '''Picture result start'''
     if set['k'] % 1 == 0:
-        pic.pic_2d(coef,set,sol) #3
+        pic.pic_2d(coef,set,sol) #Ref.5
     '''Picture result end'''
         
-#     '''Recording Time & Coefficients start'''         
+    '''Recording Time & Coefficients start'''         
 #     ttime = time.clock()
 #     if ttime >= 3600: #jam
 #         jam = int(ttime/3600)
@@ -134,6 +137,7 @@ while set['t'] <= set['T']:
 #         print 'total time of processing:', 0, 'hours', menit, 'minutes', detik, 'seconds'
 #     else:
 #         print 'total time of processing:', 0, 'hours', 0, 'minutes', ttime, 'seconds'
+
     if set['k'] % 100 == 0:
         print '''All Coefficients:'''
         print coef

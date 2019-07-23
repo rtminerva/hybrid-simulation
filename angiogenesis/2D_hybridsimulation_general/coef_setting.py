@@ -1,6 +1,6 @@
 from collections import OrderedDict
 
-def declare_coef():
+def declare_coef(): #Ref.1
     '''Create storages to store all coefficient, setting, and solution'''
     coef = {}
     set = {}

@@ -2,7 +2,7 @@ from random import randint, sample, uniform
 import numpy
 import math as m
 
-def system_2d(coef, set, sol):
+def system_2d(coef, set, sol): #4.2
 #     c_o = sol['c'][:]
 #     viu = (numpy.sqrt(5)-0.1)/(numpy.sqrt(5)-1)
     for y in range(0,set['Ny']+1,2):

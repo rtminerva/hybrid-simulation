@@ -4,7 +4,7 @@ from collections import OrderedDict
 import random
 from random import randint
 
-def rec_1_tip(coef,set,sol): #2.1.2.(1)
+def rec_1_tip(coef,set,sol): 
     y = set['Ny']/2 
     if y % 2 == 0:
         y += 1
@@ -14,32 +14,7 @@ def rec_1_tip(coef,set,sol): #2.1.2.(1)
     sol['life_time_tip'].append(0) #lifetime
     return sol
 
-def random_tip(coef,set,sol): #2.1.2.(2)
-    line = range(1,set['Ny'],2)
-#     x = int(set['rad']/set['Hh'])
-    x = int(coef['X']/set['Hh'])
-    if x % 2 == 0:
-        x -= 1
-    
-#     y = set['Ny']/2
-#     if y % 2 == 0:
-#         y += 1
-#         
-#     sol['matrix_tip'].append([[x,y]])
-#     sol['n'][x,y] = 1
-#     sol['list_tip_movement'].append('start') #movement tip
-#     sol['life_time_tip'].append(0) #lifetime
-    
-    for i in range(0,20):
-        y = random.choice(line)
-        sol['matrix_tip'].append([[x,y]])
-        sol['n'][x,y] = 1
-        sol['list_tip_movement'].append('start') #movement tip
-        sol['life_time_tip'].append(0) #lifetime
-        line.remove(y)
-    return sol
-
-def rec_5_tip(coef,set,sol): #2.1.2.(2)
+def rec_5_tip(coef,set,sol): 
     x = int(set['rad']/set['Hh'])
     if x % 2 == 0:
         x += 1
@@ -90,7 +65,32 @@ def rec_5_tip(coef,set,sol): #2.1.2.(2)
     
     return sol
 
-def init_tip_2d_(coef,set,sol):
+def random_tip(coef,set,sol): #Ref.2.2.1
+    line = range(1,set['Ny'],2)
+#     x = int(set['rad']/set['Hh'])
+    x = int(coef['X']/set['Hh'])
+    if x % 2 == 0:
+        x -= 1
+    
+#     y = set['Ny']/2
+#     if y % 2 == 0:
+#         y += 1
+#         
+#     sol['matrix_tip'].append([[x,y]])
+#     sol['n'][x,y] = 1
+#     sol['list_tip_movement'].append('start') #movement tip
+#     sol['life_time_tip'].append(0) #lifetime
+    
+    for i in range(0,20):
+        y = random.choice(line)
+        sol['matrix_tip'].append([[x,y]])
+        sol['n'][x,y] = 1
+        sol['list_tip_movement'].append('start') #movement tip
+        sol['life_time_tip'].append(0) #lifetime
+        line.remove(y)
+    return sol
+
+def init_tip_2d_(coef,set,sol): #Ref.2.2
     '''Create new variable to store solutions'''
     sol['n'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
     sol['stalk'] = numpy.zeros((set['Nx']+1,set['Ny']+1))
@@ -106,7 +106,7 @@ def init_tip_2d_(coef,set,sol):
     '''Define tip cell'''
 #     sol = rec_1_tip(coef,set,sol) #2.1.2.(1)
 #     sol = rec_5_tip(coef,set,sol) #2.1.2.(2)
-    sol = random_tip(coef,set,sol)
+    sol = random_tip(coef,set,sol) #Ref.2.2.1
     
     '''TIP CELL'''
     for ind_i, i in enumerate(sol['matrix_tip']):

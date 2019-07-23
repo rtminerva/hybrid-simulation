@@ -1,6 +1,6 @@
 import numpy
 
-def movement_dir(coef, set, sol, xb, yb, df='0'): #2.2.1
+def movement_dir(coef, set, sol, xb, yb, df='0'): #4.1.1
     #xb, yb are on main-lattices
 
     cijx = (sol['c'][xb+1,yb+1]-sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb-1]-sol['c'][xb-1,yb-1])/(2*set['h'])
