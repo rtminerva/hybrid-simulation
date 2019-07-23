@@ -17,32 +17,33 @@ def declare_coef():
 #     coef['D_n'] = 1.8*10**(-4) #aubert 
     
     #chemotaxis1
-#     ki_n = 2600-750 #cm^2 s^(-1) M^(-1) #stokes 1990
-#     coef['Ki_n'] = 0.133 #aubert
     ki_n = 650 #cm^2 s^(-1) M^(-1) #aubert estimation 650 - 750
     c_o = 10**(-10) #M
     coef['al_1'] = 0#ki_n*T_1*c_o/(ra**2+ra**2)
+#     ki_n = 2600-750 #cm^2 s^(-1) M^(-1) #stokes 1990
+#     coef['Ki_n'] = 0.133 #aubert
 
-    #chemotaxis2
+    #chemotaxis2 for arterial patch case
     coef['be_1'] = 1 # this is for arterial patch model
 
     '''VEGF (c)'''
-#     set['u'] = 1 #area of patch
-#     set['ga_1'] = 3 #amplitude of vegf
+    #for arterial patch case, we define c=c(x,t)
     set['a'] =1 #1 0.6 
     set['b'] = 0.39#0.38 #0.39 #0.8
     set['et_1'] = 0.23#0.12 #0.23#0.26 #oscilation velocity of vegf
     set['alpha'] = 0.15#0.08 #0.15 #0.06
+#     set['u'] = 1 #area of patch
+#     set['ga_1'] = 3 #amplitude of vegf
     
     '''Branching & Mitosis'''
     coef['T_branch'] = 0.75 #day Chaplain
 #     coef['T_mitosis'] = 1000#0.5
     
     '''Spatial and Temporal Meshes Number'''
-    ##set dictionaries tidak pernah berubah
+    ##'set' dictionary never changes during the iteration
+    set['T'] = 14 + 0.002 #Set maximum time observation
     coef['X'] = 1
     coef['Y'] = 1
-    set['T'] = 14 + 0.002 #Set maximum time observation
 #     set['Nt'] = 100000
 #     set['theta'] = 0.5
 #     set['rad'] = 0.01/ra
