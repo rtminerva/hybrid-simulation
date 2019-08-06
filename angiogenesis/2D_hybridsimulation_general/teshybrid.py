@@ -212,20 +212,19 @@ def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False): 
     return sol
 
 def prob_by_c(sol,xb,yb): #Ref.4.1.4
-    line = range(1,51)
-    if sol['c'][xb+1,yb+1] >= 0 and sol['c'][xb+1,yb+1] < 0.02:
-        prob_weight = 2
-        list_prob = random.sample(line, prob_weight)
-    elif sol['c'][xb+1,yb+1] >= 0.02 and sol['c'][xb+1,yb+1] < 0.1:
-        prob_weight = 10
+    line = range(1,11)
+    if sol['c'][xb+1,yb+1] >= 0 and sol['c'][xb+1,yb+1] < 0.25:
+        list_prob = [20]
+    elif sol['c'][xb+1,yb+1] >= 0.25 and sol['c'][xb+1,yb+1] < 0.45:
+        prob_weight = 3
         list_prob = random.sample(line, prob_weight) 
-    elif sol['c'][xb+1,yb+1] >= 0.1 and sol['c'][xb+1,yb+1] < 0.3:
-        prob_weight = 20
+    elif sol['c'][xb+1,yb+1] >= 0.45 and sol['c'][xb+1,yb+1] < 0.6:
+        prob_weight = 4
         list_prob = random.sample(line, prob_weight)   
-    elif sol['c'][xb+1,yb+1] >= 0.3 and sol['c'][xb+1,yb+1] < 0.5:
-        prob_weight = 30
+    elif sol['c'][xb+1,yb+1] >= 0.6 and sol['c'][xb+1,yb+1] < 0.7:
+        prob_weight = 5
         list_prob = random.sample(line, prob_weight)  
-    elif sol['c'][xb+1,yb+1] >= 0.5:
+    elif sol['c'][xb+1,yb+1] >= 0.7:
         list_prob = line
     return list_prob
 
@@ -270,20 +269,19 @@ def hybrid_tech(coef, set, sol): #Ref.4.1
                         if sol['life_time_tip'][nom] < coef['T_branch']: #not able to branch
                             sol['life_time_tip'][nom] += set['dt']
                         else: #there is possibility to branch
-                            if (sol['c_t'][xb-1,yb-1]+sol['c_t'][xb-1,yb+1]+sol['c_t'][xb+1,yb-1]+sol['c_t'][xb+1,yb+1])/4 > 0: #C_t nya positive
-    #                           Probability of Branching using c
-                                list_prob = prob_by_c(sol,xb,yb) #range(1,11) ##Ref.4.1.4
-                                tes = randint(1,10)
-                                if not tes in list_prob: #not able to branch
-                                    sol['life_time_tip'][nom] += set['dt']
-                                else: #BRANCHING!
-                                    sol['life_time_tip'][nom] = 0
-                                    sol['matrix_tip'].append([[xb,yb]])
-                                    sol['life_time_tip'].append(0)
-                                    '''The Movement from branching'''
-                                    branch = True
-                                    nom = len(sol['matrix_tip'])-1
-                                    sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #Ref.4.1.3
+#                           Probability of Branching using c
+                            list_prob = prob_by_c(sol,xb,yb) #range(1,11) ##Ref.4.1.4
+                            tes = randint(1,10)
+                            if not tes in list_prob: #not able to branch
+                                sol['life_time_tip'][nom] += set['dt']
+                            else: #BRANCHING!
+                                sol['life_time_tip'][nom] = 0
+                                sol['matrix_tip'].append([[xb,yb]])
+                                sol['life_time_tip'].append(0)
+                                '''The Movement from branching'''
+                                branch = True
+                                nom = len(sol['matrix_tip'])-1
+                                sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #Ref.4.1.3
 #     if len(sol['backward_list']) > 0: #to record which iteration that the backward movement occurs
 #         sol['backward_count'].append(set['k'])
 

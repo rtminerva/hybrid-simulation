@@ -9,7 +9,7 @@ def pic_2d(coef,set,sol): #Ref.5
     script_dir = os.path.dirname(__file__)
     results_dir0 = os.path.join(script_dir, 'cc/n/')
     results_dir1 = os.path.join(script_dir, 'cc/c/')
-    results_dir2 = os.path.join(script_dir, 'cc/ct/')
+    results_dir2 = os.path.join(script_dir, 'cc/f/')
     
     if not os.path.isdir(results_dir0):
         os.makedirs(results_dir0)
@@ -81,11 +81,11 @@ def pic_2d(coef,set,sol): #Ref.5
 #     plt.close()
       
       
-    '''3. Continuous Plot VEGF & Fibronectin'''
+    '''2. Continuous Plot VEGF & Fibronectin'''
 #     if set['k'] % 1000 == 0:
     '''MERGE_cn'''
     fig13 = plt.figure(2)
-    plt.title('%s%f' % ('VEGFA (c) and vessel growth t=',set['t']))
+    plt.title('%s%f' % ('VEGF (c) and vessel growth t=',set['t']))
     ax = fig13.add_subplot(111)
     '''vegf'''
 #     c_sol = numpy.ma.masked_array(c_sol, c_sol < 0.0001)#-.5)
@@ -125,16 +125,16 @@ def pic_2d(coef,set,sol): #Ref.5
     plt.xlim((set['Hh'],coef['X']-set['Hh']))
     plt.ylim((set['Hh'],coef['Y']-set['Hh']))
     sol['Merge_cn'] +=1
-    flag = 'cn=%s' % str(sol['Merge_cn']) 
+    flag = 'c_with_n=%s' % str(sol['Merge_cn']) 
     plt.savefig(results_dir1 + "%s.png" % flag)
     plt.close()
     
     
-    '''4. Continuous Plot VEGF & ECM'''
+    '''3. Continuous Plot VEGF & ECM'''
 #     if set['k'] % 1000 == 0:
     '''MERGE_c_n'''
     fig13 = plt.figure(3)
-    plt.title('%s%f' % ('VEGFA (c_t) and vessel growth t=',set['t']))
+    plt.title('%s%f' % ('Fibronectin (f) and vessel growth t=',set['t']))
     ax = fig13.add_subplot(111)
     '''vegf'''
 #     c_sol = numpy.ma.masked_array(c_sol, c_sol < 0.0001)#-.5)
@@ -174,7 +174,7 @@ def pic_2d(coef,set,sol): #Ref.5
     plt.xlim((set['Hh'],coef['X']-set['Hh']))
     plt.ylim((set['Hh'],coef['Y']-set['Hh']))
     sol['Merge_cnt'] +=1
-    flag = 'c_tn=%s' % str(sol['Merge_cnt']) 
+    flag = 'f_with_n=%s' % str(sol['Merge_cnt']) 
     plt.savefig(results_dir2 + "%s.png" % flag)
     plt.close()
     

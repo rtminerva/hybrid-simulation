@@ -9,8 +9,8 @@ def movement_dir(coef, set, sol, xb, yb): #4.1.1
     fijx = (sol['f'][xb+1,yb+1]-sol['f'][xb-1,yb+1]+sol['f'][xb+1,yb-1]-sol['f'][xb-1,yb-1])/(2*set['h'])
     fijy = (sol['f'][xb+1,yb+1]-sol['f'][xb+1,yb-1]+sol['f'][xb-1,yb+1]-sol['f'][xb-1,yb-1])/(2*set['h'])    
     
-    vijx = coef['vm_1']*cijx - coef['vm_2']*fijx
-    vijy = coef['vm_1']*cijy - coef['vm_2']*fijy
+    vijx = coef['a_1']*cijx - coef['a_2']*fijx
+    vijy = coef['a_1']*cijy - coef['a_2']*fijy
 
     vijx_p = max(0,vijx)
     vijx_n = max(0,-vijx)
