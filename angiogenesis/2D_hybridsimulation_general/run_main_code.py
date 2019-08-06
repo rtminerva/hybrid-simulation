@@ -29,8 +29,8 @@ print 'Total Tips:', len(sol['matrix_tip'])
 print 'Total Stop Tips:', len(sol['sp_stop'])
 print 'Tip Stop:', sol['sp_stop']
 print 'Tip Cell Pos:', sol['tip_cell']
-print 'Max Value of ct, c', sol['c_t'].max(),',', sol['c'].max()
-print 'Min Value of ct, c', sol['c_t'].min(),',', sol['c'].min()
+print 'Max Value of c, f', sol['c'].max(),',', sol['f'].max()
+print 'Min Value of c, f', sol['c'].min(),',', sol['f'].min()
 
 '''Main part of the Hybrid calculation'''
 while set['t'] <= set['T']:
@@ -40,40 +40,32 @@ while set['t'] <= set['T']:
         for xb in range(1,set['Nx'],2):
             cijx = (sol['c'][xb+1,yb+1]-sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb-1]-sol['c'][xb-1,yb-1])/(2*set['h'])
             cijy = (sol['c'][xb+1,yb+1]-sol['c'][xb+1,yb-1]+sol['c'][xb-1,yb+1]-sol['c'][xb-1,yb-1])/(2*set['h'])
-            
-            ctijx = (sol['c_t'][xb+1,yb+1]-sol['c_t'][xb-1,yb+1]+sol['c_t'][xb+1,yb-1]-sol['c_t'][xb-1,yb-1])/(2*set['h'])
-            ctijy = (sol['c_t'][xb+1,yb+1]-sol['c_t'][xb+1,yb-1]+sol['c_t'][xb-1,yb+1]-sol['c_t'][xb-1,yb-1])/(2*set['h'])
-            
-            ave_ct = (sol['c_t'][xb-1,yb-1] + sol['c_t'][xb+1,yb+1] + sol['c_t'][xb-1,yb+1] + sol['c_t'][xb+1,yb-1])/4
-            if ave_ct > 0:
-                vijx = coef['al_1']*cijx - coef['be_1']*ctijx
-                vijy = coef['al_1']*cijy - coef['be_1']*ctijy
-            else:
-                vijx = coef['al_1']*cijx# - coef['be_1']*ctijx
-                vijy = coef['al_1']*cijy# - coef['be_1']*ctijy
-                
+             
+            fijx = (sol['f'][xb+1,yb+1]-sol['f'][xb-1,yb+1]+sol['f'][xb+1,yb-1]-sol['f'][xb-1,yb-1])/(2*set['h'])
+            fijy = (sol['f'][xb+1,yb+1]-sol['f'][xb+1,yb-1]+sol['f'][xb-1,yb+1]-sol['f'][xb-1,yb-1])/(2*set['h'])    
+     
+            vijx = coef['vm_1']*cijx - coef['vm_2']*fijx
+            vijy = coef['vm_1']*cijy - coef['vm_2']*fijy
+                 
             if vijx <=0:
                 vijx_m = max(0,-vijx)
             elif vijx >0:
                 vijx_m = max(0,vijx)
-                
+                 
             if vijy <=0:
                 vijy_m = max(0,-vijy)
             elif vijy >0:
                 vijy_m = max(0,vijy)   
-            
+             
             if vijx_m >= vijy_m:
                 vv = vijx_m
             else:
                 vv = vijy_m
-            
+             
             if vv > max_ct:
                 max_ct = vv
-    ddt = set['h']**2/(4*(coef['D_n']+set['h']*max_ct))
-#     if ddt < set['dtt']:
-#         set['dt'] = ddt
-#     else:
-#         set['dt'] = set['dtt']
+    ddt = set['h']**2/(4*(coef['D_n']+set['h']*max_ct)) #for adaptive dt
+#     ddt = 0.005 #for fixed dt
     set['dt'] = ddt
     set['t'] += set['dt']
     set['k'] += 1
@@ -82,8 +74,8 @@ while set['t'] <= set['T']:
     '''PRINTING RESULT AS CONTROL'''  
     print 'at Time', set['t']
     print 'max_ct, ddt', max_ct, ddt
-    print 'Max Value of ct, c', sol['c_t'].max(),',', sol['c'].max()
-    print 'Min Value of ct, c', sol['c_t'].min(),',', sol['c'].min()
+    print 'Max Value of c, f', sol['c'].max(),',', sol['f'].max()
+    print 'Min Value of c, f', sol['c'].min(),',', sol['f'].min()
     
     '''Solving Hybrid'''
     sol = main.boolean_1_iter(coef, set, sol) #Ref.4    

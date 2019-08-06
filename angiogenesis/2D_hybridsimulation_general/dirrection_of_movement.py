@@ -1,67 +1,57 @@
 import numpy
 
-def movement_dir(coef, set, sol, xb, yb, df='0'): #4.1.1
+def movement_dir(coef, set, sol, xb, yb): #4.1.1
     #xb, yb are on main-lattices
 
     cijx = (sol['c'][xb+1,yb+1]-sol['c'][xb-1,yb+1]+sol['c'][xb+1,yb-1]-sol['c'][xb-1,yb-1])/(2*set['h'])
     cijy = (sol['c'][xb+1,yb+1]-sol['c'][xb+1,yb-1]+sol['c'][xb-1,yb+1]-sol['c'][xb-1,yb-1])/(2*set['h'])
     
-    ctijx = (sol['c_t'][xb+1,yb+1]-sol['c_t'][xb-1,yb+1]+sol['c_t'][xb+1,yb-1]-sol['c_t'][xb-1,yb-1])/(2*set['h'])
-    ctijy = (sol['c_t'][xb+1,yb+1]-sol['c_t'][xb+1,yb-1]+sol['c_t'][xb-1,yb+1]-sol['c_t'][xb-1,yb-1])/(2*set['h'])
-        
-    ave_ct = (sol['c_t'][xb-1,yb-1] + sol['c_t'][xb+1,yb+1] + sol['c_t'][xb-1,yb+1] + sol['c_t'][xb+1,yb-1])/4
-    if ave_ct > 0:
-        vijx = coef['al_1']*cijx - coef['be_1']*ctijx
-        vijy = coef['al_1']*cijy - coef['be_1']*ctijy
-    else:
-        vijx = coef['al_1']*cijx
-        vijy = coef['al_1']*cijy
+    fijx = (sol['f'][xb+1,yb+1]-sol['f'][xb-1,yb+1]+sol['f'][xb+1,yb-1]-sol['f'][xb-1,yb-1])/(2*set['h'])
+    fijy = (sol['f'][xb+1,yb+1]-sol['f'][xb+1,yb-1]+sol['f'][xb-1,yb+1]-sol['f'][xb-1,yb-1])/(2*set['h'])    
+    
+    vijx = coef['vm_1']*cijx - coef['vm_2']*fijx
+    vijy = coef['vm_1']*cijy - coef['vm_2']*fijy
 
     vijx_p = max(0,vijx)
     vijx_n = max(0,-vijx)
     vijy_p = max(0,vijy)
     vijy_n = max(0,-vijy)
     
-    a_1 = set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_n
-    a_2 = set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_p
-    a_3 = set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_n
-    a_4 = set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_p
+    p_1 = set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_n
+    p_2 = set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijx_p
+    p_3 = set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_n
+    p_4 = set['dt']/(set['h']**2)*coef['D_n']+set['dt']/(set['h'])*vijy_p
     
-#     tot_p = a_1 + a_2 + a_3 + a_4
     
-    p_1 = a_1#/tot_p
-    p_2 = a_2#/tot_p
-    p_3 = a_3#/tot_p
-    p_4 = a_4#/tot_p
+    P_1 = int(p_1*10000)
+    P_2 = int(p_2*10000)
+    P_3 = int(p_3*10000)
+    P_4 = int(p_4*10000)
     
-#     P_1 = int(p_1*10000)
-#     P_2 = int(p_2*10000)
-#     P_3 = int(p_3*10000)
-#     P_4 = int(p_4*10000)
-    
-    if df == '1':
-        P_1 = 0
-    else:
-        P_1 = int(p_1*10000)
-    
-    if df == '2':
-        P_2 = 0
-    else:
-        P_2 = int(p_2*10000)
-    
-    if df == '3':
-        P_3 = 0
-    else:
-        P_3 = int(p_3*10000)
-    
-    if df == '4':
-        P_4 = 0
-    else:
-        P_4 = int(p_4*10000)
+#     '''Avoid backward Movement'''
+#     if df == '1':
+#         P_1 = 0
+#     else:
+#         P_1 = int(p_1*10000)
+#     
+#     if df == '2':
+#         P_2 = 0
+#     else:
+#         P_2 = int(p_2*10000)
+#     
+#     if df == '3':
+#         P_3 = 0
+#     else:
+#         P_3 = int(p_3*10000)
+#     
+#     if df == '4':
+#         P_4 = 0
+#     else:
+#         P_4 = int(p_4*10000)
     
     '''Checking stability of the scheme'''
     if P_1 < 0 or P_2 < 0 or P_3 < 0 or P_4 < 0:
-        print 'ADA P yang Negative'
+        print 'THERE IS P Negative'
         print 'probability P', P_1,',',P_2,',',P_3,',',P_4
 #         if P_1 <0:
 #             P_1 = 0
@@ -73,7 +63,7 @@ def movement_dir(coef, set, sol, xb, yb, df='0'): #4.1.1
 #             P_4 = 0
             
     if P_1 + P_2 + P_3 + P_4 > 10000:
-        print 'ADA P yang Big'
+        print 'THERE IS P that too big'
         print 'probability P', P_1,',',P_2,',',P_3,',',P_4
 #         if P_1 > 10000:
 #             P_1 = 0

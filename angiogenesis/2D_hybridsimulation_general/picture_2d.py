@@ -52,7 +52,7 @@ def pic_2d(coef,set,sol): #Ref.5
     plt.savefig(results_dir0 + "%s.png" % flag)
     plt.close()
     
-    '''Record for ecm, vegf'''
+    '''Record for c, f'''
     x_sub_axis = numpy.arange(0, coef['X']+set['Hh'], set['h'])
     y_sub_axis = numpy.arange(0, coef['Y']+set['Hh'], set['h'])
     x_sub_axis, y_sub_axis = numpy.meshgrid(x_sub_axis, y_sub_axis)
@@ -62,10 +62,10 @@ def pic_2d(coef,set,sol): #Ref.5
         for i, x in enumerate(range(0,set['Nx']+1,2)):
             c_sol[i,j] = sol['c'][x,y]
             
-    ct_sol = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
+    f_sol = numpy.zeros((set['Nx']/2+1, set['Ny']/2+1))
     for j, y in enumerate(range(0,set['Ny']+1,2)):
         for i, x in enumerate(range(0,set['Nx']+1,2)):
-            ct_sol[i,j] = sol['c_t'][x,y]
+            f_sol[i,j] = sol['f'][x,y]
        
        
 #     '''2. Continuous Plot VEGF & ECM'''
@@ -81,7 +81,7 @@ def pic_2d(coef,set,sol): #Ref.5
 #     plt.close()
       
       
-    '''3. Continuous Plot VEGF & ECM'''
+    '''3. Continuous Plot VEGF & Fibronectin'''
 #     if set['k'] % 1000 == 0:
     '''MERGE_cn'''
     fig13 = plt.figure(2)
@@ -138,7 +138,7 @@ def pic_2d(coef,set,sol): #Ref.5
     ax = fig13.add_subplot(111)
     '''vegf'''
 #     c_sol = numpy.ma.masked_array(c_sol, c_sol < 0.0001)#-.5)
-    im2 = ax.pcolormesh(y_sub_axis, x_sub_axis, ct_sol, vmin = 0, vmax = 1, cmap="cool", shading = 'gouraud')
+    im2 = ax.pcolormesh(y_sub_axis, x_sub_axis, f_sol, vmin = 0, vmax = 1, cmap="cool", shading = 'gouraud')
 #     plt.colorbar(im2)
     '''tip cell'''
     x_p = []

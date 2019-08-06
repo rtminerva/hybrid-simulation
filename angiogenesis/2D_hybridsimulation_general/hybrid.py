@@ -393,35 +393,34 @@ def anas_after(sol, tipp, n_sp, branchingg):
 def hybrid_tech(coef, set, sol): #2.23
     n_sp = len(sol['matrix_tip']) #to save original number of tips before branching
     n_o = numpy.copy(sol['n']) #to save the value of 'n' at time step k (we are calculating at time step k+1)
-    sol['tip_cell'] = []
+    sol['tip_cell'] = [] #to record tip cell position of each iteration
     tipp = []
     
-    for nom, nom_isi in enumerate(sol['matrix_tip']): #dicek setiap tip
-        if isinstance(nom_isi[-1], int) == False: #cek kalau sproutnya masih hidup
-#         if not nom in sol['sp_stop']: #kalo dia sudah anastomosis, gak perlu branching dan move lg.
+    for nom, nom_isi in enumerate(sol['matrix_tip']): #checking every tip
+        if isinstance(nom_isi[-1], int) == False: #checking if the sprout still alive. no need to proceed if it died
             xb = sol['matrix_tip'][nom][-1][0] #get x position of last tip position
             yb = sol['matrix_tip'][nom][-1][1] #get y position of last tip position
             
-            df = '0'
-            '''Recording backward movement start'''
-            if len(sol['matrix_tip'][nom]) >=2:
-                xbm1 = sol['matrix_tip'][nom][-2][0] #get x position of 2nd last tip position (to avoid backward movement)
-                ybm1 = sol['matrix_tip'][nom][-2][1] #get y position of 2nd last tip position (to avoid backward movement)
-                tx1 = xb-xbm1
-                ty1 = yb-ybm1
-                 
-                if tx1 == 0:
-                    if ty1 < 0:
-                        df = '4'
-                    else:
-                        df = '3'
-                else:
-                    if tx1 < 0:
-                        df = '2'
-                    else:
-                        df = '1'
-            #kalau terus backward nanti dia bikin cabang baru. 
-            '''Recording backward movement start'''
+            df = '0' #initializing of no constraint in the backward movement
+#             '''Recording backward movement start'''
+#             if len(sol['matrix_tip'][nom]) >=2:
+#                 xbm1 = sol['matrix_tip'][nom][-2][0] #get x position of 2nd last tip position (to avoid backward movement)
+#                 ybm1 = sol['matrix_tip'][nom][-2][1] #get y position of 2nd last tip position (to avoid backward movement)
+#                 tx1 = xb-xbm1
+#                 ty1 = yb-ybm1
+#                  
+#                 if tx1 == 0:
+#                     if ty1 < 0:
+#                         df = '4'
+#                     else:
+#                         df = '3'
+#                 else:
+#                     if tx1 < 0:
+#                         df = '2'
+#                     else:
+#                         df = '1'
+#             #in the case of arterial patch, the backward movement causes the new formation of sprout. 
+#             '''Recording backward movement start'''
             
             dirr, probb = movement_dir(coef, set, sol, xb, yb, df) #2.2.1 => go to direction_of_movement.py
         

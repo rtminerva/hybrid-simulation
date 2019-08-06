@@ -12,28 +12,22 @@ def declare_coef(): #Ref.1
     
     '''Tip (n)'''
     #diffusion
-    d_n = 10**(-9) #cm^2s^(-1)  10 
+    d_n = 10**(-9) #cm^2s^(-1)
     coef['D_n'] = d_n*T_1/(ra**2+ra**2)
-#     coef['D_n'] = 1.8*10**(-4) #aubert 
-    
-    #chemotaxis1
+
+    #v_m (vm_1)
     ki_n = 650 #cm^2 s^(-1) M^(-1) #aubert estimation 650 - 750
     c_o = 10**(-10) #M
-    coef['al_1'] = 0#ki_n*T_1*c_o/(ra**2+ra**2)
-#     ki_n = 2600-750 #cm^2 s^(-1) M^(-1) #stokes 1990
-#     coef['Ki_n'] = 0.133 #aubert
+    coef['vm_1'] = ki_n*T_1*c_o/(ra**2+ra**2)
 
-    #chemotaxis2 for arterial patch case
-    coef['be_1'] = 1 # this is for arterial patch model
+    #v_m (vm_1)
+    coef['vm_2'] = 0.003
 
-    '''VEGF (c)'''
-    #for arterial patch case, we define c=c(x,t)
-    set['a'] =1 #1 0.6 
-    set['b'] = 0.39#0.38 #0.39 #0.8
-    set['et_1'] = 0.23#0.12 #0.23#0.26 #oscilation velocity of vegf
-    set['alpha'] = 0.15#0.08 #0.15 #0.06
-#     set['u'] = 1 #area of patch
-#     set['ga_1'] = 3 #amplitude of vegf
+    '''VEGF (c) correspond to vm_1'''
+    coef['c_1'] = 0.05
+    
+    '''Fibronectin (f) correspond to vm_2'''
+    coef['f_1'] = 0#.05
     
     '''Branching & Mitosis'''
     coef['T_branch'] = 0.75 #day Chaplain
@@ -41,22 +35,16 @@ def declare_coef(): #Ref.1
     
     '''Spatial and Temporal Meshes Number'''
     ##'set' dictionary never changes during the iteration
-    set['T'] = 14 + 0.002 #Set maximum time observation
+    set['T'] = 10 + 0.002 #Set maximum time observation
     coef['X'] = 1
     coef['Y'] = 1
-#     set['Nt'] = 100000
-#     set['theta'] = 0.5
-#     set['rad'] = 0.01/ra
     
     set['h'] = 0.005 #0.01#
-    set['dtt'] = 0#0.01#0.005#005
+    #set['dtt'] = 0#0.01#0.005#005
     
     set['Hh'] = set['h']/2
     set['Nx'] = int(coef['X']/set['Hh'])
     set['Ny'] = int(coef['Y']/set['Hh'])
-    
-#     set['O_x'] = set['Nx']/2*set['Hh']
-#     set['O_y'] = set['Ny']/2*set['Hh']
     
     '''Initial Setting'''
     set['t'] = 0
@@ -64,6 +52,7 @@ def declare_coef(): #Ref.1
        
     '''To store solutions'''
     ##sol dictionaries dapat berubah
+    #for pictures
     sol['ves'] = 0
     sol['Merge_cn'] = 0
     sol['Merge_cnt'] = 0
@@ -71,15 +60,17 @@ def declare_coef(): #Ref.1
     sol['VEGF'] = 0
     sol['VEGF1'] = 0
     sol['ECM'] = 0
+    
+    #other
     sol['stop_iter'] = 0
-    '''For Anastomosis'''
-#     sol['pp'] = {}
-#     sol['PP'] = [] 
-    sol['backward'] = {}
-    sol['backward_count'] = []
-    sol['backward_list'] = []
+#     sol['backward'] = {}
+#     sol['backward_count'] = []
+#     sol['backward_list'] = []
     sol['tip_tip_anas'] = []
     sol['cause'] = {}
     sol['tip_cell_pos_ave'] = [0]
+#     '''For Anastomosis'''
+#     sol['pp'] = {}
+#     sol['PP'] = [] 
 
     return coef, set, sol

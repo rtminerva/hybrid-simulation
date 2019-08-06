@@ -146,17 +146,7 @@ def anas_tip(sol,xpos_new,ypos_new, nom, xb, yb): #Ref.4.1.3.1.1.1
 def anastomosis(sol,set,xpos_new,ypos_new, nom, xb, yb, back_and_loop = False): #Ref.4.1.3.1.1
     r_c = numpy.sqrt((xb*set['Hh'])**2+(yb*set['Hh']-0.5)**2)
     
-    if r_c>= 0 and r_c < 0.1+set['Hh']: # vessel reach the arterial patch
-        sol['matrix_tip'][nom].append([xpos_new,ypos_new])
-        if [xb,yb] in sol['tip_cell']:
-            sol['tip_cell'].remove([xb,yb])
-        sol['n'][xb,yb] = 0
-        sol['stalk'][xb,yb] = 1
-        sol['stalk'][xpos_new,ypos_new] = 1
-        if not nom in sol['sp_stop']:
-            sol['sp_stop'].append(nom)
-            sol['cause'][nom] = 'vessel reach arterial patch'
-    elif sol['n'][xpos_new,ypos_new] == 1: # in sol['tip_cell']: #ANASTOMOSIS TIP TO TIP
+    if sol['n'][xpos_new,ypos_new] == 1: # in sol['tip_cell']: #ANASTOMOSIS TIP TO TIP
 #         print 'anas tip to tip'
         sol['matrix_tip'][nom].append([xpos_new,ypos_new])
         if [xb,yb] in sol['tip_cell']:
@@ -294,8 +284,8 @@ def hybrid_tech(coef, set, sol): #Ref.4.1
                                     branch = True
                                     nom = len(sol['matrix_tip'])-1
                                     sol,tipp,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4 = movement(sol,set,nom,xb,yb,list_prob_0,list_prob_1,list_prob_2,list_prob_3,list_prob_4, branch) #Ref.4.1.3
-    if len(sol['backward_list']) > 0:
-        sol['backward_count'].append(set['k'])
+#     if len(sol['backward_list']) > 0: #to record which iteration that the backward movement occurs
+#         sol['backward_count'].append(set['k'])
 
 #     '''Create tip cell area'''    
 #     for tip in sol['tip_cell']:
@@ -308,7 +298,7 @@ def hybrid_tech(coef, set, sol): #Ref.4.1
 #         sol['tip_cell_area'].append([tip[0]+2,tip[1]-2])
 #         sol['tip_cell_area'].append([tip[0]-2,tip[1]-2])
     
-    
+    '''Create tip cell area for solving c dan f continuously'''
     sol['tip_cell_area'] = []
     for i in sol['tip_cell']:
         sol['tip_cell_area'].append([i[0]+1, i[1]+1])
