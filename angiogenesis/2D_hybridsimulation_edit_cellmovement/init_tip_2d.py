@@ -4,6 +4,7 @@ from collections import OrderedDict
 import random
 from random import randint
 
+ 
 # def rec_5_tip(coef,set,sol): 
 #     x = int(set['rad']/set['Hh'])
 #     if x % 2 == 0:
@@ -96,9 +97,9 @@ def init_tip_2d_(coef,set,sol): #Ref.2.2
     sol['sp_stop'] = []
     
     '''Define tip cell'''
-#     sol = rec_1_tip(coef,set,sol) #Ref.2.2.1
+    sol = rec_1_tip(coef,set,sol) #Ref.2.2.1
 #     sol = rec_5_tip(coef,set,sol) #2.1.2.(2)
-    sol = random_tip(coef,set,sol) #Ref.2.2.1
+#     sol = random_tip(coef,set,sol) #Ref.2.2.1
     
     '''TIP CELL'''
     for ind_i, i in enumerate(sol['matrix_tip']):
