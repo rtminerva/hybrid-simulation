@@ -125,7 +125,7 @@ def pic_2d(coef,set,sol): #Ref.5
     ax = fig13.add_subplot(111)
     '''vegf'''
 #     c_sol = numpy.ma.masked_array(c_sol, c_sol < 0.0001)#-.5)
-    im2 = ax.pcolormesh(y_sub_axis, x_sub_axis, f_sol, vmin = 0, vmax = 1, cmap="flag", shading = 'gouraud')
+    im2 = ax.pcolormesh(y_sub_axis, x_sub_axis, f_sol, vmin = 0, vmax = 1, cmap="cool", shading = 'gouraud')
 #     plt.colorbar(im2)
     '''tip cell'''
 #     x_p = []

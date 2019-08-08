@@ -28,7 +28,7 @@ def declare_coef(): #Ref.1
     coef['c_1'] = 0.1
     
     '''Fibronectin (f) correspond to vm_2'''
-    coef['f_1'] = 10#.1
+    coef['f_1'] = 0#.1
     
     '''Branching & Mitosis'''
     coef['T_branch'] = 0.25 #*1.5 day

@@ -11,8 +11,8 @@ def system_2d(coef, set, sol): #4.2
         for x in range(0,set['Nx']+1,2):                       
             '''TIP CELL?'''
             if [x,y] in sol['tip_cell_area']:
-                n_tip = 1   
-                print n_tip            
+                n_tip = 1 
+#                 sol['f'][x,y] = 0              
             else:
                 n_tip = 0
             
