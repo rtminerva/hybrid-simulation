@@ -12,12 +12,12 @@ def system_2d(coef, set, sol): #4.2
             '''TIP CELL?'''
             if [x,y] in sol['tip_cell_area']:
                 n_tip = 1 
-#                 sol['f'][x,y] = 0              
+                sol['f'][x,y] = 0              
             else:
                 n_tip = 0
             
             sol['c'][x,y] = c_o[x,y]*(1 - set['dt']*coef['c_1']*n_tip)
-            sol['f'][x,y] = f_o[x,y]*(1 - set['dt']*coef['f_1']*n_tip)
+#             sol['f'][x,y] = f_o[x,y]*(1 - set['dt']*coef['f_1']*n_tip)
 #             if n_tip == 1:
 #                 print 'f', x, y, sol['f'][x,y]
             
