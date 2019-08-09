@@ -40,7 +40,7 @@ def declare_coef(): #Ref.1
     coef['X'] = 1
     coef['Y'] = 1
     
-    set['h'] = 0.005 #0.01#
+    set['h'] = 0.01#0.005 #0.01#
     #set['dtt'] = 0#0.01#0.005#005
     
     set['Hh'] = set['h']/2

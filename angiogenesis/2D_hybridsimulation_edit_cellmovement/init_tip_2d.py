@@ -57,20 +57,31 @@ from random import randint
 #     return sol
 
 def random_tip(coef,set,sol): #Ref.2.2.1
-    line = range(1,set['Ny'],2)
+#     line = range(1,set['Ny'],2)
+    line = range(251,302,2)
     x = 1#int(coef['X']/set['Hh']) #set the initial tip cell at the left boundary
     if x % 2 == 0:
         x -= 1    
-    for i in range(0,10):
+    for i in range(0,20):
         y = random.choice(line)
         sol['n'][x,y] = 1
         sol['matrix_tip'].append([[x,y]])
         sol['list_tip_movement'].append('start') #movement tip
         sol['life_time_tip'].append(0) #lifetime
-        line.remove(y)
+#         line.remove(y)
     return sol
 
 def rec_1_tip(coef,set,sol): #Ref.2.2.1
+    y = set['Ny']/2 
+    if y % 2 == 0:
+        y += 1  
+    sol['n'][1,y] = 1
+    sol['matrix_tip'].append([[1,y]])
+    sol['list_tip_movement'].append('start') #movement tip
+    sol['life_time_tip'].append(0) #lifetime
+    return sol
+
+def rec_many_tip_small_area(coef,set,sol): #Ref.2.2.1
     y = set['Ny']/2 
     if y % 2 == 0:
         y += 1  
@@ -97,9 +108,9 @@ def init_tip_2d_(coef,set,sol): #Ref.2.2
     sol['sp_stop'] = []
     
     '''Define tip cell'''
-    sol = rec_1_tip(coef,set,sol) #Ref.2.2.1
+#     sol = rec_1_tip(coef,set,sol) #Ref.2.2.1
 #     sol = rec_5_tip(coef,set,sol) #2.1.2.(2)
-#     sol = random_tip(coef,set,sol) #Ref.2.2.1
+    sol = random_tip(coef,set,sol) #Ref.2.2.1
     
     '''TIP CELL'''
     for ind_i, i in enumerate(sol['matrix_tip']):

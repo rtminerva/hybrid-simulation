@@ -10,15 +10,15 @@ def boolean_1_iter(coef, set, sol): #Ref.4
     '''Solving c'''
     sol = system_2d(coef, set, sol) #Ref.4.2
     start3 = timer()
-    '''Adding cell in the tip cell path'''     
-    if set['k'] % 50 == 0:
-        y = set['Ny']/2 
-        if y % 2 == 0:
-            y += 1  
-        sol['n'][1,y] = 1
-        sol['matrix_tip'].append([[1,y]])
-        sol['list_tip_movement'].append('start') #movement tip
-        sol['life_time_tip'].append(0) #lifetime
+#     '''Adding cell in the tip cell path'''     
+#     if set['k'] % 50 == 0:
+#         y = set['Ny']/2 
+#         if y % 2 == 0:
+#             y += 1  
+#         sol['n'][1,y] = 1
+#         sol['matrix_tip'].append([[1,y]])
+#         sol['list_tip_movement'].append('start') #movement tip
+#         sol['life_time_tip'].append(0) #lifetime
                
     print 'Hybrid for n time', start2-start1
     print 'Solving c time', start3-start2
